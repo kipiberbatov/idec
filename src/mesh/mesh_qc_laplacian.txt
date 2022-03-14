@@ -1,0 +1,58 @@
+#include <stdlib.h>
+#include "mesh_qc.h"
+
+cs * mesh_qc_laplacian_0(const cs * m_cbd_0, const cs * m_cbd_star_1)
+{
+  cs * m_laplacian_0;
+  
+  m_laplacian_0 = cs_multiply(m_cbd_star_1, m_cbd_0);
+  /* NULL pointer check */
+  return m_laplacian_0;
+}
+
+cs * mesh_qc_laplacian_p(
+  const cs * m_cbd_p_minus_1, const cs * m_cbd_p, 
+  const cs * m_cbd_star_p, const cs * m_cbd_star_p_plus_1)
+{
+  cs * m_laplacian_p, * tmp1, * tmp2;
+  
+  tmp1 = cs_multiply(m_cbd_star_p_plus_1, m_cbd_p);
+  /* NULL pointer check */
+  tmp2 = cs_multiply(m_cbd_p_minus_1, m_cbd_star_p);
+  /* NULL pointer check */
+  m_laplacian_p = cs_add(tmp1, tmp2, 1., 1.);
+  /* NULL pointer check */
+  free(tmp2);
+  free(tmp1);
+  return m_laplacian_p;
+}
+
+cs * mesh_qc_laplacian_m_dim(
+  const cs * m_cbd_m_dim_minus_1, const cs * m_cbd_star_m_dim)
+{
+  cs * m_laplacian_m_dim;
+  
+  m_laplacian_m_dim = cs_multiply(m_cbd_m_dim_minus_1, m_cbd_star_m_dim);
+  /* NULL pointer check */
+  return m_laplacian_m_dim;
+}
+
+cs ** mesh_qc_laplacian(int m_dim, cs ** m_cbd, cs ** m_cbd_star)
+{
+  int p;
+  cs ** m_laplacian;
+  
+  m_laplacian = (cs **) malloc((m_dim + 1) * sizeof(cs *));
+  /* NULL pointer check */
+  m_laplacian[0] = cs_multiply(m_cbd_star[0], m_cbd[0]);
+  /* NULL pointer check */
+  for (p = 1; p < m_dim; ++p)
+  {
+    m_laplacian[p] = mesh_qc_laplacian_p(m_cbd[p - 1], m_cbd[p], 
+                                         m_cbd_star[p - 1], m_cbd_star[p]);
+    /* NULL pointer check */
+  }
+  m_laplacian[m_dim] = cs_multiply(m_cbd[m_dim - 1], m_cbd_star[m_dim - 1]);
+  /* NULL pointer check */
+  return m_laplacian;
+}

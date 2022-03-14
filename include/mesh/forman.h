@@ -1,0 +1,1 @@
+#ifndef FORMAN_H#define FORMAN_H#include "mesh.h"mesh * forman(const mesh * m);cs ** forman_bd(const mesh * m, const mesh * m_forman, cs ** m_bd);#endif /* FORMAN_H */
