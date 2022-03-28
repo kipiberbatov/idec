@@ -1,65 +1,71 @@
+#include <math.h>
+#include <stdlib.h>
 #include "mesh_qc.h"
 
+/* q = p - 1 */
 static double * mesh_qc_cbd_star_p_x(
-  const mesh_qc * m, int p, const cs * m_bd_p,
-  const double * m_inner_p, const double * m_inner_p_minus_1)
+  const mesh_qc * m, int p, const matrix_sparse * m_bd_p,
+  const double * m_inner_p, const double * m_inner_q)
 {
-  int i, ind, j, j_loc, m_cn_p;
+  int i, ind, j, j_loc, m_bd_p_nonzero_max, m_cn_p;
   double sign, m_inner_p_i;
   double * m_bd_p_x, * m_cbd_star_p_x;
-  jagged1 hyperfaces;
-  jagged2 topology;
+  jagged1 m_cf_p_q_i;
+  jagged2 m_cf_p_q;
   jagged4 * m_cf;
 
   m_cn_p = m->cn[p];
   m_cf = m->cf;
-  m_bd_p_x = m_bd_p->x;
-  m_cbd_star_p_x = (double *) malloc(m_bd_p->nzmax * sizeof(double));
+  m_bd_p_x = m_bd_p->values;
+  m_bd_p_nonzero_max = m_bd_p->cols_total[m_bd_p->cols];
+  m_cbd_star_p_x = (double *) malloc(sizeof(double) * m_bd_p_nonzero_max);
   /* NULL pointer check */
-  jagged4_part2(&topology, m_cf, p - 1, p - 1);
+  mesh_cf_part2(&m_cf_p_q, m, p, p - 1);
   ind = 0;
   for (i = 0; i < m_cn_p; ++i)
   {
-    jagged2_part1(&hyperfaces, &topology, i);
+    jagged2_part1(&m_cf_p_q_i, &m_cf_p_q, i);
     m_inner_p_i = m_inner_p[i];
-    for (j_loc = 0; j_loc < hyperfaces.a0; ++j_loc)
+    for (j_loc = 0; j_loc < m_cf_p_q_i.a0; ++j_loc)
     {
       sign = m_bd_p_x[ind + j_loc];
-      j = hyperfaces.a1[j_loc];
-      m_cbd_star_p_x[ind + j_loc] = sign * m_inner_p_i / m_inner_p_minus_1[j];
+      j = m_cf_p_q_i.a1[j_loc];
+      m_cbd_star_p_x[ind + j_loc] = sign * m_inner_p_i / m_inner_q[j];
     }
-    ind += hyperfaces.a0;
+    ind += m_cf_p_q_i.a0;
   }
   return m_cbd_star_p_x;
 }
 
-cs * mesh_qc_cbd_star_p(
-  const mesh_qc * m, int p, const cs * m_bd_p,
-  const double * m_inner_p, const double * m_inner_p_minus_1)
+/* q = p - 1 */
+matrix_sparse * mesh_qc_cbd_star_p(
+  const mesh_qc * m, int p, const matrix_sparse * m_bd_p,
+  const double * m_inner_p, const double * m_inner_q)
 {
-  cs * m_cbd_star_p;
+  matrix_sparse * m_cbd_star_p;
   
-  m_cbd_star_p = (cs *) malloc(sizeof(cs));
+  m_cbd_star_p = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   /* NULL pointer check */
-  m_cbd_star_p->nzmax = m_bd_p->nzmax;
-  m_cbd_star_p->m = m_bd_p->m;
-  m_cbd_star_p->n = m_bd_p->n;
-  m_cbd_star_p->p = m_bd_p->p;
-  m_cbd_star_p->i = m_bd_p->i;
-  m_cbd_star_p->x = 
-    mesh_qc_cbd_star_p_x(m, p, m_bd_p, m_inner_p, m_inner_p_minus_1);
+  //m_cbd_star_p->nzmax = m_bd_p->nzmax;
+  m_cbd_star_p->rows = m_bd_p->rows;
+  m_cbd_star_p->cols = m_bd_p->cols;
+  m_cbd_star_p->cols_total = m_bd_p->cols_total;
+  m_cbd_star_p->row_indices = m_bd_p->row_indices;
+  m_cbd_star_p->values = 
+    mesh_qc_cbd_star_p_x(m, p, m_bd_p, m_inner_p, m_inner_q);
   /* NULL pointer check */
-  m_cbd_star_p->nz = m_bd_p->nz;
+  //m_cbd_star_p->nz = m_bd_p->nz;
   return m_cbd_star_p;
 }
 
-cs ** mesh_qc_cbd_star(const mesh_qc * m, cs ** m_bd, double ** m_inner)
+matrix_sparse ** mesh_qc_cbd_star(
+  const mesh_qc * m, matrix_sparse ** m_bd, double ** m_inner)
 {
   int m_dim, p;
-  cs ** m_cbd_star;
+  matrix_sparse ** m_cbd_star;
   
   m_dim = m->dim;
-  m_cbd_star = (cs **) malloc(m_dim * sizeof(cs *));
+  m_cbd_star = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * m_dim);
   /* NULL pointer check */
   for (p = 1; p <= m_dim; ++p)
   {

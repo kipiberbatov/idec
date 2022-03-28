@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include "array_indexed.h"
-#include "list.h"
+// #include "array_indexed.h"
+#include "int.h"
 #include "mesh.h"
 
 int mesh_bd_nzmax(const mesh * m, int p)
@@ -10,11 +10,15 @@ int mesh_bd_nzmax(const mesh * m, int p)
   int m_bd_nzmax;
   jagged1 hyperfaces;
   jagged3 m_cfn;
-  jagged4 * m_cf;
+  //jagged4 * m_cf;
   
   m_cn_p = m->cn[p];
-  m_cf = m->cf;
-  jagged3_set(&m_cfn, m_cf->a0, m_cf->a1, m_cf->a2, m_cf->a3);
+  m_cfn.a0 = m->cf->a0;
+  m_cfn.a1 = m->cf->a1;
+  m_cfn.a2 = m->cf->a2;
+  m_cfn.a3 = m->cf->a3;
+  
+  //jagged3_set(&m_cfn, m_cf->a0, m_cf->a1, m_cf->a2, m_cf->a3);
   jagged3_part2(&hyperfaces, &m_cfn, p - 1, p - 1);
   hyperfaces_a1 = hyperfaces.a1;
   
@@ -93,7 +97,7 @@ int * mesh_bd_i(const mesh * m, int p)
 //   free(tmp);
 // }
 
-static void mesh_bd_values(cs * m_bd, const mesh * m, int p)
+static void mesh_bd_values(matrix_sparse * m_bd, const mesh * m, int p)
 {
   int hyperfaces_a0, i, ind, j, j_loc, m_cn_p, pos0, pos1, sign;
   //int * a_positions;
@@ -107,8 +111,8 @@ static void mesh_bd_values(cs * m_bd, const mesh * m, int p)
   
   m_cn_p = m->cn[p];
   m_cf = m->cf;
-  m_bd_x = m_bd->x;
-  m_bd_i = m_bd->i;
+  m_bd_x = m_bd->values;
+  m_bd_i = m_bd->row_indices;
   jagged4_part2(&topology, m_cf, p - 1, p - 1);
   jagged4_part2(&cells_nodes, m_cf, p - 1, 0);
   /*jagged4_part2(&hyperfaces_nodes, m_cf, p - 2, 0);*/
@@ -131,12 +135,12 @@ static void mesh_bd_values(cs * m_bd, const mesh * m, int p)
       mesh_cf_part3(&hyperface_nodes, m, p - 1, 0, j);
       /* it is better to change to jagged<n>_part without j in the loop */
       if (cell_nodes.a0 == (p + 1)) /*. for simplices */
-        sign = list_relative_sign(&cell_nodes, &hyperface_nodes);
+        sign = jagged1_relative_sign(&cell_nodes, &hyperface_nodes);
       else /* for polygons */
       {
         hyperface_nodes_a1 = hyperface_nodes.a1;
-        pos0 = list_position(&cell_nodes, hyperface_nodes_a1[0]);
-        pos1 = list_position(&cell_nodes, hyperface_nodes_a1[1]);
+        pos0 = jagged1_position(&cell_nodes, hyperface_nodes_a1[0]);
+        pos1 = jagged1_position(&cell_nodes, hyperface_nodes_a1[1]);
         sign = (((pos1 - pos0 + cell_nodes.a0) % cell_nodes.a0) == 1) ? 1 : -1;
       }
       m_bd_x[ind + j_loc] = (double) sign;
@@ -152,37 +156,40 @@ static void mesh_bd_values(cs * m_bd, const mesh * m, int p)
   }
 }
 
-cs * mesh_bd_single(const mesh * m, int p)
+matrix_sparse * mesh_bd_single(const mesh * m, int p)
 {
-  cs * m_bd;
-  m_bd = (cs *) malloc(sizeof(cs));
+  int m_bd_nonzero_max;
+  matrix_sparse * m_bd;
+  
+  m_bd_nonzero_max = mesh_bd_nzmax(m, p);
+  m_bd = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   /* NULL pointer check */
-  m_bd->nzmax = mesh_bd_nzmax(m, p);
+  //m_bd->nzmax = mesh_bd_nzmax(m, p);
   /* NULL pointer check */
-  m_bd->m = m->cn[p - 1];
-  m_bd->n = m->cn[p];
-  m_bd->p = mesh_bd_p(m, p);
+  m_bd->rows = m->cn[p - 1];
+  m_bd->cols = m->cn[p];
+  m_bd->cols_total = mesh_bd_p(m, p);
   /* NULL pointer check */
-  m_bd->i = (int *) malloc(m_bd->nzmax * sizeof(int));
+  m_bd->row_indices = (int *) malloc(sizeof(int) * m_bd_nonzero_max);
   /* NULL pointer check */
-  m_bd->x = (double *) malloc(m_bd->nzmax * sizeof(double));
+  m_bd->values = (double *) malloc(sizeof(double) * m_bd_nonzero_max);
   /* NULL pointer check */
   mesh_bd_values(m_bd, m, p);
   /* NULL pointer check because of local dynamic memory */
-  m_bd->nz = -1;
+  //m_bd->nz = -1;
   return m_bd;
 }
 
-// static void cs * mesh_bd_p(const mesh * m, int p, double * m_bd_x);
+// static void matrix_sparse * mesh_bd_p(const mesh * m, int p, double * m_bd_x);
 // {
 //   int i, m_bd_n;
 //   int * m_bd_p;
 //   jagged1 cells;
 //   jagged2 topology, m_bd_i;
-//   cs * m_bd;
+//   matrix_sparse * m_bd;
 //
 //   mesh_cf_part2(&topology, m, p, p - 1);
-//   m_bd = (cs *) malloc(sizeof(cs));
+//   m_bd = (matrix_sparse *) malloc(sizeof(matrix_sparse));
 //   /* NULL pointer check */
 //   m_bd->m = m->cn[p - 1];
 //   m-bd->n = m->cn[p];
@@ -206,13 +213,13 @@ cs * mesh_bd_single(const mesh * m, int p)
 //   return m_bd;
 // }
 
-cs ** mesh_bd(const mesh * m)
+matrix_sparse ** mesh_bd(const mesh * m)
 {
   int m_dim, p;
-  cs ** m_bd;
+  matrix_sparse ** m_bd;
 
   m_dim = m->dim;
-  m_bd = (cs **) malloc(m_dim * sizeof(cs *));
+  m_bd = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * m_dim);
   /* NULL pointer check */
 
   for (p = 1; p <= m_dim; ++p)
@@ -224,17 +231,18 @@ cs ** mesh_bd(const mesh * m)
   return m_bd;
 }
 
-void mesh_bd_check(FILE * out, int m_dim, cs ** m_bd, const char * name)
+void mesh_bd_check(
+  FILE * out, int m_dim, matrix_sparse ** m_bd, const char * name)
 {
   int p;
-  cs * m_bd_check;
+  matrix_sparse * m_bd_check;
   
   for (p = 0; p < m_dim - 1; ++p)
   {
-    m_bd_check = cs_multiply(m_bd[p], m_bd[p + 1]);
+    m_bd_check = matrix_sparse_product(m_bd[p], m_bd[p + 1]);
     /* NULL pointer check */
     fprintf(out, "%s_%d . %s_%d:\n\n", name, p + 1, name, p + 2);
-    cs_fprint(out, m_bd_check, "-annotated");
+    matrix_sparse_fprint(out, m_bd_check, "-annotated");
     fputs("\n", out);
     free(m_bd_check);
   }

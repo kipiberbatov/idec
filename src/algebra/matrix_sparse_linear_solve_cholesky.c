@@ -4,13 +4,16 @@
 
 void matrix_sparse_linear_solve_cholesky(const matrix_sparse * a, double * b)
 {
+  int correct;
   cs a0;
   
   matrix_sparse_to_cs(&a0, a);
-  cs_cholsol(1, &a0, b);
-  if (errno)
+  correct = cs_cholsol(1, &a0, b);
+  if (!correct)
   {
-    perror("Cannot solve linear system via cs_cholsol");
+    errno = EINVAL;
+    fputs("matrix_sparse_linear_solve_cholesky - cannot solve linear system\n",
+          stderr);
     return;
   }
 }

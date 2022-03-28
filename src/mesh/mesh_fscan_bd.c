@@ -1,88 +1,104 @@
-#include <stdio.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include "double.h"
 #include "mesh.h"
 
-// cs * mesh_fscan_bd_single(FILE * in, const mesh * m, int p)
-// {
-//   int * m_cn;
-//   cs * m_bd;
-//
-//   m_cn = m->cn;
-//   m_bd = (cs *) malloc(sizeof(cs));
-//   /* NULL pointer check */
-//   m_bd->nzmax = mesh_bd_nzmax(m, p); /* using m_cfn */
-//   m_bd->m = m_cn[p - 1];
-//   m_bd->n = m_cn[p]; /* using m_cfn */
-//   m_bd->p = mesh_bd_p(m, p);
-//   /* NULL pointer check */
-//   m_bd->i = mesh_bd_i(m, p);
-//   /* NULL pointer check */
-//   m_bd->x = double_fscan_array(in, m_bd->nzmax);
-//   /* NULL pointer check */
-//   m_bd->nz = -1;
-//   return m_bd;
-// }
-//
-// cs ** mesh_fscan_bd(FILE * in, const mesh * m)
-// {
-//   int m_dim, p;
-//   cs ** m_bd;
-//
-//   m_dim = m->dim;
-//   m_bd = (cs **) malloc(m_dim * sizeof(cs *));
-//   /* NULL pointer check */
-//   for (p = 1; p <= m_dim; ++p)
-//   {
-//     m_bd[p - 1] = mesh_fscan_bd_single(in, m, p);
-//     /* NULL pointer check */
-//   }
-//   return m_bd;
-// }
-
-cs * mesh_fscan_bd_p(FILE * in, const mesh * m, int p)
+static void mesh_bd_p_cols_total(
+  int * m_bd_p_cols_total, int m_bd_p_cols, const int * m_cfn_p_q_a1)
 {
-  int i, m_bd_n;
-  int * m_bd_p;
-  jagged1 cells;
-  jagged2 topology;
-  cs * m_bd;
-
-  m_bd = (cs *) malloc(sizeof(cs));
-  /* NULL pointer check */
-  m_bd->m = m->cn[p - 1];
-  m_bd->n = m->cn[p];
-  m_bd_n = m_bd->n;
-  m_bd->p = (int *) malloc((m_bd_n + 1) * sizeof(int));
-  mesh_cfn_part2(&cells, m, p, p - 1);
-  m_bd_p = m_bd->p;
-  m_bd_p[0] = 0;
-  for (i = 0; i < m_bd->n; ++i)
-    m_bd_p[i + 1] = m_bd_p[i] + cells.a1[i];
-  m_bd->nzmax = m_bd_p[m_bd_n];
-  m_bd->i = (int *) malloc(m_bd->nzmax * sizeof(int));
-  /* NULL pointer check */
-  mesh_cf_part2(&topology, m, p, p - 1);
-  memcpy(m_bd->i, topology.a2, m_bd->nzmax * sizeof(int));
-  m_bd->x = double_fscan_array(in, m_bd->nzmax);
-  /* NULL pointer check */
-  m_bd->nz = -1;
-  return m_bd;
+  int i;
+  
+  m_bd_p_cols_total[0] = 0;
+  for (i = 0; i < m_bd_p_cols; ++i)
+    m_bd_p_cols_total[i + 1] = m_bd_p_cols_total[i] + m_cfn_p_q_a1[i];
 }
 
-cs ** mesh_fscan_bd(FILE * in, const mesh * m)
+matrix_sparse * mesh_fscan_bd_p(FILE * in, const mesh * m, int p)
+{
+  int m_bd_p_nonzero_max;
+  jagged1 m_cfn_p_q; /* q = p - 1 */
+  jagged2 m_cf_p_q; /* q = p - 1 */
+  matrix_sparse * m_bd_p;
+  
+  mesh_cfn_part2(&m_cfn_p_q, m, p, p - 1);
+  mesh_cf_part2(&m_cf_p_q, m, p, p - 1);
+
+  m_bd_p = (matrix_sparse *) malloc(sizeof(matrix_sparse));
+  if (errno)
+  {
+    fprintf(stderr,
+            "mesh_fscan_bd_p - cannot allocate memory for m->bd[%d]\n", p);
+    goto end;
+  }
+  
+  m_bd_p->rows = m->cn[p - 1];
+  m_bd_p->cols = m->cn[p];
+  
+  m_bd_p->cols_total = (int *) malloc(sizeof(int) * (m_bd_p->cols + 1));
+  if (errno)
+  {
+    fprintf(stderr, "mesh_fscan_bd_p - cannot allocate memory for "
+            "m->bd[%d]->cols_total\n", p);
+    goto m_bd_p_free;
+  }
+  mesh_bd_p_cols_total(m_bd_p->cols_total, m_bd_p->cols, m_cfn_p_q.a1);
+  
+  m_bd_p_nonzero_max = m_bd_p->cols_total[m_bd_p->cols];
+  
+  m_bd_p->row_indices = (int *) malloc(sizeof(int) * m_bd_p_nonzero_max);
+  if (errno)
+  {
+    fprintf(stderr, "mesh_fscan_bd_p - cannot allocate memory for "
+            "m->bd[%d]->row_indices\n", p);
+    goto m_bd_p_cols_total_free;
+  }
+  memcpy(m_bd_p->row_indices, m_cf_p_q.a2, sizeof(int) * m_bd_p_nonzero_max);
+  
+  m_bd_p->values = double_array_fscan(in, m_bd_p_nonzero_max, "--raw");
+  if (errno)
+  {
+    fprintf(stderr, "mesh_fscan_bd_p - cannot scan m->bd[%d]->values\n", p);
+    goto m_bd_p_row_indices_free;
+  }
+  
+  return m_bd_p;
+  
+  /* cleaning if an error occurs */
+m_bd_p_row_indices_free:
+  free(m_bd_p->row_indices);
+m_bd_p_cols_total_free:
+  free(m_bd_p->cols_total);
+m_bd_p_free:
+  free(m_bd_p);
+end:
+  return NULL;
+}
+
+matrix_sparse ** mesh_fscan_bd(FILE * in, const mesh * m)
 {
   int m_dim, p;
-  cs ** m_bd;
+  matrix_sparse ** m_bd;
   
   m_dim = m->dim;
-  m_bd = (cs **) malloc(m_dim * sizeof(cs *));
-  /* NULL pointer check */
+  
+  m_bd = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * m_dim);
+  if (errno)
+  {
+    fputs("mesh_fscan_bd - cannot allocate memory for m->bd\n", stderr);
+    return NULL;
+  }
+  
   for (p = 1; p <= m_dim; ++p)
   {
     m_bd[p - 1] = mesh_fscan_bd_p(in, m, p);
-    /* NULL pointer check */
+    if (errno)
+    {
+      fprintf(stderr, "mesh_fscan_bd - cannot scan m->bd[%d]\n", p - 1);
+      matrix_sparse_array_free(m_bd, p - 1);
+      return NULL;
+    }
   }
+  
   return m_bd;
 }

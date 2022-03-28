@@ -7,37 +7,19 @@ void matrix_sparse_fprint(
 {
   int i;
   
-  for (i = 0; i < FPRINT_FORMATS_TOTAL; ++i)
-    if (!strcmp(format, fprint_formats[i]))
+  for (i = 0; i < MATRIX_SPARSE_FPRINT_FORMAT_TOTAL; ++i)
+    if (!strcmp(format, matrix_sparse_fprint_format[i]))
     {
-      fprinters[i](out, a);
+      matrix_sparse_fprint_function[i](out, a);
       if (errno)
       {
-        perror("Unsuccessful matrix printing");
+        perror("matrix_sparse_fprint - cannot print a");
         return;
       }
       return;
     }
   errno = EINVAL;
-  perror(format);
+  fprintf(stderr,
+          "matrix_sparse_fprint - format %s is not supported\n", format);
   return;
-}
-
-void matrix_sparse_fprint_array(
-  FILE * out, int n, matrix_sparse const * const * a, const char * format)
-{
-  int i;
-
-  for (i = 0; i < n; ++i)
-  {
-    matrix_sparse_fprint(out, a[i], format);
-    if (errno)
-    {
-      fprintf(stderr, "Cannot print matrix a[%d]", i);
-      perror("");
-      return;
-    }
-    if (i < n - 1)
-      fputc('\n', out);
-  }
 }

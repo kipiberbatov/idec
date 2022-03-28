@@ -1,7 +1,7 @@
 DEMO_ALGEBRA := \
-  demo/algebra/cs_remove_res.txt\
-  demo/algebra/cs_remove_symmetric_res.txt\
-  demo/algebra/cs_4_5_matrix_form_by_parts.txt\
+  demo/algebra/matrix_sparse_remove_res.txt\
+  demo/algebra/matrix_sparse_remove_symmetric_res.txt\
+  demo/algebra/matrix_sparse_4_5_matrix_form_by_parts.txt\
   demo/algebra/matrix_sparse_4_5_twice.txt\
   demo/algebra/matrix_sparse_4_5_times_5_4.txt\
   demo/algebra/matrix_sparse_4_5_transpose.txt\
@@ -10,19 +10,20 @@ DEMO_ALGEBRA := \
 .PHONY: demo_algebra
 demo_algebra: bin $(DEMO_ALGEBRA)
 
-demo/algebra/cs_remove_res.txt:\
-	  bin/cs_remove$(.EXE)\
-	  demo/algebra/cs_remove_ex.txt
-	$< < $(word 2, $^) > $@
-	
-demo/algebra/cs_remove_symmetric_res.txt:\
-	  bin/cs_remove_symmetric$(.EXE)\
-	  demo/algebra/cs_remove_symmetric_ex.txt
+demo/algebra/matrix_sparse_remove_res.txt:\
+	  bin/matrix_sparse_remove$(.EXE)\
+	  demo/algebra/matrix_sparse_remove_ex.txt
 	$< < $(word 2, $^) > $@
 
-demo/algebra/cs_4_5_matrix_form_by_parts.txt:\
-	  bin/cs_part$(.EXE)\
-	  demo/algebra/cs_4_5.txt
+demo/algebra/matrix_sparse_remove_symmetric_res.txt:\
+	  bin/matrix_sparse_remove_symmetric$(.EXE)\
+	  demo/algebra/matrix_sparse_5_5.txt\
+	  demo/algebra/rows.txt
+	$< $(word 2, $^) --raw $(word 3, $^) --raw > $@ --raw
+
+demo/algebra/matrix_sparse_4_5_matrix_form_by_parts.txt:\
+	  bin/matrix_sparse_part$(.EXE)\
+	  demo/algebra/matrix_sparse_4_5_1.txt
 	$< < $(word 2, $^) > $@
 
 demo/algebra/matrix_sparse_4_5_twice.txt:\

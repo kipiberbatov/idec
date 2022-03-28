@@ -4,27 +4,56 @@
 
 int main()
 {
-  int m_dim;
   mesh * m;
-  cs ** m_bd, ** m_cbd, ** m_cbd_star;
+  matrix_sparse ** m_bd, ** m_cbd, ** m_cbd_star;
   FILE * in, * out;
   
   out = stdout;
   in = stdin;
-  m = mesh_fscan(in);
-  /* NULL pointer check */
-  m_dim = m->dim;
+  
+  m = mesh_fscan(in, "--raw");
+  if (errno)
+  {
+    fprintf(stderr, "main - cannot scan m\n");
+    goto end;
+  }
+  
   m_bd = mesh_fscan_bd(in, m);
-  /* NULL pointer check */
-  m_cbd = mesh_cbd(m_dim, m_bd);
-  /* NULL pointer check */
+  if (errno)
+  {
+    fprintf(stderr, "main - cannot scan m_bd\n");
+    goto m_free;
+  }
+  
+  m_cbd = mesh_cbd(m->dim, m_bd);
+  if (errno)
+  {
+    fprintf(stderr, "main - cannot scan m_cbd\n");
+    goto m_bd_free;
+  }
+  
   m_cbd_star = mesh_fscan_bd(in, m);
-  /* NULL pointer check */
-  cs_laplacian_fprint(out, m_dim, m_cbd, m_cbd_star, "--raw");
-  /* NULL pointer check */
-  cs_free_array(m_cbd_star, m_dim);
-  cs_free_array(m_cbd, m_dim);
-  cs_free_array(m_bd, m_dim);
+  if (errno)
+  {
+    fprintf(stderr, "main - cannot scan m_cbd_star\n");
+    goto m_cbd_free;
+  }
+  
+  matrix_sparse_laplacian_fprint(out, m->dim, m_cbd, m_cbd_star, "--raw");
+  if (errno)
+  {
+    fprintf(stderr, "main - cannot print m_laplacian\n");
+    goto m_cbd_star_free;
+  }
+
+m_cbd_star_free:
+  matrix_sparse_array_free(m_cbd_star, m->dim);
+m_cbd_free:
+  matrix_sparse_array_free(m_cbd, m->dim);
+m_bd_free:
+  matrix_sparse_array_free(m_bd, m->dim);
+m_free:
   mesh_free(m);
-  return 0;
+end:
+  return errno;
 }

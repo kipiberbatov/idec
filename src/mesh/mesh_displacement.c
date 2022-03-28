@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "mesh.h"
 
 static void point_difference(
@@ -25,7 +26,8 @@ static void vector_add_to(double * a, int d, const double * b)
     a[i] += b[i];
 }
 
-double ** mesh_displacement(const mesh * m, const cs * m_bd_0, const double * u)
+double ** mesh_displacement(
+  const mesh * m, const matrix_sparse * m_bd_0, const double * u)
 {
   int i, j, j_loc, m_cn_0, m_dim_embedded;
   double sign;
@@ -51,7 +53,7 @@ double ** mesh_displacement(const mesh * m, const cs * m_bd_0, const double * u)
     {
       j = edges.a1[j_loc];
       mesh_cf_part3(&edge_nodes, m, 1, 0, j);
-      sign = cs_part(m_bd_0, i, j);
+      sign = matrix_sparse_part(m_bd_0, i, j);
       point_difference(tmp, m_dim_embedded, 
                        m_coord + m_dim_embedded * edge_nodes.a1[0],
                        m_coord + m_dim_embedded * edge_nodes.a1[1]);

@@ -1,6 +1,6 @@
 #include "mesh_qc.h"
 
-void mesh_qc_bd_layer_0_1_nodes_fprint(FILE * out, const mesh * m)
+void mesh_qc_bd_layer_0_1_nodes_fprint_raw(FILE * out, const mesh * m)
 {
   jagged1 * m_bd_layer_0_hyperfaces;
   jagged1 * m_bd_layer_0_cells;
@@ -16,7 +16,7 @@ void mesh_qc_bd_layer_0_1_nodes_fprint(FILE * out, const mesh * m)
   
   m_bd_layer_0_1_nodes = mesh_qc_bd_layer_0_1_nodes(m, m_bd_layer_0_cells);
   /* NULL pointer check */
-  jagged1_fprint_raw(out, m_bd_layer_0_1_nodes);
+  jagged1_fprint(out, m_bd_layer_0_1_nodes, "--raw");
   /* successful writing check */
   
   jagged1_free(m_bd_layer_0_1_nodes);
@@ -31,11 +31,11 @@ int main()
   
   out = stdout;
   in = stdin;
-  m = mesh_fscan(in);
+  m = mesh_fscan(in, "--raw");
   /* NULL pointer and successful scanning check */
   m->fc = mesh_fc(m);
   /* NULL pointer and successful scanning check */
-  mesh_qc_bd_layer_0_1_nodes_fprint(out, m);
+  mesh_qc_bd_layer_0_1_nodes_fprint_raw(out, m);
   /* successful writing check */
   mesh_free(m);
   return 0;

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "quasi_cube.h"
 
 void quasi_cube_free(quasi_cube * s)

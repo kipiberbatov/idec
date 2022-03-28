@@ -1,109 +1,60 @@
+#include <errno.h>
 #include <stdlib.h>
-#include "list.h"
-#include "mesh.h"
+#include "double.h"
+#include "int.h"
+#include "mesh_private.h"
 #include "quasi_cube.h"
 #include "simplex.h"
 
 /* finds the volumes of a simplicial mesh or of a quasi-cubical mesh */
-
-/*
-typedef struct polytope
+double * mesh_measure(const mesh * m)
 {
-  int dim_embedded;
-  int dim;
-  double * coord;
-  int type;
-} polytope;
-*/
-
-static void polytope_coord(double * s_coord, const jagged1 * m_cell_nodes,
-                           int m_dim_embedded, const double * m_coord)
-{
-  int m_cell_nodes_a0, node, t, tmp1, tmp2;
-  int * m_cell_nodes_a1;
-  
-  m_cell_nodes_a0 = m_cell_nodes->a0;
-  m_cell_nodes_a1 = m_cell_nodes->a1;
-  
-  for (node = 0; node < m_cell_nodes_a0; ++node)
-  {
-    tmp1 = node * m_dim_embedded;
-    tmp2 = m_cell_nodes_a1[node] * m_dim_embedded;
-    for (t = 0; t < m_dim_embedded; ++t)
-      s_coord[tmp1 + t] = m_coord[tmp2 + t];
-  }
-}
-
-double * mesh_measure_simplex(const mesh * m)
-{
-  int i, ind, m_dim, m_dim_embedded, m_vol_size, p;
+  int i, ind, m_dim_embedded, m_dim, m_cn_p, m_vol_size, p;
   int * m_cn;
   double * m_coord, * m_vol;
-  double s_coord[24];
-  jagged1 m_cell_nodes;
+  double s_coord[24]; /* m_dim_embeddded = 3 -> nodes = 8 -> product = 24 */
   simplex s;
+  quasi_cube s2;
+  jagged1 m_cf_p_0_i;
+  jagged2 m_cf_p_0;
   
-  m_dim = m->dim;
   m_dim_embedded = m->dim_embedded;
+  m_dim = m->dim;
   m_cn = m->cn;
   m_coord = m->coord;
   
-  m_vol_size = list_sum(m_cn, 0, m_dim + 1);
-  m_vol = (double *) malloc(m_vol_size * sizeof(double));
-  /* NULL pointer check */
-  
   s.dim_embedded = m_dim_embedded;
+  s2.dim_embedded = m_dim_embedded;
+  s.coord = s_coord;
+  s2.coord = s_coord;
   
-  ind = 0;
-  for (p = 0; p <= m_dim; ++p)
+  m_vol_size = int_array_total_sum(m_dim + 1, m_cn);
+  m_vol = (double *) malloc(sizeof(double) * m_vol_size);
+  if (errno)
+  {
+    perror("vol - cannot allocate memory for m_vol");
+    return NULL;
+  }
+  
+  double_array_assign_constant(m_vol, m_cn[0], 1.);
+  
+  ind = m_cn[0];
+  for (p = 1; p <= m_dim; ++p)
   {
     s.dim = p;
-    for (i = 0; i < m_cn[p]; ++i)
+    s.coord = s_coord;
+    mesh_cf_part2(&m_cf_p_0, m, p, 0);
+    m_cn_p = m_cn[p];
+    for (i = 0; i < m_cn_p; ++i)
     {
-      mesh_cf_part3(&m_cell_nodes, m, p, 0, i);
-      polytope_coord(s_coord, &m_cell_nodes, m_dim_embedded, m_coord);
-      s.coord = s_coord;
-      m_vol[ind] = simplex_measure(&s);
+      jagged2_part1(&m_cf_p_0_i, &m_cf_p_0, i);
+      mesh_cell_coord(s_coord, &m_cf_p_0_i, m_dim_embedded, m_coord);
+      if (m_cf_p_0_i.a0 == p + 1)
+        m_vol[ind] = simplex_measure(&s);
+      else if (m_cf_p_0_i.a0 == (1 << p))
+        m_vol[ind] = quasi_cube_measure(&s2);
       ++ind;
     }
   }
-  
-  return m_vol;
-}
-
-double * mesh_measure_quasi_cube(const mesh * m)
-{
-  int i, ind, m_dim, m_dim_embedded, m_vol_size, p;
-  int * m_cn;
-  double * m_coord, * m_vol;
-  double s_coord[24];
-  jagged1 m_cell_nodes;
-  quasi_cube s;
-  
-  m_dim = m->dim;
-  m_dim_embedded = m->dim_embedded;
-  m_cn = m->cn;
-  m_coord = m->coord;
-  
-  m_vol_size = list_sum(m_cn, 0, m_dim + 1);
-  m_vol = (double *) malloc(m_vol_size * sizeof(double));
-  /* NULL pointer check */
-  
-  s.dim_embedded = m_dim_embedded;
-  
-  ind = 0;
-  for (p = 0; p <= m_dim; ++p)
-  {
-    s.dim = p;
-    for (i = 0; i < m_cn[p]; ++i)
-    {
-      mesh_cf_part3(&m_cell_nodes, m, p, 0, i);
-      polytope_coord(s_coord, &m_cell_nodes, m_dim_embedded, m_coord);
-      s.coord = s_coord;
-      m_vol[ind] = quasi_cube_measure(&s);
-      ++ind;
-    }
-  }
-  
   return m_vol;
 }

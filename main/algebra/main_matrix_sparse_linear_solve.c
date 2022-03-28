@@ -24,7 +24,8 @@ static void matrix_sparse_linear_solve_fprint(
     perror("Cannot open file for reading vector");
     goto end;
   }
-  b = double_fscan_array(b_in, a->rows);
+  
+  b = double_array_fscan(b_in, a->rows, "--raw");
   if (errno)
   {
     perror("Cannot scan vector");
@@ -39,13 +40,10 @@ static void matrix_sparse_linear_solve_fprint(
     perror("Cannot solve linear equation");
     goto b_free;
   }
-  double_fprint_array(out, a->rows, b);
-  if (errno)
-  {
-    perror("Cannot print vector");
-    goto b_free;
-  }
+  
+  double_array_fprint(out, a->rows, b, "--raw");
   fputs("\n", out);
+  
 b_free:
   free(b);
 a_free:

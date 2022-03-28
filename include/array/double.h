@@ -3,31 +3,57 @@
 
 #include <stdio.h>
 
-/********************************* double_free ********************************/
-void double_free_array2(double ** arr, int n);
-
-/******************************** double_fscan ********************************/
+/*********************************** double ***********************************/
 double double_fscan(FILE * in);
-double * double_fscan_array(FILE * in, int n);
-double ** double_fscan_array2(FILE * in, int a0, int * a1);
-double * double_fscan_matrix(FILE * in, int rows, int cols);
 
-/******************************** double_fprint *******************************/
-void double_fprint_array(FILE * out, int n, const double * a);
+double double_sscan(const char * s);
 
-void double_fprint_array_annotated(
-  FILE * out, int n, const double * a, const char * name);
+/******************************** double_array ********************************/
+double * double_array_fscan(FILE * in, int n, const char * format);
 
-void double_fprint_array_raw(FILE * out, int n, const double * a);
+double * double_array_fscan_by_name(
+  const char * name, int n, const char * format);
 
-void double_fprint_array2_annotated(
-  FILE * out, int m_dim, const int * n, double ** a, const char * name);
+void double_array_fprint(
+  FILE * out, int n, const double * a, const char * format);
 
-void double_fprint_matrix(FILE * out, int m, int n, const double * a);
+void double_array_assign_identity(double * a, int n);
 
-void double_fprint_matrix_raw(FILE * out, int m, int n, const double * a);
+void double_array_assign_constant(double * a, int n, double c);
 
-void double_fprint_matrix_annotated(
-  FILE * out, int m, int n, const double * a, const char * name);
+void double_array_add_to(double * a, int d, const double * b);
+
+void double_array_multiply_with(double * a, int d, double lambda);
+
+void double_array_substitute(
+  double * b, int n, const double * a, const int * position);
+
+void double_array_substitute_inverse(
+  double * b, int n, const double * a, const int * position);
+
+double double_array_dot_product(int d, const double * a, const double * b);
+
+double double_array_norm(int d, const double * a);
+
+void double_array_normalise(double * res, int d, const double * a);
+
+void double_array_difference(
+  double * res, int d, const double * a, const double * b);
+
+
+/******************************* double_matrix ********************************/
+double * double_matrix_fscan(FILE * in, int m, int n, const char * format);
+
+void double_matrix_fprint(
+  FILE * out, int m, int n, const double * a, const char * format);
+
+/******************************* double_array2 ********************************/
+void double_array2_free(double ** arr, int n);
+
+double ** double_array2_fscan(
+  FILE * in, int a0, const int * a1, const char * format);
+
+double ** double_array2_fscan_by_name(
+  const char * name, int a0, const int * a1, const char * format);
 
 #endif /* DOUBLE_H */

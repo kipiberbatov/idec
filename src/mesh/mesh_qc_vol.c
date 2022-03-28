@@ -1,58 +1,52 @@
+#include <errno.h>
+#include <stdlib.h>
+#include "double.h"
+#include "mesh_private.h"
 #include "mesh_qc.h"
 
-static void quasi_cube_get_coord(
-  double * s_coord, const jagged1 * m_cell_nodes,
-  int m_dim_embedded, const double * m_coord)
+static double mesh_qc_vol_p_i(const jagged2 * m_cf_p_0, int m_dim_embedded,
+                              double * m_coord, int p, int i)
 {
-  int m_cell_nodes_a0, node, t, tmp1, tmp2;
-  int * m_cell_nodes_a1;
+  double s_coord[24]; /* m_dim_embeddded = 3 -> nodes = 8 -> product = 24 */
+  quasi_cube s;
+  jagged1 m_cf_p_0_i;
   
-  m_cell_nodes_a0 = m_cell_nodes->a0;
-  m_cell_nodes_a1 = m_cell_nodes->a1;
+  s.dim_embedded = m_dim_embedded;
+  s.dim = p;
+  jagged2_part1(&m_cf_p_0_i, m_cf_p_0, i);
+  mesh_cell_coord(s_coord, &m_cf_p_0_i, m_dim_embedded, m_coord);
+  s.coord = s_coord;
+  return quasi_cube_measure(&s);
+}
+
+static void mesh_qc_vol_nonzero(double * m_vol_p, const mesh_qc * m, int p)
+{
+  int i, m_cn_p;
+  jagged2 m_cf_p_0;
   
-  for (node = 0; node < m_cell_nodes_a0; ++node)
-  {
-    tmp1 = node * m_dim_embedded;
-    tmp2 = m_cell_nodes_a1[node] * m_dim_embedded;
-    for (t = 0; t < m_dim_embedded; ++t)
-      s_coord[tmp1 + t] = m_coord[tmp2 + t];
-  }         
+  m_cn_p = m->cn[p];
+  mesh_cf_part2(&m_cf_p_0, m, p, 0);
+  for (i = 0; i < m_cn_p; ++i)
+    m_vol_p[i] = mesh_qc_vol_p_i(&m_cf_p_0, m->dim_embedded, m->coord, p, i);
 }
 
 double * mesh_qc_vol_p(const mesh_qc * m, int p)
 {
-  int i, m_cn_p, m_dim, m_dim_embedded;
-  int * m_cn;
-  double * m_coord, * m_vol_p;
-  double s_coord[100]; // 24
-  quasi_cube s;
-  jagged1 m_cell_nodes;
-  jagged2 m_cells_nodes;
+  double * m_vol_p;
   
-  m_dim_embedded = m->dim_embedded;
-  m_dim = m->dim;
-  m_cn = m->cn;
-  m_coord = m->coord;
-  m_cn_p = m_cn[p];
-  s.dim_embedded = m_dim_embedded;
-  s.dim = p;
-  m_vol_p = (double *) malloc(m_cn_p * sizeof(double));
-  /* NULL pointer check */
+  m_vol_p = (double *) malloc(sizeof(double) * m->cn[p]);
+  if (errno)
+  {
+    fprintf(stderr,
+            "mesh_qc_vol_p - cannot allocate memory for m_vol[%d]\n", p);
+    return NULL;
+  }
+  
   if (p == 0)
-  {
-    for (i = 0; i < m_cn_p; ++i)
-      m_vol_p[i] = 1;
-    goto end;
-  }
-  mesh_cf_part2(&m_cells_nodes, m, p, 0);
-  for (i = 0; i < m_cn_p; ++i)
-  {
-    jagged2_part1(&m_cell_nodes, &m_cells_nodes, i);
-    quasi_cube_get_coord(s_coord, &m_cell_nodes, m_dim_embedded, m_coord);
-    s.coord = s_coord;
-    m_vol_p[i] = quasi_cube_measure(&s);
-  }
-end:
+    double_array_assign_constant(m_vol_p, m->cn[p], 1.);
+  else
+    mesh_qc_vol_nonzero(m_vol_p, m, p);
+  
   return m_vol_p;
 }
 
@@ -62,12 +56,24 @@ double ** mesh_qc_vol(const mesh_qc * m)
   double ** m_vol;
   
   m_dim = m->dim;
-  m_vol = (double **) malloc((m_dim + 1) * sizeof(double *));
-  /* NULL pointer check */
+  
+  m_vol = (double **) malloc(sizeof(double *) * (m_dim + 1));
+  if (errno)
+  {
+    fputs("mesh_qc_vol - cannot allocate memory for m_vol\n", stderr);
+    return NULL;
+  }
+  
   for(p = 0; p <= m_dim; ++p)
   {
     m_vol[p] = mesh_qc_vol_p(m, p);
-    /* NULL pointer check */
+    if (errno)
+    {
+      fprintf(stderr, "mesh_qc_vol - cannot calculate m_vol[%d]\n", p);
+      double_array2_free(m_vol, p);
+      return NULL;
+    }
   }
+  
   return m_vol;
 }

@@ -1,106 +1,83 @@
+#include <errno.h>
 #include <math.h>
+#include <stdlib.h>
+#include "double.h"
 #include "mesh.h"
 
 #define PI 3.14159265
 
+/* finds the full unit angle in d dimensions (d = 0,1,2,3), i.e.,
+ * the surface area of the unit (d - 1)-sphere (the boundary of the unit d-ball)
+ */
 static double angle_unit(int d)
 {
   switch (d)
   {
-    case 0: return 1.;
-    case 1: return 1.;
-    case 2: return (2 * PI);
-    case 3: return (4 * PI);
-    default: return 1.;
+  case 0:
+    return 1.;
+  case 1:
+    return 1.;
+  case 2:
+    return (2 * PI);
+  case 3:
+    return (4 * PI);
+  default:
+    return 1.;
   }
-  return 1.;
 }
 
-static double vector_dot(int d, const double * a, const double * b)
-{
-  int i;
-  double res;
-  
-  res = 0;
-  for (i = 0; i < d; ++i)
-    res += a[i] * b[i];
-  return res;
-}
-
-static double vector_length(int d, const double * a)
-{
-  double length_square;
-  
-  length_square = vector_dot(d, a, a);
-  return sqrt(length_square);
-}
-  
-static void vector_normalise(double * res, int d, const double * a)
-{
-  int i;
-  double l;
-  
-  l = vector_length(d, a);
-  for (i = 0; i < d; ++i)
-    res[i] = a[i] / l;
-}
-
-// static double angle_2d(const double a[3][3])
-// {
-//   double dot, l0, l1;
-//
-//   dot = vector_dot(2, a[0], a[1]);
-//   l0 = vector_length(2, a[0]);
-//   l1 = vector_length(2, a[1]);
-//   return acos(dot / (l0 * l1));
-// }
-
+/* finds the angle between two vectors in dimensions 2 or 3 */
 static double angle_2d_general(int d, const double a0[3], const double a1[3])
 {
   double dot;
   double v0[3], v1[3];
   
-  vector_normalise(v0, d, a0);
-  vector_normalise(v1, d, a1);
-  dot = vector_dot(d, v0, v1);
+  double_array_normalise(v0, d, a0);
+  double_array_normalise(v1, d, a1);
+  dot = double_array_dot_product(d, v0, v1);
   return acos(dot);
 }
 
+/* finds the planar angle between the first two rows of a 3x3 matrix */
 static double angle_2d(const double a[3][3])
 {
   double dot;
   double v0[3], v1[3];
 
-  vector_normalise(v0, 2, a[0]);
-  vector_normalise(v1, 2, a[1]);
-  dot = vector_dot(2, v0, v1);
+  double_array_normalise(v0, 2, a[0]);
+  double_array_normalise(v1, 2, a[1]);
+  dot = double_array_dot_product(2, v0, v1);
   return acos(dot);
 }
 
-// static double determinant_3d(const double a[3][3])
-// {
-//   return a[0][0] * a[1][1] * a[2][2] - a[0][0] * a[1][2] * a[2][1]
-//        + a[1][0] * a[2][1] * a[0][2] - a[1][0] * a[0][1] * a[2][2]
-//        + a[2][0] * a[0][1] * a[1][2] - a[2][0] * a[1][1] * a[0][2];
-// }
-//
-// static double angle_3d(const double a[3][3])
-// {
-//   double dot01, dot02, dot12, l0, l1, l2, triple;
-//   double numerator, denominator;
-//
-//   dot01 = vector_dot(3, a[0], a[1]);
-//   dot02 = vector_dot(3, a[0], a[2]);
-//   dot12 = vector_dot(3, a[1], a[2]);
-//   l0 = vector_length(3, a[0]);
-//   l1 = vector_length(3, a[1]);
-//   l2 = vector_length(3, a[2]);
-//   triple = determinant_3d(a);
-//   numerator = fabs(triple);
-//   denominator = l0 * l1 * l2 + dot01 * l2 + dot02 * l1 + dot12 * l0;
-//   return 2 * atan(numerator / denominator);
-// }
+#if 0
+/* another method for finding solid angles */
+static double determinant_3d(const double a[3][3])
+{
+  return a[0][0] * a[1][1] * a[2][2] - a[0][0] * a[1][2] * a[2][1]
+       + a[1][0] * a[2][1] * a[0][2] - a[1][0] * a[0][1] * a[2][2]
+       + a[2][0] * a[0][1] * a[1][2] - a[2][0] * a[1][1] * a[0][2];
+}
 
+static double angle_3d(const double a[3][3])
+{
+  double dot01, dot02, dot12, l0, l1, l2, triple;
+  double numerator, denominator;
+
+  dot01 = vector_dot(3, a[0], a[1]);
+  dot02 = vector_dot(3, a[0], a[2]);
+  dot12 = vector_dot(3, a[1], a[2]);
+  l0 = vector_length(3, a[0]);
+  l1 = vector_length(3, a[1]);
+  l2 = vector_length(3, a[2]);
+  triple = determinant_3d(a);
+  numerator = fabs(triple);
+  denominator = l0 * l1 * l2 + dot01 * l2 + dot02 * l1 + dot12 * l0;
+  return 2 * atan(numerator / denominator);
+}
+#endif
+
+/* finds the solid angle between 3 vectors, - the rows of a 3x3 matrix */
 static double angle_3d(const double a[3][3])
 {
   double fourth_tan_square, theta_s, theta01, theta02, theta12;
@@ -117,88 +94,107 @@ static double angle_3d(const double a[3][3])
   return 4 * atan(sqrt(fourth_tan_square));
 }
 
-static void point_difference(
-  double * res, int d, const double * a, const double * b)
-{
-  int i;
-  
-  for (i = 0; i < d; ++i)
-    res[i] = b[i] - a[i];
-}
-
+/* constructs the edge vector at a point, needed for calculations of angles */
 static void edge_vector(int * ind, double a[3][3], int d, const double * coord,
                         const jagged1 * arr, int i)
 {
   if (arr->a1[0] == i)
   {
-    point_difference(a[*ind], d, coord + d * i, coord + d * arr->a1[1]);
+    double_array_difference(a[*ind], d, coord + d * arr->a1[1], coord + d * i);
     ++*ind;
   }
   else if (arr->a1[1] == i)
   {
-    point_difference(a[*ind], d, coord + d * i, coord + d * arr->a1[0]);
+    double_array_difference(a[*ind], d, coord + d * arr->a1[0], coord + d * i);
     ++*ind;
   }
 }
 
-static double mesh_angle_nd(const mesh * m, int i, int d, int k)
+/* finds the angle at a node with respect to one if its surrounding volumes 
+ * in dimension 2 or 3
+ */
+static double mesh_angle_nd(
+  int d, const double * m_coord, const jagged2 * m_cf_1_0,
+  const jagged1 * m_cf_d_1_k, int i)
 {
   int ind, j, j_loc;
-  double * m_coord;
-  double edges_coord[3][3];
-  jagged1 edges, edge_nodes;
+  double m_cf_d_1_k_coord[3][3];
+  jagged1 m_cf_1_0_j;
   
-  m_coord = m->coord;
-  mesh_cf_part3(&edges, m, d, 1, k);
   ind = 0;
-  for (j_loc = 0; j_loc < edges.a0; ++j_loc)
+  for (j_loc = 0; j_loc < m_cf_d_1_k->a0; ++j_loc)
   {
-    j = edges.a1[j_loc];
-    mesh_cf_part3(&edge_nodes, m, 1, 0, j);
-    edge_vector(&ind, edges_coord, d, m_coord, &edge_nodes, i);
+    j = m_cf_d_1_k->a1[j_loc];
+    jagged2_part1(&m_cf_1_0_j, m_cf_1_0, j);
+    edge_vector(&ind, m_cf_d_1_k_coord, d, m_coord, &m_cf_1_0_j, i);
   }
-  return (d == 2) ? angle_2d(edges_coord) : angle_3d(edges_coord);
+  return (d == 2) ? angle_2d(m_cf_d_1_k_coord) : angle_3d(m_cf_d_1_k_coord);
 }
 
-static double mesh_angle(const mesh * m, int i, int d, int k)
+/* finds the angle at a node with respect to one if its surrounding volumes 
+ * in any dimension; it is better to use another function for d = 1
+ */
+static double mesh_angle(
+  int d, const double * m_coord, const jagged2 * m_cf_1_0,
+  const jagged1 * m_cf_d_1_k, int i)
 {
   switch (d)
   {
-    case 0: return 1.;
-    case 1: return 0.5;
-    case 2: case 3: return mesh_angle_nd(m, i, d, k);
-    default: return 1.;
+  case 0:
+    return 1.;
+  case 1:
+    return 0.5;
+  case 2:
+  case 3:
+    return mesh_angle_nd(d, m_coord, m_cf_1_0, m_cf_d_1_k, i);
+  default:
+    return 1.;
   }
-  return 1.;
 }
 
-double mesh_node_curvature_i(const mesh * m, int i)
+/* finds the total mesh curvature at a single node */
+static double mesh_node_curvature_i(
+  int d, const double * m_coord, const jagged2 * m_cf_1_0,
+  const jagged2 * m_cf_d_1, const jagged2 * m_fc_0_d, int i)
 {
-  int k, k_loc, m_dim;
+  int k, k_loc;
   double node_total_angle;
-  jagged1 volumes;
+  jagged1 m_cf_d_1_k, m_fc_0_d_i;
   
-  m_dim = m->dim;
-  mesh_fc_part3(&volumes, m, 0, m_dim, i);
+  jagged2_part1(&m_fc_0_d_i, m_fc_0_d, i);
   node_total_angle = 0;
-  for (k_loc = 0; k_loc < volumes.a0; ++k_loc)
+  for (k_loc = 0; k_loc < m_fc_0_d_i.a0; ++k_loc)
   {
-    k = volumes.a1[k_loc];
-    node_total_angle += mesh_angle(m, i, m_dim, k);
+    k = m_fc_0_d_i.a1[k_loc];
+    jagged2_part1(&m_cf_d_1_k, m_cf_d_1, k);
+    node_total_angle += mesh_angle(d, m_coord, m_cf_1_0, &m_cf_d_1_k, i);
   }
-  return angle_unit(m_dim) / node_total_angle;
+  return angle_unit(d) / node_total_angle;
 }
 
+/* finds the total mesh curvatures at all nodes */
 double * mesh_node_curvature(const mesh * m)
 {
-  int i, m_cn_0;
-  double * res;
+  int d, i, m_cn_0;
+  double * m_node_curvatures;
+  jagged2 m_cf_1_0, m_cf_d_1, m_fc_0_d;
   
   m_cn_0 = m->cn[0];
-  res = (double *) malloc(m_cn_0 * sizeof(double));
-  /* NULL pointer check */
-  for (i = 0; i < m_cn_0; ++i)
-    res[i] = mesh_node_curvature_i(m, i);
-  return res;
-}
+  d = m->dim;
+  mesh_cf_part2(&m_cf_1_0, m, 1, 0);
+  mesh_cf_part2(&m_cf_d_1, m, d, 1);
+  mesh_fc_part2(&m_fc_0_d, m, 0, d);
   
+  m_node_curvatures = (double *) malloc(sizeof(double) * m_cn_0);
+  if (errno)
+  {
+    fputs("mesh_node_curvature - cannot allocate memory for "
+          "m_node_curvatures\n", stderr);
+    return NULL;
+  }
+  for (i = 0; i < m_cn_0; ++i)
+    m_node_curvatures[i] = 
+      mesh_node_curvature_i(d, m->coord, &m_cf_1_0, &m_cf_d_1, &m_fc_0_d, i);
+  
+  return m_node_curvatures;
+}

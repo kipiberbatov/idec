@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
-#include "list.h"
+#include "int.h"
+#include "mesh_private.h"
 #include "mesh_brick_private.h"
 
 jagged4 * mesh_brick_cf(int m_dim, const int * m_cn, const int * n)
@@ -11,36 +12,46 @@ jagged4 * mesh_brick_cf(int m_dim, const int * m_cn, const int * n)
   m_cf = (jagged4 *) malloc(sizeof(jagged4));
   if (errno)
   {
-    perror("Cannot allocate memory for m->cf");
+    fputs("mesh_brick_cf - cannot allocate memory for m->cf\n", stderr);
     goto end;
   }
-  m_cf->a1 = mesh_cf_a1(m_dim);
+  
+  m_cf->a0 = m_dim;
+  m_cf->a1 = (int *) malloc(sizeof(int) * m_dim);
   if (errno)
   {
-    perror("Cannot calculate m->cf->a1");
+    fputs("mesh_brick_cf - cannot allocate memory for m->cf->a1\n", stderr);
     goto m_cf_free;
   }
-  m_cf_a2_size = list_sum(m_cf->a1, 0, m_dim);
-  m_cf->a2 = mesh_cf_a2(m_cf_a2_size, m_dim, m_cn);
+  mesh_cf_a1(m_cf->a1, m_dim);
+  
+  m_cf_a2_size = int_array_total_sum(m_dim, m_cf->a1);
+  m_cf->a2 = (int *) malloc(sizeof(int) * m_cf_a2_size);
   if (errno)
   {
-    perror("Cannot calculate m->cf->a2");
+    fputs("mesh_brick_cf - cannot allocate memory for m->cf->a2\n", stderr);
     goto m_cf_a1_free;
   }
-  m_cf_a3_size = list_sum(m_cf->a2, 0, m_cf_a2_size);
-  m_cf->a3 = mesh_brick_cf_a3(m_cf_a3_size, m_dim, m_cn);
+  mesh_cf_a2(m_cf->a2, m_dim, m_cn);
+  
+  m_cf_a3_size = int_array_total_sum(m_cf_a2_size, m_cf->a2);
+  m_cf->a3 = (int *) malloc(sizeof(int) * m_cf_a3_size);
   if (errno)
   {
-    perror("Cannot calculate m->cf->a3");
+    fputs("mesh_brick_cf - cannot allocate memory for m->cf->a3\n", stderr);
     goto m_cf_a2_free;
   }
-  m_cf_a4_size = list_sum(m_cf->a3, 0, m_cf_a3_size);
-  m_cf->a4 = mesh_brick_cf_a4(m_cf_a4_size, m_dim, n);
+  mesh_brick_cf_a3(m_cf->a3, m_dim, m_cn);
+  
+  m_cf_a4_size = int_array_total_sum(m_cf_a3_size, m_cf->a3);
+  m_cf->a4 = (int *) malloc(sizeof(int) * m_cf_a4_size);
   if (errno)
   {
-    perror("Cannot calculate m->cf->a4");
+    fputs("mesh_brick_cf - cannot allocate memory for m->cf->a4\n", stderr);
     goto m_cf_a3_free;
   }
+  mesh_brick_cf_a4(m_cf->a4, m_dim, n);
+  
   return m_cf;
   
   /* cleaning if an error occurs */

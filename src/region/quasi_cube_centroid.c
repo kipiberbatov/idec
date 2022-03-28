@@ -1,5 +1,6 @@
-#include "imath.h"
-#include "quasi_cube.h"
+#include "double.h"
+#include "int.h"
+#include "quasi_cube_private.h"
 #include "simplex.h"
 
 /* assumes the ordering from mesh_brick() or forman() */
@@ -8,7 +9,7 @@ static void quasi_cube_triangulation_simplex_centroid(
   double * s_centroid, const quasi_cube * r, const int * r_nodes)
 {
   simplex s;
-  double s_coord[100];
+  double s_coord[24];
   
   s.dim_embedded = r->dim_embedded;
   s.dim = r->dim;
@@ -17,47 +18,23 @@ static void quasi_cube_triangulation_simplex_centroid(
   simplex_centroid(s_centroid, &s);
 }
 
-static void double_array_add_to(double * a, int d, double * b)
-{
-  int i;
-  
-  for (i = 0; i < d; ++i)
-    a[i] += b[i];
-}
-
-static void double_array_multiply_with(double * a, int d, double lambda)
-{
-  int i;
-  
-  for (i = 0; i < d; ++i)
-    a[i] *= lambda;
-}
-
-static void double_array_set_to_zero(double * a, int d)
-{
-  int i;
-  
-  for (i = 0; i < d; ++i)
-    a[i] = 0;
-}
-
-
 static void quasi_cube_centroid_from_triangulation(
   double * r_centroid, const quasi_cube * r, const int * r_nodes_all)
 {
-  int i, r_dim, r_dim_embedded;
+  int i, r_dim, r_dim_embedded, r_dim_factorial;
   const int * r_nodes;
   double s_centroid[3];
   double r_measure, s_measure;
   
   r_dim_embedded = r->dim_embedded;
   r_dim = r->dim;
-  double_array_set_to_zero(r_centroid, r_dim_embedded);
+  double_array_assign_constant(r_centroid, r_dim_embedded, 0);
+  r_dim_factorial = int_factorial(r_dim);
   r_measure = 0;
-  for (i = 0; i < imath_factorial(r_dim); ++i)
+  for (i = 0; i < r_dim_factorial; ++i)
   {
     r_nodes = r_nodes_all + i * (r_dim + 1);
-    double_array_set_to_zero(s_centroid, r_dim_embedded);
+    double_array_assign_constant(s_centroid, r_dim_embedded, 0);
     quasi_cube_triangulation_simplex_centroid(s_centroid, r, r_nodes);
     s_measure = quasi_cube_triangulation_simplex_measure(r, r_nodes);
     r_measure += s_measure;

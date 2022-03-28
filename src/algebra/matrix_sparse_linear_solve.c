@@ -7,18 +7,19 @@ void matrix_sparse_linear_solve(
 {
   int i;
   
-  for (i = 0; i < LINEAR_SOLVE_METHODS_TOTAL; ++i)
-    if (!strcmp(method, linear_solve_methods[i]))
+  for (i = 0; i < MATRIX_SPARSE_LINEAR_SOLVE_METHOD_TOTAL; ++i)
+    if (!strcmp(method, matrix_sparse_linear_solve_method[i]))
     {
-      linear_solvers[i](a, b);
+      matrix_sparse_linear_solve_function[i](a, b);
       if (errno)
       {
-        perror("Unsuccessful linear solving");
+        fputs("matrix_sparse_linear_solve - cannot solve equation\n", stderr);
         return;
       }
       return;
     }
   errno = EINVAL;
-  perror(method);
+  fprintf(stderr, "matrix_sparse_linear_solve - method %s is not supported\n",
+          method);
   return;
 }

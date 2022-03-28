@@ -14,24 +14,28 @@ static void matrix_sparse_linear_combination_fprint(
     perror("Cannot scan the first matrix");
     goto end;
   }
+  
   b = matrix_sparse_fscan_by_name(b_name, b_format);
   if (errno)
   {
     perror("Cannot scan the second matrix");
     goto a_free;
   }
+  
   c = matrix_sparse_linear_combination(a, b, alpha, beta);
   if (errno)
   {
     perror("Cannot find the linear combination");
     goto b_free;
   }
+  
   matrix_sparse_fprint(out, c, out_format);
   if (errno)
   {
     perror("Cannot print the linear combination");
     goto c_free;
   }
+
 c_free:
   matrix_sparse_free(c);
 b_free:
@@ -53,10 +57,12 @@ int main(int argc, char * argv[])
     perror("Command-line argument list is not of the right format");
     goto end;
   }
+  
   a_name = argv[1];
   a_format = argv[2];
   b_name = argv[3];
   b_format = argv[4];
+  
   alpha = strtod(argv[5], &ptr);
   if (*ptr != '\0')
   {
@@ -64,6 +70,7 @@ int main(int argc, char * argv[])
     perror("First coefficient is not a valid number");
     goto end;
   }
+  
   beta = strtod(argv[6], &ptr);
   if (*ptr != '\0')
   {
@@ -71,7 +78,9 @@ int main(int argc, char * argv[])
     perror("Second coefficient is not a valid number");
     goto end;
   }
+  
   out_format = argv[7];
+  
   matrix_sparse_linear_combination_fprint(
     stdout, a_name, a_format, b_name, b_format, alpha, beta, out_format);
   if (errno)
@@ -79,6 +88,7 @@ int main(int argc, char * argv[])
     perror("Unsuccessful execution of matrix_sparse_linear_combination");
     goto end;
   }
+
 end:
   return errno;
 }

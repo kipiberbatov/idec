@@ -1,0 +1,111 @@
+#include <errno.h>
+#include <stdlib.h>
+#include "double.h"
+#include "matrix_sparse_private.h"
+
+static void dirichlet_bc_apply(
+  double * b_bd, int m_dim_embedded, const double * m_coord,
+  const jagged1 * m_nodes_bd, scalar_field g_d)
+{
+  int j, j_loc, m_nodes_bd_a0;
+  int * m_nodes_bd_a1;
+  
+  m_nodes_bd_a0 = m_nodes_bd->a0;
+  m_nodes_bd_a1 = m_nodes_bd->a1;
+  for (j_loc = 0; j_loc < m_nodes_bd_a0; ++j_loc)
+  {
+    j = m_nodes_bd_a1[j_loc];
+    b_bd[j_loc] = g_d(m_coord + m_dim_embedded * j);
+  }
+}
+
+static void rhs_vector_initialise(
+  double * b_in, int m_dim_embedded, const double * m_coord,
+  const jagged1 * m_nodes_in, scalar_field f)
+{
+  int i, i_loc, m_nodes_in_a0;
+  int * m_nodes_in_a1;
+  
+  m_nodes_in_a0 = m_nodes_in->a0;
+  m_nodes_in_a1 = m_nodes_in->a1;
+  for (i_loc = 0; i_loc < m_nodes_in_a0; ++i_loc)
+  {
+    i = m_nodes_in_a1[i_loc];
+    b_in[i_loc] = f(m_coord + m_dim_embedded * i);
+  }
+}
+
+/* g_d is the Dirichlet boundary condition */
+double * matrix_sparse_laplace_equation_solve(
+  const matrix_sparse * m_laplacian, int m_dim_embedded, const double * m_coord,
+  const jagged1 * m_nodes_bd, scalar_field f, scalar_field g_d)
+{
+  double * b_in, * b_bd, * x = NULL;
+  jagged1 * m_nodes_in;
+  matrix_sparse * m_laplacian_in;
+  
+  b_bd = (double *) malloc(sizeof(double) * m_nodes_bd->a0);
+  if (errno)
+  {
+    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
+          "b_bd\n", stderr);
+    goto end;
+  }
+  dirichlet_bc_apply(b_bd, m_dim_embedded, m_coord, m_nodes_bd, g_d);
+  
+  m_nodes_in = jagged1_complement(m_laplacian->cols, m_nodes_bd);
+  if (errno)
+  {
+    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
+          "m_nodes_in\n", stderr);
+    goto b_bd_free;
+  }
+  
+  b_in = (double *) malloc(sizeof(double) * m_nodes_in->a0);
+  if (errno)
+  {
+    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
+          "b_in\n", stderr);
+    goto m_nodes_in_free;
+  }
+  rhs_vector_initialise(b_in, m_dim_embedded, m_coord, m_nodes_in, f);
+  matrix_sparse_laplace_equation_rhs_vector_modify(
+    b_in, m_laplacian, m_nodes_in, m_nodes_bd, b_bd);
+  
+  m_laplacian_in = matrix_sparse_restrict_symmetric(m_laplacian, m_nodes_in);
+  if (errno)
+  {
+    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
+          "m_laplacian_in\n", stderr);
+    goto b_in_free;
+  }
+  
+  matrix_sparse_linear_solve(m_laplacian_in, b_in, "--cholesky");
+  if (errno)
+  {
+    fputs("matrix_sparse_laplace_equation_solve - cannot solve the reduced "
+          "linear system\n", stderr);
+    goto m_laplacian_in_free;
+  }
+  
+  x = (double *) malloc(sizeof(double) * m_laplacian->rows);
+  if (errno)
+  {
+    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
+          "x\n", stderr);
+    goto m_laplacian_in_free;
+  }
+  double_array_substitute_inverse(x, m_nodes_in->a0, b_in, m_nodes_in->a1);
+  double_array_substitute_inverse(x, m_nodes_bd->a0, b_bd, m_nodes_bd->a1);
+
+m_laplacian_in_free:
+  matrix_sparse_free(m_laplacian_in);
+b_in_free:
+  free(b_in);
+m_nodes_in_free:
+  jagged1_free(m_nodes_in);
+b_bd_free:
+  free(b_bd);
+end:
+  return x;
+}

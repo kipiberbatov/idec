@@ -3,39 +3,34 @@
 
 int main(int argc, char * argv[])
 {
-  int m_dim;
   mesh * m;
-  cs ** m_bd;
+  matrix_sparse ** m_bd;
   FILE * in, * out;
   char * format;
   
   out = stdout;
   in = stdin;
-  m = mesh_fscan(in);
+  
+  m = mesh_fscan(in, "--raw");
   if (errno)
   {
-    perror("Unsuccessful mesh scanning");
-    goto m_free;
+    fputs("main - cannot scan m\n", stderr);
+    return errno;
   }
-  m_dim = m->dim;
-  m->fc = NULL;
+  
   m_bd = mesh_fscan_bd(in, m);
   if (errno)
   {
-    perror("Unsuccessful mesh boundary scanning");
-    goto m_bd_free;
+    fputs("main - cannot scan m->bd\n", stderr);
+    mesh_free(m);
+    return errno;
   }
-  format = argv[1];
-  cs_fprint_array(out, m_dim, m_bd, format);
-  if (errno)
-  {
-    perror("Unsuccessful mesh boundary printing");
-    goto end;
-  }
-m_bd_free:
-  cs_free_array(m_bd, m_dim);
-m_free:
+  
   mesh_free(m);
-end:
+  
+  format = argv[1];
+  matrix_sparse_array_fprint(out, m->dim, m_bd, format);
+  
+  matrix_sparse_array_free(m_bd, m->dim);
   return errno;
 }

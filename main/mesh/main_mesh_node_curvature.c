@@ -1,13 +1,14 @@
+#include <stdlib.h>
 #include "double.h"
 #include "mesh.h"
 
-static void mesh_node_curvature_fprint(FILE * out, const mesh * m)
+static void mesh_node_curvature_fprint_raw(FILE * out, const mesh * m)
 {
   double * res;
 
   res = mesh_node_curvature(m);
   /* NULL pointer check */
-  double_fprint_array_raw(out, m->cn[0], res);
+  double_array_fprint(out, m->cn[0], res, "--raw");
   /* NULL pointer check */
   free(res);
 }
@@ -19,11 +20,11 @@ int main()
   
   out = stdout;
   in = stdin;
-  m = mesh_fscan(in);
+  m = mesh_fscan(in, "--raw");
   /* NULL pointer and successfull reading check */
   m->fc = mesh_fc(m);
   /* NULL pointer check */
-  mesh_node_curvature_fprint(out, m);
+  mesh_node_curvature_fprint_raw(out, m);
   /* NULL pointer check */
   mesh_free(m);
   return 0;

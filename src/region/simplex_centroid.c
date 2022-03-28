@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "simplex.h"
 
 void simplex_centroid(double * s_centroid, const simplex * s)

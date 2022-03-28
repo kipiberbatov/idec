@@ -8,43 +8,19 @@ matrix_sparse * matrix_sparse_fscan(FILE * in, const char * format)
   int i;
   matrix_sparse * a;
   
-  for (i = 0; i < FSCAN_FORMATS_TOTAL; ++i)
-    if (!strcmp(format, fscan_formats[i]))
+  for (i = 0; i < MATRIX_SPARSE_FSCAN_FORMAT_TOTAL; ++i)
+    if (!strcmp(format, matrix_sparse_fscan_format[i]))
     {
-      a = fscanners[i](in);
+      a = matrix_sparse_fscan_function[i](in);
       if (errno)
       {
-        perror("Unsuccessful matrix scanning");
+        perror("matrix_sparse_fscan - cannot scan a");
         return NULL;
       }
       return a;
     }
   errno = EINVAL;
-  perror(format);
+  fprintf(stderr, "matrix_sparse_fscan - format %s is not supported: %s\n",
+          format, strerror(errno));
   return NULL;
-}
-
-matrix_sparse ** matrix_sparse_fscan_array(
-  FILE * in, int n, const char * format)
-{
-  int i;
-  matrix_sparse ** a;
-  
-  a = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * n);
-  if (errno)
-  {
-    perror("Cannot allocate memory for list of sparse matrices");
-    return NULL;
-  }
-  for (i = 0; i < n; ++i)
-  {
-    a[i] = matrix_sparse_fscan(in, format);
-    if (errno)
-    {
-      fprintf(stderr, "Cannot scan matrix a[%d]: %s", i, strerror(errno));
-      matrix_sparse_free_array(a, i);
-      return NULL;
-    }
-  }
-  return a;
 }

@@ -1,6 +1,6 @@
 #include "mesh_qc.h"
 
-static void mesh_qc_hodge_coeff_fprint(FILE * out, const mesh * m)
+static void mesh_qc_hodge_coeff_fprint_raw(FILE * out, const mesh * m)
 {
   int i, m_dim, p;
   int * m_cn;
@@ -22,9 +22,9 @@ int main()
   
   out = stdout;
   in = stdin;
-  m = mesh_fscan(in);
+  m = mesh_fscan(in, "--raw");
   /* NULL pointer and successfull reading check */
-  mesh_qc_hodge_coeff_fprint(out, m);
+  mesh_qc_hodge_coeff_fprint_raw(out, m);
   /* successfull writing check */
   mesh_free(m);
   return 0;

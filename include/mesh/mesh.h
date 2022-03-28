@@ -1,9 +1,9 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "cs.h"
+#include "matrix_sparse.h"
 #include "jagged.h"
-#include "vec_sparse.h"
+#include "vector_sparse.h"
 
 #define MAX_DIM 10
 
@@ -29,25 +29,20 @@ typedef struct mesh
 void mesh_free(mesh * m);
 
 /********************************* mesh_fscan *********************************/
-mesh * mesh_fscan(FILE * in);
-cs * mesh_fscan_bd_p(FILE * in, const mesh * m, int p);
-cs ** mesh_fscan_bd(FILE * in, const mesh * m);
+mesh * mesh_fscan(FILE * in, const char * format);
+
+mesh * mesh_fscan_by_name(const char * name, const char * format);
+
+matrix_sparse * mesh_fscan_bd_p(FILE * in, const mesh * m, int p);
+
+matrix_sparse ** mesh_fscan_bd(FILE * in, const mesh * m);
 
 /******************************** mesh_fprint *********************************/
-void mesh_fprint(FILE * out, const mesh * m);
-
-/*********************************** mesh_c ***********************************/
-int * mesh_c(int m_dim, const int * m_cn);
-
-/********************************* mesh_cf ************************************/
-int * mesh_cf_a1(int m_dim);
-int * mesh_cf_a2(int m_cf_a2_size, int m_dim, const int * m_cn);
-/* mesh_cf_a3 and mesh_cf_a4 are implementation dependent */
+void mesh_fprint(FILE * out, const mesh * m, const char * format);
 
 /******************************* mesh_cf_part *********************************/
 void mesh_cf_part2(jagged2 * m_cf_p_q, const mesh * m, int p, int q);
 void mesh_cf_part3(jagged1 * m_cf_p_q_i, const mesh * m, int p, int q, int i);
-int mesh_cf_part4(const mesh * m, int p, int q, int i, int j_loc);
 
 /******************************* mesh_cfn_part ********************************/
 void mesh_cfn_part2(jagged1 * m_cfn_p_q, const mesh * m, int p, int q);
@@ -59,7 +54,6 @@ jagged4 * mesh_fc(const mesh * m);
 /******************************* mesh_fc_part *********************************/
 void mesh_fc_part2(jagged2 * m_fc_q_p, const mesh * m, int q, int p);
 void mesh_fc_part3(jagged1 * m_fc_q_p_j, const mesh * m, int q, int p, int j);
-int mesh_fc_part4(const mesh * m, int q, int p, int j, int i_loc);
 
 /******************************* mesh_fcn_part ********************************/
 void mesh_fcn_part2(jagged1 * m_fcn_q_p, const mesh * m, int q, int p);
@@ -75,24 +69,29 @@ jagged1 * mesh_almost_bd_cells(
 int mesh_bd_nzmax(const mesh * m, int p);
 int * mesh_bd_p(const mesh * m, int p);
 int * mesh_bd_i(const mesh * m, int p);
-cs * mesh_bd_single(const mesh * m, int p);
-cs ** mesh_bd(const mesh * m);
-void mesh_bd_check(FILE * out, int m_dim, cs ** m_bd, const char * name);
+matrix_sparse * mesh_bd_single(const mesh * m, int p);
+matrix_sparse ** mesh_bd(const mesh * m);
+
+void mesh_bd_check(
+  FILE * out, int m_dim, matrix_sparse ** m_bd, const char * name);
+
+jagged1 * mesh_bd_nodes(const mesh * m);
 
 /********************************* mesh_cbd ***********************************/
-cs * mesh_cbd_p(cs * m_bd_p);
-cs ** mesh_cbd(int m_dim, cs ** m_bd);
+matrix_sparse * mesh_cbd_p(matrix_sparse * m_bd_p);
+matrix_sparse ** mesh_cbd(int m_dim, matrix_sparse ** m_bd);
 
 /******************************** mesh_measure ********************************/
-double * mesh_measure_simplex(const mesh * m);
-double * mesh_measure_quasi_cube(const mesh * m);
+double * mesh_measure(const mesh * m);
+// double * mesh_measure_simplex(const mesh * m);
+// double * mesh_measure_quasi_cube(const mesh * m);
 
 /**************************** mesh_node_curvature *****************************/
-double mesh_node_curvature_i(const mesh * m, int i);
+// double mesh_node_curvature_i(const mesh * m, int i);
 double * mesh_node_curvature(const mesh * m);
 
 /***************************** mesh_displacement ******************************/
 double ** mesh_displacement(
-  const mesh * m, const cs * m_bd_0, const double * u);
+  const mesh * m, const matrix_sparse * m_bd_0, const double * u);
 
 #endif /* MESH_H */

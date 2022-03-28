@@ -8,7 +8,7 @@ void int_array_assign_identity(int * a, int n)
     a[i] = i;
 }
 
-void int_array_assign_integer(int * a, int n, int c)
+void int_array_assign_constant(int * a, int n, int c)
 {
   int i;
   
@@ -16,21 +16,21 @@ void int_array_assign_integer(int * a, int n, int c)
     a[i] = c;
 }
 
-void int_array_substitute(int * b, int n, const int * a, const int * k)
+void int_array_substitute(int * b, int n, const int * a, const int * position)
 {
   int i;
   
   for (i = 0; i < n; ++i)
-    b[i] = a[k[i]];
+    b[i] = a[position[i]];
 }
 
 void int_array_substitute_inverse(
-  int * z, int p_minus_q, const int * b_bar, const int * w)
+  int * b, int n, const int * a, const int * position)
 {
   int i;
   
-  for (i = 0; i < p_minus_q; ++i)
-    z[b_bar[i]] = w[i];
+  for (i = 0; i < n; ++i)
+    b[position[i]] = a[i];
 }
 
 void int_array_sum(int * c, int n, const int * a, const int * b)
@@ -55,12 +55,22 @@ void int_array_set_difference(
     }
 }
 
-int int_array_total_product(const int * a, int begin, int end)
+int int_array_total_sum(int n, const int * a)
+{
+  int i, result;
+  
+  result = 0;
+  for (i = 0; i < n; ++i)
+    result += a[i];
+  return result;
+}
+
+int int_array_total_product(int n, const int * a)
 {
   int i, result;
   
   result = 1;
-  for (i = begin; i < end; ++i)
+  for (i = 0; i < n; ++i)
     result *= a[i];
   return result;
 }
@@ -82,8 +92,76 @@ int int_array_flatten_index(int d, const int * dimensions, const int * indices)
   flattened_index = 0;
   for (r = 0; r < d; ++r)
   {
-    prod = int_array_total_product(dimensions, r + 1, d);
+    prod = int_array_total_product(d - (r + 1), dimensions + r + 1);
     flattened_index += prod * indices[r];
   }
   return flattened_index;
+}
+
+int int_array_positive(int n, const int * a)
+{
+  int i;
+  
+  /* check for at least one negative number */
+  for (i = 0; i < n; ++i)
+    if (a[i] < 0)
+      return 0;
+  
+  /* check for at least one positive number if there are no negative numbers */
+  for (i = 0; i < n; ++i)
+    if (a[i] > 0)
+      return 1;
+  
+  /* a is not positive if all elements are zeroes */
+  return 0;
+}
+
+void int_array_cartesian_product_next(int * a, int d, const int * n)
+{
+  int i, j;
+  
+  i = d - 1;
+  while (a[i] == (n[i] - 1))
+    --i;
+  ++a[i];
+  for (j = i + 1; j < d; ++j)
+    a[j] = 0;
+}
+
+void int_array_combination_next(int * a, int m, int n)
+{
+  int i, j;
+  
+  if (a[n - 1] != m - 1)
+    ++a[n - 1];
+  else
+  {
+    i = n - 2;
+    while (a[i + 1] == a[i] + 1)
+      --i;
+    ++a[i];
+    for (j = i + 1; j < n; ++j)
+      a[j] = a[j - 1] + 1;
+  }
+}
+
+int int_array_combination_index(int * comb, int m, int n)
+{
+  int i, j, prev, res, a0;
+  
+  if (n != 0)
+  {
+    a0 = comb[0];
+    prev = 0;
+    for (i = 1; i <= a0; ++i)
+      prev += int_binomial(m - i, n - 1);
+    ++a0;
+    for (j = 1; j < n; ++j)
+      comb[j] -= a0;
+    ++comb;
+    res = prev + int_array_combination_index(comb, m - a0, n - 1);
+  }
+  else
+    res = 0;
+  return res;
 }

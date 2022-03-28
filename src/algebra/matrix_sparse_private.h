@@ -11,15 +11,18 @@ void matrix_sparse_from_cs(matrix_sparse * a, const cs * a0);
 /**************************** matrix_sparse_fscan *****************************/
 matrix_sparse * matrix_sparse_fscan_raw(FILE * in);
 
-#define FSCAN_FORMATS_TOTAL 1
+#define MATRIX_SPARSE_FSCAN_FORMAT_TOTAL 1
 
-static const char * fscan_formats[FSCAN_FORMATS_TOTAL] =
+static const char *
+matrix_sparse_fscan_format[MATRIX_SPARSE_FSCAN_FORMAT_TOTAL] =
   {
     "--raw"
   };
 
-typedef matrix_sparse * (*matrix_sparse_fscan_func)(FILE *);
-static const matrix_sparse_fscan_func fscanners[FSCAN_FORMATS_TOTAL] =
+typedef matrix_sparse * (*matrix_sparse_fscan_function_type)(FILE *);
+
+static const matrix_sparse_fscan_function_type
+matrix_sparse_fscan_function[MATRIX_SPARSE_FSCAN_FORMAT_TOTAL] =
   {
     matrix_sparse_fscan_raw
   };
@@ -34,9 +37,10 @@ void matrix_sparse_fprint_matrix_form_curly(
 void matrix_sparse_fprint_mathematica_sparse(
   FILE * out, const matrix_sparse * a);
 
-#define FPRINT_FORMATS_TOTAL 6
+#define MATRIX_SPARSE_FPRINT_FORMAT_TOTAL 6
 
-static const char * fprint_formats[FPRINT_FORMATS_TOTAL] =
+static const char *
+matrix_sparse_fprint_format[MATRIX_SPARSE_FPRINT_FORMAT_TOTAL] =
   {
     "--only-values",
     "--raw",
@@ -46,8 +50,11 @@ static const char * fprint_formats[FPRINT_FORMATS_TOTAL] =
     "--mathematica-sparse"
   };
 
-typedef void (*matrix_sparse_fprint_func)(FILE *, const matrix_sparse *);
-static const matrix_sparse_fprint_func fprinters[FPRINT_FORMATS_TOTAL] =
+typedef void (*matrix_sparse_fprint_function_type)(
+  FILE *, const matrix_sparse *);
+
+static const matrix_sparse_fprint_function_type
+matrix_sparse_fprint_function[MATRIX_SPARSE_FPRINT_FORMAT_TOTAL] =
   {
     matrix_sparse_fprint_only_values,
     matrix_sparse_fprint_raw,
@@ -60,20 +67,26 @@ static const matrix_sparse_fprint_func fprinters[FPRINT_FORMATS_TOTAL] =
 /************************* matrix_sparse_linear_solve *************************/
 void matrix_sparse_linear_solve_cholesky(const matrix_sparse * a, double * b);
 
-#define LINEAR_SOLVE_METHODS_TOTAL 1
+#define MATRIX_SPARSE_LINEAR_SOLVE_METHOD_TOTAL 1
 
-static const char * linear_solve_methods[LINEAR_SOLVE_METHODS_TOTAL] =
+static const char *
+matrix_sparse_linear_solve_method[MATRIX_SPARSE_LINEAR_SOLVE_METHOD_TOTAL] =
   {
     "--cholesky"
   };
 
-typedef void (*matrix_sparse_linear_solve_func)(
+typedef void (*matrix_sparse_linear_solve_function_type)(
   const matrix_sparse * a, double * b);
 
-static const matrix_sparse_linear_solve_func 
-linear_solvers[LINEAR_SOLVE_METHODS_TOTAL] =
+static const matrix_sparse_linear_solve_function_type 
+matrix_sparse_linear_solve_function[MATRIX_SPARSE_LINEAR_SOLVE_METHOD_TOTAL] =
   {
     matrix_sparse_linear_solve_cholesky
   };
+
+/*********************** matrix_sparse_laplace_equation ***********************/
+void matrix_sparse_laplace_equation_rhs_vector_modify(
+  double * b_in, const matrix_sparse * m_laplacian, const jagged1 * m_nodes_in,
+  const jagged1 * m_nodes_bd, const double * b_bd);
 
 #endif /* MATRIX_SPARSE_PRIVATE_H */

@@ -16,7 +16,7 @@ static void simplex_centroid_fprint(FILE * out, const simplex * r)
 
   simplex_centroid(r_centroid, r);
   fputs("centroid : ", out);
-  double_fprint_array(out, r->dim_embedded, r_centroid);
+  double_array_fprint(out, r->dim_embedded, r_centroid, "--raw");
   fputc('\n', out);
 }
 
