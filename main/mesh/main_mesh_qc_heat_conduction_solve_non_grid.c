@@ -2,32 +2,51 @@
 #include <stdlib.h>
 #include <string.h>
 #include "double.h"
+#include "int.h"
 #include "matrix_sparse.h"
 #include "mesh_qc.h"
 
-static double f(const double * x)
-{
-  return - 4;
-}
+// u(t, {x, y}) = (t + 1) (x^2 + y^2)
+// du / dt = x^2 + y^2
+// delta u = -4 (t + 1)
+// f(t, x) = -4 * (t + 1) + x^2 + y^2
+// u
 
-static double g_d(const double * x)
+static double norm_square(const double * x)
 {
   return x[0] * x[0] + x[1] * x[1];
+}
+
+static double f(double t, const double * x)
+{
+  return - 4 * (t + 1) + norm_square(x);
+}
+
+static double g_d(double t, const double * x)
+{
+  return (t + 1) * norm_square(x);
+}
+
+static double u_0(const double * x)
+{
+  return norm_square(x);
 }
 
 int main(int argc, char * argv[])
 {
   char * m_format, * m_inner_0_format, * m_inner_0_name, * m_laplacian_0_format,
        * m_laplacian_0_name, * m_name, * out_format;
+  int N;
+  double tau;
   double * m_inner_0, * x;
   mesh * m;
   jagged1 * m_nodes_bd;
   matrix_sparse * m_laplacian_0;
   
-  if (argc != 8)
+  if (argc != 10)
   {
     errno = EINVAL;
-    fputs("main - the number of command-line arguments must be 8\n", stderr);
+    fputs("main - the number of command-line arguments must be 10\n", stderr);
     goto end;
   }
   
@@ -75,8 +94,23 @@ int main(int argc, char * argv[])
     goto m_laplacian_0_free;
   }
   
-  x = matrix_sparse_laplace_equation_solve_non_grid(
-    m_laplacian_0, m->dim_embedded, m->coord, m_inner_0, m_nodes_bd, f, g_d);
+  tau = double_sscan(argv[7]);
+  if (errno)
+  {
+    fputs("main - cannot scan tau\n", stderr);
+    goto m_inner_0_free;
+  }
+  
+  N = int_sscan(argv[8]);
+  if (errno)
+  {
+    fputs("main - cannot scan N\n", stderr);
+    goto m_inner_0_free;
+  }
+  
+  x = matrix_sparse_heat_conduction_solve_non_grid(
+      m_laplacian_0, m->dim_embedded, m->coord, m_inner_0, m_nodes_bd, f, g_d,
+      u_0, tau, N);
   if (errno)
   {
     fputs("main - cannot calculate x\n", stderr);
@@ -93,8 +127,8 @@ int main(int argc, char * argv[])
   //   }
   // }
   
-  out_format = argv[7];
-  double_array_fprint(stdout, m_laplacian_0->rows, x, out_format);
+  out_format = argv[9];
+  double_matrix_fprint(stdout, (N + 1), m_laplacian_0->rows, x, out_format);
 
   free(x);
 m_inner_0_free:

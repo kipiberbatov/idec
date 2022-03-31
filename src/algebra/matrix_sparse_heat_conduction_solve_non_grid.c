@@ -1,0 +1,208 @@
+#include <errno.h>
+#include <stdlib.h>
+#include "double.h"
+#include "int.h"
+#include "matrix_sparse_private.h"
+
+static int int_array_position(int n, const int * a, int element)
+{
+  int i;
+  
+  for (i = 0; i < n; ++i)
+    if (element == a[i])
+      return i;
+  return -1;
+}
+
+static void lhs_restricted_matrix_modify(
+  matrix_sparse * a, const double * m_inner, double tau)
+{
+  int a_cols, a_col_j_nonzeroes, i_loc, j;
+  int * a_cols_total, * a_row_indices, * a_row_indices_col_j;
+  double * a_values, * a_values_col_j;
+  
+  a_cols_total = a->cols_total;
+  a_row_indices = a->row_indices;
+  a_values = a->values;
+  a_cols = a->cols;
+  
+  for (j = 0; j < a_cols; ++j)
+  {
+    a_row_indices_col_j = a_row_indices + a_cols_total[j];
+    a_values_col_j = a_values + a_cols_total[j];
+    a_col_j_nonzeroes = a_cols_total[j + 1] - a_cols_total[j];
+    i_loc = int_array_position(a_col_j_nonzeroes, a_row_indices_col_j, j);
+    a_values_col_j[i_loc] += m_inner[j] / tau;
+  }
+}
+
+static void dirichlet_bc_apply(
+  double * b_bd, int m_dim_embedded, const double * m_coord,
+  const double * m_inner, const jagged1 * m_nodes_bd,
+  time_dependent_scalar_field g_d, double tau, int k)
+{
+  int j, j_loc, m_nodes_bd_a0;
+  int * m_nodes_bd_a1;
+  
+  m_nodes_bd_a0 = m_nodes_bd->a0;
+  m_nodes_bd_a1 = m_nodes_bd->a1;
+  for (j_loc = 0; j_loc < m_nodes_bd_a0; ++j_loc)
+  {
+    j = m_nodes_bd_a1[j_loc];
+    b_bd[j_loc] = g_d(tau * k, m_coord + m_dim_embedded * j) * m_inner[j];
+  }
+}
+
+static void rhs_vector_initialise(
+  double * b_in, int m_dim_embedded, const double * m_coord,
+  const double * m_inner, const jagged1 * m_nodes_in,
+  time_dependent_scalar_field f, double tau, int k)
+{
+  int i, i_loc, m_nodes_in_a0;
+  int * m_nodes_in_a1;
+  
+  m_nodes_in_a0 = m_nodes_in->a0;
+  m_nodes_in_a1 = m_nodes_in->a1;
+  for (i_loc = 0; i_loc < m_nodes_in_a0; ++i_loc)
+  {
+    i = m_nodes_in_a1[i_loc];
+    b_in[i_loc] = f(tau * k, m_coord + m_dim_embedded * i) * m_inner[i];
+  }
+}
+
+static void rhs_vector_apply_initial(
+  double * x, scalar_field u_0, int m_dim_embedded, const double * m_coord,
+  int m_cn_0, const double * m_inner)
+{
+  int i;
+  
+  for (i  = 0; i < m_cn_0; ++i)
+    x[i] = u_0(m_coord + m_dim_embedded * i) * m_inner[i];
+}
+
+/* y = x + m_laplacian->rows * (k - 1); */
+static void matrix_sparse_heat_conduction_rhs_final_form(
+  double * b_in, const jagged1 * m_nodes_in, const double * m_inner,
+  const double * y, int tau)
+{
+  int i, i_loc, m_nodes_in_a0;
+  int * m_nodes_in_a1;
+  
+  m_nodes_in_a0 = m_nodes_in->a0;
+  m_nodes_in_a1 = m_nodes_in->a1;
+  for (i_loc = 0; i_loc < m_nodes_in_a0; ++i_loc)
+  {
+    i = m_nodes_in_a1[i_loc];
+    b_in[i_loc] += y[i] * m_inner[i] / tau;
+  }
+}
+
+static void coordinates_in_standard_basis(
+  double * x, int m_cn_0, const double * m_inner)
+{
+  int i;
+  
+  for (i  = 0; i < m_cn_0; ++i)
+    x[i] /= m_inner[i];
+}
+
+/* g_d is the Dirichlet boundary condition */
+double * matrix_sparse_heat_conduction_solve_non_grid(
+  const matrix_sparse * m_laplacian, int m_dim_embedded, const double * m_coord,
+  const double * m_inner, const jagged1 * m_nodes_bd,
+  time_dependent_scalar_field f, time_dependent_scalar_field g_d,
+  scalar_field u_0, double tau, int N)
+{
+  int k;
+  double * b_in, * b_bd, * x = NULL, * y;
+  jagged1 * m_nodes_in;
+  matrix_sparse * m_laplacian_in;
+  
+  m_nodes_in = jagged1_complement(m_laplacian->cols, m_nodes_bd);
+  if (errno)
+  {
+    fputs("matrix_sparse_heat_conduction_solve_non_grid - cannot allocate "
+          "memory for m_nodes_in\n", stderr);
+    goto end;
+  }
+  
+  m_laplacian_in = matrix_sparse_restrict_symmetric(m_laplacian, m_nodes_in);
+  if (errno)
+  {
+    fputs("matrix_sparse_heat_conduction_solve_non_grid - cannot allocate "
+          "memory for m_laplacian_in\n", stderr);
+    goto m_nodes_in_free;
+  }
+  
+  matrix_sparse_fprint(stdout, m_laplacian_in, "--matrix-form-curly");
+  fputc('\n', stdout);
+  
+  lhs_restricted_matrix_modify(m_laplacian_in, m_inner, tau);
+  matrix_sparse_fprint(stdout, m_laplacian_in, "--matrix-form-curly");
+  fputc('\n', stdout);
+  
+  b_in = (double *) malloc(sizeof(double) * m_nodes_in->a0);
+  if (errno)
+  {
+    fputs("matrix_sparse_heat_conduction_solve_non_grid - cannot allocate "
+          "memory for b_in\n", stderr);
+    goto m_laplacian_in_free;
+  }
+  
+  b_bd = (double *) malloc(sizeof(double) * m_nodes_bd->a0);
+  if (errno)
+  {
+    fputs("matrix_sparse_heat_conduction_solve_non_grid - cannot allocate "
+          "memory for b_bd\n", stderr);
+    goto b_in_free;
+  }
+  
+  x = (double * ) malloc(sizeof(double) * (N + 1) * m_laplacian->cols);
+  if (errno)
+  {
+    fputs("matrix_sparse_heat_conduction_solve_non_grid - cannot allocate "
+          "memory for x\n", stderr);
+    goto b_bd_free;
+  }
+  
+  rhs_vector_apply_initial(
+    x, u_0, m_dim_embedded, m_coord, m_laplacian->rows, m_inner);
+  int_array_fprint(stdout, m_laplacian->rows, x, "--raw");
+  fputc('\n', stdout);
+  
+  for (k = 1; k <= N; ++k)
+  {
+    dirichlet_bc_apply(
+      b_bd, m_dim_embedded, m_coord, m_inner, m_nodes_bd, g_d, tau, k);
+    rhs_vector_initialise(
+      b_in, m_dim_embedded, m_coord, m_inner, m_nodes_in, f, tau, k);
+    matrix_sparse_laplace_equation_rhs_vector_modify(
+      b_in, m_laplacian, m_nodes_in, m_nodes_bd, b_bd);
+    matrix_sparse_heat_conduction_rhs_final_form(
+      b_in, m_nodes_in, m_inner, x + m_laplacian->rows * (k - 1), tau);
+    matrix_sparse_linear_solve(m_laplacian_in, b_in, "--cholesky");
+    if (errno)
+    {
+      fputs("matrix_sparse_laplace_equation_solve - cannot solve the reduced "
+            "linear system\n", stderr);
+      goto b_bd_free;
+    }
+    y = x + m_laplacian->rows * k;
+    double_array_substitute_inverse(y, m_nodes_in->a0, b_in, m_nodes_in->a1);
+    double_array_substitute_inverse(y, m_nodes_bd->a0, b_bd, m_nodes_bd->a1);
+    coordinates_in_standard_basis(y, m_laplacian->rows, m_inner);
+    int_array_fprint(stdout, m_laplacian->rows, y, "--raw");
+    fputc('\n', stdout);
+  }
+
+b_bd_free:
+  free(b_bd);
+b_in_free:
+  free(b_in);
+m_laplacian_in_free:
+  matrix_sparse_free(m_laplacian_in);
+m_nodes_in_free:
+  jagged1_free(m_nodes_in);
+end:
+  return x;
+}

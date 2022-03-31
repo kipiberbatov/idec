@@ -83,6 +83,8 @@ double * matrix_sparse_diffusion(
 
 typedef double (*scalar_field)(const double *);
 
+typedef double (*time_dependent_scalar_field)(double, const double *);
+
 double * matrix_sparse_laplace_equation_solve(
   const matrix_sparse * m_laplacian, int m_dim_embedded, const double * m_coord,
   const jagged1 * m_nodes_bd, scalar_field f, scalar_field g_d);
@@ -91,6 +93,12 @@ double * matrix_sparse_laplace_equation_solve_non_grid(
   const matrix_sparse * m_laplacian, int m_dim_embedded, const double * m_coord,
   const double * m_inner, const jagged1 * m_nodes_bd, scalar_field f,
   scalar_field g_d);
+
+double * matrix_sparse_heat_conduction_solve_non_grid(
+  const matrix_sparse * m_laplacian, int m_dim_embedded, const double * m_coord,
+  const double * m_inner, const jagged1 * m_nodes_bd,
+  time_dependent_scalar_field f, time_dependent_scalar_field g_d,
+  scalar_field u_0, double tau, int N);
 
 /************************* matrix_sparse_linear_solve *************************/
 /* Supported methods for "matrix_sparse_linear_solve":
