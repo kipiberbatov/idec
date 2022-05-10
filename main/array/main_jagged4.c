@@ -11,9 +11,8 @@ int main()
     fputs("main - cannot scan arr\n", stderr);
     return errno;
   }
-  
   jagged4_fprint(stdout, arr, "--curly");
-  fputc('\n', stdout);
+  
   jagged4_free(arr);
   return 0;
 }

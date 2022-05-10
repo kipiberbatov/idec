@@ -167,7 +167,7 @@ double * matrix_sparse_heat_conduction_solve_non_grid(
   
   rhs_vector_apply_initial(
     x, u_0, m_dim_embedded, m_coord, m_laplacian->rows, m_inner);
-  int_array_fprint(stdout, m_laplacian->rows, x, "--raw");
+  double_array_fprint(stdout, m_laplacian->rows, x, "--raw");
   fputc('\n', stdout);
   
   for (k = 1; k <= N; ++k)
@@ -191,7 +191,7 @@ double * matrix_sparse_heat_conduction_solve_non_grid(
     double_array_substitute_inverse(y, m_nodes_in->a0, b_in, m_nodes_in->a1);
     double_array_substitute_inverse(y, m_nodes_bd->a0, b_bd, m_nodes_bd->a1);
     coordinates_in_standard_basis(y, m_laplacian->rows, m_inner);
-    int_array_fprint(stdout, m_laplacian->rows, y, "--raw");
+    double_array_fprint(stdout, m_laplacian->rows, y, "--raw");
     fputc('\n', stdout);
   }
 

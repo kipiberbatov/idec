@@ -16,7 +16,6 @@ int main()
     return errno;
   }
   jagged1_fprint(out, arr, "--curly");
-  fputc('\n', out);
   
   jagged1_free(arr);
   return 0;
