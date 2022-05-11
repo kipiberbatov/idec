@@ -58,7 +58,7 @@ MESH_INC := $(MESH_INC_EXE) -iquote src/mesh
 ARRAY_LDLIBS := lib/libarray$(.LIB)
 ALGEBRA_LDLIBS := lib/libalgebra$(.LIB) $(ARRAY_LDLIBS)
 REGION_LDLIBS := lib/libregion$(.LIB) $(ARRAY_LDLIBS)
-MESH_LDLIBS := lib/libmesh$(.LIB) lib/libregion$(.LIB) $(ALGEBRA_LDLIBS) 
+MESH_LDLIBS := lib/libmesh$(.LIB) lib/libregion$(.LIB) $(ALGEBRA_LDLIBS)
 
 ############################### all-type targets ###############################
 .PHONY: all
@@ -211,7 +211,7 @@ ALGEBRA_EXE :=\
 bin_algebra: bin $(ALGEBRA_EXE)
 
 $(ALGEBRA_EXE): bin/%$(.EXE): main/algebra/main_%$(.SRC) $(ALGEBRA_LDLIBS)
-	$(CC) $(CFLAGS) $(ALGEBRA_INC_EXE) $(CCFLAGS) $< $(ALGEBRA_LDLIBS) -o $@
+	$(CC) $(CFLAGS) $(ALGEBRA_INC_EXE) $(CCFLAGS) $< $(ALGEBRA_LDLIBS) -lm -o $@
 
 # region
 REGION_EXE_NAMES := $(wildcard main/region/*$(.SRC))
@@ -222,7 +222,7 @@ REGION_EXE :=\
 bin_region: bin $(REGION_EXE)
 
 $(REGION_EXE): bin/%$(.EXE): main/region/main_%$(.SRC) $(REGION_LDLIBS)
-	$(CC) $(CFLAGS) $(REGION_INC_EXE) $(CCFLAGS) $< $(REGION_LDLIBS) -o $@
+	$(CC) $(CFLAGS) $(REGION_INC_EXE) $(CCFLAGS) $< $(REGION_LDLIBS) -lm -o $@
 
 # mesh
 MESH_EXE_NAMES := $(wildcard main/mesh/*$(.SRC))
@@ -233,7 +233,7 @@ MESH_EXE :=\
 bin_mesh: bin $(MESH_EXE)
 
 $(MESH_EXE): bin/%$(.EXE): main/mesh/main_%$(.SRC) $(MESH_LDLIBS)
-	$(CC) $(CFLAGS) $(MESH_INC_EXE) $(CCFLAGS) $< $(MESH_LDLIBS) -o $@
+	$(CC) $(CFLAGS) $(MESH_INC_EXE) $(CCFLAGS) $< $(MESH_LDLIBS) -lm -o $@
 
 # all
 .PHONY: bin_all
