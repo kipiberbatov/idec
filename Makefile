@@ -56,9 +56,9 @@ MESH_INC_EXE := $(ALGEBRA_INC_EXE) -iquote include/region -iquote include/mesh
 MESH_INC := $(MESH_INC_EXE) -iquote src/mesh
 
 ARRAY_LDLIBS := lib/libarray$(.LIB)
-ALGEBRA_LDLIBS := $(ARRAY_LDLIBS) lib/libalgebra$(.LIB)
-REGION_LDLIBS := $(ARRAY_LDLIBS) lib/libregion$(.LIB)
-MESH_LDLIBS := $(ALGEBRA_LDLIBS) lib/libregion$(.LIB) lib/libmesh$(.LIB)
+ALGEBRA_LDLIBS := lib/libalgebra$(.LIB) $(ARRAY_LDLIBS)
+REGION_LDLIBS := lib/libregion$(.LIB) $(ARRAY_LDLIBS)
+MESH_LDLIBS := lib/libmesh$(.LIB) lib/libregion$(.LIB) $(ALGEBRA_LDLIBS) 
 
 ############################### all-type targets ###############################
 .PHONY: all
