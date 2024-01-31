@@ -10,9 +10,18 @@ Software library implementing the operations in [https://arxiv.org/abs/2201.0370
 - mesh: structure **mesh** and functions on meshes are implemented; the structure **mesh\_qc** is the same as **mesh** but is intended to be used for quasi-cubical meshes resulting from applying **forman**
 
 ## Building on Unix-like platforms
-- Go to installation directory 
-- Type make
-  * directory **build** is created and files from **src** are compiled into object files in **build**
-  * directory **lib** is created and object files from **build** are archived in **lib**
-  * directory **bin** is created, source files from **main** are linked against libraries in **lib** and go to **bin**
-  * demos are run using executables from **bin** and already existing files in **demo** and go in **demo**
+
+Navigate to your preferred location on the command line. Type the following:
+
+```
+git clone https://github.com/kipiberbatov/idec
+cd idec
+make
+```
+
+After running **make** the result is the following:
+
+- directory **build** is created and files from **src** are compiled into object files in **build**
+- directory **lib** is created and object files from **build** are archived in **lib**
+- directory **bin** is created, source files from **main** are linked against libraries in **lib** and go to **bin**
+- demos are run using executables from **bin** and already existing files in **demo** and go in **demo**
