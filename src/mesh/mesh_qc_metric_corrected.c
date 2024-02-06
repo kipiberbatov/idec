@@ -54,7 +54,7 @@ static vector_sparse * mesh_qc_metric_corrected_p_i(
     m_metric_p_i->values[j_loc] = node_curvature / denominator_p_i;
   }
   
-  vector_sparse_rearange(m_metric_p_i);
+  vector_sparse_rearrange(m_metric_p_i);
   if (errno)
   {
     fprintf(stderr, "mesh_qc_metric_corrected_p_i - cannot rearange "

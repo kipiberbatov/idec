@@ -43,7 +43,7 @@ vector_sparse * vector_sparse_fscan_by_name(
 void vector_sparse_fprint(
   FILE * out, const vector_sparse * a, const char * format);
 
-void vector_sparse_rearange(vector_sparse * b);
+void vector_sparse_rearrange(vector_sparse * b);
 
 /**************************** vector_sparse_array *****************************/
 void vector_sparse_array_free(vector_sparse ** arr, int a0);
