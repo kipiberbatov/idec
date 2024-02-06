@@ -26,11 +26,11 @@ int main(int argc, char * argv[])
     return errno;
   }
   
-  mesh_free(m);
-  
   format = argv[1];
   matrix_sparse_array_fprint(out, m->dim, m_bd, format);
   
   matrix_sparse_array_free(m_bd, m->dim);
+  
+  mesh_free(m);
   return errno;
 }
