@@ -74,11 +74,19 @@ demo/mesh/mesh_brick_2d_1_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# demo/mesh/mesh_brick_2d_1_forman_inner.txt:\
+# 	  bin/mesh_qc_inner$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_1_forman.txt\
+# 	  demo/mesh/mesh_brick_2d_1_forman_vol.txt\
+# 	  demo/mesh/mesh_brick_2d_1_forman_metric.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
 demo/mesh/mesh_brick_2d_1_forman_inner.txt:\
-	  bin/mesh_qc_inner$(.EXE)\
+	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman.txt\
-	  demo/mesh/mesh_brick_2d_1_forman_vol.txt\
-	  demo/mesh/mesh_brick_2d_1_forman_metric.txt
+	  demo/mesh/mesh_brick_2d_1_forman_vol.txt
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
@@ -257,11 +265,19 @@ demo/mesh/mesh_brick_2d_2_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# demo/mesh/mesh_brick_2d_2_forman_inner.txt:\
+# 	  bin/mesh_qc_inner$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_2_forman.txt\
+# 	  demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+# 	  demo/mesh/mesh_brick_2d_2_forman_metric.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
 demo/mesh/mesh_brick_2d_2_forman_inner.txt:\
-	  bin/mesh_qc_inner$(.EXE)\
+	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-	  demo/mesh/mesh_brick_2d_2_forman_vol.txt\
-	  demo/mesh/mesh_brick_2d_2_forman_metric.txt
+	  demo/mesh/mesh_brick_2d_2_forman_vol.txt
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
@@ -688,11 +704,19 @@ demo/mesh/mesh_brick_2d_5_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# demo/mesh/mesh_brick_2d_5_forman_inner.txt:\
+# 	  bin/mesh_qc_inner$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_5_forman.txt\
+# 	  demo/mesh/mesh_brick_2d_5_forman_vol.txt\
+# 	  demo/mesh/mesh_brick_2d_5_forman_metric.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
 demo/mesh/mesh_brick_2d_5_forman_inner.txt:\
-	  bin/mesh_qc_inner$(.EXE)\
+	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
-	  demo/mesh/mesh_brick_2d_5_forman_vol.txt\
-	  demo/mesh/mesh_brick_2d_5_forman_metric.txt
+	  demo/mesh/mesh_brick_2d_5_forman_vol.txt
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
@@ -840,11 +864,19 @@ demo/mesh/mesh_two_triangles_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# demo/mesh/mesh_two_triangles_forman_inner.txt:\
+# 	  bin/mesh_qc_inner$(.EXE)\
+# 	  demo/mesh/mesh_two_triangles_forman.txt\
+# 	  demo/mesh/mesh_two_triangles_forman_vol.txt\
+# 	  demo/mesh/mesh_two_triangles_forman_metric.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
 demo/mesh/mesh_two_triangles_forman_inner.txt:\
-	  bin/mesh_qc_inner$(.EXE)\
+	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_two_triangles_forman.txt\
-	  demo/mesh/mesh_two_triangles_forman_vol.txt\
-	  demo/mesh/mesh_two_triangles_forman_metric.txt
+	  demo/mesh/mesh_two_triangles_forman_vol.txt
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
@@ -989,11 +1021,19 @@ demo/mesh/mesh_triangle_and_square_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# demo/mesh/mesh_triangle_and_square_forman_inner.txt:\
+# 	  bin/mesh_qc_inner$(.EXE)\
+# 	  demo/mesh/mesh_triangle_and_square_forman.txt\
+# 	  demo/mesh/mesh_triangle_and_square_forman_vol.txt\
+# 	  demo/mesh/mesh_triangle_and_square_forman_metric.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
 demo/mesh/mesh_triangle_and_square_forman_inner.txt:\
-	  bin/mesh_qc_inner$(.EXE)\
+	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_triangle_and_square_forman.txt\
-	  demo/mesh/mesh_triangle_and_square_forman_vol.txt\
-	  demo/mesh/mesh_triangle_and_square_forman_metric.txt
+	  demo/mesh/mesh_triangle_and_square_forman_vol.txt
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
@@ -1134,11 +1174,19 @@ demo/mesh/mesh_brick_3d_1_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# demo/mesh/mesh_brick_3d_1_forman_inner.txt:\
+# 	  bin/mesh_qc_inner$(.EXE)\
+# 	  demo/mesh/mesh_brick_3d_1_forman.txt\
+# 	  demo/mesh/mesh_brick_3d_1_forman_vol.txt\
+# 	  demo/mesh/mesh_brick_3d_1_forman_metric.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
 demo/mesh/mesh_brick_3d_1_forman_inner.txt:\
-	  bin/mesh_qc_inner$(.EXE)\
+	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_brick_3d_1_forman.txt\
-	  demo/mesh/mesh_brick_3d_1_forman_vol.txt\
-	  demo/mesh/mesh_brick_3d_1_forman_metric.txt
+	  demo/mesh/mesh_brick_3d_1_forman_vol.txt
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
@@ -1270,11 +1318,19 @@ demo/mesh/mesh_brick_3d_2_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# demo/mesh/mesh_brick_3d_2_forman_inner.txt:\
+# 	  bin/mesh_qc_inner$(.EXE)\
+# 	  demo/mesh/mesh_brick_3d_2_forman.txt\
+# 	  demo/mesh/mesh_brick_3d_2_forman_vol.txt\
+# 	  demo/mesh/mesh_brick_3d_2_forman_metric.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
 demo/mesh/mesh_brick_3d_2_forman_inner.txt:\
-	  bin/mesh_qc_inner$(.EXE)\
+	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_brick_3d_2_forman.txt\
-	  demo/mesh/mesh_brick_3d_2_forman_vol.txt\
-	  demo/mesh/mesh_brick_3d_2_forman_metric.txt
+	  demo/mesh/mesh_brick_3d_2_forman_vol.txt
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
@@ -1406,11 +1462,19 @@ demo/mesh/mesh_brick_3d_5_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# demo/mesh/mesh_brick_3d_5_forman_inner.txt:\
+# 	  bin/mesh_qc_inner$(.EXE)\
+# 	  demo/mesh/mesh_brick_3d_5_forman.txt\
+# 	  demo/mesh/mesh_brick_3d_5_forman_vol.txt\
+# 	  demo/mesh/mesh_brick_3d_5_forman_metric.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
 demo/mesh/mesh_brick_3d_5_forman_inner.txt:\
-	  bin/mesh_qc_inner$(.EXE)\
+	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_brick_3d_5_forman.txt\
-	  demo/mesh/mesh_brick_3d_5_forman_vol.txt\
-	  demo/mesh/mesh_brick_3d_5_forman_metric.txt
+	  demo/mesh/mesh_brick_3d_5_forman_vol.txt
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt

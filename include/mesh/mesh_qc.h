@@ -38,6 +38,16 @@ double * mesh_qc_inner_p(const mesh_qc * m, const double * m_vol_d,
 double ** mesh_qc_inner(const mesh_qc * m, const double * m_vol_d,
                         vector_sparse *** m_metric);
 
+
+double * mesh_qc_inner_direct_p(
+  const mesh_qc * m,
+  int p,
+  // int i,
+  const double * m_vol_p,
+  const double * m_vol_q
+);
+
+double ** mesh_qc_inner_direct(const mesh_qc * m);
 /***************************** mesh_qc_cbd_star *******************************/
 /* q = p - 1 */
 matrix_sparse * mesh_qc_cbd_star_p(
