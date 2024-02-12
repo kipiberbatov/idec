@@ -26,13 +26,21 @@ DEMO_MESH_BRICK_REGULAR_2D_1 := \
   demo/mesh/mesh_brick_2d_1.txt\
   demo/mesh/mesh_brick_2d_1_vol.txt\
   demo/mesh/mesh_brick_2d_1_forman.txt\
+  demo/mesh/mesh_brick_2d_1_forman_bd.txt\
+  demo/mesh/mesh_brick_2d_1_forman_cbd.txt\
   demo/mesh/mesh_brick_2d_1_forman_vol.txt\
   demo/mesh/mesh_brick_2d_1_forman_metric.txt\
   demo/mesh/mesh_brick_2d_1_forman_inner.txt\
   demo/mesh/mesh_brick_2d_1_forman_cbd_star.txt\
   demo/mesh/mesh_brick_2d_1_forman_laplacian.txt\
+  demo/mesh/mesh_brick_2d_1_forman_laplacian_matrix_form.txt\
   demo/mesh/mesh_brick_2d_1_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_1_forman_hodge.txt\
+  demo/mesh/mesh_brick_2d_1_forman_hodge_matrix_form.txt\
+  demo/mesh/mesh_brick_2d_1_forman_hodge_codifferential.txt\
+  demo/mesh/mesh_brick_2d_1_forman_hodge_codifferential_matrix_form.txt\
+  demo/mesh/mesh_brick_2d_1_forman_hodge_laplacian.txt\
+  demo/mesh/mesh_brick_2d_1_forman_hodge_laplacian_matrix_form.txt\
   demo/mesh/mesh_brick_2d_1_forman_node_curvature.txt\
   demo/mesh/mesh_brick_2d_1_forman_metric_corrected.txt\
   demo/mesh/mesh_brick_2d_1_forman_inner_corrected.txt\
@@ -60,6 +68,16 @@ demo/mesh/mesh_brick_2d_1_forman.txt:\
 	  bin/forman_bd$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1.txt
 	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_2d_1_forman_bd.txt:\
+	  bin/mesh_bd$(.EXE)\
+	  demo/mesh/mesh_brick_2d_1_forman.txt
+	$< --raw < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_2d_1_forman_cbd.txt:\
+	  bin/mesh_cbd$(.EXE)\
+	  demo/mesh/mesh_brick_2d_1_forman.txt
+	$< --raw < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_1_forman_vol.txt:\
 	  bin/mesh_qc_vol$(.EXE)\
@@ -99,6 +117,11 @@ demo/mesh/mesh_brick_2d_1_forman_cbd_star.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# demo/mesh/mesh_brick_2d_1_forman_cbd_star_matrix_form.txt:\
+# 	  bin/matrix_sparse_fprint$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_1_forman_cbd_star.txt
+# 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
+
 demo/mesh/mesh_brick_2d_1_forman_laplacian.txt:\
 	  bin/mesh_qc_laplacian$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman.txt\
@@ -106,6 +129,11 @@ demo/mesh/mesh_brick_2d_1_forman_laplacian.txt:\
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
+
+demo/mesh/mesh_brick_2d_1_forman_laplacian_matrix_form.txt:\
+	  bin/matrix_sparse_fprint$(.EXE)\
+	  demo/mesh/mesh_brick_2d_1_forman_laplacian.txt
+	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_1_forman_hodge_coeff.txt:\
 	  bin/mesh_qc_hodge_coeff$(.EXE)\
@@ -120,6 +148,37 @@ demo/mesh/mesh_brick_2d_1_forman_hodge.txt:\
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
+
+demo/mesh/mesh_brick_2d_1_forman_hodge_matrix_form.txt:\
+	  bin/matrix_sparse_fprint$(.EXE)\
+	  demo/mesh/mesh_brick_2d_1_forman_hodge.txt
+	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_2d_1_forman_hodge_codifferential.txt:\
+	  bin/mesh_qc_hodge_codifferential$(.EXE)\
+	  demo/mesh/mesh_brick_2d_1_forman.txt\
+	  demo/mesh/mesh_brick_2d_1_forman_hodge.txt
+	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+	$< < tmp.txt > $@
+	rm tmp.txt
+
+demo/mesh/mesh_brick_2d_1_forman_hodge_codifferential_matrix_form.txt:\
+	  bin/matrix_sparse_fprint$(.EXE)\
+	  demo/mesh/mesh_brick_2d_1_forman_hodge_codifferential.txt
+	$< --matrix-form-curly -list 2 < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_2d_1_forman_hodge_laplacian.txt:\
+	  bin/matrix_sparse_laplacian$(.EXE)\
+	  demo/mesh/mesh_brick_2d_1_forman_cbd.txt\
+	  demo/mesh/mesh_brick_2d_1_forman_hodge_codifferential.txt
+	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+	$< --raw -list 2 < tmp.txt > $@
+	rm tmp.txt
+
+demo/mesh/mesh_brick_2d_1_forman_hodge_laplacian_matrix_form.txt:\
+	  bin/matrix_sparse_fprint$(.EXE)\
+	  demo/mesh/mesh_brick_2d_1_forman_hodge_laplacian.txt
+	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_1_forman_node_curvature.txt:\
 	  bin/mesh_node_curvature$(.EXE)\
