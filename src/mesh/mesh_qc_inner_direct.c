@@ -24,7 +24,7 @@ static double * mesh_qc_inner_direct_d(
     return NULL;
   }
   for (i = 0; i < m_cn_d; ++i)
-    m_inner_d[i] = 1 / (d_exp * m_vol_d[i]);
+    m_inner_d[i] = 1 / m_vol_d[i];
   return m_inner_d;
 }
 
