@@ -30,8 +30,6 @@ int main(int argc, char * argv[])
   
   m_laplacian_name = argv[2];
   m_laplacian_format = argv[3];
-  // m_laplacian = matrix_sparse_array_fscan_by_name(m_laplacian_name, d + 1,
-  //                                                 m_laplacian_format);
   m_laplacian_file = fopen(m_laplacian_name, "r");
   if (errno)
   {
@@ -43,7 +41,6 @@ int main(int argc, char * argv[])
     d + 1,
     m_laplacian_format
   );
-  // matrix_sparse_array_fprint(stderr, d + 1, m_laplacian, "--raw");
   if (errno)
   {
     fputs("main - cannot scan for m_laplacian\n", stderr);
@@ -73,8 +70,6 @@ int main(int argc, char * argv[])
     m_cn,
     m_inner_format
   );
-  // m_inner = 
-  //   double_array2_fscan_by_name(m_inner_name, d + 1, m_cn, m_inner_format);
   if (errno)
   {
     fputs("main - cannot  scan m_inner\n", stderr);
