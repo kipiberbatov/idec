@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <math.h>
 #include <stdlib.h>
 #include "double.h"
 #include "matrix_sparse_private.h"
@@ -15,7 +16,7 @@ static void dirichlet_bc_apply(
   for (j_loc = 0; j_loc < m_nodes_bd_a0; ++j_loc)
   {
     j = m_nodes_bd_a1[j_loc];
-    b_bd[j_loc] = g_d(m_coord + m_dim_embedded * j) * m_inner[j];
+    b_bd[j_loc] = g_d(m_coord + m_dim_embedded * j) * sqrt(m_inner[j]);
   }
 }
 
@@ -31,7 +32,7 @@ static void rhs_vector_initialise(
   for (i_loc = 0; i_loc < m_nodes_in_a0; ++i_loc)
   {
     i = m_nodes_in_a1[i_loc];
-    b_in[i_loc] = f(m_coord + m_dim_embedded * i) * m_inner[i];
+    b_in[i_loc] = f(m_coord + m_dim_embedded * i) * sqrt(m_inner[i]);
   }
 }
 
@@ -41,7 +42,7 @@ static void coordinates_in_standard_basis(
   int i;
   
   for (i  = 0; i < m_cn_0; ++i)
-    x[i] /= m_inner[i];
+    x[i] /= sqrt(m_inner[i]);
 }
 
 /* g_d is the Dirichlet boundary condition */
