@@ -59,6 +59,8 @@ dkms.conf
 demo/**
 # Except the following manual input
 !demo/algebra/double_3.txt
+!demo/algebra/double_4.txt
+!demo/algebra/matrix_sparse_4_4.txt
 !demo/algebra/matrix_sparse_4_5_1.txt
 !demo/algebra/matrix_sparse_4_5_2.txt
 !demo/algebra/matrix_sparse_5_4_1.txt
