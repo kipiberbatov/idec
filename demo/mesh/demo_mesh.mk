@@ -894,6 +894,7 @@ DEMO_MESH_TWO_TRIANGLES := \
   demo/mesh/mesh_two_triangles_forman_laplacian_corrected.txt\
   demo/mesh/mesh_two_triangles_forman_laplacian_corrected_matrix_form.txt\
   demo/mesh/mesh_two_triangles_forman_laplacian_corrected_symmetric.txt\
+  demo/mesh/mesh_two_triangles_forman_laplacian_corrected_symmetric_matrix_form.txt\
   demo/mesh/mesh_two_triangles_forman_hodge_corrected.txt\
   demo/mesh/mesh_two_triangles_forman_laplace_equation_non_grid.txt\
 
@@ -1019,6 +1020,11 @@ demo/mesh/mesh_two_triangles_forman_laplacian_corrected_symmetric.txt:\
 	  demo/mesh/mesh_two_triangles_forman_laplacian_corrected.txt\
 	  demo/mesh/mesh_two_triangles_forman_inner_corrected.txt
 	$< 2 $(word 2, $^) --raw $(word 3, $^) --raw --raw > $@
+
+demo/mesh/mesh_two_triangles_forman_laplacian_corrected_symmetric_matrix_form.txt:\
+	  bin/matrix_sparse_fprint$(.EXE)\
+	  demo/mesh/mesh_two_triangles_forman_laplacian_corrected_symmetric.txt
+	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
 demo/mesh/mesh_two_triangles_forman_hodge_corrected.txt:\
 	  bin/mesh_qc_hodge$(.EXE)\
