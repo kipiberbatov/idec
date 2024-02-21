@@ -1,8 +1,22 @@
 #include "matrix_sparse.h"
 
+/*
+Modifies the right-hand side vector of Laplace equation with Dirichlet boundary
+conditions by using the known values on the boundary.
+The variables have the following meanings:
+  . b_in is the vector corresponding to interior nodes;
+  . m_laplacian is the Laplacian matrix in the chosen basis;
+  . m_nodes_in are the indices of interior nodes;
+  . m_nodes_bd are the indices of Dirichlet boundary nodes;
+  . b_bd is the known vector representing Dirichlet boundary conditions.
+*/
+
 void matrix_sparse_laplace_equation_rhs_vector_modify(
-  double * b_in, const matrix_sparse * m_laplacian, const jagged1 * m_nodes_in,
-  const jagged1 * m_nodes_bd, const double * b_bd)
+  double * b_in,
+  const matrix_sparse * m_laplacian,
+  const jagged1 * m_nodes_in,
+  const jagged1 * m_nodes_bd,
+  const double * b_bd)
 {
   int i, i_loc, j, j_loc, m_nodes_bd_a0, nonzeroes_j, position;
   int * m_laplacian_cols_total, * m_laplacian_row_indices,

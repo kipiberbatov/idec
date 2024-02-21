@@ -3,9 +3,16 @@
 #include "double.h"
 #include "matrix_sparse_private.h"
 
+/*
+Applies the Dirichlet boundary condition.
+Result: form the Diriclet boundary part part of the right hand side vector.
+*/
 static void dirichlet_bc_apply(
-  double * b_bd, int m_dim_embedded, const double * m_coord,
-  const jagged1 * m_nodes_bd, scalar_field g_d)
+  double * b_bd,
+  int m_dim_embedded,
+  const double * m_coord,
+  const jagged1 * m_nodes_bd,
+  scalar_field g_d)
 {
   int j, j_loc, m_nodes_bd_a0;
   int * m_nodes_bd_a1;
@@ -19,9 +26,16 @@ static void dirichlet_bc_apply(
   }
 }
 
+/*
+Apply the body source.
+Result: form the interior part part of the right hand side vector.
+*/
 static void rhs_vector_initialise(
-  double * b_in, int m_dim_embedded, const double * m_coord,
-  const jagged1 * m_nodes_in, scalar_field f)
+  double * b_in,
+  int m_dim_embedded,
+  const double * m_coord,
+  const jagged1 * m_nodes_in,
+  scalar_field f)
 {
   int i, i_loc, m_nodes_in_a0;
   int * m_nodes_in_a1;
@@ -35,11 +49,33 @@ static void rhs_vector_initialise(
   }
 }
 
-/* g_d is the Dirichlet boundary condition */
+/*
+Let:
+  . X be an open region, S be its boundary;
+  . f: X -> R be a function (body source);
+  . g_d: S -> R be the Dirchlet boundary condition;
+Consider the problem (0) of finding u: X -> R such that
+  . -\Delta u = f on X;
+  . u(x, y) = g_d(x, y) on S.
+Consider its discrete version on a mesh.
+Let:
+  . m be the forman subdivision of some original mesh;
+  . m_laplacian be its discrete Laplacian, constructed out of an inner product;
+  . m_dim_embedded be the dimension of the space we are embedding in;
+  . m_coord be the matrix of coordinates (represented as a single list);
+  . m_nodes_bd be the indices of the Dirichlet boundary nodes;
+We are solving problem (0) but now with discrete quantities and operators.
+*/
+
 double * matrix_sparse_laplace_equation_solve(
-  const matrix_sparse * m_laplacian, int m_dim_embedded, const double * m_coord,
-  const jagged1 * m_nodes_bd, scalar_field f, scalar_field g_d)
+  const matrix_sparse * m_laplacian,
+  int m_dim_embedded,
+  const double * m_coord,
+  const jagged1 * m_nodes_bd,
+  scalar_field f,
+  scalar_field g_d)
 {
+  /* x is the combined version of b_in and b_bd and stores the final result */
   double * b_in, * b_bd, * x = NULL;
   jagged1 * m_nodes_in;
   matrix_sparse * m_laplacian_in;
@@ -80,7 +116,10 @@ double * matrix_sparse_laplace_equation_solve(
     goto b_in_free;
   }
   
-  matrix_sparse_linear_solve(m_laplacian_in, b_in, "--cholesky");
+  /* Old: matrix_sparse_linear_solve(m_laplacian_in, b_in, "--cholesky"); */
+  
+  /* Use the LU decomposition -- m_laplacian_in may not be symmetric */
+  matrix_sparse_linear_solve(m_laplacian_in, b_in, "--lu");
   if (errno)
   {
     fputs("matrix_sparse_laplace_equation_solve - cannot solve the reduced "
