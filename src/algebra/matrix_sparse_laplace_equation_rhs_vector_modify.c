@@ -9,6 +9,8 @@ The variables have the following meanings:
   . m_nodes_in are the indices of interior nodes;
   . m_nodes_bd are the indices of Dirichlet boundary nodes;
   . b_bd is the known vector representing Dirichlet boundary conditions.
+Result: modify b_in by
+  b_in[i] -= sum_{j in m_nodes_bd} a[i][j] * b_bd[j].
 */
 
 void matrix_sparse_laplace_equation_rhs_vector_modify(

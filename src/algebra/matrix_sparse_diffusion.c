@@ -5,8 +5,10 @@
 #include "double.h"
 #include "matrix_sparse.h"
 
+/* Finds the multiplier for the direct Euler method */
 static matrix_sparse * matrix_sparse_laplacian_dynamic(
-  const matrix_sparse * laplacian_0, double tau)
+  const matrix_sparse * laplacian_0,
+  double tau)
 {
   matrix_sparse * id, * l;
   
@@ -17,7 +19,7 @@ static matrix_sparse * matrix_sparse_laplacian_dynamic(
     return NULL;
   }
   
-  l = matrix_sparse_linear_combination(laplacian_0, id, 1, tau);
+  l = matrix_sparse_linear_combination(laplacian_0, id, tau, 1);
   if (errno)
     fputs("matrix_sparse_laplacian_dynamic - cannot calculate l\n", stderr);
   
@@ -25,9 +27,13 @@ static matrix_sparse * matrix_sparse_laplacian_dynamic(
   return l;
 }
 
+/* Solve the time-dependent Laplacian problem with explicit Euler method */
 double * matrix_sparse_diffusion(
-  const matrix_sparse * laplacian_0, const double * lhs, const double * u_0,
-  double tau, int N)
+  const matrix_sparse * laplacian_0,
+  const double * lhs,
+  const double * u_0,
+  double tau,
+  int N)
 {
   int i;
   double * u; /* 2d rectangular array */
@@ -53,7 +59,8 @@ double * matrix_sparse_diffusion(
   {
     memcpy(u + l->cols * i, u + l->cols * (i - 1), sizeof(double) * l->cols);
     double_array_add_to(u + l->cols * i, l->cols, lhs);
-    matrix_sparse_linear_solve(l, u + l->cols * i, "--cholesky");
+    // matrix_sparse_linear_solve(l, u + l->cols * i, "--cholesky");
+    matrix_sparse_linear_solve(l, u + l->cols * i, "--lu");
     if (errno)
     {
       fputs("matrix_sparse_diffusion - cannot find u[i]\n", stderr);
