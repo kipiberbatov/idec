@@ -7,6 +7,7 @@ DEMO_ALGEBRA := \
   demo/algebra/matrix_sparse_4_5_transpose.txt\
   demo/algebra/matrix_sparse_diagonal_3_linear_solve_double_3.txt\
   demo/algebra/matrix_sparse_4_4_linear_solve_double_4.txt\
+  demo/algebra/matrix_sparse_4_4_vector_multiply_add_double_4.txt
 
 .PHONY: demo_algebra
 demo_algebra: bin $(DEMO_ALGEBRA)
@@ -55,6 +56,12 @@ demo/algebra/matrix_sparse_4_4_linear_solve_double_4.txt:\
 	  demo/algebra/matrix_sparse_4_4.txt\
 	  demo/algebra/double_4.txt
 	$< $(word 2, $^) --raw $(word 3, $^) --lu > $@
+
+demo/algebra/matrix_sparse_4_4_vector_multiply_add_double_4.txt:\
+	  bin/matrix_sparse_vector_multiply_add$(.EXE)\
+	  demo/algebra/matrix_sparse_4_4.txt\
+	  demo/algebra/double_4.txt
+	$< $(word 2, $^) $(word 3, $^) > $@
 
 .PHONY: demo_algebra_clean
 demo_algebra_clean:
