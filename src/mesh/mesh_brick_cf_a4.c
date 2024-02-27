@@ -4,7 +4,7 @@
 
 void mesh_brick_cf_a4(int * m_cf_a4, int d, const int * n)
 {
-  int bin_d_p, bin_p_q, h, ind, ind_b, comb_ind, comb_passed,
+  int bin_d_p, bin_p_q, ind, ind_b, comb_ind, comb_passed,
       p, q, u, v, w_ind, w_size, y_ind, y_size;
   int a[MAX_DIM], b[MAX_DIM], b_bar[MAX_DIM], b_copy[MAX_DIM], choices[MAX_DIM],
       l[MAX_DIM], n_bar_p[MAX_DIM], n_bar_u_v[MAX_DIM], positions[MAX_DIM],
@@ -28,7 +28,6 @@ void mesh_brick_cf_a4(int * m_cf_a4, int d, const int * n)
         for (y_ind = 0; y_ind < y_size; ++y_ind)
         {
           ind_b = 0;
-          h = 0;
           int_array_assign_identity(positions, q);
           for (v = 0; v < bin_p_q; ++v)
           {

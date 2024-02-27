@@ -5,11 +5,9 @@ static void mesh_qc_cbd_star_fprint_raw(
   FILE * out, const mesh_qc * m, matrix_sparse ** m_bd, double ** m_inner)
 {
   int m_cbd_star_p_nonzero_max, m_dim, p;
-  int * m_cn;
   matrix_sparse * m_cbd_star_p;
   
   m_dim = m->dim;
-  m_cn = m->cn;
   for (p = 1; p <= m_dim; ++p)
   {
     m_cbd_star_p =

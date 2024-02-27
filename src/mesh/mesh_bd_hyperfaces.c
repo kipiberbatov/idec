@@ -78,10 +78,8 @@ jagged1 * mesh_bd_cells(const mesh * m, const jagged1 * m_bd_hyperfaces)
   jagged1 m_hyperface_to_cells;
   jagged1 * m_bd_cells, * m_bd_cells_duplicated;
   jagged2 m_hyperfaces_to_cells;
-  jagged4 * m_fc;
   
   m_dim = m->dim;
-  m_fc = m->fc;
   m_bd_hyperfaces_a0 = m_bd_hyperfaces->a0;
   m_bd_hyperfaces_a1 = m_bd_hyperfaces->a1;
   m_bd_cells_duplicated = (jagged1 *) malloc(sizeof(jagged1));
@@ -113,10 +111,8 @@ jagged1 * mesh_almost_bd_cells(
   jagged1 face;
   jagged1 * node_list, * node_list_original;
   jagged2 faces;
-  jagged4 * m_cf;
   
   m_dim = m->dim;
-  m_cf = m->cf;
   m_bd_cells_a0 = m_bd_cells->a0;
   m_bd_cells_a1 = m_bd_cells->a1;
   node_list_original = (jagged1 *) malloc(sizeof(jagged1));
