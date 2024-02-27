@@ -648,13 +648,13 @@ demo/mesh/mesh_brick_2d_4_laplace_equation.txt:\
 	  demo/mesh/mesh_brick_2d_4_laplacian_corrected.txt
 	$< $(word 2, $^) --raw $(word 3, $^) --raw > $@ --raw
 
-# demo/mesh/mesh_brick_2d_4_laplace_equation_non_grid.txt:\
-# 	  bin/mesh_qc_laplace_equation_solve_non_grid$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_4.txt\
-# 	  demo/mesh/mesh_brick_2d_4_laplacian_corrected_symmetric.txt\
-# 	  demo/mesh/mesh_brick_2d_4_inner_corrected.txt
-# 	$< $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^) --raw\
-# 	> $@ --raw
+demo/mesh/mesh_brick_2d_4_laplace_equation_non_grid.txt:\
+	  bin/mesh_qc_laplace_equation_solve_non_grid$(.EXE)\
+	  demo/mesh/mesh_brick_2d_4.txt\
+	  demo/mesh/mesh_brick_2d_4_laplacian_corrected_symmetric.txt\
+	  demo/mesh/mesh_brick_2d_4_inner_corrected.txt
+	$< $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^) --raw\
+	> $@ --raw
 
 demo/mesh/mesh_brick_2d_4_heat_conduction_non_grid.txt:\
 	  bin/mesh_qc_heat_conduction_solve_non_grid$(.EXE)\

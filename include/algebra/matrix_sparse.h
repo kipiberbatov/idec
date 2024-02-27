@@ -13,6 +13,9 @@ typedef struct matrix_sparse
   double * values;
 } matrix_sparse;
 
+/* creates an exact copy of a sparse matrix */
+matrix_sparse * matrix_sparse_copy(const matrix_sparse * a);
+
 /* find a[i][j] */
 double matrix_sparse_part(const matrix_sparse * a, int i, int j);
 
