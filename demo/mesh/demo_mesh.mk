@@ -270,6 +270,7 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2_forman_inner.txt\
   demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
   demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
+  demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt\
   demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_2_forman_hodge.txt\
   demo/mesh/mesh_brick_2d_2_forman_node_curvature.txt\
@@ -356,6 +357,12 @@ demo/mesh/mesh_brick_2d_2_forman_laplacian.txt:\
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
+
+demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt:\
+	  bin/spacetime_pde$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt
+	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.1 10 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt:\
 	  bin/mesh_qc_hodge_coeff$(.EXE)\
@@ -449,6 +456,11 @@ demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected.txt:\
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< --raw -list 2 < tmp.txt > $@
 	rm tmp.txt
+
+demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt:\
+	  bin/spacetime_pde$(.EXE)\
+	  demo/mesh/mesh_brick_2d_4.txt\
+	  demo/mesh/mesh_brick_2d_4_laplacian_corrected.txt
 
 # demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected.txt:\
 # 	  bin/mesh_qc_laplacian$(.EXE)\
