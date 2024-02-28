@@ -362,7 +362,7 @@ demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt:\
 	  bin/spacetime_pde$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt
-	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.1 10 > $@
+	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.001 20 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt:\
 	  bin/mesh_qc_hodge_coeff$(.EXE)\
@@ -457,10 +457,10 @@ demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected.txt:\
 	$< --raw -list 2 < tmp.txt > $@
 	rm tmp.txt
 
-demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt:\
-	  bin/spacetime_pde$(.EXE)\
-	  demo/mesh/mesh_brick_2d_4.txt\
-	  demo/mesh/mesh_brick_2d_4_laplacian_corrected.txt
+# demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt:\
+# 	  bin/spacetime_pde$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_4.txt\
+# 	  demo/mesh/mesh_brick_2d_4_laplacian_corrected.txt
 
 # demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected.txt:\
 # 	  bin/mesh_qc_laplacian$(.EXE)\
@@ -883,11 +883,95 @@ demo/mesh/mesh_brick_2d_5_forman_hodge_corrected.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
+# DEMO_MESH_BRICK_REGULAR_2D_10 := \
+#   demo/mesh/mesh_brick_2d_10.txt\
+#   demo/mesh/mesh_brick_2d_10_vol.txt\
+#   demo/mesh/mesh_brick_2d_10_forman.txt\
+#   demo/mesh/mesh_brick_2d_10_forman_bd.txt\
+#   demo/mesh/mesh_brick_2d_10_forman_cbd.txt\
+#   demo/mesh/mesh_brick_2d_10_forman_vol.txt\
+#   demo/mesh/mesh_brick_2d_10_forman_metric.txt\
+#   demo/mesh/mesh_brick_2d_10_forman_inner.txt\
+#   demo/mesh/mesh_brick_2d_10_forman_cbd_star.txt\
+#   demo/mesh/mesh_brick_2d_10_forman_laplacian.txt\
+#   demo/mesh/mesh_brick_2d_10_forman_spacetime_pde.txt\
+
+# .PHONY: demo_mesh_brick_regular_2d_10
+# demo_mesh_brick_regular_2d_10: $(DEMO_MESH_BRICK_REGULAR_2D_10)
+
+# demo/mesh/mesh_brick_2d_10.txt:\
+# 	  bin/mesh_brick_regular$(.EXE)
+# 	$< 2 10 > $@
+
+# demo/mesh/mesh_brick_2d_10_vol.txt:\
+# 	  bin/mesh_qc_vol$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10.txt
+# 	 $< < $(word 2, $^) > $@
+
+# demo/mesh/mesh_brick_2d_10_forman.txt:\
+# 	  bin/forman_bd$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10.txt
+# 	 $< < $(word 2, $^) > $@
+
+# demo/mesh/mesh_brick_2d_10_forman_bd.txt:\
+# 	  bin/mesh_bd$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10_forman.txt
+# 	$< --raw < $(word 2, $^) > $@
+
+# demo/mesh/mesh_brick_2d_10_forman_cbd.txt:\
+# 	  bin/mesh_cbd$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10_forman.txt
+# 	$< --raw < $(word 2, $^) > $@
+
+# demo/mesh/mesh_brick_2d_10_forman_vol.txt:\
+# 	  bin/mesh_qc_vol$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10_forman.txt
+# 	 $< < $(word 2, $^) > $@
+
+# demo/mesh/mesh_brick_2d_10_forman_metric.txt:\
+# 	  bin/mesh_qc_metric$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10_forman.txt\
+# 	  demo/mesh/mesh_brick_2d_10_forman_vol.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
+# demo/mesh/mesh_brick_2d_10_forman_inner.txt:\
+# 	  bin/mesh_qc_inner_direct$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10_forman.txt\
+# 	  demo/mesh/mesh_brick_2d_10_forman_vol.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
+# demo/mesh/mesh_brick_2d_10_forman_cbd_star.txt:\
+# 	  bin/mesh_qc_cbd_star$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10_forman.txt\
+# 	  demo/mesh/mesh_brick_2d_10_forman_inner.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
+# demo/mesh/mesh_brick_2d_10_forman_laplacian.txt:\
+# 	  bin/mesh_qc_laplacian$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10_forman.txt\
+# 	  demo/mesh/mesh_brick_2d_10_forman_cbd_star.txt
+# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
+# 	$< < tmp.txt > $@
+# 	rm tmp.txt
+
+# demo/mesh/mesh_brick_2d_10_forman_spacetime_pde.txt:\
+# 	  bin/spacetime_pde$(.EXE)\
+# 	  demo/mesh/mesh_brick_2d_10_forman.txt\
+# 	  demo/mesh/mesh_brick_2d_10_forman_laplacian.txt
+# 	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.001 20 > $@
+
 DEMO_MESH_BRICK_REGULAR_2 :=\
   $(DEMO_MESH_BRICK_REGULAR_2D_1)\
   $(DEMO_MESH_BRICK_REGULAR_2D_2)\
   $(DEMO_MESH_BRICK_REGULAR_2D_4)\
   $(DEMO_MESH_BRICK_REGULAR_2D_5)\
+#   $(DEMO_MESH_BRICK_REGULAR_2D_10)\
 
 DEMO_MESH_TWO_TRIANGLES := \
   demo/mesh/mesh_two_triangles_vol.txt\

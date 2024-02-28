@@ -104,18 +104,26 @@ double ** spacetime_pde_time_order_1_linear_trapezoid_method(
   
   lhs = matrix_sparse_linear_combination(a, b, 1, - time_step / 2);
   /* NULL pointer checking */
+  fputs("\nLHS interior matrix:\n", stderr);
+  matrix_sparse_fprint(stderr, lhs, "--matrix-form-raw");
   
   rhs = matrix_sparse_linear_combination(a, b, 1, time_step / 2);
   /* NULL pointer checking */
+  fputs("\nRHS interior matrix:\n", stderr);
+  matrix_sparse_fprint(stderr, rhs, "--matrix-form-raw");
   
   free_part = (double *) malloc(sizeof(double) * n);
   /* NULL pointer checking */
   
   memcpy(free_part, c, sizeof(double) * n);
   double_array_multiply_with(free_part, n, time_step);
+  fputs("\nRight hand side vector:\n", stderr);
+  double_array_fprint(stderr, n, free_part, "--raw");
   
   // lhs_final = matrix_sparse_row_partial_update(lhs, boundary_positions, trace);
   matrix_sparse_set_identity_rows(lhs, boundary_positions);
+  fputs("\nLHS interior modified matrix:\n", stderr);
+  matrix_sparse_fprint(stderr, lhs, "--matrix-form-raw");
   
   rhs_final = (double *) malloc(sizeof(double) * n);
   
@@ -128,16 +136,32 @@ double ** spacetime_pde_time_order_1_linear_trapezoid_method(
     /* NULL pointer checking */
   }
   
-  memcpy(result[0], u0, n);
+  memcpy(result[0], u0, sizeof(double) * n);
+  fputs("\nSolution at step 0:\n", stderr);
+  double_array_fprint(stderr, n, result[0], "--raw");
   
   for (i = 0; i < number_of_steps; ++ i)
   {
+    fprintf(stderr, "\n\nstep = %d\n", i + 1);
     memcpy(rhs_final, free_part, sizeof(double) * n);
+    fputs("\nRight hand side final -- initialize:\n", stderr);
+    double_array_fprint(stderr, n, rhs_final, "--raw");
+    
     matrix_sparse_vector_multiply_add(rhs_final, rhs, result[i]);
-    //double_array_partial_update(rhs_final, boundary_positions, g);
+    fputs("\nRight hand side final -- added contributions:\n", stderr);
+    double_array_fprint(stderr, n, rhs_final, "--raw");
+
     double_array_partial_update(rhs_final, boundary_positions, g);
-    memcpy(result[i + 1], rhs_final, n);
-    matrix_sparse_linear_solve(lhs_final, result[i + 1], "--lu");
+    fputs("\nRight hand side final -- applied boundary conditions:\n", stderr);
+    double_array_fprint(stderr, n, rhs_final, "--raw");
+
+    memcpy(result[i + 1], rhs_final, sizeof(double) * n);
+    fputs("\nCopy into result:\n", stderr);
+    double_array_fprint(stderr, n, result[i + 1], "--raw");
+
+    matrix_sparse_linear_solve(lhs, result[i + 1], "--lu");
+    fputs("\nSolution at this time step:\n", stderr);
+    double_array_fprint(stderr, n, result[i + 1], "--raw");
   }
   
   free(rhs_final);
@@ -170,20 +194,26 @@ double ** spacetime_pde_heat_equation_solve_trapezoidal_method(
   u0 = (double *) malloc(sizeof(double) * n);
   for (i = 0; i < n; ++i)
     u0[i] = initial(m_coord + m_dim_embedded * i);
-
-  for (i = 0; i < n; ++i)
+  fputs("Initial condition vector:\n", stderr);
+  double_array_fprint(stderr, n, u0, "--raw");
 
   c = (double *) malloc(sizeof(double) * n);
   for (i = 0; i < n; ++i)
     c[i] = f(m_coord + m_dim_embedded * i);
+  fputs("\nRight hand side vector:\n", stderr);
+  double_array_fprint(stderr, n, c, "--raw");
 
   g = spacetime_pde_dirichlet_boundary_vector(
     m_dim_embedded,
     m_coord,
     m_nodes_bd,
     g_d);
+  fputs("\nDirichlet boundary condition vector:\n", stderr);
+  double_array_fprint(stderr, m_nodes_bd->a0, g, "--raw");
   
   a = matrix_sparse_identity(n);
+  fputs("\nIdentity matrix:\n", stderr);
+  matrix_sparse_fprint(stderr, a, "--raw");
 
   result = spacetime_pde_time_order_1_linear_trapezoid_method(
     u0,

@@ -7,9 +7,30 @@
 #include "mesh_qc.h"
 #include "spacetime_pde.h"
 
+/*
+Solve the following problem:
+Given a mesh M for the unit square, and tthe discrete Laplacian, solve:
+  . du/dt = -Laplacian(u) + f    in the interior nodes of M
+  . u = g_d                      at the boundary nodes of M
+  . u(0) = initial               at all nodes of M
+For this example it is assumed that f and g_d are time independent.
+An artificial example with u(t, x_0, x_1) = x_0^2 + x_1^2 is taken.
+This corresponds to f(x_0, x_1) = -4.
+*/
+
+static void matrix_sparse_negate(matrix_sparse * a)
+{
+  int nonzero_max = a->cols_total[a->rows];
+  int i;
+  double * values = a->values;
+
+  for (i = 0; i < nonzero_max; ++i)
+    values[i] = -values[i];
+}
+
 static double f(const double * x)
 {
-  return - 4;
+  return -4;
 }
 
 static double g_d(const double * x)
@@ -47,6 +68,8 @@ int main(int argc, char * argv[])
     fputs("main - cannot scan m\n", stderr);
     goto end;
   }
+  mesh_fprint(stderr, m, "--raw");
+  fputs("\n", stderr);
   
   m->fc = mesh_fc(m);
   if (errno)
@@ -61,6 +84,8 @@ int main(int argc, char * argv[])
     fputs("main - cannot calculate m_nodes_bd\n", stderr);
     goto m_free;
   }
+  jagged1_fprint(stderr, m_nodes_bd, "--raw");
+  fputs("\n", stderr);
   
   m_laplacian_0_format = argv[3];
   m_laplacian_0_name = argv[4];
@@ -72,9 +97,14 @@ int main(int argc, char * argv[])
     fputs("main - cannot calculate m_laplacian[0]\n", stderr);
     goto m_nodes_bd_free;
   }
+  matrix_sparse_fprint(stderr, m_laplacian_0, "--raw");
+  fputs("\n", stderr);
+  matrix_sparse_negate(m_laplacian_0);
 
   time_step = atof(argv[5]);
+  fprintf(stderr, "%g\n\n", time_step);
   number_of_steps = atoi(argv[6]);
+  fprintf(stderr, "%d\n\n", number_of_steps);
   
   result = spacetime_pde_heat_equation_solve_trapezoidal_method(
     m_laplacian_0,
@@ -93,18 +123,6 @@ int main(int argc, char * argv[])
     goto m_laplacian_0_free;
   }
   
-  // {
-  //   int i;
-  //   double error;
-  //   for (i = 0; i < m_laplacian_0->rows; ++i)
-  //   {
-  //     error = x[i] - g_d(m->coord + m->dim_embedded * i);
-  //     fprintf(stderr, "%g\n", error);
-  //   }
-  // }
-  
-  // out_format = argv[5];
-  // double_array_fprint(stdout, m_laplacian_0->rows, x, out_format);
   for (i = 0; i <= number_of_steps; ++i)
   {
     double_array_fprint(stdout, m_laplacian_0->cols, result[i], "--raw");
