@@ -41,10 +41,8 @@ jagged1 * mesh_qc_bd_layer_0_cells(
   jagged1 m_hyperface_to_cells;
   jagged1 * m_bd_layer_0_cells, * m_bd_layer_0_cells_duplicated;
   jagged2 m_hyperfaces_to_cells;
-  jagged4 * m_fc;
   
   m_dim = m->dim;
-  m_fc = m->fc;
   m_bd_layer_0_hyperfaces_a0 = m_bd_layer_0_hyperfaces->a0;
   m_bd_layer_0_hyperfaces_a1 = m_bd_layer_0_hyperfaces->a1;
   m_bd_layer_0_cells_duplicated = (jagged1 *) malloc(sizeof(jagged1));
@@ -78,10 +76,8 @@ jagged1 * mesh_qc_bd_layer_0_1_nodes(
   jagged1 face;
   jagged1 * m_bd_layer_0_1_nodes, * m_bd_layer_0_1_nodes_original;
   jagged2 faces;
-  jagged4 * m_cf;
   
   m_dim = m->dim;
-  m_cf = m->cf;
   m_bd_layer_0_cells_a0 = m_bd_layer_0_cells->a0;
   m_bd_layer_0_cells_a1 = m_bd_layer_0_cells->a1;
   m_bd_layer_0_1_nodes_original = (jagged1 *) malloc(sizeof(jagged1));

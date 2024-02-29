@@ -166,7 +166,7 @@ double * matrix_sparse_heat_conduction_solve_non_grid(
   matrix_lhs = matrix_sparse_linear_combination(identity, m_laplacian, 1, -tau);
   matrix_lhs_in = matrix_sparse_restrict_symmetric(m_laplacian, m_nodes_in);
   /* the next line may need to be commented and the code refactored */
-  // m_laplacian_in = matrix_sparse_restrict_symmetric(m_laplacian, m_nodes_in);
+  m_laplacian_in = matrix_sparse_restrict_symmetric(m_laplacian, m_nodes_in);
   if (errno)
   {
     fputs("matrix_sparse_heat_conduction_solve_non_grid - cannot allocate "

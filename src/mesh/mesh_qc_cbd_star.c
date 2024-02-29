@@ -12,10 +12,8 @@ static double * mesh_qc_cbd_star_p_x(
   double * m_bd_p_x, * m_cbd_star_p_x;
   jagged1 m_cf_p_q_i;
   jagged2 m_cf_p_q;
-  jagged4 * m_cf;
 
   m_cn_p = m->cn[p];
-  m_cf = m->cf;
   m_bd_p_x = m_bd_p->values;
   m_bd_p_nonzero_max = m_bd_p->cols_total[m_bd_p->cols];
   m_cbd_star_p_x = (double *) malloc(sizeof(double) * m_bd_p_nonzero_max);

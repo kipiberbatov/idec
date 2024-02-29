@@ -11,10 +11,8 @@ static double * mesh_qc_inner_direct_d(
 )
 {
   int i, m_cn_d;
-  double d_exp;
   double * m_inner_d;
   
-  d_exp = (double) (1 << m->dim);
   m_cn_d = m->cn[m->dim];
   
   m_inner_d = (double *) malloc(sizeof(double) * m_cn_d);

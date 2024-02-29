@@ -81,10 +81,6 @@ static void matrix_sparse_set_identity_rows(
   }
 }
 
-/*
-find lhs_final that is updated lhs with the trace operator on the boundary
-*/
-
 double ** spacetime_pde_time_order_1_linear_trapezoid_method(
   const double * u0,
   const matrix_sparse * a,
@@ -98,7 +94,7 @@ double ** spacetime_pde_time_order_1_linear_trapezoid_method(
   int i, n;
   double * free_part, * rhs_final;
   double ** result;
-  matrix_sparse * lhs, * lhs_final, * rhs;
+  matrix_sparse * lhs, * rhs;
   
   n = a->rows;
   
@@ -120,7 +116,6 @@ double ** spacetime_pde_time_order_1_linear_trapezoid_method(
   fputs("\nRight hand side vector:\n", stderr);
   double_array_fprint(stderr, n, free_part, "--raw");
   
-  // lhs_final = matrix_sparse_row_partial_update(lhs, boundary_positions, trace);
   matrix_sparse_set_identity_rows(lhs, boundary_positions);
   fputs("\nLHS interior modified matrix:\n", stderr);
   matrix_sparse_fprint(stderr, lhs, "--matrix-form-raw");
