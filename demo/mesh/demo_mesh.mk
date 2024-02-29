@@ -272,6 +272,7 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
   demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt\
   demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_1.txt\
+  demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_2.txt\
   demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_2_forman_hodge.txt\
   demo/mesh/mesh_brick_2d_2_forman_node_curvature.txt\
@@ -370,6 +371,12 @@ demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_1.txt:\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt
 	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.05 20 > $@
+
+demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_2.txt:\
+	  bin/spacetime_pde_2$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt
+	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.01 100 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt:\
 	  bin/mesh_qc_hodge_coeff$(.EXE)\
