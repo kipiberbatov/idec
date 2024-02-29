@@ -57,6 +57,9 @@ void matrix_sparse_fprint(
   const char * format);
 
 /********************* matrix_sparse algebraic operations *********************/
+/* multiply matrix a with constant lambda */
+void matrix_sparse_scalar_multiply(matrix_sparse * a, double lambda);
+
 /* creates a sparse matrix representing the identity matrix */
 matrix_sparse * matrix_sparse_identity(int n);
 

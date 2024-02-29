@@ -21,16 +21,6 @@ is taken.
 This corresponds to f = 0, g_d = 0, initial = sin(pi x) sin(pi y)
 */
 
-static void matrix_sparse_negate(matrix_sparse * a)
-{
-  int nonzero_max = a->cols_total[a->rows];
-  int i;
-  double * values = a->values;
-
-  for (i = 0; i < nonzero_max; ++i)
-    values[i] = -values[i];
-}
-
 static double f(const double * x)
 {
   return 0;
@@ -102,7 +92,7 @@ int main(int argc, char * argv[])
   }
   matrix_sparse_fprint(stderr, m_laplacian_0, "--raw");
   fputs("\n", stderr);
-  matrix_sparse_negate(m_laplacian_0);
+  matrix_sparse_scalar_multiply(m_laplacian_0, -1);
 
   time_step = atof(argv[5]);
   fprintf(stderr, "%g\n\n", time_step);
