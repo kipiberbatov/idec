@@ -14,11 +14,9 @@ Given a mesh M for the unit square, and tthe discrete Laplacian, solve:
   . du/dt = -Laplacian(u) + f    in the interior nodes of M
   . u = g_d                      at the boundary nodes of M
   . u(0) = initial               at all nodes of M
-For this example it is assumed that f and g_d are time independent.
-An artificial example with
-  u(t, x, y) = exp(-2 * pi^2) sin(pi x) sin(pi y)
-is taken.
-This corresponds to f = 0, g_d = 0, initial = sin(pi x) sin(pi y)
+In this example:
+  . we have zero degrees everywhere except at the central node where it is 100
+  . we maintain zero degrees at the boundary
 */
 
 static double f(const double * x)
