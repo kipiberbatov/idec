@@ -40,4 +40,16 @@ double ** spacetime_pde_heat_equation_solve_trapezoidal_method(
   double time_step,
   int number_of_steps);
 
+/*
+Solves heat equation with Dirichlet boundary conditions.
+Command-line arguments give necessary matrices.
+Scalar fields are given in main file.
+*/
+int spacetime_pde_heat_equation_runner(
+  int argc,
+  char * argv[],
+  scalar_field f,
+  scalar_field g_d,
+  scalar_field initial);
+
 #endif /* SPACETIME_PDE_H */

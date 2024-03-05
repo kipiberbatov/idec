@@ -9,6 +9,8 @@ The next iteration is find using the trapezoidal rule
 #include <string.h>
 
 #include "double.h"
+#include "int.h"
+#include "mesh.h"
 #include "spacetime_pde.h"
 
 /* update rhs_final with the boundary conditions */
@@ -100,25 +102,17 @@ double ** spacetime_pde_time_order_1_linear_trapezoid_method(
   
   lhs = matrix_sparse_linear_combination(a, b, 1, - time_step / 2);
   /* NULL pointer checking */
-  fputs("\nLHS interior matrix:\n", stderr);
-  matrix_sparse_fprint(stderr, lhs, "--matrix-form-raw");
   
   rhs = matrix_sparse_linear_combination(a, b, 1, time_step / 2);
   /* NULL pointer checking */
-  fputs("\nRHS interior matrix:\n", stderr);
-  matrix_sparse_fprint(stderr, rhs, "--matrix-form-raw");
   
   free_part = (double *) malloc(sizeof(double) * n);
   /* NULL pointer checking */
   
   memcpy(free_part, c, sizeof(double) * n);
   double_array_multiply_with(free_part, n, time_step);
-  fputs("\nRight hand side vector:\n", stderr);
-  double_array_fprint(stderr, n, free_part, "--raw");
   
   matrix_sparse_set_identity_rows(lhs, boundary_positions);
-  fputs("\nLHS interior modified matrix:\n", stderr);
-  matrix_sparse_fprint(stderr, lhs, "--matrix-form-raw");
   
   rhs_final = (double *) malloc(sizeof(double) * n);
   
@@ -132,31 +126,18 @@ double ** spacetime_pde_time_order_1_linear_trapezoid_method(
   }
   
   memcpy(result[0], u0, sizeof(double) * n);
-  fputs("\nSolution at step 0:\n", stderr);
-  double_array_fprint(stderr, n, result[0], "--raw");
   
   for (i = 0; i < number_of_steps; ++ i)
   {
-    fprintf(stderr, "\n\nstep = %d\n", i + 1);
     memcpy(rhs_final, free_part, sizeof(double) * n);
-    fputs("\nRight hand side final -- initialize:\n", stderr);
-    double_array_fprint(stderr, n, rhs_final, "--raw");
     
     matrix_sparse_vector_multiply_add(rhs_final, rhs, result[i]);
-    fputs("\nRight hand side final -- added contributions:\n", stderr);
-    double_array_fprint(stderr, n, rhs_final, "--raw");
 
     double_array_partial_update(rhs_final, boundary_positions, g);
-    fputs("\nRight hand side final -- applied boundary conditions:\n", stderr);
-    double_array_fprint(stderr, n, rhs_final, "--raw");
 
     memcpy(result[i + 1], rhs_final, sizeof(double) * n);
-    fputs("\nCopy into result:\n", stderr);
-    double_array_fprint(stderr, n, result[i + 1], "--raw");
 
     matrix_sparse_linear_solve(lhs, result[i + 1], "--lu");
-    fputs("\nSolution at this time step:\n", stderr);
-    double_array_fprint(stderr, n, result[i + 1], "--raw");
   }
   
   free(rhs_final);
@@ -187,28 +168,26 @@ double ** spacetime_pde_heat_equation_solve_trapezoidal_method(
   n = m_laplacian->cols;
   
   u0 = (double *) malloc(sizeof(double) * n);
+  /* NULL pointer checking */
+
   for (i = 0; i < n; ++i)
     u0[i] = initial(m_coord + m_dim_embedded * i);
-  fputs("Initial condition vector:\n", stderr);
-  double_array_fprint(stderr, n, u0, "--raw");
 
   c = (double *) malloc(sizeof(double) * n);
+  /* NULL pointer checking */
+
   for (i = 0; i < n; ++i)
     c[i] = f(m_coord + m_dim_embedded * i);
-  fputs("\nRight hand side vector:\n", stderr);
-  double_array_fprint(stderr, n, c, "--raw");
 
   g = spacetime_pde_dirichlet_boundary_vector(
     m_dim_embedded,
     m_coord,
     m_nodes_bd,
     g_d);
-  fputs("\nDirichlet boundary condition vector:\n", stderr);
-  double_array_fprint(stderr, m_nodes_bd->a0, g, "--raw");
-  
+  /* NULL pointer checking */
+
   a = matrix_sparse_identity(n);
-  fputs("\nIdentity matrix:\n", stderr);
-  matrix_sparse_fprint(stderr, a, "--raw");
+  /* NULL pointer checking */
 
   result = spacetime_pde_time_order_1_linear_trapezoid_method(
     u0,
@@ -219,10 +198,121 @@ double ** spacetime_pde_heat_equation_solve_trapezoidal_method(
     m_nodes_bd,
     time_step,
     number_of_steps);
+  /* NULL pointer checking */
 
   free(a);
   free(g);
   free(c);
   free(u0);
   return result;
+}
+
+/*
+Solves heat equation with Dirichlet boundary conditions.
+Command-line arguments give necessary matrices.
+Scalar fields are given in main file.
+*/
+int spacetime_pde_heat_equation_runner(
+  int argc,
+  char * argv[],
+  scalar_field f,
+  scalar_field g_d,
+  scalar_field initial)
+{
+  char * m_format, * m_laplacian_0_format, * m_laplacian_0_name, * m_name;
+  double ** result;
+  mesh * m;
+  jagged1 * m_nodes_bd;
+  matrix_sparse * m_laplacian_0;
+  int i, number_of_steps;
+  double time_step;
+  
+  if (argc != 7)
+  {
+    errno = EINVAL;
+    fputs("main - the number of command-line arguments must be 6\n", stderr);
+    goto end;
+  }
+  
+  m_format = argv[1];
+  m_name = argv[2];
+  m = mesh_fscan_by_name(m_name, m_format);
+  if (errno)
+  {
+    fputs("main - cannot scan m\n", stderr);
+    goto end;
+  }
+  
+  m->fc = mesh_fc(m);
+  if (errno)
+  {
+    fputs("main - cannot calculate m->fc\n", stderr);
+    goto m_free;
+  }
+  
+  m_nodes_bd = mesh_bd_nodes(m);
+  if (errno)
+  {
+    fputs("main - cannot calculate m_nodes_bd\n", stderr);
+    goto m_free;
+  }
+  
+  m_laplacian_0_format = argv[3];
+  m_laplacian_0_name = argv[4];
+  
+  m_laplacian_0 = 
+    matrix_sparse_fscan_by_name(m_laplacian_0_name, m_laplacian_0_format);
+  if (errno)
+  {
+    fputs("main - cannot calculate m_laplacian[0]\n", stderr);
+    goto m_nodes_bd_free;
+  }
+  matrix_sparse_scalar_multiply(m_laplacian_0, -1);
+
+  time_step = double_sscan(argv[5]);
+  if (errno)
+  {
+    fprintf(stderr, "Error in %s: cannot scan time_step\n", __func__);
+    goto m_laplacian_0_free;
+  }
+
+  number_of_steps = int_sscan(argv[6]);
+  if (errno)
+  {
+    fprintf(stderr, "Error in %s: cannot scan number_of_steps\n", __func__);
+    goto m_laplacian_0_free;
+  }
+  
+  result = spacetime_pde_heat_equation_solve_trapezoidal_method(
+    m_laplacian_0,
+    m->dim_embedded,
+    m->coord,
+    m_nodes_bd,
+    initial,
+    f,
+    g_d,
+    time_step,
+    number_of_steps);
+  
+  if (errno)
+  {
+    fputs("main - cannot calculate x\n", stderr);
+    goto m_laplacian_0_free;
+  }
+  
+  for (i = 0; i <= number_of_steps; ++i)
+  {
+    double_array_fprint(stdout, m_laplacian_0->cols, result[i], "--raw");
+    fputs("\n", stdout);
+  }
+
+  free(result);
+m_laplacian_0_free:
+  matrix_sparse_free(m_laplacian_0);
+m_nodes_bd_free:
+  jagged1_free(m_nodes_bd);
+m_free:
+  mesh_free(m);
+end:
+  return errno;
 }
