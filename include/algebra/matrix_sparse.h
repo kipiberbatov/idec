@@ -90,7 +90,7 @@ void matrix_sparse_vector_multiply_add(
   const double * x);
 
 /* Find the a . diagonal(d[0], ..., d[a->cols - 1]) . */
-void matrix_sparse_product_with_diagonal_matrix(matrix_sparse * a, double * d);
+void matrix_sparse_multiply_with_diagonal_matrix(matrix_sparse * a, double * d);
 
 /************************* matrix_sparse_linear_solve *************************/
 /* Supported methods for "matrix_sparse_linear_solve":
