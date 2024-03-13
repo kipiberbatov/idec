@@ -38,7 +38,7 @@ endif
 # graphics: mesh
 
 ################################# $(CC) flags ##################################
-MODULES := array algebra region mesh
+MODULES := array algebra region mesh graphics
 
 CPPFLAGS := -MMD -MP
 CFLAGS := -O2 -Wall
@@ -55,10 +55,15 @@ REGION_INC := $(REGION_INC_EXE) -iquote src/region
 MESH_INC_EXE := $(ALGEBRA_INC_EXE) -iquote include/region -iquote include/mesh
 MESH_INC := $(MESH_INC_EXE) -iquote src/mesh
 
+GRAPHICS_INC_EXE := $(MESH_INC_EXE) -iquote include/graphics \
+  $(shell pkg-config --cflags gtk+-3.0)
+GRAPHICS_INC := $(GRAPHICS_INC_EXE) -iquote src/graphics
+
 ARRAY_LDLIBS := lib/libarray$(.LIB)
 ALGEBRA_LDLIBS := lib/libalgebra$(.LIB) $(ARRAY_LDLIBS)
 REGION_LDLIBS := lib/libregion$(.LIB) $(ARRAY_LDLIBS)
 MESH_LDLIBS := lib/libmesh$(.LIB) lib/libregion$(.LIB) $(ALGEBRA_LDLIBS)
+GRAPHICS_LDLIBS := lib/libgraphics$(.LIB) $(MESH_LDLIBS)
 
 ############################### all-type targets ###############################
 .PHONY: all
@@ -79,6 +84,10 @@ region: build_region lib_region bin_region demo_region
 # mesh
 .PHONY: mesh
 mesh: build_mesh lib_mesh bin_mesh demo_mesh
+
+# graphics
+.PHONY: graphics
+graphics: build_graphics lib_graphics bin_graphics demo_graphics
 
 ######################### preprocessing and compiling ##########################
 build:
@@ -128,6 +137,17 @@ build_mesh: build $(MESH_OBJ)
 $(MESH_OBJ): build/%$(.OBJ): src/mesh/%$(.SRC)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(MESH_INC) -c $< -o $@
 
+# graphics
+GRAPHICS_OBJ_NAMES := $(wildcard src/graphics/*$(.SRC))
+GRAPHICS_OBJ :=\
+  $(patsubst src/graphics/%$(.SRC), build/%$(.OBJ), $(GRAPHICS_OBJ_NAMES))
+
+.PHONY: build_graphics
+build_graphics: build $(GRAPHICS_OBJ)
+
+$(GRAPHICS_OBJ): build/%$(.OBJ): src/graphics/%$(.SRC)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(GRAPHICS_INC) -c $< -o $@
+
 # all
 .PHONY: build_all
 build_all: $(patsubst %, build_%, $(MODULES))
@@ -150,6 +170,10 @@ REGION_HEADER_DEP :=\
 # mesh
 MESH_HEADER_DEP :=\
   $(patsubst build/%$(.OBJ), build/%$(.DEP), $(MESH_OBJ_NAMES))
+
+# graphics
+GRAPHICS_HEADER_DEP :=\
+  $(patsubst build/%$(.OBJ), build/%$(.DEP), $(GRAPHICS_OBJ_NAMES))
 
 ################################## archiving ###################################
 lib: build
@@ -181,6 +205,13 @@ lib/libregion$(.LIB): $(REGION_OBJ)
 lib_mesh: lib lib/libmesh$(.LIB)
 
 lib/libmesh$(.LIB): $(MESH_OBJ)
+	$(AR) $(ARFLAGS) $@ $^
+
+# graphics
+.PHONY: lib_graphics
+lib_graphics: lib lib/libgraphics$(.LIB)
+
+lib/libgraphics$(.LIB): $(GRAPHICS_OBJ)
 	$(AR) $(ARFLAGS) $@ $^
 
 # all
@@ -235,6 +266,17 @@ bin_mesh: bin $(MESH_EXE)
 $(MESH_EXE): bin/%$(.EXE): main/mesh/main_%$(.SRC) $(MESH_LDLIBS)
 	$(CC) $(CFLAGS) $(MESH_INC_EXE) $(CCFLAGS) $< $(MESH_LDLIBS) -lm -o $@
 
+# graphics
+GRAPHICS_EXE_NAMES := $(wildcard main/graphics/*$(.SRC))
+GRAPHICS_EXE :=\
+  $(patsubst main/graphics/main_%$(.SRC), bin/%$(.EXE), $(GRAPHICS_EXE_NAMES))
+
+.PHONY: bin_graphics
+bin_graphics: bin $(GRAPHICS_EXE)
+
+$(GRAPHICS_EXE): bin/%$(.EXE): main/graphics/main_%$(.SRC) $(GRAPHICS_LDLIBS)
+	$(CC) $(CFLAGS) $(GRAPHICS_INC_EXE) $(CCFLAGS) $< $(shell pkg-config --libs gtk+-3.0) $(GRAPHICS_LDLIBS) -lm -o $@
+
 # all
 .PHONY: bin_all
 bin_all: $(patsubst %, bin_%, $(MODULES))
@@ -262,11 +304,16 @@ REGION_OBJ_DEP :=\
 MESH_OBJ_DEP :=\
   $(patsubst bin/%$(.EXE), bin/%$(.DEP), $(MESH_EXE_NAMES))
 
+# graphics
+GRAPHICS_OBJ_DEP :=\
+  $(patsubst bin/%$(.EXE), bin/%$(.DEP), $(GRAPHICS_EXE_NAMES))
+
 ################################ running demos #################################
 -include demo/array/demo_array.mk
 -include demo/algebra/demo_algebra.mk
 -include demo/region/demo_region.mk
 -include demo/mesh/demo_mesh.mk
+-include demo/graphics/demo_graphics.mk
 
 .PHONY: demo_all
 demo_all: $(patsubst %, demo_%, $(MODULES))
@@ -347,6 +394,25 @@ mesh_clean: build_mesh_clean
 
 .PHONY: mesh_distclean
 mesh_distclean: lib_mesh_clean bin_mesh_clean demo_mesh_clean
+
+# graphics
+.PHONY: build_graphics_clean
+build_graphics_clean:
+	-$(RM) $(GRAPHICS_OBJ) $(GRAPHICS_HEADER_DEP)
+
+.PHONY: lib_graphics_clean
+lib_graphics_clean:
+	-$(RM) lib/libgraphics$(.LIB)
+
+.PHONY: bin_graphics_clean
+bin_graphics_clean:
+	-$(RM) $(GRAPHICS_EXE) $(GRAPHICS_OBJ_DEP)
+
+.PHONY: graphics_clean
+graphics_clean: build_graphics_clean
+
+.PHONY: graphics_distclean
+graphics_distclean: lib_graphics_clean bin_graphics_clean demo_graphics_clean
 
 # all
 .PHONY: build_clean

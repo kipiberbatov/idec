@@ -8,6 +8,7 @@ Software library implementing the operations in [https://arxiv.org/abs/2201.0370
 - algebra: using the structure **cs** from [CSparse library](https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/master/CSparse) as a backend a wrapper structure **matrix\_sparse** is created; a simpler structure **vector\_sparse** is also created
 - region: structures **simplex** and **quasi\_cube** and functions operating on them are implemented
 - mesh: structure **mesh** and functions on meshes are implemented; the structure **mesh\_qc** is the same as **mesh** but is intended to be used for quasi-cubical meshes resulting from applying **forman**
+- graphics: examples using [Cairo](https://www.cairographics.org) and [GTK 3](https://docs.gtk.org/gtk3/)
 
 ## Building on Unix-like platforms
 
