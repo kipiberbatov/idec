@@ -40,9 +40,15 @@ void double_array_normalise(double * res, int d, const double * a);
 void double_array_difference(
   double * res, int d, const double * a, const double * b);
 
+double double_array_min(int n, const double * a);
+
+double double_array_max(int n, const double * a);
 
 /******************************* double_matrix ********************************/
 double * double_matrix_fscan(FILE * in, int m, int n, const char * format);
+
+double * double_matrix_fscan_by_name(
+  const char * name, int m, int n, const char * format);
 
 void double_matrix_fprint(
   FILE * out, int m, int n, const double * a, const char * format);

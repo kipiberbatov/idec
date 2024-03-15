@@ -1,21 +1,22 @@
 #include <errno.h>
 #include <stdlib.h>
-#include "double.h"
+#include <string.h>
+
+#include "int.h"
 
 double double_sscan(const char * s)
 {
-  int correct;
   double a;
-  
-  correct = sscanf(s, "%lf", &a);
-  if (correct <= 0)
+  char * ptr;
+
+  a = strtod(s, &ptr);
+  if (strlen(ptr))
   {
     errno = EINVAL;
-    if (correct == 0)
-      fputs("double_sscan - not a valid floating point number\n", stderr);
-    else
-      fputs("double_sscan - empty string\n", stderr);
-    return -1;
+    fprintf(stderr,
+    "Error during execution of function %s in file %s on line %d: "
+    "%s is not a valid floating point number\n",
+    __func__, __FILE__, __LINE__, s);
   }
   return a;
 }

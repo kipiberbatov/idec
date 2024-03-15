@@ -1,4 +1,3 @@
-#include <cairo.h>
 #include <gtk/gtk.h>
 
 #include "context_fill.h"
@@ -6,10 +5,10 @@
 static void do_drawing(GtkWidget * widget, cairo_t * cr, int * i, int n)
 {
   int height, width;
-  GtkWidget * win;
+  GtkWidget * window;
   
-  win = gtk_widget_get_toplevel(widget);
-  gtk_window_get_size(GTK_WINDOW(win), &width, &height);
+  window = gtk_widget_get_toplevel(widget);
+  gtk_window_get_size(GTK_WINDOW(window), &width, &height);
   context_fill(cr, width, height, *i, n);
   if (*i < n - 1)
     *i += 1;
