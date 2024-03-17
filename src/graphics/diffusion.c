@@ -117,8 +117,6 @@ void colored_2d_point_draw(cairo_t * cr, colored_2d_point * p)
   int ind;
   
   ind = (int) (p->relative_value * ((double) (p->total_colors - 1)));
-  // rgb_color(color, ind, total_colors);
-  // cairo_set_source_rgb(cr, color->red, color->green, color->blue);
   p->painter(cr, ind, p->total_colors);
   cairo_set_line_width(cr, 1);
   cairo_arc(cr, p->x, p->y, p->point_size, 0, 2 * M_PI);

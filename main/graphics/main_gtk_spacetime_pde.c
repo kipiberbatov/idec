@@ -6,7 +6,6 @@
 
 #include "double.h"
 #include "diffusion.h"
-// #include "gtk_spacetime_pde.h"
 #include "image.h"
 #include "int.h"
 #include "mesh.h"
@@ -20,7 +19,6 @@ static void do_drawing(GtkWidget * widget, cairo_t * cr, diffusion * a)
 
   window = gtk_widget_get_toplevel(widget);
   gtk_window_get_size(GTK_WINDOW(window), &width, &height);
-  // gtk_spacetime_pde(cr, width, height, a);
   diffusion_draw_snapshot(cr, width, height, a);
   i = diffusion_get_index(a);
   n = diffusion_total_steps(a);
