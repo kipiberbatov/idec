@@ -5,11 +5,12 @@
 #include <gtk/gtk.h>
 
 #include "double.h"
+#include "diffusion.h"
 #include "gtk_spacetime_pde.h"
 #include "int.h"
 #include "mesh.h"
 
-static void do_drawing(GtkWidget * widget, cairo_t * cr, heat_flow * a)
+static void do_drawing(GtkWidget * widget, cairo_t * cr, diffusion * a)
 {
   int height, n, width;
   int * i;
@@ -18,15 +19,15 @@ static void do_drawing(GtkWidget * widget, cairo_t * cr, heat_flow * a)
   window = gtk_widget_get_toplevel(widget);
   gtk_window_get_size(GTK_WINDOW(window), &width, &height);
   gtk_spacetime_pde(cr, width, height, a);
-  i = heat_flow_get_index(a);
-  n = heat_flow_total_steps(a);
+  i = diffusion_get_index(a);
+  n = diffusion_total_steps(a);
   if (*i < n - 1)
     *i += 1;
 }
 
 static int on_draw_event(GtkWidget * widget, cairo_t * cr, void * user_data)
 {
-  do_drawing(widget, cr, (heat_flow *) user_data);
+  do_drawing(widget, cr, (diffusion *) user_data);
   return FALSE;
 }
 
@@ -44,7 +45,7 @@ int main(int argc, char * argv[])
   int * i;
   double * u;
   mesh * m;
-  heat_flow * a;
+  diffusion * a;
   GtkWidget * window;
   GtkWidget * drawing_area;
   
@@ -93,15 +94,15 @@ int main(int argc, char * argv[])
   {
     fprintf(stderr,
       "Error during execution of function %s in file %s on line %d: "
-      "could not generate temperatures\n",
+      "could not generate values\n",
        __func__, __FILE__,__LINE__);
     goto m_free;
   }
   
   total_colors = 1000;
   
-  a = (heat_flow *) alloca(heat_flow_size());
-  heat_flow_set(a, i, n, m, u, total_colors);
+  a = (diffusion *) alloca(diffusion_size());
+  diffusion_set(a, i, n, m, u, total_colors);
   
   gtk_init(&argc, &argv);
 
