@@ -10,6 +10,7 @@ static void do_drawing(GtkWidget * widget, cairo_t * cr, int * i, int n)
   window = gtk_widget_get_toplevel(widget);
   gtk_window_get_size(GTK_WINDOW(window), &width, &height);
   context_fill(cr, width, height, *i, n);
+  fprintf(stderr, "i = %d\n", *i);
   if (*i < n - 1)
     *i += 1;
 }

@@ -6,9 +6,11 @@
 
 #include "double.h"
 #include "diffusion.h"
-#include "gtk_spacetime_pde.h"
+// #include "gtk_spacetime_pde.h"
+#include "image.h"
 #include "int.h"
 #include "mesh.h"
+#include "rgb.h"
 
 static void do_drawing(GtkWidget * widget, cairo_t * cr, diffusion * a)
 {
@@ -18,9 +20,11 @@ static void do_drawing(GtkWidget * widget, cairo_t * cr, diffusion * a)
 
   window = gtk_widget_get_toplevel(widget);
   gtk_window_get_size(GTK_WINDOW(window), &width, &height);
-  gtk_spacetime_pde(cr, width, height, a);
+  // gtk_spacetime_pde(cr, width, height, a);
+  diffusion_draw_snapshot(cr, width, height, a);
   i = diffusion_get_index(a);
   n = diffusion_total_steps(a);
+  fprintf(stderr, "i = %d\n", *i);
   if (*i < n - 1)
     *i += 1;
 }
@@ -37,13 +41,22 @@ static int time_handler(GtkWidget * widget)
   return TRUE;
 }
 
+static void painter(cairo_t * cr, int ind, int total_colors)
+{
+  rgb color;
+  rgb_color(&color, ind, total_colors);
+  cairo_set_source_rgb(cr, color.red, color.green, color.blue);
+}
+
 int main(int argc, char * argv[])
 {
   char * m_format, * u_format;
   char * m_filename, * u_filename;
   int begin, n, steps, total_colors;
   int * i;
-  double * u;
+  unsigned int speed;
+  double height, point_size, width;
+  double * new_coordinates, * u;
   mesh * m;
   diffusion * a;
   GtkWidget * window;
@@ -99,10 +112,28 @@ int main(int argc, char * argv[])
     goto m_free;
   }
   
+  new_coordinates = (double *) malloc(sizeof(double) * 2 * m->cn[0]);
+  if (errno)
+  {
+    fprintf(stderr,
+      "Error during execution of function %s in file %s on line %d: "
+      "could not generate values\n",
+       __func__, __FILE__,__LINE__);
+    goto u_free;
+  }
+  
+  width = 500;
+  height = 500;
+  image_new_coordinates(new_coordinates, m, width, height);
+  point_size = image_point_size(width, height);
+  
   total_colors = 1000;
   
   a = (diffusion *) alloca(diffusion_size());
-  diffusion_set(a, i, n, m, u, total_colors);
+  diffusion_set(a,
+    i, n, m, new_coordinates, point_size, u, total_colors, painter);
+  
+  speed = 100;
   
   gtk_init(&argc, &argv);
 
@@ -116,15 +147,17 @@ int main(int argc, char * argv[])
                    G_CALLBACK(gtk_main_quit), NULL);
 
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size(GTK_WINDOW(window), 500, 500);
+  gtk_window_set_default_size(GTK_WINDOW(window), width, height);
   gtk_window_set_title(GTK_WINDOW(window), "Heat flow in 2D");
 
-  g_timeout_add(100, (GSourceFunc) time_handler, (void *) window);
+  g_timeout_add(speed, (GSourceFunc) time_handler, (void *) window);
 
   gtk_widget_show_all(window);
   gtk_main();
   errno = 0;
   
+  free(new_coordinates);
+u_free:
   free(u);
 m_free:
   mesh_free(m);

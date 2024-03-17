@@ -38,15 +38,14 @@ gtk_spacetime_pde(cairo_t * cr, double width, double height, diffusion * a)
   int j, m_cn_0, m_dim_embedded;
   double * m_coord, * m_coord_j, * u_i;
   rgb color;
-  
+
   int * i = diffusion_get_index(a);
   mesh * m = diffusion_get_mesh(a);
   double * u = diffusion_get_values(a);
   double min_value = diffusion_min_value(a);
   double max_value = diffusion_max_value(a);
   int total_colors = diffusion_get_total_colors(a);
-  
-  fprintf(stderr, "i = %d\n", *i);
+
   m_cn_0 = m->cn[0];
   m_coord = m->coord;
   m_dim_embedded = m->dim_embedded;
