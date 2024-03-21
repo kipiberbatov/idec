@@ -14,7 +14,7 @@ MKDIR := mkdir
 .SRC := .c
 ifeq ($(OS), Windows_NT)
   .EXE := .exe
-  .DYN := .dll
+  .DLL := .dll
   .LIB := .lib 
   .OBJ := .obj
 else
@@ -23,10 +23,10 @@ else
   .OBJ := .o
   UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Linux)
-  .DYN := .so
+  .DLL := .so
 endif
 ifeq ($(UNAME_S), Darwin)
-  .DYN := .dylib
+  .DLL := .dylib
 endif
 endif
 
@@ -38,7 +38,7 @@ endif
 # graphics: mesh
 
 ################################# $(CC) flags ##################################
-MODULES := array algebra region mesh graphics
+MODULES := array algebra region mesh graphics shared
 
 CPPFLAGS := -MMD -MP
 CFLAGS := -O2 -Wall
@@ -59,11 +59,15 @@ GRAPHICS_INC_EXE := $(MESH_INC_EXE) -iquote include/graphics \
   $(shell pkg-config --cflags gtk+-3.0)
 GRAPHICS_INC := $(GRAPHICS_INC_EXE) -iquote src/graphics
 
+SHARED_INC_EXE := $(MESH_INC_EXE) -iquote include/shared
+SHARED_INC := $(SHARED_INC_EXE) -iquote src/shared
+
 ARRAY_LDLIBS := lib/libarray$(.LIB)
 ALGEBRA_LDLIBS := lib/libalgebra$(.LIB) $(ARRAY_LDLIBS)
 REGION_LDLIBS := lib/libregion$(.LIB) $(ARRAY_LDLIBS)
 MESH_LDLIBS := lib/libmesh$(.LIB) lib/libregion$(.LIB) $(ALGEBRA_LDLIBS)
 GRAPHICS_LDLIBS := lib/libgraphics$(.LIB) $(MESH_LDLIBS)
+SHARED_LDLIBS := lib/libshared$(.DLL) $(MESH_LDLIBS)
 
 ############################### all-type targets ###############################
 .PHONY: all
@@ -88,6 +92,10 @@ mesh: build_mesh lib_mesh bin_mesh demo_mesh
 # graphics
 .PHONY: graphics
 graphics: build_graphics lib_graphics bin_graphics demo_graphics
+
+# # shared
+.PHONY: shared
+shared: build_shared lib_shared #bin_shared demo_shared
 
 ######################### preprocessing and compiling ##########################
 build:
@@ -148,6 +156,17 @@ build_graphics: build $(GRAPHICS_OBJ)
 $(GRAPHICS_OBJ): build/%$(.OBJ): src/graphics/%$(.SRC)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(GRAPHICS_INC) -c $< -o $@
 
+# shared
+SHARED_OBJ_NAMES := $(wildcard src/shared/*$(.SRC))
+SHARED_OBJ :=\
+  $(patsubst src/shared/%$(.SRC), build/%$(.OBJ), $(SHARED_OBJ_NAMES))
+
+.PHONY: build_shared
+build_shared: build $(SHARED_OBJ)
+
+$(SHARED_OBJ): build/%$(.OBJ): src/shared/%$(.SRC)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(SHARED_INC) -c $< -o $@
+
 # all
 .PHONY: build_all
 build_all: $(patsubst %, build_%, $(MODULES))
@@ -174,6 +193,10 @@ MESH_HEADER_DEP :=\
 # graphics
 GRAPHICS_HEADER_DEP :=\
   $(patsubst build/%$(.OBJ), build/%$(.DEP), $(GRAPHICS_OBJ_NAMES))
+
+# shared
+SHARED_HEADER_DEP :=\
+  $(patsubst build/%$(.OBJ), build/%$(.DEP), $(SHARED_OBJ_NAMES))
 
 ################################## archiving ###################################
 lib: build
@@ -213,6 +236,13 @@ lib_graphics: lib lib/libgraphics$(.LIB)
 
 lib/libgraphics$(.LIB): $(GRAPHICS_OBJ)
 	$(AR) $(ARFLAGS) $@ $^
+
+#shared
+.PHONY: lib_shared
+lib_shared: lib lib/libshared$(.DLL)
+
+lib/libshared$(.DLL): $(SHARED_OBJ) $(ALGEBRA_OBJ) $(ARRAY_OBJ)
+	$(CC) -o $@ -fPIC -shared $^
 
 # all
 .PHONY: lib_all
@@ -279,7 +309,8 @@ $(GRAPHICS_EXE): bin/%$(.EXE): main/graphics/main_%$(.SRC) $(GRAPHICS_LDLIBS)
 
 # all
 .PHONY: bin_all
-bin_all: $(patsubst %, bin_%, $(MODULES))
+bin_all: $(patsubst %, bin_%, array algebra region mesh graphics)
+# bin_all: $(patsubst %, bin_%, $(MODULES))
 
 ############################## object dependencies #############################
 # at the moment executables depend on libraries and a change in one object file
@@ -308,6 +339,10 @@ MESH_OBJ_DEP :=\
 GRAPHICS_OBJ_DEP :=\
   $(patsubst bin/%$(.EXE), bin/%$(.DEP), $(GRAPHICS_EXE_NAMES))
 
+# graphics
+SHARED_OBJ_DEP :=\
+  $(patsubst bin/%$(.EXE), bin/%$(.DEP), $(SHARED_EXE_NAMES))
+
 ################################ running demos #################################
 -include demo/array/demo_array.mk
 -include demo/algebra/demo_algebra.mk
@@ -316,7 +351,8 @@ GRAPHICS_OBJ_DEP :=\
 -include demo/graphics/demo_graphics.mk
 
 .PHONY: demo_all
-demo_all: $(patsubst %, demo_%, $(MODULES))
+# demo_all: $(patsubst %, demo_%, $(MODULES))
+demo_all: $(patsubst %, demo_%, array algebra mesh region graphics)
 
 ################################### cleaning ###################################
 # array
@@ -413,6 +449,25 @@ graphics_clean: build_graphics_clean
 
 .PHONY: graphics_distclean
 graphics_distclean: lib_graphics_clean bin_graphics_clean demo_graphics_clean
+
+# shared
+.PHONY: build_shared_clean
+build_shared_clean:
+	-$(RM) $(SHARED_OBJ) $(SHARED_HEADER_DEP)
+
+.PHONY: lib_shared_clean
+lib_shared_clean:
+	-$(RM) lib/libshared$(.LIB)
+
+# .PHONY: bin_shared_clean
+# bin_shared_clean:
+# 	-$(RM) $(SHARED_EXE) $(SHARED_OBJ_DEP)
+
+.PHONY: shared_clean
+shared_clean: build_shared_clean
+
+.PHONY: shared_distclean
+shared_distclean: lib_shared_clean #bin_shared_clean demo_shared_clean
 
 # all
 .PHONY: build_clean

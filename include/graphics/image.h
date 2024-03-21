@@ -7,3 +7,4 @@ void image_new_coordinates(
   double height);
 
 double image_point_size(double width, double height);
+double image_line_size(double width, double height);

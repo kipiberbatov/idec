@@ -35,19 +35,18 @@ static void rgb_blue_to_magenta(rgb * color, int i, int n)
   color->blue = 1.;
 }
 
-typedef void (*rgb_nuance_t)(rgb *, int, int);
-
-rgb_nuance_t rgb_nuances[] =
-{
-  rgb_red_to_yellow,
-  rgb_yellow_to_green,
-  rgb_green_to_cyan,
-  rgb_cyan_to_blue,
-  rgb_blue_to_magenta
-};
-
 void rgb_color(rgb * color, int i, int n)
 {
+  typedef void (*rgb_nuance_t)(rgb *, int, int);
+  rgb_nuance_t rgb_nuances[] =
+  {
+    rgb_red_to_yellow,
+    rgb_yellow_to_green,
+    rgb_green_to_cyan,
+    rgb_cyan_to_blue,
+    rgb_blue_to_magenta
+  };
+  
   int k_n = n / (sizeof(rgb_nuances) / sizeof(rgb_nuance_t));
   int k_i = i % k_n;
   int k = i / k_n;

@@ -1,45 +1,46 @@
+#include <alloca.h>
+
 #include <gtk/gtk.h>
 
-#include "context_fill.h"
+#include "fill.h"
+#include "paint_rgb.h"
+#include "gtk_draw.h"
+#include "gtk_time_handler.h"
 
-static void do_drawing(GtkWidget * widget, cairo_t * cr, int * i, int n)
+static int gtk_draw_fill(GtkWidget * widget, cairo_t * cr, void * data)
 {
-  int height, width;
-  GtkWidget * window;
-  
-  window = gtk_widget_get_toplevel(widget);
-  gtk_window_get_size(GTK_WINDOW(window), &width, &height);
-  context_fill(cr, width, height, *i, n);
-  fprintf(stderr, "i = %d\n", *i);
-  if (*i < n - 1)
-    *i += 1;
-}
-
-typedef struct
-{
-  int i;
-  int n;
-} color;
-
-static int on_draw_event(GtkWidget * widget, cairo_t * cr, void * user_data)
-{
-  color * a = (color *) user_data;
-  
-  do_drawing(widget, cr, &(a->i), a->n);
+  gtk_draw(
+    widget,
+    cr,
+    data,
+    fill_draw_void,
+    fill_get_index_void,
+    fill_get_total_steps_void
+  );
   return FALSE;
-}
-
-static int time_handler(GtkWidget * widget)
-{
-  gtk_widget_queue_draw(widget);
-  return TRUE;
 }
 
 int main(int argc, char * argv[])
 {
-  color a = {.i = 0, .n = 100};
+  int begin, n, total_colors;
+  int * i;
+  unsigned int speed;
+  double height, width;
+  fill * a;
   GtkWidget * window;
   GtkWidget * drawing_area;
+  
+  begin = 0;
+  i = &begin;
+  n = 100;
+  total_colors = n;
+  
+  a = (fill *) alloca(fill_size());
+  fill_set(a, i, n, total_colors, paint_rgb);
+  
+  width = 500;
+  height = 500;
+  speed = 100;
 
   gtk_init(&argc, &argv);
 
@@ -48,15 +49,15 @@ int main(int argc, char * argv[])
   gtk_container_add(GTK_CONTAINER (window), drawing_area);
 
   g_signal_connect(G_OBJECT(drawing_area), "draw",
-                   G_CALLBACK(on_draw_event), &a);
+                   G_CALLBACK(gtk_draw_fill), a);
   g_signal_connect(G_OBJECT(window), "destroy",
                    G_CALLBACK(gtk_main_quit), NULL);
  
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size(GTK_WINDOW(window), 500, 500);
+  gtk_window_set_default_size(GTK_WINDOW(window), width, height);
   gtk_window_set_title(GTK_WINDOW(window), "Changing colors");
 
-  g_timeout_add(50, (GSourceFunc) time_handler, (void *) window);
+  g_timeout_add(speed, (GSourceFunc) gtk_time_handler, (void *) window);
 
   gtk_widget_show_all(window);
 

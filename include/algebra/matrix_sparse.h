@@ -185,6 +185,8 @@ typedef double (*scalar_field)(const double *);
 
 typedef double (*time_dependent_scalar_field)(double, const double *);
 
+typedef int (*boolean_domain)(const double *);
+
 /* solve the laplace equation on a grid */
 double * matrix_sparse_laplace_equation_solve(
   const matrix_sparse * m_laplacian,

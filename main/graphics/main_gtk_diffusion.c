@@ -9,41 +9,21 @@
 #include "image.h"
 #include "int.h"
 #include "mesh.h"
-#include "rgb.h"
+#include "paint_rgb.h"
+#include "gtk_draw.h"
+#include "gtk_time_handler.h"
 
-static void do_drawing(GtkWidget * widget, cairo_t * cr, diffusion * a)
+static int gtk_draw_diffusion(GtkWidget * widget, cairo_t * cr, void * data)
 {
-  int height, n, width;
-  int * i;
-  GtkWidget * window;
-
-  window = gtk_widget_get_toplevel(widget);
-  gtk_window_get_size(GTK_WINDOW(window), &width, &height);
-  diffusion_draw_snapshot(cr, width, height, a);
-  i = diffusion_get_index(a);
-  n = diffusion_total_steps(a);
-  fprintf(stderr, "i = %d\n", *i);
-  if (*i < n - 1)
-    *i += 1;
-}
-
-static int on_draw_event(GtkWidget * widget, cairo_t * cr, void * user_data)
-{
-  do_drawing(widget, cr, (diffusion *) user_data);
+  gtk_draw(
+    widget,
+    cr,
+    data,
+    diffusion_draw_void,
+    diffusion_get_index_void,
+    diffusion_get_total_steps_void
+  );
   return FALSE;
-}
-
-static int time_handler(GtkWidget * widget)
-{
-  gtk_widget_queue_draw(widget);
-  return TRUE;
-}
-
-static void painter(cairo_t * cr, int ind, int total_colors)
-{
-  rgb color;
-  rgb_color(&color, ind, total_colors);
-  cairo_set_source_rgb(cr, color.red, color.green, color.blue);
 }
 
 int main(int argc, char * argv[])
@@ -125,11 +105,11 @@ int main(int argc, char * argv[])
   image_new_coordinates(new_coordinates, m, width, height);
   point_size = image_point_size(width, height);
   
-  total_colors = 1000;
+  total_colors = 10000;
   
   a = (diffusion *) alloca(diffusion_size());
   diffusion_set(a,
-    i, n, m, new_coordinates, point_size, u, total_colors, painter);
+    i, n, m, new_coordinates, point_size, u, total_colors, paint_rgb);
   
   speed = 100;
   
@@ -140,7 +120,7 @@ int main(int argc, char * argv[])
   gtk_container_add(GTK_CONTAINER (window), drawing_area);
 
   g_signal_connect(G_OBJECT(drawing_area), "draw",
-                   G_CALLBACK(on_draw_event), a);
+                   G_CALLBACK(gtk_draw_diffusion), a);
   g_signal_connect(G_OBJECT(window), "destroy",
                    G_CALLBACK(gtk_main_quit), NULL);
 
@@ -148,7 +128,7 @@ int main(int argc, char * argv[])
   gtk_window_set_default_size(GTK_WINDOW(window), width, height);
   gtk_window_set_title(GTK_WINDOW(window), "Heat flow in 2D");
 
-  g_timeout_add(speed, (GSourceFunc) time_handler, (void *) window);
+  g_timeout_add(speed, (GSourceFunc) gtk_time_handler, (void *) window);
 
   gtk_widget_show_all(window);
   gtk_main();

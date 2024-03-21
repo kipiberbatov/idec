@@ -7,6 +7,7 @@
 
 #include "double.h"
 #include "diffusion.h"
+#include "painter.h"
 
 struct diffusion
 {
@@ -19,7 +20,7 @@ struct diffusion
   double min_value;
   double max_value;
   int total_colors;
-  painter_t painter;
+  painter paint;
 };
 
 int diffusion_size(void)
@@ -32,9 +33,19 @@ int * diffusion_get_index(diffusion * a)
   return a->i;
 }
 
-int diffusion_total_steps(const diffusion * a)
+int * diffusion_get_index_void(void * a)
+{
+  return diffusion_get_index((diffusion *) a);
+}
+
+int diffusion_get_total_steps(const diffusion * a)
 {
   return a->n;
+}
+
+int diffusion_get_total_steps_void(const void * a)
+{
+  return diffusion_get_total_steps((const diffusion *) a);
 }
 
 mesh * diffusion_get_mesh(diffusion * a)
@@ -72,9 +83,9 @@ int diffusion_get_total_colors(const diffusion * a)
   return a->total_colors;
 }
 
-painter_t diffusion_get_painter(diffusion * a)
+painter diffusion_get_paint(diffusion * a)
 {
-  return a->painter;
+  return a->paint;
 }
 
 void diffusion_set(
@@ -86,7 +97,7 @@ void diffusion_set(
   double point_size,
   double * u,
   int total_colors,
-  painter_t painter)
+  painter paint)
 {
   a->i = i;
   a->n = n;
@@ -97,7 +108,7 @@ void diffusion_set(
   a->total_colors = total_colors;
   a->min_value = double_array_min(n * m->cn[0], u);
   a->max_value = double_array_max(n * m->cn[0], u);
-  a->painter = painter;
+  a->paint = paint;
 }
 
 typedef struct colored_2d_point colored_2d_point;
@@ -109,7 +120,7 @@ struct colored_2d_point
   double y;
   double point_size;
   double relative_value;
-  painter_t painter;
+  painter paint;
 };
 
 void colored_2d_point_draw(cairo_t * cr, colored_2d_point * p)
@@ -117,7 +128,7 @@ void colored_2d_point_draw(cairo_t * cr, colored_2d_point * p)
   int ind;
   
   ind = (int) (p->relative_value * ((double) (p->total_colors - 1)));
-  p->painter(cr, ind, p->total_colors);
+  p->paint(cr, ind, p->total_colors);
   cairo_set_line_width(cr, 1);
   cairo_arc(cr, p->x, p->y, p->point_size, 0, 2 * M_PI);
   
@@ -136,7 +147,7 @@ struct colored_2d_zero_cochain
   double point_size;
   double min_value;
   double max_value;
-  painter_t painter;
+  painter paint;
 };
 
 void colored_2d_zero_cochain_cairo_draw(
@@ -146,7 +157,6 @@ void colored_2d_zero_cochain_cairo_draw(
   int c_size, j;
   double c_max, c_min, denominator;
   double * c_coordinates, * c_values, * x_j;
-  // painter_t painter;
   colored_2d_point p;
   
   c_min = c->min_value;
@@ -156,7 +166,7 @@ void colored_2d_zero_cochain_cairo_draw(
   c_values = c->values;
   p.point_size = c->point_size;
   p.total_colors = c->total_colors;
-  p.painter = c->painter;
+  p.paint = c->paint;
   denominator = c_max - c_min;
   for (j = 0; j < c_size; ++j)
   {
@@ -168,15 +178,10 @@ void colored_2d_zero_cochain_cairo_draw(
   }
 }
 
-void diffusion_draw_snapshot(
-  cairo_t * cr,
-  double width,
-  double height,
-  diffusion * a)
+void diffusion_draw(cairo_t * cr, double width, double height, diffusion * a)
 {
-  int j, m_cn_0, m_dim_embedded;
   int * i;
-  double * m_coord, * m_coord_j, * u, * u_i;
+  double * u;
   mesh * m;
   colored_2d_zero_cochain c;
   
@@ -191,6 +196,11 @@ void diffusion_draw_snapshot(
   c.point_size = diffusion_get_point_size(a);
   c.min_value = diffusion_min_value(a);
   c.max_value = diffusion_max_value(a);
-  c.painter = diffusion_get_painter(a);
+  c.paint = diffusion_get_paint(a);
   colored_2d_zero_cochain_cairo_draw(cr, &c);
+}
+
+void diffusion_draw_void(cairo_t * cr, double width, double height, void * a)
+{
+  diffusion_draw(cr, width, height, (diffusion *) a);
 }

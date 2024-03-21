@@ -13,60 +13,12 @@
 /* internal headers */
 #include "double.h"
 #include "diffusion.h"
+#include "drawer.h"
 #include "image.h"
 #include "int.h"
 #include "mesh.h"
-#include "rgb.h"
-
-static void
-pdf_draw_diffusion(cairo_t * cr, int width, int height, diffusion * a)
-{
-  cairo_save(cr);
-  cairo_set_source_rgb(cr, 1, 1, 1);
-  cairo_paint(cr);
-  cairo_restore(cr);
-  diffusion_draw_snapshot(cr, width, height, a);
-  cairo_show_page(cr);
-}
-
-static void surface_draw_diffusion(
-  cairo_surface_t * surface,
-  double width,
-  double height,
-  diffusion * a)
-{
-  cairo_t * cr;
-  int n;
-  int * i;
-  
-  i = diffusion_get_index(a);
-  n = diffusion_total_steps(a);
-  while (*i < n - 1)
-  {
-    cr = cairo_create(surface);
-    pdf_draw_diffusion(cr, width, height, a);
-    *i += 1;
-    cairo_destroy(cr);
-  }
-}
-
-static void
-diffusion_write_to_file(
-  const char * filename, double width, double height, diffusion * a)
-{
-  cairo_surface_t * surface;
-  
-  surface = cairo_pdf_surface_create(filename, width, height);
-  surface_draw_diffusion(surface, width, height, a);
-  cairo_surface_destroy(surface);
-}
-
-static void painter(cairo_t * cr, int ind, int total_colors)
-{
-  rgb color;
-  rgb_color(&color, ind, total_colors);
-  cairo_set_source_rgb(cr, color.red, color.green, color.blue);
-}
+#include "paint_rgb.h"
+#include "pdf_write_to_file.h"
 
 int main(int argc, char * argv[])
 {
@@ -149,10 +101,17 @@ int main(int argc, char * argv[])
   
   a = (diffusion *) alloca(diffusion_size());
   diffusion_set(a,
-    i, n, m, new_coordinates, point_size, u, total_colors, painter);
+    i, n, m, new_coordinates, point_size, u, total_colors, paint_rgb);
   
   out_filename = argv[6];
-  diffusion_write_to_file(out_filename, width, height, a);
+  pdf_write_to_file(
+    out_filename,
+    width,
+    height,
+    a,
+    diffusion_draw_void,
+    diffusion_get_index_void,
+    diffusion_get_total_steps_void);
   
   free(new_coordinates);
 u_free:

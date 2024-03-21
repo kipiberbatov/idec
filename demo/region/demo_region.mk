@@ -3,7 +3,7 @@ DEMO_REGION :=\
   demo/region/quasi_cube_2d_0_measure_and_centroid.txt\
 
 .PHONY: demo_region
-demo_region: bin $(DEMO_REGION)
+demo_region: bin_region $(DEMO_REGION)
 
 demo/region/simplex_2d_0_measure_and_centroid.txt:\
 	  bin/simplex$(.EXE)\

@@ -12,7 +12,7 @@ DEMO_ALGEBRA := \
   demo/algebra/matrix_sparse_4_4_multiply_with_diagonal_matrix_double_4.txt
 
 .PHONY: demo_algebra
-demo_algebra: bin $(DEMO_ALGEBRA)
+demo_algebra: bin_algebra $(DEMO_ALGEBRA)
 
 demo/algebra/matrix_sparse_remove_res.txt:\
 	  bin/matrix_sparse_remove$(.EXE)\

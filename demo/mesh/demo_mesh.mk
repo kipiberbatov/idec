@@ -1,5 +1,5 @@
 .PHONY: demo_mesh
-demo_mesh: bin demo_mesh_brick_regular
+demo_mesh: bin_mesh demo_mesh_brick_regular
 
 DEMO_MESH_BRICK_REGULAR :=\
   demo_mesh_brick_regular_2d\
@@ -376,7 +376,7 @@ demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_2.txt:\
 	  bin/spacetime_pde_2$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt
-	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.01 100 > $@
+	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.001 100 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt:\
 	  bin/mesh_qc_hodge_coeff$(.EXE)\
@@ -749,6 +749,7 @@ DEMO_MESH_BRICK_REGULAR_2D_5 := \
   demo/mesh/mesh_brick_2d_5_forman_inner.txt\
   demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
   demo/mesh/mesh_brick_2d_5_forman_laplacian.txt\
+  demo/mesh/mesh_brick_2d_5_forman_spacetime_pde_2.txt\
   demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge.txt\
@@ -821,6 +822,12 @@ demo/mesh/mesh_brick_2d_5_forman_laplacian.txt:\
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
+
+demo/mesh/mesh_brick_2d_5_forman_spacetime_pde_2.txt:\
+	  bin/spacetime_pde_2$(.EXE)\
+	  demo/mesh/mesh_brick_2d_5_forman.txt\
+	  demo/mesh/mesh_brick_2d_5_forman_laplacian.txt
+	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.0001 1000 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt:\
 	  bin/mesh_qc_bd_layer$(.EXE)\
@@ -985,7 +992,7 @@ DEMO_MESH_BRICK_REGULAR_2 :=\
   $(DEMO_MESH_BRICK_REGULAR_2D_2)\
   $(DEMO_MESH_BRICK_REGULAR_2D_4)\
   $(DEMO_MESH_BRICK_REGULAR_2D_5)\
-#   $(DEMO_MESH_BRICK_REGULAR_2D_10)\
+#   $(DEMO_MESH_BRICK_REGULAR_2D_10)
 
 DEMO_MESH_TWO_TRIANGLES := \
   demo/mesh/mesh_two_triangles_vol.txt\
@@ -1763,4 +1770,4 @@ DEMO_MESH_BRICK_REGULAR_ALL :=\
 
 .PHONY: demo_mesh_clean
 demo_mesh_clean:
-	-$(RM) $(DEMO_MESH_BRICK_REGULAR_ALL)
+	-$(RM) $(DEMO_MESH_BRICK_REGULAR_ALL) $(DEMO_MESH_TWO_TRIANGLES)

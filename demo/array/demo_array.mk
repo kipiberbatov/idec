@@ -7,7 +7,7 @@ DEMO_ARRAY :=\
   demo/array/combination_6_3.txt\
 
 .PHONY: demo_array
-demo_array: bin $(DEMO_ARRAY)
+demo_array: bin_array $(DEMO_ARRAY)
 
 demo/array/int_array_0_sorted.txt:\
 	  bin/array_indexed_merge_sort$(.EXE)\

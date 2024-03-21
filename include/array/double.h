@@ -8,6 +8,8 @@ double double_fscan(FILE * in);
 
 double double_sscan(const char * s);
 
+int double_equal(double x, double y, double tolerance);
+
 /******************************** double_array ********************************/
 double * double_array_fscan(FILE * in, int n, const char * format);
 
