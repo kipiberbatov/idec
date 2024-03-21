@@ -484,7 +484,8 @@ bin_clean:
 
 # demo_<module>_clean is found in -include demo/<module>/demo_<module>.mk
 .PHONY: demo_clean
-demo_clean: $(patsubst %, demo_%_clean, $(MODULES))
+demo_clean: $(patsubst %, demo_%_clean, array algebra region mesh graphics)
+# demo_clean: $(patsubst %, demo_%_clean, $(MODULES))
 
 .PHONY: clean
 clean: build_clean
