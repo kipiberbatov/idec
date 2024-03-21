@@ -57,36 +57,3 @@ dkms.conf
 
 # Ignore generated demos
 demo/**
-
-# Except the following manual input
-
-!demo/algebra/demo_algebra.mk
-!demo/algebra/double_3.txt
-!demo/algebra/double_4.txt
-!demo/algebra/matrix_sparse_4_4.txt
-!demo/algebra/matrix_sparse_4_5_1.txt
-!demo/algebra/matrix_sparse_4_5_2.txt
-!demo/algebra/matrix_sparse_5_4_1.txt
-!demo/algebra/matrix_sparse_5_5.txt
-!demo/algebra/matrix_sparse_diagonal_3.txt
-!demo/algebra/matrix_sparse_remove_ex.txt
-!demo/algebra/rows.txt
-!demo/algebra/vector_sparse_10.txt
-!demo/algebra/vector_sparse_9.txt
-
-!demo/array/demo_array.mk
-!demo/array/int_array_0.txt
-!demo/array/jagged4_0.txt
-!demo/array/jagged4_1.txt
-
-!demo/mesh/demo_mesh.mk
-!demo/mesh/mesh_square.txt
-!demo/mesh/mesh_triangle_and_square.txt
-!demo/mesh/mesh_two_triangles.txt
-
-!demo/region/demo_region.mk
-!demo/region/quasi_cube_2d_0.txt
-!demo/region/quasi_cube_2d_0.txt
-!demo/region/simplex_2d_0.txt
-
-!demo/graphics/demo_graphics.mk

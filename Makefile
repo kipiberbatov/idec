@@ -344,11 +344,13 @@ SHARED_OBJ_DEP :=\
   $(patsubst bin/%$(.EXE), bin/%$(.DEP), $(SHARED_EXE_NAMES))
 
 ################################ running demos #################################
--include demo/array/demo_array.mk
--include demo/algebra/demo_algebra.mk
--include demo/region/demo_region.mk
--include demo/mesh/demo_mesh.mk
--include demo/graphics/demo_graphics.mk
+demo:
+	mkdir -p $@
+-include make/demo/array.mk
+-include make/demo/algebra.mk
+-include make/demo/region.mk
+-include make/demo/mesh.mk
+-include make/demo/graphics.mk
 
 .PHONY: demo_all
 # demo_all: $(patsubst %, demo_%, $(MODULES))
@@ -485,6 +487,7 @@ bin_clean:
 # demo_<module>_clean is found in -include demo/<module>/demo_<module>.mk
 .PHONY: demo_clean
 demo_clean: $(patsubst %, demo_%_clean, array algebra region mesh graphics)
+	-$(RM) -r demo
 # demo_clean: $(patsubst %, demo_%_clean, $(MODULES))
 
 .PHONY: clean
