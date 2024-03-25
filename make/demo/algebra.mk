@@ -9,7 +9,12 @@ DEMO_ALGEBRA := \
   demo/algebra/matrix_sparse_diagonal_3_linear_solve_double_3.txt\
   demo/algebra/matrix_sparse_4_4_linear_solve_double_4.txt\
   demo/algebra/matrix_sparse_4_4_vector_multiply_add_double_4.txt\
-  demo/algebra/matrix_sparse_4_4_multiply_with_diagonal_matrix_double_4.txt
+  demo/algebra/matrix_sparse_4_4_multiply_with_diagonal_matrix_double_4.txt\
+  demo/algebra/matrix_determinant_example.txt\
+  demo/algebra/matrix_times_transpose_example.txt\
+  demo/algebra/matrix_inverse_example.txt\
+  demo/algebra/matrix_times_vector_example.txt\
+  demo/algebra/matrix_moore_penrose_inverse_example.txt\
 
 .PHONY: demo_algebra
 demo_algebra: bin_algebra $(DEMO_ALGEBRA) | demo/algebra
@@ -78,6 +83,18 @@ demo/algebra/matrix_sparse_4_4_multiply_with_diagonal_matrix_double_4.txt:\
 	  manual/algebra/matrix_sparse_4_4.txt\
 	  manual/algebra/double_4.txt | demo/algebra
 	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw > $@
+
+demo/algebra/matrix_determinant_example.txt: bin/matrix_determinant | demo/algebra
+	$< > $@
+
+demo/algebra/matrix_times_transpose_example.txt: bin/matrix_times_transpose | demo/algebra
+	$< > $@
+
+demo/algebra/matrix_inverse_example.txt: bin/matrix_inverse | demo/algebra
+	$< > $@
+demo/algebra/matrix_moore_penrose_inverse_example.txt:\
+	   bin/matrix_moore_penrose_inverse | demo/algebra
+	$< > $@
 
 .PHONY: demo_algebra_clean
 demo_algebra_clean:
