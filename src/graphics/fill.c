@@ -1,16 +1,13 @@
-#include <stdio.h>
 #include "fill.h"
-#include "painter.h"
 
 struct fill
 {
   int * i;
   int n;
-  int total_colors;
   painter paint;
 };
 
-int fill_size(void)
+size_t fill_size(void)
 {
   return sizeof(fill);
 }
@@ -35,21 +32,15 @@ int fill_get_total_steps_void(const void * a)
   return fill_get_total_steps((const fill *) a);
 }
 
-int fill_get_total_colors(const fill * a)
-{
-  return a->total_colors;
-}
-
 painter fill_get_paint(fill * a)
 {
   return a->paint;
 }
 
-void fill_set(fill * a, int * i, int n, int total_colors, painter paint)
+void fill_set(fill * a, int * i, int n, painter paint)
 {
   a->i = i;
   a->n = n;
-  a->total_colors = total_colors;
   a->paint = paint;
 }
 

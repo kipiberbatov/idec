@@ -16,7 +16,7 @@
 
 int main(int argc, char * argv[])
 {
-  int begin, n, total_colors;
+  int begin, n;
   int * i;
   double height, width;
   fill * a;
@@ -50,10 +50,8 @@ int main(int argc, char * argv[])
   width = 500;
   height = 500;
   
-  total_colors = n;
-  
   a = (fill *) alloca(fill_size());
-  fill_set(a, i, n, total_colors, paint_rgb);
+  fill_set(a, i, n, paint_rgb);
   
   out_filename = argv[2];
   pdf_write_to_file(

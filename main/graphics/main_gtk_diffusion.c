@@ -11,7 +11,7 @@
 #include "mesh.h"
 #include "paint_rgb.h"
 #include "gtk_draw.h"
-#include "gtk_time_handler.h"
+#include "gtk_run.h"
 
 static int gtk_draw_diffusion(GtkWidget * widget, cairo_t * cr, void * data)
 {
@@ -37,8 +37,7 @@ int main(int argc, char * argv[])
   double * new_coordinates, * u;
   mesh * m;
   diffusion * a;
-  GtkWidget * window;
-  GtkWidget * drawing_area;
+  const char title[80] = "Heat flow in 2D";
   
   errno = 0;
   
@@ -114,24 +113,11 @@ int main(int argc, char * argv[])
   speed = 100;
   
   gtk_init(&argc, &argv);
-
-  window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  drawing_area = gtk_drawing_area_new();
-  gtk_container_add(GTK_CONTAINER (window), drawing_area);
-
-  g_signal_connect(G_OBJECT(drawing_area), "draw",
-                   G_CALLBACK(gtk_draw_diffusion), a);
-  g_signal_connect(G_OBJECT(window), "destroy",
-                   G_CALLBACK(gtk_main_quit), NULL);
-
-  gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size(GTK_WINDOW(window), width, height);
-  gtk_window_set_title(GTK_WINDOW(window), "Heat flow in 2D");
-
-  g_timeout_add(speed, (GSourceFunc) gtk_time_handler, (void *) window);
-
-  gtk_widget_show_all(window);
+  
+  gtk_run(gtk_draw_diffusion, (diffusion *) a, width, height, speed, title);
+  
   gtk_main();
+  
   errno = 0;
   
   free(new_coordinates);
