@@ -4,8 +4,6 @@
 #include "double.h"
 #include "mesh.h"
 
-#define PI 3.14159265
-
 /* finds the full unit angle in d dimensions (d = 0,1,2,3), i.e.,
  * the surface area of the unit (d - 1)-sphere (the boundary of the unit d-ball)
  */
@@ -18,9 +16,9 @@ static double angle_unit(int d)
   case 1:
     return 1.;
   case 2:
-    return (2 * PI);
+    return (2 * M_PI);
   case 3:
-    return (4 * PI);
+    return (4 * M_PI);
   default:
     return 1.;
   }

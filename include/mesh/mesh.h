@@ -94,4 +94,17 @@ double * mesh_node_curvature(const mesh * m);
 double ** mesh_displacement(
   const mesh * m, const matrix_sparse * m_bd_0, const double * u);
 
+jagged1 * mesh_boundary_cells_of_hyperfaces(const mesh * m);
+
+jagged1 * mesh_boundary_cells(
+  const mesh * m,
+  int p,
+  const jagged1 * m_boundary_hyperfaces);
+
+/*
+Let $m be a mesh and $i is an index of a boundary node.
+$normal holds coordinates of the exterior to that node.*/
+// void mesh_point_normal(double * normal, const mesh * m, int i,
+//   const jagged1 * m_nodes_bd);
+
 #endif /* MESH_H */
