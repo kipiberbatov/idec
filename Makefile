@@ -355,7 +355,8 @@ demo:
 
 .PHONY: demo_all
 # demo_all: $(patsubst %, demo_%, $(MODULES))
-demo_all: $(patsubst %, demo_%, array algebra mesh region graphics)
+# demo_all: $(patsubst %, demo_%, array algebra mesh region graphics)
+demo_all: $(patsubst %, demo_%, array algebra mesh region)
 
 ################################### cleaning ###################################
 # array

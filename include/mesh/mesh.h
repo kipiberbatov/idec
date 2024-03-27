@@ -108,6 +108,15 @@ jagged1 * mesh_boundary_nodes_from_constraint(
 
 jagged1 * mesh_neighboring_nodes(const mesh * m, int i);
 
+double * mesh_boundary_node_vectors_matrix(const mesh * m, int i);
+
+void mesh_boundary_node_normal(double * normal, const mesh * m, int i);
+
+double * mesh_boundary_neumann_coefficients(const mesh * m, int i);
+
+// void mesh_boundary_node_vectors_matrix(
+//   double * result, int * size, const mesh * m, int i);
+
 /*
 Let $m be a mesh and $i is an index of a boundary node.
 $normal holds coordinates of the exterior to that node.*/
