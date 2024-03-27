@@ -92,6 +92,10 @@ demo/algebra/matrix_times_transpose_example.txt: bin/matrix_times_transpose | de
 
 demo/algebra/matrix_inverse_example.txt: bin/matrix_inverse | demo/algebra
 	$< > $@
+
+demo/algebra/matrix_times_vector_example.txt: bin/matrix_times_vector | demo/algebra
+	$< > $@
+
 demo/algebra/matrix_moore_penrose_inverse_example.txt:\
 	   bin/matrix_moore_penrose_inverse | demo/algebra
 	$< > $@

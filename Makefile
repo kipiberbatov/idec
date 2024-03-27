@@ -199,47 +199,47 @@ SHARED_HEADER_DEP :=\
   $(patsubst build/%$(.OBJ), build/%$(.DEP), $(SHARED_OBJ_NAMES))
 
 ################################## archiving ###################################
-lib: build
+lib: | build
 	$(MKDIR) -p $@
 
 # array
 .PHONY: lib_array
-lib_array: lib lib/libarray$(.LIB)
+lib_array: lib/libarray$(.LIB)
 
-lib/libarray$(.LIB): $(ARRAY_OBJ)
+lib/libarray$(.LIB): $(ARRAY_OBJ) | lib
 	$(AR) $(ARFLAGS) $@ $^
 
 # algebra
 .PHONY: lib_algebra
-lib_algebra: lib lib/libalgebra$(.LIB)
+lib_algebra: lib/libalgebra$(.LIB) | lib
 
 lib/libalgebra$(.LIB): $(ALGEBRA_OBJ)
 	$(AR) $(ARFLAGS) $@ $^
 
 # region
 .PHONY: lib_region
-lib_region: lib lib/libregion$(.LIB)
+lib_region: lib/libregion$(.LIB) | lib
 
 lib/libregion$(.LIB): $(REGION_OBJ)
 	$(AR) $(ARFLAGS) $@ $^
 
 # mesh
 .PHONY: lib_mesh
-lib_mesh: lib lib/libmesh$(.LIB)
+lib_mesh: lib/libmesh$(.LIB) | lib
 
 lib/libmesh$(.LIB): $(MESH_OBJ)
 	$(AR) $(ARFLAGS) $@ $^
 
 # graphics
 .PHONY: lib_graphics
-lib_graphics: lib lib/libgraphics$(.LIB)
+lib_graphics: lib/libgraphics$(.LIB) | lib
 
 lib/libgraphics$(.LIB): $(GRAPHICS_OBJ)
 	$(AR) $(ARFLAGS) $@ $^
 
 #shared
 .PHONY: lib_shared
-lib_shared: lib lib/libshared$(.DLL)
+lib_shared: lib/libshared$(.DLL) | lib
 
 lib/libshared$(.DLL): $(SHARED_OBJ) $(ALGEBRA_OBJ) $(ARRAY_OBJ)
 	$(CC) -o $@ -fPIC -shared $^
@@ -249,7 +249,7 @@ lib/libshared$(.DLL): $(SHARED_OBJ) $(ALGEBRA_OBJ) $(ARRAY_OBJ)
 lib_all: $(patsubst %, lib_%, $(MODULES))
 
 ################################### linking ####################################
-bin: lib
+bin: | lib
 	-$(MKDIR) -p $@
 
 # array
@@ -346,6 +346,7 @@ SHARED_OBJ_DEP :=\
 ################################ running demos #################################
 demo:
 	mkdir -p $@
+
 -include make/demo/array.mk
 -include make/demo/algebra.mk
 -include make/demo/region.mk

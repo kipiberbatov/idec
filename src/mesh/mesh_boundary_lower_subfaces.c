@@ -3,7 +3,7 @@
 
 #include "mesh.h"
 
-static int mesh_boundary_cells_size(
+static int mesh_boundary_lower_subfaces_size(
   const mesh * m,
   int p,
   const jagged1 * m_boundary_hyperfaces)
@@ -35,7 +35,7 @@ static int mesh_boundary_cells_size(
   return size;
 }
 
-static void mesh_boundary_cells_values(
+static void mesh_boundary_lower_subfaces_values(
   int * values,
   const mesh * m,
   int p,
@@ -68,7 +68,7 @@ static void mesh_boundary_cells_values(
   }
 }
 
-jagged1 * mesh_boundary_cells(
+jagged1 * mesh_boundary_lower_subfaces(
   const mesh * m,
   int p,
   const jagged1 * m_boundary_hyperfaces)
@@ -81,7 +81,7 @@ jagged1 * mesh_boundary_cells(
     fprintf(stderr, "Error in %s: cannot allocate memory", __func__);
     return NULL;
   }
-  result->a0 = mesh_boundary_cells_size(m, p, m_boundary_hyperfaces);
+  result->a0 = mesh_boundary_lower_subfaces_size(m, p, m_boundary_hyperfaces);
   
   result->a1 = (int *) malloc(sizeof(int) * result->a0);
   if (errno)
@@ -90,7 +90,7 @@ jagged1 * mesh_boundary_cells(
     free(result);
     return NULL;
   }
-  mesh_boundary_cells_values(result->a1, m, p, m_boundary_hyperfaces);
+  mesh_boundary_lower_subfaces_values(result->a1, m, p, m_boundary_hyperfaces);
   
   return result;
 }

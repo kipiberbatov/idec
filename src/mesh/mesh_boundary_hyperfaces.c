@@ -4,8 +4,8 @@
 #include "mesh.h"
 
 /* p = d - 1 */
-/********************* mesh_boundary_cells_of_hyperfaces **********************/
-static int mesh_boundary_cells_of_hyperfaces_size(const mesh * m)
+/************************** mesh_boundary_hyperfaces **************************/
+static int mesh_boundary_hyperfaces_size(const mesh * m)
 {
   int d, i, m_cn_p, size;
   jagged1 m_fc_p_d_i;
@@ -25,8 +25,7 @@ static int mesh_boundary_cells_of_hyperfaces_size(const mesh * m)
   return size;
 }
 
-static void
-mesh_boundary_cells_of_hyperfaces_values(int * values, const mesh * m)
+static void mesh_boundary_hyperfaces_values(int * values, const mesh * m)
 {
   int d, i, index, m_cn_p;
   jagged1 m_fc_p_d_i;
@@ -42,13 +41,13 @@ mesh_boundary_cells_of_hyperfaces_values(int * values, const mesh * m)
     jagged2_part1(&m_fc_p_d_i, &m_fc_p_d, i);
     if (m_fc_p_d_i.a0 == 1)
     {
-      values[index] = m_fc_p_d_i.a1[0];
+      values[index] = i;
       ++index;
     }
   }
 }
 
-jagged1 * mesh_boundary_cells_of_hyperfaces(const mesh * m)
+jagged1 * mesh_boundary_hyperfaces(const mesh * m)
 {
   jagged1 * result;
   
@@ -58,7 +57,7 @@ jagged1 * mesh_boundary_cells_of_hyperfaces(const mesh * m)
     fprintf(stderr, "Error in %s: cannot allocate memory", __func__);
     return NULL;
   }
-  result->a0 = mesh_boundary_cells_of_hyperfaces_size(m);
+  result->a0 = mesh_boundary_hyperfaces_size(m);
   
   result->a1 = (int *) malloc(sizeof(int) * result->a0);
   if (errno)
@@ -67,27 +66,7 @@ jagged1 * mesh_boundary_cells_of_hyperfaces(const mesh * m)
     free(result);
     return NULL;
   }
-  mesh_boundary_cells_of_hyperfaces_values(result->a1, m);
+  mesh_boundary_hyperfaces_values(result->a1, m);
   
   return result;
 }
-
-/******************* mesh_boundary_cells_of_non_hyperfaces ********************/
-// jagged1 * mesh_boundary_cells(const mesh * m, int p)
-// {
-//   jagged1 * result;
-//
-//   if (p == m->dim - 1)
-//   {
-//     result = mesh_boundary_cells_of_hyperfaces(m);
-//     if (errno)
-//       fprintf(stderr, "Error in %s: cannot calculate result", __func__);
-//   }
-//   else
-//   {
-//     result = mesh_boundary_cells_of_non_hyperfaces(m, p);
-//     if (errno)
-//       fprintf(stderr, "Error in %s: cannot calculate result", __func__);
-//   }
-//   return result;
-// }

@@ -266,6 +266,8 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2.txt\
   demo/mesh/mesh_brick_2d_2_vol.txt\
   demo/mesh/mesh_brick_2d_2_forman.txt\
+  demo/mesh/mesh_brick_2d_2_forman_boundary_hyperfaces.txt\
+  demo/mesh/mesh_brick_2d_2_forman_0_cells.txt\
   demo/mesh/mesh_brick_2d_2_forman_bd.txt\
   demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
   demo/mesh/mesh_brick_2d_2_forman_vol.txt\
@@ -305,6 +307,16 @@ demo/mesh/mesh_brick_2d_2_vol.txt:\
 demo/mesh/mesh_brick_2d_2_forman.txt:\
 	  bin/forman_bd$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_2d_2_forman_boundary_hyperfaces.txt:\
+	  bin/mesh_boundary_hyperfaces$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_2d_2_forman_0_cells.txt:\
+	  bin/mesh_boundary_lower_subfaces$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_2_forman_bd.txt:\

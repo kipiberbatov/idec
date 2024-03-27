@@ -94,9 +94,9 @@ double * mesh_node_curvature(const mesh * m);
 double ** mesh_displacement(
   const mesh * m, const matrix_sparse * m_bd_0, const double * u);
 
-jagged1 * mesh_boundary_cells_of_hyperfaces(const mesh * m);
+jagged1 * mesh_boundary_hyperfaces(const mesh * m);
 
-jagged1 * mesh_boundary_cells(
+jagged1 * mesh_boundary_lower_subfaces(
   const mesh * m,
   int p,
   const jagged1 * m_boundary_hyperfaces);
