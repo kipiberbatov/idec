@@ -268,6 +268,9 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2_forman.txt\
   demo/mesh/mesh_brick_2d_2_forman_boundary_hyperfaces.txt\
   demo/mesh/mesh_brick_2d_2_forman_0_cells.txt\
+  demo/mesh/mesh_brick_2d_2_forman_nodes_dirichlet.txt\
+  demo/mesh/mesh_brick_2d_2_forman_nodes_neumann.txt\
+  demo/mesh/mesh_brick_2d_2_forman_nodes_neumann_neighbors.txt\
   demo/mesh/mesh_brick_2d_2_forman_bd.txt\
   demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
   demo/mesh/mesh_brick_2d_2_forman_vol.txt\
@@ -316,6 +319,21 @@ demo/mesh/mesh_brick_2d_2_forman_boundary_hyperfaces.txt:\
 
 demo/mesh/mesh_brick_2d_2_forman_0_cells.txt:\
 	  bin/mesh_boundary_lower_subfaces$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_2d_2_forman_nodes_dirichlet.txt:\
+	  bin/mesh_boundary_nodes_from_constraint_dirichlet$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_2d_2_forman_nodes_neumann.txt:\
+	  bin/mesh_boundary_nodes_from_constraint_neumann$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_2d_2_forman_nodes_neumann_neighbors.txt:\
+	  bin/mesh_neighboring_nodes$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 

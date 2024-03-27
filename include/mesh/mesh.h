@@ -94,12 +94,19 @@ double * mesh_node_curvature(const mesh * m);
 double ** mesh_displacement(
   const mesh * m, const matrix_sparse * m_bd_0, const double * u);
 
+/******************************* mesh_boundary ********************************/
 jagged1 * mesh_boundary_hyperfaces(const mesh * m);
 
 jagged1 * mesh_boundary_lower_subfaces(
   const mesh * m,
   int p,
   const jagged1 * m_boundary_hyperfaces);
+
+jagged1 * mesh_boundary_nodes_from_constraint(
+  const mesh * m,
+  int (*constraint)(const double *));
+
+jagged1 * mesh_neighboring_nodes(const mesh * m, int i);
 
 /*
 Let $m be a mesh and $i is an index of a boundary node.
