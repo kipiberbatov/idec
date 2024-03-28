@@ -18,6 +18,7 @@ matrix_sparse * matrix_sparse_copy(const matrix_sparse * a);
 
 /* find a[i][j] */
 double matrix_sparse_part(const matrix_sparse * a, int i, int j);
+double * matrix_sparse_part_pointer(const matrix_sparse * a, int i, int j);
 
 /***************************** matrix_sparse_free *****************************/
 /* deallocate heap-allocated sparse matrix a */
@@ -186,6 +187,10 @@ typedef double (*scalar_field)(const double *);
 typedef double (*time_dependent_scalar_field)(double, const double *);
 
 typedef int (*boolean_domain)(const double *);
+
+void matrix_sparse_set_identity_rows(
+  matrix_sparse * lhs,
+  const jagged1 * positions);
 
 /* solve the laplace equation on a grid */
 double * matrix_sparse_laplace_equation_solve(

@@ -9,10 +9,11 @@ The next iteration is find using the trapezoidal rule.
 
 #include "matrix_sparse.h"
 
-double * spacetime_pde_dirichlet_boundary_vector(
+void spacetime_pde_boundary_vector(
+  double * result,
   int m_dim_embedded,
   const double * m_coord,
-  const jagged1 * m_nodes_bd,
+  const jagged1 * m_boundary_nodes,
   scalar_field g_d);
 
 /*
