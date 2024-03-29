@@ -20,6 +20,7 @@ DEMO_MESH_BRICK_REGULAR_2D :=\
   demo_mesh_brick_regular_2d_2\
   demo_mesh_brick_regular_2d_4\
   demo_mesh_brick_regular_2d_5\
+  demo_mesh_brick_regular_2d_10\
 
 .PHONY: demo_mesh_brick_regular_2d
 demo_mesh_brick_regular_2d: $(DEMO_MESH_BRICK_REGULAR_2D) | demo/mesh
