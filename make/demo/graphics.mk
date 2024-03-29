@@ -7,6 +7,8 @@ DEMO_GRAPHICS :=\
   demo/graphics/log/mesh_brick_2d_5_forman_diffusion_gtk.log\
   demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_continuous.pdf\
   demo/graphics/log/mesh_brick_2d_5_forman_diffusion_continuous_gtk.log\
+  demo/graphics/pdf/mesh_brick_2d_10_forman_one_direction_flow.pdf\
+  demo/graphics/log/mesh_brick_2d_10_forman_one_direction_flow_gtk.log\
 
 .PHONY: demo_graphics
 demo_graphics: bin_graphics $(DEMO_GRAPHICS) | demo/graphics
@@ -72,6 +74,23 @@ demo/graphics/log/mesh_brick_2d_5_forman_diffusion_continuous_gtk.log:\
 	  demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous.txt \
 	  | demo/graphics/log
 	$< --raw $(word 2, $^) 10000 --raw $(word 3, $^)
+	@printf "This file was created after running %s\n" $< > $@
+	@printf "Creation time: " >> $@
+	@echo $(shell date -u) >> $@
+
+demo/graphics/pdf/mesh_brick_2d_10_forman_one_direction_flow.pdf:\
+	  bin/pdf_diffusion \
+	  demo/mesh/mesh_brick_2d_10_forman.txt \
+	  demo/mesh/mesh_brick_2d_10_forman_one_direction_flow.txt \
+	  | demo/graphics/pdf
+	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) $@
+
+demo/graphics/log/mesh_brick_2d_10_forman_one_direction_flow_gtk.log:\
+	  bin/gtk_diffusion \
+	  demo/mesh/mesh_brick_2d_10_forman.txt \
+	  demo/mesh/mesh_brick_2d_10_forman_one_direction_flow.txt \
+	  | demo/graphics/log
+	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^)
 	@printf "This file was created after running %s\n" $< > $@
 	@printf "Creation time: " >> $@
 	@echo $(shell date -u) >> $@
