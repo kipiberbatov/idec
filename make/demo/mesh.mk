@@ -281,6 +281,7 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2_forman_inner.txt\
   demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
   demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
+  demo/mesh/mesh_brick_2d_2_forman_neumann_modified_laplacian.txt\
   demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt\
   demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_1.txt\
   demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_2.txt\
@@ -410,6 +411,12 @@ demo/mesh/mesh_brick_2d_2_forman_laplacian.txt:\
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
+
+demo/mesh/mesh_brick_2d_2_forman_neumann_modified_laplacian.txt:\
+	  bin/diffusion_discrete_set_neumann_rows$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt | demo/mesh
+	 $< --raw $(word 2, $^) --raw $(word 3, $^) > $@
 
 demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt:\
 	  bin/spacetime_pde$(.EXE)\
@@ -801,6 +808,7 @@ DEMO_MESH_BRICK_REGULAR_2D_5 := \
   demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
   demo/mesh/mesh_brick_2d_5_forman_laplacian.txt\
   demo/mesh/mesh_brick_2d_5_forman_spacetime_pde_2.txt\
+  demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous.txt\
   demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge.txt\
@@ -878,7 +886,13 @@ demo/mesh/mesh_brick_2d_5_forman_spacetime_pde_2.txt:\
 	  bin/spacetime_pde_2$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_laplacian.txt | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.0001 1000 > $@
+	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.0001 10000 > $@
+
+demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous.txt:\
+	  bin/diffusion_continuous$(.EXE)\
+	  demo/mesh/mesh_brick_2d_5_forman.txt\
+	  demo/mesh/mesh_brick_2d_5_forman_laplacian.txt | demo/mesh
+	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.0001 10000 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt:\
 	  bin/mesh_qc_bd_layer$(.EXE)\

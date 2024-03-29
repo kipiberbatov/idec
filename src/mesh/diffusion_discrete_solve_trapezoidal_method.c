@@ -3,17 +3,18 @@
 #include <string.h>
 
 #include "double.h"
-#include "mesh.h"
-#include "spacetime_pde.h"
+#include "diffusion_discrete.h"
 
 static void loop(
   double ** result,
   matrix_sparse * lhs,
   double * rhs_final,
   const matrix_sparse * rhs,
-  const jagged1 * boundary_positions,
   const double * free_part,
-  const double * g,
+  const jagged1 * boundary_dirichlet,
+  const double * g_dirichlet,
+  const jagged1 * boundary_neumann,
+  const double * g_neumann,
   int number_of_steps)
 {
   int i, n;
@@ -27,7 +28,10 @@ static void loop(
     
     /* update rhs_final with the boundary conditions */
     double_array_substitute_inverse(
-      rhs_final, boundary_positions->a0, g, boundary_positions->a1);
+      rhs_final, boundary_dirichlet->a0, g_dirichlet, boundary_dirichlet->a1);
+    
+    double_array_substitute_inverse(
+      rhs_final, boundary_neumann->a0, g_neumann, boundary_neumann->a1);
 
     memcpy(result[i + 1], rhs_final, sizeof(double) * n);
 
@@ -55,23 +59,31 @@ static double ** double_matrix_allocate_pointer_to_pointer(int m, int n)
 /*
 Solve the following differential equation
   d(a u)/(d t) = b u + c on M,
-  u|_{boundary(M)} = g
+  u|_{G_D} = g_dirichlet
+  (pi_1 nabla(u))|_{G_N} = g_neumann
 with given $time_step and prescribed $number_of_steps.
 */
-double ** spacetime_pde_time_order_1_linear_trapezoid_method(
-  const double * u0,
-  const matrix_sparse * a,
-  const matrix_sparse * b,
-  const double * c,
-  const double * g,
-  const jagged1 * boundary_positions,
+double ** diffusion_discrete_solve_trapezoidal_method(
+  const mesh * m,
+  const matrix_sparse * m_laplacian_0,
+  const diffusion_discrete * data,
   double time_step,
   int number_of_steps)
-{
+{ 
   int n;
   double * free_part, * rhs_final;
   double ** result;
+  matrix_sparse * a;
+  const matrix_sparse * b;
   matrix_sparse * lhs, * rhs;
+  
+  //a = data->pi_0;
+  a = matrix_sparse_identity(m_laplacian_0->rows);
+  /* NULL pointer checking */
+  b = m_laplacian_0;
+  //b = data->pi_1; 
+  
+  /* b = pi_0 * cbd_star_*/
   
   n = a->rows;
   
@@ -84,25 +96,40 @@ double ** spacetime_pde_time_order_1_linear_trapezoid_method(
   free_part = (double *) malloc(sizeof(double) * n);
   /* NULL pointer checking */
   
-  memcpy(free_part, c, sizeof(double) * n);
+  memcpy(free_part, data->source, sizeof(double) * n);
   double_array_multiply_with(free_part, n, time_step);
   
-  matrix_sparse_set_identity_rows(lhs, boundary_positions);
+  matrix_sparse_set_identity_rows(lhs, data->boundary_dirichlet);
+  diffusion_discrete_set_neumann_rows(lhs, m, data->boundary_neumann);
+  /* NULL pointer checking */
   
   rhs_final = (double *) malloc(sizeof(double) * n);
+  /* NULL pointer checking */
   
   result = double_matrix_allocate_pointer_to_pointer(number_of_steps + 1, n);
   /* NULL pointer checking */
   
-  memcpy(result[0], u0, sizeof(double) * n);
+  memcpy(result[0], data->initial, sizeof(double) * n);
   
-  loop(result, lhs, rhs_final, rhs, boundary_positions, free_part, g,
-       number_of_steps);
+  loop(result, lhs, rhs_final, rhs, free_part,
+    data->boundary_dirichlet, data->g_dirichlet,
+    data->boundary_neumann, data->g_neumann,
+    number_of_steps);
   /* NULL pointer checking */
   
   free(rhs_final);
   free(free_part);
   matrix_sparse_free(rhs);
   matrix_sparse_free(lhs);
+  matrix_sparse_free(a);
   return result;
 }
+
+// double ** diffusion_discrete_solve_trapezoidal_method(
+//   const mesh * m,
+//   const diffusion_discrete * data,
+//   double time_step,
+//   int number_of_steps)
+// {
+//   return NULL;
+// }

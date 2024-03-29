@@ -1,4 +1,7 @@
+#include <string.h>
+
 #include "matrix.h"
+
 void matrix_moore_penrose_inverse(double * b, int d, int n, const double * a)
 {
   enum {max_dim = 3};
@@ -8,6 +11,7 @@ void matrix_moore_penrose_inverse(double * b, int d, int n, const double * a)
   double * tmp1_q;
   double tmp[max_dim * max_dim] = {0}, tmp1[max_dim * max_dim];
   
+  memset(b, 0, sizeof(double) * d * n);
   matrix_times_transpose(tmp, d, n, a);
   matrix_inverse(tmp1, d, tmp);
   for (i = 0; i < n; ++i)

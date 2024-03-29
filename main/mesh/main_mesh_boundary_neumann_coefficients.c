@@ -12,7 +12,7 @@ int x1_axis_constant(const double * x)
 
 int main(void)
 {
-  int i, i_local, m_dim_embedded, size;
+  int i, i_local, size;
   mesh * m;
   jagged1 * m_boundary_nodes;
   jagged1 m_fc_0_1_i;
@@ -25,7 +25,6 @@ int main(void)
     fputs("Error: cannot scan input mesh\n", stderr);
     goto end;
   }
-  m_dim_embedded = m->dim_embedded;
   
   m->fc = mesh_fc(m);
   if (errno)
