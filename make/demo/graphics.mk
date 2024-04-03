@@ -1,14 +1,24 @@
-DEMO_GRAPHICS :=\
-  demo/graphics/pdf/fill.pdf\
+DEMO_GTK :=\
   demo/graphics/log/fill_gtk.log\
-  demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion.pdf\
   demo/graphics/log/mesh_brick_2d_2_forman_diffusion_gtk.log\
-  demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion.pdf\
   demo/graphics/log/mesh_brick_2d_5_forman_diffusion_gtk.log\
-  demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_continuous.pdf\
   demo/graphics/log/mesh_brick_2d_5_forman_diffusion_continuous_gtk.log\
-  demo/graphics/pdf/mesh_brick_2d_10_forman_one_direction_flow.pdf\
   demo/graphics/log/mesh_brick_2d_10_forman_one_direction_flow_gtk.log\
+
+DEMO_PDF :=\
+  demo/graphics/pdf/fill.pdf\
+  demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion.pdf\
+  demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion.pdf\
+  demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_continuous.pdf\
+  demo/graphics/pdf/mesh_brick_2d_10_forman_one_direction_flow.pdf\
+
+DEMO_GRAPHICS := $(DEMO_GTK) $(DEMO_PDF)
+
+.PHONY: demo_pdf
+demo_pdf: bin_graphics $(DEMO_PDF) | demo/graphics/pdf
+
+.PHONY: demo_gtk
+demo_gtk: bin_graphics $(DEMO_GTK) | demo/graphics/log
 
 .PHONY: demo_graphics
 demo_graphics: bin_graphics $(DEMO_GRAPHICS) | demo/graphics
