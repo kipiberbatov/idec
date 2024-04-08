@@ -56,6 +56,30 @@ static double ** double_matrix_allocate_pointer_to_pointer(int m, int n)
   return result;
 }
 
+static void
+matrix_sparse_add_with_diagonal(matrix_sparse * a, const double * b)
+{
+  int i_loc, j, n;
+  int * a_cols_total, * a_row_indices;
+  double * a_values;
+  
+  n = a->cols;
+  a_cols_total = a->cols_total;
+  a_row_indices = a->row_indices;
+  a_values = a->values;
+  for (j = 0; j < n; ++j)
+  {
+    for (i_loc = a_cols_total[j]; i_loc < a_cols_total[j + 1]; ++i_loc)
+    {
+      if (a_row_indices[i_loc] == j)
+      {
+        a_values[i_loc] += b[j];
+        break;
+      }
+    }
+  }
+}
+
 /*
 Solve the following differential equation
   d(a u)/(d t) = b u + c on M,
@@ -73,25 +97,33 @@ double ** diffusion_discrete_solve_trapezoidal_method(
   int n;
   double * free_part, * rhs_final;
   double ** result;
-  matrix_sparse * a;
+  // matrix_sparse * a;
+  double * a;
   const matrix_sparse * b;
   matrix_sparse * lhs, * rhs;
   
-  //a = data->pi_0;
-  a = matrix_sparse_identity(m_laplacian_0->rows);
+  a = data->pi_0;
+  // a = matrix_sparse_identity(m_laplacian_0->rows);
   /* NULL pointer checking */
   b = m_laplacian_0;
   //b = data->pi_1; 
   
   /* b = pi_0 * cbd_star_*/
   
-  n = a->rows;
+  // n = a->rows;
+  n = m->cn[0];
   
-  lhs = matrix_sparse_linear_combination(a, b, 1, - time_step / 2);
+  // lhs = matrix_sparse_linear_combination(a, b, 1, - time_step / 2);
+  lhs = matrix_sparse_copy(b);
   /* NULL pointer checking */
+  matrix_sparse_scalar_multiply(lhs, - time_step / 2);
+  matrix_sparse_add_with_diagonal(lhs, a);
   
-  rhs = matrix_sparse_linear_combination(a, b, 1, time_step / 2);
+  // rhs = matrix_sparse_linear_combination(a, b, 1, time_step / 2);
+  rhs = matrix_sparse_copy(b);
   /* NULL pointer checking */
+  matrix_sparse_scalar_multiply(rhs, time_step / 2);
+  matrix_sparse_add_with_diagonal(rhs, a);
   
   free_part = (double *) malloc(sizeof(double) * n);
   /* NULL pointer checking */
@@ -121,7 +153,7 @@ double ** diffusion_discrete_solve_trapezoidal_method(
   free(free_part);
   matrix_sparse_free(rhs);
   matrix_sparse_free(lhs);
-  matrix_sparse_free(a);
+  // matrix_sparse_free(a);
   return result;
 }
 

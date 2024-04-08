@@ -16,7 +16,7 @@ After a finite amount of time the temperature will be zero degrees everywhere.
 
 static double pi_0(const double * x)
 {
-  return 1;
+  return 4;
 }
 
 static double initial(const double * x)

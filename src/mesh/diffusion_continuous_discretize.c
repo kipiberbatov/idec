@@ -5,7 +5,8 @@
 #include "diffusion_discrete.h"
 #include "spacetime_pde.h"
 
-static void vector_initialize(double * x, const mesh * m, scalar_field f)
+static void
+zero_cochain_from_scalar_field(double * x, const mesh * m, scalar_field f)
 {
   int i, m_cn_0, m_dim_embedded;
   double * m_coord;
@@ -23,32 +24,41 @@ diffusion_discrete * diffusion_continuous_discretize(
   const diffusion_continuous * data_continuous)
 {
   diffusion_discrete * data_discrete;
+  
   data_discrete = (diffusion_discrete *) malloc(sizeof(diffusion_discrete));
-  /* NULL pointer checking */
+  if (errno)
+    goto end;
   
   data_discrete->pi_0 = (double *) malloc(sizeof(double) * m->cn[0]);
-  /* NULL pointer checking */
-  vector_initialize(data_discrete->pi_0, m, data_continuous->pi_0);
+  if (errno)
+    goto data_discrete_free;
+  zero_cochain_from_scalar_field(data_discrete->pi_0, m, data_continuous->pi_0);
   
   // data_discrete->pi_1 = (double *) malloc(sizeof(double) * m->cn[0]);
   // /* NULL pointer checking */
-  // vector_initialize(data_discrete->pi_1, m, data_continuous->pi_1);
+  // zero_cochain_from_scalar_field(data_discrete->pi_1, m, data_continuous->pi_1);
   
   data_discrete->initial = (double *) malloc(sizeof(double) * m->cn[0]);
-  /* NULL pointer checking */
-  vector_initialize(data_discrete->initial, m, data_continuous->initial);
+  if (errno)
+    goto data_discrete_pi_0_free;
+  zero_cochain_from_scalar_field(
+    data_discrete->initial, m, data_continuous->initial);
   
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[0]);
-  /* NULL pointer checking */
-  vector_initialize(data_discrete->source, m, data_continuous->source);
+  if (errno)
+    goto data_discrete_initial_free;
+  zero_cochain_from_scalar_field(
+    data_discrete->source, m, data_continuous->source);
   
   data_discrete->boundary_dirichlet
   = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_dirichlet);
-  /* NULL pointer checking */
+  if (errno)
+    goto data_discrete_source_free;
   
   data_discrete->g_dirichlet
   = (double *) malloc(sizeof(double) * (data_discrete->boundary_dirichlet)->a0);
-  /* NULL pointer checking */
+  if (errno)
+    goto data_discrete_boundary_dirichlet_free;
   spacetime_pde_boundary_vector(
     data_discrete->g_dirichlet,
     m->dim_embedded,
@@ -58,11 +68,13 @@ diffusion_discrete * diffusion_continuous_discretize(
   
   data_discrete->boundary_neumann
   = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_neumann);
-  /* NULL pointer checking */
+  if (errno)
+    goto data_discrete_g_dirichlet_free;
   
   data_discrete->g_neumann
   = (double *) malloc(sizeof(double) * (data_discrete->boundary_neumann)->a0);
-  /* NULL pointer checking */
+  if (errno)
+    goto data_discrete_boundary_neumann_free;
   spacetime_pde_boundary_vector(
     data_discrete->g_neumann,
     m->dim_embedded,
@@ -71,4 +83,24 @@ diffusion_discrete * diffusion_continuous_discretize(
     data_continuous->g_neumann);
   
   return data_discrete;
+
+  /* cleaning if an error occurs */
+  free(data_discrete->g_neumann);
+data_discrete_boundary_neumann_free:
+  jagged1_free(data_discrete->boundary_neumann);
+data_discrete_g_dirichlet_free:
+  free(data_discrete->g_dirichlet);
+data_discrete_boundary_dirichlet_free:
+  jagged1_free(data_discrete->boundary_dirichlet);
+data_discrete_source_free:
+  free(data_discrete->source);
+data_discrete_initial_free:
+  free(data_discrete->initial);
+  //free(data_discrete->pi_1);
+data_discrete_pi_0_free:
+  free(data_discrete->pi_0);
+data_discrete_free:
+  free(data_discrete);
+end:
+  return NULL;
 }

@@ -892,7 +892,7 @@ demo/mesh/mesh_brick_2d_5_forman_spacetime_pde_2.txt:\
 demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
-	  demo/mesh/mesh_brick_2d_5_forman_laplacian.txt | demo/mesh
+	  demo/mesh/mesh_brick_2d_5_forman_laplacian_corrected.txt | demo/mesh
 	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.0001 10000 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt:\

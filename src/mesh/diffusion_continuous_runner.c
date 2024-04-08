@@ -92,6 +92,8 @@ int diffusion_continuous_runner(
     fputs("\n", stdout);
   }
 
+  for (i = number_of_steps; i >= 0; --i)
+    free(result[i]);
   free(result);
 m_laplacian_0_free:
   matrix_sparse_free(m_laplacian_0);
