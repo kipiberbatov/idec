@@ -3,7 +3,26 @@
 
 #include "diffusion_continuous.h"
 #include "diffusion_discrete.h"
-#include "spacetime_pde.h"
+
+static void diffusion_continuous_boundary_vector(
+  double * result,
+  int m_dim_embedded,
+  const double * m_coord,
+  const jagged1 * boundary_nodes,
+  scalar_field g)
+{
+  int j, j_loc, boundary_nodes_a0;
+  int * boundary_nodes_a1;
+  
+  boundary_nodes_a0 = boundary_nodes->a0;
+  boundary_nodes_a1 = boundary_nodes->a1;
+  
+  for (j_loc = 0; j_loc < boundary_nodes_a0; ++j_loc)
+  {
+    j = boundary_nodes_a1[j_loc];
+    result[j_loc] = g(m_coord + m_dim_embedded * j);
+  }
+}
 
 static void
 zero_cochain_from_scalar_field(double * x, const mesh * m, scalar_field f)
@@ -59,7 +78,7 @@ diffusion_discrete * diffusion_continuous_discretize(
   = (double *) malloc(sizeof(double) * (data_discrete->boundary_dirichlet)->a0);
   if (errno)
     goto data_discrete_boundary_dirichlet_free;
-  spacetime_pde_boundary_vector(
+  diffusion_continuous_boundary_vector(
     data_discrete->g_dirichlet,
     m->dim_embedded,
     m->coord,
@@ -75,7 +94,7 @@ diffusion_discrete * diffusion_continuous_discretize(
   = (double *) malloc(sizeof(double) * (data_discrete->boundary_neumann)->a0);
   if (errno)
     goto data_discrete_boundary_neumann_free;
-  spacetime_pde_boundary_vector(
+  diffusion_continuous_boundary_vector(
     data_discrete->g_neumann,
     m->dim_embedded,
     m->coord,
