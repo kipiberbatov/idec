@@ -1,71 +1,129 @@
+#include <errno.h>
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
+#include <dlfcn.h>
+
+#include "double.h"
 #include "diffusion_continuous.h"
+#include "int.h"
+#include "mesh.h"
 
-/*
-Solve the following problem:
-Given a mesh M for the unit square, and the discrete Laplacian, solve:
-  . du/dt = -Laplacian(u) + f    in the interior nodes of M
-  . u = g_d                      at the boundary nodes of M
-  . u(0) = initial               at all nodes of M
-In this example:
-  . we have zero degrees everywhere except at the central node where it is 100
-  . we maintain zero degrees at the boundary
-After a finite amount of time the temperature will be zero degrees everywhere.
-*/
-
-static double pi_0(const double * x)
+int main(int argc, char ** argv)
 {
-  return 4;
-}
+  char * error, * data_name, * lib_name;
+  char * m_format, * m_laplacian_0_format, * m_laplacian_0_name, * m_name;
+  double ** result;
 
-static double initial(const double * x)
-{
-  if (x[0] == 0.)
-    return 100.;
-  else
-    return 0.;
-}
-
-static double source(const double * x)
-{
-  return 0;
-}
-
-static int boundary_dirichlet(const double * x)
-{
-  return (x[0] == 0. || x[0] == 1.) && (0. <= x[1] && x[1] <= 1.);
-}
-
-static double g_dirichlet(const double * x)
-{
-  if (x[0] == 0.)
-    return 100.;
-  else
-    return 0.;
-}
-
-static int boundary_neumann(const double * x)
-{
-  return (x[1] == 0. || x[1] == 1.) && (0. < x[0] && x[0] < 1.);
-}
-
-static double g_neumann(const double * x)
-{
-  return 0;
-}
-
-int main(int argc, char * argv[])
-{
-  const diffusion_continuous data =
+  mesh * m;
+  matrix_sparse * m_laplacian_0;
+  void * lib_handle;
+  const diffusion_continuous * data;
+  int i, number_of_steps;
+  double time_step;
+  
+  if (argc != 8)
   {
-    pi_0,
-    initial,
-    source,
-    boundary_dirichlet,
-    g_dirichlet,
-    boundary_neumann,
-    g_neumann
-  };
-  return diffusion_continuous_runner(argc, argv, &data);
+    errno = EINVAL;
+    fputs("main - the number of command-line arguments must be 6\n", stderr);
+    goto end;
+  }
+  
+  m_format = argv[1];
+  m_name = argv[2];
+  m = mesh_fscan_by_name(m_name, m_format);
+  if (errno)
+  {
+    fputs("main - cannot scan m\n", stderr);
+    goto end;
+  }
+  
+  m->fc = mesh_fc(m);
+  if (errno)
+  {
+    fputs("main - cannot calculate m->fc\n", stderr);
+    goto m_free;
+  }
+  
+  m_laplacian_0_format = argv[3];
+  m_laplacian_0_name = argv[4];
+  
+  m_laplacian_0 = 
+    matrix_sparse_fscan_by_name(m_laplacian_0_name, m_laplacian_0_format);
+  if (errno)
+  {
+    fputs("main - cannot calculate m_laplacian[0]\n", stderr);
+    goto m_free;
+  }
+  matrix_sparse_scalar_multiply(m_laplacian_0, -1);
+
+  
+#ifdef __linux__
+  lib_name ="lib/libshared.so";
+#elif __APPLE__
+  lib_name ="lib/libshared.dylib";
+#endif
+  lib_handle = dlopen(lib_name, RTLD_LAZY);
+  if (!lib_handle)
+  {
+    fputs("main - cannot open libshared\n", stderr);
+    goto m_laplacian_0_free;
+  }
+  /* clear any existing errors */
+  dlerror();
+  
+  data_name = argv[5];
+  data = (const diffusion_continuous *) dlsym(lib_handle, data_name);
+  error = dlerror();
+  if (error)
+  {
+    fputs(error, stderr);
+    fputs("\n", stderr);
+    goto lib_close;
+  }
+
+  time_step = double_sscan(argv[6]);
+  if (errno)
+  {
+    fprintf(stderr, "Error in %s: cannot scan time_step\n", __func__);
+    goto m_laplacian_0_free;
+  }
+
+  number_of_steps = int_sscan(argv[7]);
+  if (errno)
+  {
+    fprintf(stderr, "Error in %s: cannot scan number_of_steps\n", __func__);
+    goto m_laplacian_0_free;
+  }
+  
+  result = diffusion_continuous_solve_trapezoidal_method(
+    m,
+    m_laplacian_0,
+    data,
+    time_step,
+    number_of_steps);
+  if (errno)
+  {
+    fputs("main - cannot calculate x\n", stderr);
+    goto m_laplacian_0_free;
+  }
+
+  for (i = 0; i <= number_of_steps; ++i)
+  {
+    double_array_fprint(stdout, m->cn[0], result[i], "--raw");
+    fputs("\n", stdout);
+  }
+
+  for (i = number_of_steps; i >= 0; --i)
+    free(result[i]);
+  free(result);
+lib_close:
+  dlclose(lib_name);
+m_laplacian_0_free:
+  matrix_sparse_free(m_laplacian_0);
+m_free:
+  mesh_free(m);
+end:
+  return errno;
 }

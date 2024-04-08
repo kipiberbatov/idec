@@ -1,5 +1,10 @@
 #include "double.h"
-#include "diffusion_data.h"
+#include "diffusion_continuous.h"
+
+static double pi_0(const double * x)
+{
+  return 1;
+}
 
 static double initial(const double * x)
 {
@@ -33,8 +38,9 @@ static double g_neumann(const double * x)
   return 0;
 }
 
-const diffusion_data diffusion_problem_0 =
+const diffusion_continuous diffusion_continuous_data_0 =
 {
+  .pi_0 = pi_0,
   .initial = initial,
   .source = source,
   .boundary_dirichlet = boundary_dirichlet,

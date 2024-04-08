@@ -283,7 +283,7 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
   demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
   demo/mesh/mesh_brick_2d_2_forman_neumann_modified_laplacian.txt\
-  demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt\
+  demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_0.txt\
   demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_1.txt\
   demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_2.txt\
   demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt\
@@ -419,23 +419,29 @@ demo/mesh/mesh_brick_2d_2_forman_neumann_modified_laplacian.txt:\
 	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt | demo/mesh
 	 $< --raw $(word 2, $^) --raw $(word 3, $^) > $@
 
-demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt:\
-	  bin/spacetime_pde$(.EXE)\
+demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_0.txt:\
+	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.05 20 > $@
+	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
+	  build/spacetime_pde_data_0.o | demo/mesh
+	$< --raw $(word 2, $^) --raw $(word 3, $^)\
+	  spacetime_pde_data_0 0.05 20 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_1.txt:\
-	  bin/spacetime_pde_1$(.EXE)\
+	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.05 20 > $@
+	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
+	  build/spacetime_pde_data_1.o | demo/mesh
+	$< --raw $(word 2, $^) --raw $(word 3, $^)\
+	  spacetime_pde_data_1 0.05 20 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_2.txt:\
-	  bin/spacetime_pde_2$(.EXE)\
+	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.001 100 > $@
+	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
+	  build/spacetime_pde_data_2.o | demo/mesh
+	$< --raw $(word 2, $^) --raw $(word 3, $^)\
+	  spacetime_pde_data_2 0.001 100 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt:\
 	  bin/mesh_qc_hodge_coeff$(.EXE)\
@@ -884,16 +890,20 @@ demo/mesh/mesh_brick_2d_5_forman_laplacian.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_5_forman_spacetime_pde_2.txt:\
-	  bin/spacetime_pde_2$(.EXE)\
+	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
-	  demo/mesh/mesh_brick_2d_5_forman_laplacian.txt | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.0001 10000 > $@
+	  demo/mesh/mesh_brick_2d_5_forman_laplacian.txt\
+	  build/spacetime_pde_data_2.o | demo/mesh
+	$< --raw $(word 2, $^) --raw $(word 3, $^)\
+	  spacetime_pde_data_2 0.0001 10000 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
-	  demo/mesh/mesh_brick_2d_5_forman_laplacian_corrected.txt | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.0001 10000 > $@
+	  demo/mesh/mesh_brick_2d_5_forman_laplacian_corrected.txt \
+	  build/diffusion_continuous_data_1.o | demo/mesh
+	$< --raw $(word 2, $^) --raw $(word 3, $^) \
+	  diffusion_continuous_data_1 0.0001 10000 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt:\
 	  bin/mesh_qc_bd_layer$(.EXE)\
@@ -1050,8 +1060,10 @@ demo/mesh/mesh_brick_2d_10_forman_laplacian.txt:\
 demo/mesh/mesh_brick_2d_10_forman_one_direction_flow.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_10_forman.txt\
-	  demo/mesh/mesh_brick_2d_10_forman_laplacian.txt | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^) 0.0001 4000 > $@
+	  demo/mesh/mesh_brick_2d_10_forman_laplacian.txt \
+	  build/diffusion_continuous_data_1.o | demo/mesh
+	$< --raw $(word 2, $^) --raw $(word 3, $^) \
+	  diffusion_continuous_data_1 0.0001 4000 > $@
 
 DEMO_MESH_BRICK_REGULAR_2 :=\
   $(DEMO_MESH_BRICK_REGULAR_2D_1)\
