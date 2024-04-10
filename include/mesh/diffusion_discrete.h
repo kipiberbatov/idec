@@ -24,7 +24,7 @@ void diffusion_discrete_set_neumann_rows(
   const mesh * m,
   const jagged1 * boundary_neumann_discrete);
 
-double ** diffusion_discrete_solve_trapezoidal_method(
+double * diffusion_discrete_solve_trapezoidal_method(
   const mesh * m,
   const matrix_sparse * m_laplacian_0,
   const diffusion_discrete * data,

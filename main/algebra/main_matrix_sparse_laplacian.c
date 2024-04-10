@@ -6,14 +6,15 @@
 int main(int argc, char * argv[])
 {
   int d;
-  char * format, * list;
+  char * format;
+  /* char * list; */
   matrix_sparse ** a, ** b;
   FILE * in, * out;
   
   out = stdout;
   in = stdin;
   format = argv[1];
-  list = argv[2];
+  /* list = argv[2]; */
   d = atoi(argv[3]);
   
   a = matrix_sparse_array_fscan(in, d, "--raw");

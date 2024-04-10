@@ -6,7 +6,7 @@
 #include "diffusion_discrete.h"
 
 static void loop(
-  double ** result,
+  double * result,
   matrix_sparse * lhs,
   double * rhs_final,
   const matrix_sparse * rhs,
@@ -24,7 +24,7 @@ static void loop(
   {
     memcpy(rhs_final, free_part, sizeof(double) * n);
     
-    matrix_sparse_vector_multiply_add(rhs_final, rhs, result[i]);
+    matrix_sparse_vector_multiply_add(rhs_final, rhs, result + i * n);
     
     /* update rhs_final with the boundary conditions */
     double_array_substitute_inverse(
@@ -33,61 +33,14 @@ static void loop(
     double_array_substitute_inverse(
       rhs_final, boundary_neumann->a0, g_neumann, boundary_neumann->a1);
 
-    memcpy(result[i + 1], rhs_final, sizeof(double) * n);
+    memcpy(result + (i + 1) * n, rhs_final, sizeof(double) * n);
 
-    matrix_sparse_linear_solve(lhs, result[i + 1], "--lu");
+    matrix_sparse_linear_solve(lhs, result + (i + 1) * n, "--lu");
     /* NULL pointer checking */
   }
 }
 
-static double ** double_matrix_allocate_pointer_to_pointer(int m, int n)
-{
-  int i;
-  double ** result;
-  
-  result = (double **) malloc(sizeof(double *) * m);
-  /* NULL pointer checking */
-  
-  for (i = 0; i < m; ++i)
-  {
-    result[i] = (double *) malloc(sizeof(double) * n);
-    /* NULL pointer checking */
-  }
-  return result;
-}
-
-static void
-matrix_sparse_add_with_diagonal(matrix_sparse * a, const double * b)
-{
-  int i_loc, j, n;
-  int * a_cols_total, * a_row_indices;
-  double * a_values;
-  
-  n = a->cols;
-  a_cols_total = a->cols_total;
-  a_row_indices = a->row_indices;
-  a_values = a->values;
-  for (j = 0; j < n; ++j)
-  {
-    for (i_loc = a_cols_total[j]; i_loc < a_cols_total[j + 1]; ++i_loc)
-    {
-      if (a_row_indices[i_loc] == j)
-      {
-        a_values[i_loc] += b[j];
-        break;
-      }
-    }
-  }
-}
-
-/*
-Solve the following differential equation
-  d(a u)/(d t) = b u + c on M,
-  u|_{G_D} = g_dirichlet
-  (pi_1 nabla(u))|_{G_N} = g_neumann
-with given $time_step and prescribed $number_of_steps.
-*/
-double ** diffusion_discrete_solve_trapezoidal_method(
+double * diffusion_discrete_solve_trapezoidal_method(
   const mesh * m,
   const matrix_sparse * m_laplacian_0,
   const diffusion_discrete * data,
@@ -96,34 +49,31 @@ double ** diffusion_discrete_solve_trapezoidal_method(
 { 
   int n;
   double * free_part, * rhs_final;
-  double ** result;
+  double * result;
   // matrix_sparse * a;
   double * a;
   const matrix_sparse * b;
   matrix_sparse * lhs, * rhs;
   
   a = data->pi_0;
-  // a = matrix_sparse_identity(m_laplacian_0->rows);
-  /* NULL pointer checking */
   b = m_laplacian_0;
   //b = data->pi_1; 
   
   /* b = pi_0 * cbd_star_*/
   
-  // n = a->rows;
   n = m->cn[0];
   
   // lhs = matrix_sparse_linear_combination(a, b, 1, - time_step / 2);
   lhs = matrix_sparse_copy(b);
   /* NULL pointer checking */
   matrix_sparse_scalar_multiply(lhs, - time_step / 2);
-  matrix_sparse_add_with_diagonal(lhs, a);
+  matrix_sparse_add_with_diagonal_matrix(lhs, a);
   
   // rhs = matrix_sparse_linear_combination(a, b, 1, time_step / 2);
   rhs = matrix_sparse_copy(b);
   /* NULL pointer checking */
   matrix_sparse_scalar_multiply(rhs, time_step / 2);
-  matrix_sparse_add_with_diagonal(rhs, a);
+  matrix_sparse_add_with_diagonal_matrix(rhs, a);
   
   free_part = (double *) malloc(sizeof(double) * n);
   /* NULL pointer checking */
@@ -138,10 +88,10 @@ double ** diffusion_discrete_solve_trapezoidal_method(
   rhs_final = (double *) malloc(sizeof(double) * n);
   /* NULL pointer checking */
   
-  result = double_matrix_allocate_pointer_to_pointer(number_of_steps + 1, n);
+  result = (double *) malloc(sizeof(double) * (number_of_steps + 1) * n);
   /* NULL pointer checking */
   
-  memcpy(result[0], data->initial, sizeof(double) * n);
+  memcpy(result, data->initial, sizeof(double) * n);
   
   loop(result, lhs, rhs_final, rhs, free_part,
     data->boundary_dirichlet, data->g_dirichlet,
@@ -156,12 +106,3 @@ double ** diffusion_discrete_solve_trapezoidal_method(
   // matrix_sparse_free(a);
   return result;
 }
-
-// double ** diffusion_discrete_solve_trapezoidal_method(
-//   const mesh * m,
-//   const diffusion_discrete * data,
-//   double time_step,
-//   int number_of_steps)
-// {
-//   return NULL;
-// }

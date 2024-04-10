@@ -91,7 +91,13 @@ void matrix_sparse_vector_multiply_add(
   const double * x);
 
 /* Find the a . diagonal(d[0], ..., d[a->cols - 1]) . */
-void matrix_sparse_multiply_with_diagonal_matrix(matrix_sparse * a, double * d);
+void matrix_sparse_multiply_with_diagonal_matrix(
+  matrix_sparse * a,
+  const double * d);
+
+void matrix_sparse_add_with_diagonal_matrix(
+  matrix_sparse * a,
+  const double * d);
 
 /************************* matrix_sparse_linear_solve *************************/
 /* Supported methods for "matrix_sparse_linear_solve":
@@ -173,14 +179,6 @@ void matrix_sparse_laplacian_symmetric(
   matrix_sparse ** delta,
   int d,
   double ** m_inner);
-
-/* supposedly solve the diffusion equation -- for now this is broken */
-double * matrix_sparse_diffusion(
-  const matrix_sparse * laplacian_0,
-  const double * lhs,
-  const double * u_0,
-  double tau,
-  int N);
 
 typedef double (*scalar_field)(const double *);
 

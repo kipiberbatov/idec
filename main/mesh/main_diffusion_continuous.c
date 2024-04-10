@@ -14,13 +14,13 @@ int main(int argc, char ** argv)
 {
   char * error, * data_name, * lib_name;
   char * m_format, * m_laplacian_0_format, * m_laplacian_0_name, * m_name;
-  double ** result;
+  double * result;
 
   mesh * m;
   matrix_sparse * m_laplacian_0;
   void * lib_handle;
   const diffusion_continuous * data;
-  int i, number_of_steps;
+  int i, n, number_of_steps;
   double time_step;
   
   if (argc != 8)
@@ -109,14 +109,13 @@ int main(int argc, char ** argv)
     goto m_laplacian_0_free;
   }
 
+  n = m->cn[0];
   for (i = 0; i <= number_of_steps; ++i)
   {
-    double_array_fprint(stdout, m->cn[0], result[i], "--raw");
+    double_array_fprint(stdout, n, result + i * n, "--raw");
     fputs("\n", stdout);
   }
 
-  for (i = number_of_steps; i >= 0; --i)
-    free(result[i]);
   free(result);
 lib_close:
   dlclose(lib_name);

@@ -22,14 +22,11 @@ diffusion_discrete * diffusion_continuous_discretize(
   const mesh * m,
   const diffusion_continuous * data_continuous);
 
-double ** diffusion_continuous_solve_trapezoidal_method(
+double * diffusion_continuous_solve_trapezoidal_method(
   const mesh * m,
   const matrix_sparse * m_laplacian_0,
   const diffusion_continuous * data,
   double time_step,
   int number_of_steps);
-
-int diffusion_continuous_runner(
-  int argc, char ** argv, const diffusion_continuous * data);
 
 #endif /* _diffusion_continuous_h */

@@ -1,5 +1,3 @@
-#include <math.h>
-
 #include "diffusion_continuous.h"
 
 /*
@@ -9,10 +7,8 @@ Given a mesh M for the unit square, and the discrete Laplacian, solve:
   . u = g_d                      at the boundary nodes of M
   . u(0) = initial               at all nodes of M
 For this example it is assumed that f and g_d are time independent.
-An artificial example with
-  u(t, x, y) = exp(-2 * pi^2) sin(pi x) sin(pi y)
-is taken.
-This corresponds to f = 0, g_d = 0, initial = sin(pi x) sin(pi y).
+An artificial example with u(t, x_0, x_1) = x_0^2 + x_1^2 is taken.
+This corresponds to f(x_0, x_1) = -4.
 */
 
 static double pi_0(const double * x)
@@ -22,12 +18,12 @@ static double pi_0(const double * x)
 
 static double initial(const double * x)
 {
-  return sin(M_PI * x[0]) * sin(M_PI * x[1]);
+  return x[0] * x[0] + x[1] * x[1];
 }
 
 static double source(const double * x)
 {
-  return 0.;
+  return -4.;
 }
 
 static int boundary_dirichlet(const double * x)
@@ -37,7 +33,7 @@ static int boundary_dirichlet(const double * x)
 
 static double g_dirichlet(const double * x)
 {
-  return 0.;
+  return x[0] * x[0] + x[1] * x[1];
 }
 
 static int boundary_neumann(const double * x)
@@ -50,7 +46,7 @@ static double g_neumann(const double * x)
   return 0.;
 }
 
-const diffusion_continuous spacetime_pde_data_1 =
+const diffusion_continuous diffusion_continuous_p0 =
 {
   .pi_0 = pi_0,
   .initial = initial,

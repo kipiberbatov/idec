@@ -38,7 +38,7 @@ static double g_neumann(const double * x)
   return 0;
 }
 
-const diffusion_continuous diffusion_continuous_data_0 =
+const diffusion_continuous diffusion_continuous_p3 =
 {
   .pi_0 = pi_0,
   .initial = initial,

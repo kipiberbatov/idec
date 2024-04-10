@@ -51,7 +51,7 @@ static double g_neumann(const double * x)
   return 0.;
 }
 
-const diffusion_continuous spacetime_pde_data_2 =
+const diffusion_continuous diffusion_continuous_p2 =
 {
   .pi_0 = pi_0,
   .initial = initial,

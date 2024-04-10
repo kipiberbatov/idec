@@ -121,11 +121,6 @@ demo/mesh/mesh_brick_2d_1_forman_cbd_star.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
-# demo/mesh/mesh_brick_2d_1_forman_cbd_star_matrix_form.txt:\
-# 	  bin/matrix_sparse_fprint$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_1_forman_cbd_star.txt
-# 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
-
 demo/mesh/mesh_brick_2d_1_forman_laplacian.txt:\
 	  bin/mesh_qc_laplacian$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman.txt\
@@ -283,9 +278,10 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
   demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
   demo/mesh/mesh_brick_2d_2_forman_neumann_modified_laplacian.txt\
-  demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_0.txt\
-  demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_1.txt\
-  demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_2.txt\
+  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature.txt\
+  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.txt\
+  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p1_temperature.txt\
+  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature.txt\
   demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_2_forman_hodge.txt\
   demo/mesh/mesh_brick_2d_2_forman_node_curvature.txt\
@@ -380,15 +376,6 @@ demo/mesh/mesh_brick_2d_2_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
-# demo/mesh/mesh_brick_2d_2_forman_inner.txt:\
-# 	  bin/mesh_qc_inner$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-# 	  demo/mesh/mesh_brick_2d_2_forman_vol.txt\
-# 	  demo/mesh/mesh_brick_2d_2_forman_metric.txt
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
-
 demo/mesh/mesh_brick_2d_2_forman_inner.txt:\
 	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
@@ -419,29 +406,36 @@ demo/mesh/mesh_brick_2d_2_forman_neumann_modified_laplacian.txt:\
 	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt | demo/mesh
 	 $< --raw $(word 2, $^) --raw $(word 3, $^) > $@
 
-demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_0.txt:\
+demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
-	  build/spacetime_pde_data_0.o | demo/mesh
+	  build/diffusion_continuous_p0.o | demo/mesh
 	$< --raw $(word 2, $^) --raw $(word 3, $^)\
-	  spacetime_pde_data_0 0.05 20 > $@
+	  diffusion_continuous_p0 0.05 20 > $@
 
-demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_1.txt:\
-	  bin/diffusion_continuous$(.EXE)\
+demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.txt:\
+	  bin/diffusion_discrete_calculate_flux$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
-	  build/spacetime_pde_data_1.o | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^)\
-	  spacetime_pde_data_1 0.05 20 > $@
+	  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature.txt\
+	  | demo/mesh
+	$< $(word 2, $^) 20 $(word 3, $^) > $@
 
-demo/mesh/mesh_brick_2d_2_forman_spacetime_pde_2.txt:\
+demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p1_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
-	  build/spacetime_pde_data_2.o | demo/mesh
+	  build/diffusion_continuous_p1.o | demo/mesh
 	$< --raw $(word 2, $^) --raw $(word 3, $^)\
-	  spacetime_pde_data_2 0.001 100 > $@
+	  diffusion_continuous_p1 0.05 20 > $@
+
+demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature.txt:\
+	  bin/diffusion_continuous$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
+	  build/diffusion_continuous_p2.o | demo/mesh
+	$< --raw $(word 2, $^) --raw $(word 3, $^)\
+	  diffusion_continuous_p2 0.001 100 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt:\
 	  bin/mesh_qc_hodge_coeff$(.EXE)\
@@ -536,24 +530,6 @@ demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected.txt:\
 	$< --raw -list 2 < tmp.txt > $@
 	rm tmp.txt
 
-# demo/mesh/mesh_brick_2d_2_forman_spacetime_pde.txt:\
-# 	  bin/spacetime_pde$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_4.txt\
-# 	  demo/mesh/mesh_brick_2d_4_laplacian_corrected.txt
-
-# demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected.txt:\
-# 	  bin/mesh_qc_laplacian$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-# 	  demo/mesh/mesh_brick_2d_2_forman_hodge_codifferential_corrected.txt
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
-#
-# demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected_matrix_form.txt:\
-# 	  bin/matrix_sparse_fprint$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected.txt
-# 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
-
 # d = 2, n = 4
 DEMO_MESH_BRICK_REGULAR_2D_4 := \
   demo/mesh/mesh_brick_2d_4.txt\
@@ -580,11 +556,6 @@ DEMO_MESH_BRICK_REGULAR_2D_4 := \
   demo/mesh/mesh_brick_2d_4_laplacian_corrected_symmetric_restricted.txt\
   demo/mesh/mesh_brick_2d_4_laplace_equation.txt\
   demo/mesh/mesh_brick_2d_4_laplace_equation_non_grid.txt\
-  # demo/mesh/mesh_brick_2d_4_heat_conduction_non_grid.txt\
-  # demo/mesh/mesh_brick_2d_4_diffusion.txt\
-  # demo/mesh/mesh_brick_2d_4_hodge_laplacian_corrected.txt
-  # demo/mesh/mesh_brick_2d_4_hodge_laplacian_0_corrected.txt
-  # demo/mesh/mesh_brick_2d_4_hodge_laplacian_corrected_matrix_form.txt
 
 .PHONY: demo_mesh_brick_regular_2d_4
 demo_mesh_brick_regular_2d_4: $(DEMO_MESH_BRICK_REGULAR_2D_4) | demo/mesh
@@ -621,14 +592,6 @@ demo/mesh/mesh_brick_2d_4_metric_corrected.txt:\
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
-
-# demo/mesh/mesh_brick_2d_4_metric_corrected.txt:\
-# 	  bin/mesh_qc_metric$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_4.txt\
-# 	  demo/mesh/mesh_brick_2d_4_vol.txt
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_4_inner_corrected.txt:\
 	  bin/mesh_qc_inner$(.EXE)\
@@ -755,56 +718,6 @@ demo/mesh/mesh_brick_2d_4_heat_conduction_non_grid.txt:\
 	$< $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^) --raw \
 	0.1 10 --raw > $@
 
-# demo/mesh/mesh_brick_2d_4_diffusion.txt:\
-# 	  bin/matrix_sparse_diffusion$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_4_laplacian_corrected_symmetric.txt\
-# 	  demo/mesh/mesh_brick_2d_4_node_curvature.txt | demo/mesh
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< 2 5 0.1 < tmp.txt > $@
-# 	rm tmp.txt
-
-# demo/mesh/mesh_brick_2d_4_hodge_laplacian_0_corrected.txt:\
-# 	  bin/matrix_sparse_multiply$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_4_hodge_codifferential_corrected.txt\
-# 	  demo/mesh/mesh_brick_2d_4_cbd.txt | demo/mesh
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< --raw -list 2 < tmp.txt > $@
-# 	rm tmp.txt
-#
-# demo/mesh/mesh_brick_2d_4_hodge_laplacian_corrected.txt:\
-# 	  bin/mesh_qc_laplacian$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_4.txt\
-# 	  demo/mesh/mesh_brick_2d_4_hodge_codifferential_corrected.txt | demo/mesh
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
-#
-# demo/mesh/mesh_brick_2d_4_hodge_laplacian_corrected_matrix_form.txt:\
-# 	  bin/matrix_sparse_fprint$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_4_hodge_laplacian_corrected.txt | demo/mesh
-# 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
-
-# d = 2, n = 5
-# DEMO_MESH_BRICK_REGULAR_2D_5 := \
-#   demo/mesh/mesh_brick_2d_5.txt\
-#   demo/mesh/mesh_brick_2d_5_vol.txt\
-#   demo/mesh/mesh_brick_2d_5_forman.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_vol.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_metric.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_inner.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_laplacian.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt\
-#   #demo/mesh/mesh_brick_2d_5_forman_laplacian_0_interior.txt\#
-#   demo/mesh/mesh_brick_2d_5_forman_hodge_coeff.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_hodge.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_node_curvature.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_metric_corrected.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_inner_corrected.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_cbd_star_corrected.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_laplacian_corrected.txt\
-#   demo/mesh/mesh_brick_2d_5_forman_hodge_corrected.txt\
-
 DEMO_MESH_BRICK_REGULAR_2D_5 := \
   demo/mesh/mesh_brick_2d_5.txt\
   demo/mesh/mesh_brick_2d_5_vol.txt\
@@ -814,8 +727,8 @@ DEMO_MESH_BRICK_REGULAR_2D_5 := \
   demo/mesh/mesh_brick_2d_5_forman_inner.txt\
   demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
   demo/mesh/mesh_brick_2d_5_forman_laplacian.txt\
-  demo/mesh/mesh_brick_2d_5_forman_spacetime_pde_2.txt\
-  demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous.txt\
+  demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.txt\
+  demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt\
   demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge.txt\
@@ -889,34 +802,26 @@ demo/mesh/mesh_brick_2d_5_forman_laplacian.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
-demo/mesh/mesh_brick_2d_5_forman_spacetime_pde_2.txt:\
+demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_laplacian.txt\
-	  build/spacetime_pde_data_2.o | demo/mesh
+	  build/diffusion_continuous_p2.o | demo/mesh
 	$< --raw $(word 2, $^) --raw $(word 3, $^)\
-	  spacetime_pde_data_2 0.0001 10000 > $@
+	  diffusion_continuous_p2 0.0001 10000 > $@
 
-demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous.txt:\
+demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_laplacian_corrected.txt \
-	  build/diffusion_continuous_data_1.o | demo/mesh
+	  build/diffusion_continuous_p4.o | demo/mesh
 	$< --raw $(word 2, $^) --raw $(word 3, $^) \
-	  diffusion_continuous_data_1 0.0001 10000 > $@
+	  diffusion_continuous_p4 0.0001 10000 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt:\
 	  bin/mesh_qc_bd_layer$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt | demo/mesh
 	$< < $(word 2, $^) > $@
-	
-# demo/mesh/mesh_brick_2d_5_forman_laplacian_0_interior.txt:\
-# 	  bin/mesh_qc_laplacian_0_interior$(.EXE)\
-# 	  demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt\
-# 	  demo/mesh/mesh_brick_2d_5_forman_laplacian.txt
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_5_forman_hodge_coeff.txt:\
 	  bin/mesh_qc_hodge_coeff$(.EXE)\
@@ -991,7 +896,8 @@ DEMO_MESH_BRICK_REGULAR_2D_10 := \
   demo/mesh/mesh_brick_2d_10_forman_inner.txt\
   demo/mesh/mesh_brick_2d_10_forman_cbd_star.txt\
   demo/mesh/mesh_brick_2d_10_forman_laplacian.txt\
-  demo/mesh/mesh_brick_2d_10_forman_one_direction_flow.txt\
+  demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_temperature.txt\
+  demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_flux.txt\
 
 .PHONY: demo_mesh_brick_regular_2d_10
 demo_mesh_brick_regular_2d_10: $(DEMO_MESH_BRICK_REGULAR_2D_10) | demo/mesh
@@ -1057,13 +963,20 @@ demo/mesh/mesh_brick_2d_10_forman_laplacian.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
-demo/mesh/mesh_brick_2d_10_forman_one_direction_flow.txt:\
+demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_10_forman.txt\
 	  demo/mesh/mesh_brick_2d_10_forman_laplacian.txt \
-	  build/diffusion_continuous_data_1.o | demo/mesh
+	  build/diffusion_continuous_p4.o | demo/mesh
 	$< --raw $(word 2, $^) --raw $(word 3, $^) \
-	  diffusion_continuous_data_1 0.0001 4000 > $@
+	  diffusion_continuous_p4 0.0001 4000 > $@
+
+demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_flux.txt:\
+	  bin/diffusion_discrete_calculate_flux$(.EXE)\
+	  demo/mesh/mesh_brick_2d_10_forman.txt\
+	  demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_temperature.txt \
+	  | demo/mesh
+	$< $(word 2, $^) 4000 $(word 3, $^) > $@
 
 DEMO_MESH_BRICK_REGULAR_2 :=\
   $(DEMO_MESH_BRICK_REGULAR_2D_1)\
@@ -1118,15 +1031,6 @@ demo/mesh/mesh_two_triangles_forman_metric.txt:\
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
-
-# demo/mesh/mesh_two_triangles_forman_inner.txt:\
-# 	  bin/mesh_qc_inner$(.EXE)\
-# 	  demo/mesh/mesh_two_triangles_forman.txt\
-# 	  demo/mesh/mesh_two_triangles_forman_vol.txt\
-# 	  demo/mesh/mesh_two_triangles_forman_metric.txt | demo/mesh
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
 
 demo/mesh/mesh_two_triangles_forman_inner.txt:\
 	  bin/mesh_qc_inner_direct$(.EXE)\
@@ -1281,15 +1185,6 @@ demo/mesh/mesh_triangle_and_square_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
-# demo/mesh/mesh_triangle_and_square_forman_inner.txt:\
-# 	  bin/mesh_qc_inner$(.EXE)\
-# 	  demo/mesh/mesh_triangle_and_square_forman.txt\
-# 	  demo/mesh/mesh_triangle_and_square_forman_vol.txt\
-# 	  demo/mesh/mesh_triangle_and_square_forman_metric.txt
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
-
 demo/mesh/mesh_triangle_and_square_forman_inner.txt:\
 	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_triangle_and_square_forman.txt\
@@ -1434,15 +1329,6 @@ demo/mesh/mesh_brick_3d_1_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
-# demo/mesh/mesh_brick_3d_1_forman_inner.txt:\
-# 	  bin/mesh_qc_inner$(.EXE)\
-# 	  demo/mesh/mesh_brick_3d_1_forman.txt\
-# 	  demo/mesh/mesh_brick_3d_1_forman_vol.txt\
-# 	  demo/mesh/mesh_brick_3d_1_forman_metric.txt
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
-
 demo/mesh/mesh_brick_3d_1_forman_inner.txt:\
 	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_brick_3d_1_forman.txt\
@@ -1578,15 +1464,6 @@ demo/mesh/mesh_brick_3d_2_forman_metric.txt:\
 	$< < tmp.txt > $@
 	rm tmp.txt
 
-# demo/mesh/mesh_brick_3d_2_forman_inner.txt:\
-# 	  bin/mesh_qc_inner$(.EXE)\
-# 	  demo/mesh/mesh_brick_3d_2_forman.txt\
-# 	  demo/mesh/mesh_brick_3d_2_forman_vol.txt\
-# 	  demo/mesh/mesh_brick_3d_2_forman_metric.txt | demo/mesh
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
-
 demo/mesh/mesh_brick_3d_2_forman_inner.txt:\
 	  bin/mesh_qc_inner_direct$(.EXE)\
 	  demo/mesh/mesh_brick_3d_2_forman.txt\
@@ -1721,15 +1598,6 @@ demo/mesh/mesh_brick_3d_5_forman_metric.txt:\
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
 	$< < tmp.txt > $@
 	rm tmp.txt
-
-# demo/mesh/mesh_brick_3d_5_forman_inner.txt:\
-# 	  bin/mesh_qc_inner$(.EXE)\
-# 	  demo/mesh/mesh_brick_3d_5_forman.txt\
-# 	  demo/mesh/mesh_brick_3d_5_forman_vol.txt\
-# 	  demo/mesh/mesh_brick_3d_5_forman_metric.txt
-# 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
-# 	$< < tmp.txt > $@
-# 	rm tmp.txt
 
 demo/mesh/mesh_brick_3d_5_forman_inner.txt:\
 	  bin/mesh_qc_inner_direct$(.EXE)\

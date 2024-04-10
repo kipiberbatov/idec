@@ -37,7 +37,7 @@ jagged1 * mesh_boundary_nodes_from_constraint(
   }
   index = 0;
   for (i = 0; i < m_cn_0; ++i)
-    if (constraint(m->coord + m_dim_embedded * i))
+    if (constraint(m_coord + m_dim_embedded * i))
     {
       values[index] = i;
       ++index;
