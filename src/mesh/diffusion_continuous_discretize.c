@@ -38,6 +38,31 @@ zero_cochain_from_scalar_field(double * x, const mesh * m, scalar_field f)
     x[i] = f(m_coord + m_dim_embedded * i);
 }
 
+static void
+one_cochain_from_scalar_field(double * x, const mesh * m, scalar_field f)
+{
+  int i, i0, i1, m_cn_1, m_dim_embedded;
+  double x0, x1;
+  double * m_coord;
+  jagged1 m_cf_1_0_i;
+  jagged2 m_cf_1_0;
+  
+  m_cn_1 = m->cn[1];
+  m_dim_embedded = m->dim_embedded;
+  m_coord = m->coord;
+  mesh_cf_part2(&m_cf_1_0, m, 1, 0);
+  
+  for (i = 0; i < m_cn_1; ++i)
+  {
+    jagged2_part1(&m_cf_1_0_i, &m_cf_1_0, i);
+    i0 = m_cf_1_0_i.a1[0];
+    i1 = m_cf_1_0_i.a1[1];
+    x0 = f(m_coord + m_dim_embedded * i0);
+    x1 = f(m_coord + m_dim_embedded * i1);
+    x[i] = (x0 + x1) / 2 ;
+  }
+}
+
 diffusion_discrete * diffusion_continuous_discretize(
   const mesh * m,
   const diffusion_continuous * data_continuous)
@@ -53,13 +78,14 @@ diffusion_discrete * diffusion_continuous_discretize(
     goto data_discrete_free;
   zero_cochain_from_scalar_field(data_discrete->pi_0, m, data_continuous->pi_0);
   
-  // data_discrete->pi_1 = (double *) malloc(sizeof(double) * m->cn[0]);
-  // /* NULL pointer checking */
-  // zero_cochain_from_scalar_field(data_discrete->pi_1, m, data_continuous->pi_1);
+  data_discrete->pi_1 = (double *) malloc(sizeof(double) * m->cn[0]);
+  if (errno)
+    goto data_discrete_pi_0_free;
+  one_cochain_from_scalar_field(data_discrete->pi_1, m, data_continuous->pi_1);
   
   data_discrete->initial = (double *) malloc(sizeof(double) * m->cn[0]);
   if (errno)
-    goto data_discrete_pi_0_free;
+    goto data_discrete_pi_1_free;
   zero_cochain_from_scalar_field(
     data_discrete->initial, m, data_continuous->initial);
   
@@ -75,7 +101,7 @@ diffusion_discrete * diffusion_continuous_discretize(
     goto data_discrete_source_free;
   
   data_discrete->g_dirichlet
-  = (double *) malloc(sizeof(double) * (data_discrete->boundary_dirichlet)->a0);
+  = (double *) malloc(sizeof(double) * (data_discrete->boundary_dirichlet->a0));
   if (errno)
     goto data_discrete_boundary_dirichlet_free;
   diffusion_continuous_boundary_vector(
@@ -91,7 +117,7 @@ diffusion_discrete * diffusion_continuous_discretize(
     goto data_discrete_g_dirichlet_free;
   
   data_discrete->g_neumann
-  = (double *) malloc(sizeof(double) * (data_discrete->boundary_neumann)->a0);
+  = (double *) malloc(sizeof(double) * (data_discrete->boundary_neumann->a0));
   if (errno)
     goto data_discrete_boundary_neumann_free;
   diffusion_continuous_boundary_vector(
@@ -115,7 +141,8 @@ data_discrete_source_free:
   free(data_discrete->source);
 data_discrete_initial_free:
   free(data_discrete->initial);
-  //free(data_discrete->pi_1);
+data_discrete_pi_1_free:
+  free(data_discrete->pi_1);
 data_discrete_pi_0_free:
   free(data_discrete->pi_0);
 data_discrete_free:

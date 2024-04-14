@@ -9,7 +9,7 @@ typedef int region_implicit(const double *);
 typedef struct diffusion_continuous
 {
   scalar_field pi_0;
-  // scalar_field pi_1;
+  scalar_field pi_1;
   scalar_field initial;
   scalar_field source;
   region_implicit * boundary_dirichlet;
@@ -24,7 +24,9 @@ diffusion_discrete * diffusion_continuous_discretize(
 
 double * diffusion_continuous_solve_trapezoidal_method(
   const mesh * m,
-  const matrix_sparse * m_laplacian_0,
+  // const matrix_sparse * m_laplacian_0,
+  const matrix_sparse * m_cbd_0,
+  const matrix_sparse * m_cbd_star_1,
   const diffusion_continuous * data,
   double time_step,
   int number_of_steps);

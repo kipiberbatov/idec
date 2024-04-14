@@ -19,6 +19,11 @@ static double pi_0(const double * x)
   return 1.;
 }
 
+static double pi_1(const double * x)
+{
+  return 1.;
+}
+
 static double initial(const double * x)
 {
   if (fabs(x[0] - 0.5) < 0.00001 && fabs(x[1] - 0.5) < 0.00001)
@@ -54,6 +59,7 @@ static double g_neumann(const double * x)
 const diffusion_continuous diffusion_continuous_p2 =
 {
   .pi_0 = pi_0,
+  .pi_1 = pi_1,
   .initial = initial,
   .source = source,
   .boundary_dirichlet = boundary_dirichlet,

@@ -5,10 +5,8 @@
 
 typedef struct diffusion_discrete
 {
-  // matrix_sparse * cbd_0;
-  // matrix_sparse * cbd_star_1;
   double  * pi_0;
-  // double  * pi_1;
+  double  * pi_1;
   double  * initial;
   double  * source;
   jagged1 * boundary_dirichlet;
@@ -26,7 +24,9 @@ void diffusion_discrete_set_neumann_rows(
 
 double * diffusion_discrete_solve_trapezoidal_method(
   const mesh * m,
-  const matrix_sparse * m_laplacian_0,
+  // const matrix_sparse * m_laplacian_0,
+  const matrix_sparse * m_cbd_0,
+  const matrix_sparse * m_cbd_star_1,
   const diffusion_discrete * data,
   double time_step,
   int number_of_steps);

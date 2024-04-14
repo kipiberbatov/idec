@@ -42,7 +42,8 @@ static void loop(
 
 double * diffusion_discrete_solve_trapezoidal_method(
   const mesh * m,
-  const matrix_sparse * m_laplacian_0,
+  const matrix_sparse * m_cbd_0,
+  const matrix_sparse * m_cbd_star_1,
   const diffusion_discrete * data,
   double time_step,
   int number_of_steps)
@@ -50,26 +51,24 @@ double * diffusion_discrete_solve_trapezoidal_method(
   int n;
   double * free_part, * rhs_final;
   double * result;
-  // matrix_sparse * a;
   double * a;
   const matrix_sparse * b;
   matrix_sparse * lhs, * rhs;
   
-  a = data->pi_0;
-  b = m_laplacian_0;
-  //b = data->pi_1; 
-  
-  /* b = pi_0 * cbd_star_*/
-  
   n = m->cn[0];
+  a = data->pi_0;
   
-  // lhs = matrix_sparse_linear_combination(a, b, 1, - time_step / 2);
+  b = matrix_sparse_product(m_cbd_star_1, m_cbd_0);
+  /* NULL pointer checking */
+  matrix_sparse_scalar_multiply(b, -1);
+  
+  /* lhs =  a - (time_step / 2) * b */
   lhs = matrix_sparse_copy(b);
   /* NULL pointer checking */
   matrix_sparse_scalar_multiply(lhs, - time_step / 2);
   matrix_sparse_add_with_diagonal_matrix(lhs, a);
   
-  // rhs = matrix_sparse_linear_combination(a, b, 1, time_step / 2);
+  /* lhs =  a + (time_step / 2) * b */
   rhs = matrix_sparse_copy(b);
   /* NULL pointer checking */
   matrix_sparse_scalar_multiply(rhs, time_step / 2);
@@ -103,6 +102,5 @@ double * diffusion_discrete_solve_trapezoidal_method(
   free(free_part);
   matrix_sparse_free(rhs);
   matrix_sparse_free(lhs);
-  // matrix_sparse_free(a);
   return result;
 }

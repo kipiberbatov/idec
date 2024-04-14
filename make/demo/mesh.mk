@@ -409,32 +409,35 @@ demo/mesh/mesh_brick_2d_2_forman_neumann_modified_laplacian.txt:\
 demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
 	  build/diffusion_continuous_p0.o | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^)\
-	  diffusion_continuous_p0 0.05 20 > $@
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_continuous_p0 0.05 100 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.txt:\
 	  bin/diffusion_discrete_calculate_flux$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature.txt\
 	  | demo/mesh
-	$< $(word 2, $^) 20 $(word 3, $^) > $@
+	$< $(word 2, $^) 100 $(word 3, $^) > $@
 
 demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p1_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
 	  build/diffusion_continuous_p1.o | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^)\
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p1 0.05 20 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
-	  demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
 	  build/diffusion_continuous_p2.o | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^)\
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p2 0.001 100 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt:\
@@ -720,6 +723,7 @@ demo/mesh/mesh_brick_2d_4_heat_conduction_non_grid.txt:\
 
 DEMO_MESH_BRICK_REGULAR_2D_5 := \
   demo/mesh/mesh_brick_2d_5.txt\
+  demo/mesh/mesh_brick_2d_5_forman_cbd.txt\
   demo/mesh/mesh_brick_2d_5_vol.txt\
   demo/mesh/mesh_brick_2d_5_forman.txt\
   demo/mesh/mesh_brick_2d_5_forman_vol.txt\
@@ -745,6 +749,11 @@ demo_mesh_brick_regular_2d_5: $(DEMO_MESH_BRICK_REGULAR_2D_5) | demo/mesh
 demo/mesh/mesh_brick_2d_5.txt:\
 	  bin/mesh_brick_regular$(.EXE) | demo/mesh
 	$< 2 5 > $@
+
+demo/mesh/mesh_brick_2d_5_forman_cbd.txt:\
+	  bin/mesh_cbd$(.EXE)\
+	  demo/mesh/mesh_brick_2d_5_forman.txt | demo/mesh
+	$< --raw < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_5_vol.txt:\
 	  bin/mesh_qc_vol$(.EXE)\
@@ -805,17 +814,19 @@ demo/mesh/mesh_brick_2d_5_forman_laplacian.txt:\
 demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
-	  demo/mesh/mesh_brick_2d_5_forman_laplacian.txt\
+	  demo/mesh/mesh_brick_2d_5_forman_cbd.txt\
+	  demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
 	  build/diffusion_continuous_p2.o | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^)\
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p2 0.0001 10000 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
-	  demo/mesh/mesh_brick_2d_5_forman_laplacian_corrected.txt \
+	  demo/mesh/mesh_brick_2d_5_forman_cbd.txt\
+	  demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
 	  build/diffusion_continuous_p4.o | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^) \
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p4 0.0001 10000 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt:\
@@ -966,9 +977,10 @@ demo/mesh/mesh_brick_2d_10_forman_laplacian.txt:\
 demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_temperature.txt:\
 	  bin/diffusion_continuous$(.EXE)\
 	  demo/mesh/mesh_brick_2d_10_forman.txt\
-	  demo/mesh/mesh_brick_2d_10_forman_laplacian.txt \
+	  demo/mesh/mesh_brick_2d_10_forman_cbd.txt\
+	  demo/mesh/mesh_brick_2d_10_forman_cbd_star.txt\
 	  build/diffusion_continuous_p4.o | demo/mesh
-	$< --raw $(word 2, $^) --raw $(word 3, $^) \
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p4 0.0001 4000 > $@
 
 demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_flux.txt:\

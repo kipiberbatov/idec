@@ -13,20 +13,23 @@
 int main(int argc, char ** argv)
 {
   char * error, * data_name, * lib_name;
-  char * m_format, * m_laplacian_0_format, * m_laplacian_0_name, * m_name;
+  char * m_format, * m_name;
+  char * m_cbd_0_name;
+  char * m_cbd_star_1_name;
+  FILE * m_cbd_star_1_file;
   double * result;
 
   mesh * m;
-  matrix_sparse * m_laplacian_0;
+  matrix_sparse * m_cbd_0, * m_cbd_star_1;
   void * lib_handle;
   const diffusion_continuous * data;
-  int i, n, number_of_steps;
+  int number_of_steps;
   double time_step;
   
   if (argc != 8)
   {
     errno = EINVAL;
-    fputs("main - the number of command-line arguments must be 6\n", stderr);
+    fputs("main - the number of command-line arguments must be 8\n", stderr);
     goto end;
   }
   
@@ -46,17 +49,31 @@ int main(int argc, char ** argv)
     goto m_free;
   }
   
-  m_laplacian_0_format = argv[3];
-  m_laplacian_0_name = argv[4];
+  m_cbd_0_name = argv[3];
   
-  m_laplacian_0 = 
-    matrix_sparse_fscan_by_name(m_laplacian_0_name, m_laplacian_0_format);
+  m_cbd_0 = matrix_sparse_fscan_by_name(m_cbd_0_name, "--raw");
   if (errno)
   {
-    fputs("main - cannot calculate m_laplacian[0]\n", stderr);
+    fputs("main - cannot scan m_cbd_0\n", stderr);
     goto m_free;
   }
-  matrix_sparse_scalar_multiply(m_laplacian_0, -1);
+
+  m_cbd_star_1_name = argv[4];
+  
+  m_cbd_star_1_file = fopen(m_cbd_star_1_name, "r");
+  if (errno)
+  {
+    fprintf(stderr, "Cannot open file %s\n", m_cbd_star_1_name);
+    goto m_cbd_0_free;
+  }
+  m_cbd_star_1 = mesh_fscan_bd_p(m_cbd_star_1_file, m, 1);
+  if (errno)
+  {
+    fputs("main - cannot scan m_cbd_star_1\n", stderr);
+    fclose(m_cbd_star_1_file);
+    goto m_cbd_0_free;
+  }
+  fclose(m_cbd_star_1_file);
 
   
 #ifdef __linux__
@@ -68,7 +85,7 @@ int main(int argc, char ** argv)
   if (!lib_handle)
   {
     fputs("main - cannot open libshared\n", stderr);
-    goto m_laplacian_0_free;
+    goto m_cbd_star_1_free;
   }
   /* clear any existing errors */
   dlerror();
@@ -87,40 +104,38 @@ int main(int argc, char ** argv)
   if (errno)
   {
     fprintf(stderr, "Error in %s: cannot scan time_step\n", __func__);
-    goto m_laplacian_0_free;
+    goto lib_close;
   }
 
   number_of_steps = int_sscan(argv[7]);
   if (errno)
   {
     fprintf(stderr, "Error in %s: cannot scan number_of_steps\n", __func__);
-    goto m_laplacian_0_free;
+    goto lib_close;
   }
   
   result = diffusion_continuous_solve_trapezoidal_method(
     m,
-    m_laplacian_0,
+    m_cbd_0,
+    m_cbd_star_1,
     data,
     time_step,
     number_of_steps);
   if (errno)
   {
     fputs("main - cannot calculate x\n", stderr);
-    goto m_laplacian_0_free;
+    goto lib_close;
   }
 
-  n = m->cn[0];
-  for (i = 0; i <= number_of_steps; ++i)
-  {
-    double_array_fprint(stdout, n, result + i * n, "--raw");
-    fputs("\n", stdout);
-  }
+  double_matrix_fprint(stdout, number_of_steps + 1, m->cn[0], result, "--raw");
 
   free(result);
 lib_close:
   dlclose(lib_name);
-m_laplacian_0_free:
-  matrix_sparse_free(m_laplacian_0);
+m_cbd_star_1_free:
+  matrix_sparse_free(m_cbd_star_1);
+m_cbd_0_free:
+  matrix_sparse_free(m_cbd_0);
 m_free:
   mesh_free(m);
 end:

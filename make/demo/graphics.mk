@@ -1,6 +1,6 @@
 DEMO_GTK :=\
   demo/graphics/log/fill_gtk.log\
-  demo/graphics/log/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature_gtk.log\
+  demo/graphics/log/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature_gtk.log\
   demo/graphics/log/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature_gtk.log\
   demo/graphics/log/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature_gtk.log\
   demo/graphics/log/mesh_brick_2d_10_forman_diffusion_continuous_p4_temperature_gtk.log\
@@ -28,18 +28,21 @@ demo_gtk: bin_graphics $(DEMO_GTK) | demo/graphics/log
 demo/graphics/log: | demo/graphics
 	mkdir -p $@
 
-demo/graphics/log/fill_gtk.log: bin/gtk_fill | demo/graphics/log
-	$<
-	@printf "This file was created after running %s\n" $< > $@
-	@printf "Creation time: " >> $@
-	@echo $(shell date -u) >> $@
+# demo/graphics/log/fill_gtk.log: bin/gtk_fill | demo/graphics/log
+# 	$<
+# 	@printf "This file was created after running %s\n" $< > $@
+# 	@printf "Creation time: " >> $@
+# 	@echo $(shell date -u) >> $@
 
-demo/graphics/log/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature_gtk.log:\
+demo/graphics/log/fill_gtk.log: bin/gtk_fill | demo/graphics/log
+	$< > $@
+
+demo/graphics/log/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature_gtk.log:\
 	  bin/gtk_diffusion\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature.txt\
 	  | demo/graphics/log
-	$< --raw $(word 2, $^) 20 --raw $(word 3, $^)
+	$< --raw $(word 2, $^) 100 --raw $(word 3, $^)
 	@printf "This file was created after running %s\n" $< > $@
 	@printf "Creation time: " >> $@
 	@echo $(shell date -u) >> $@
@@ -98,14 +101,14 @@ demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.pdf:\
 	$< --raw $(word 2, $^) 20 --raw $(word 3, $^) $@
 
 demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.pdf:\
-	  bin/pdf_diffusion\
+	  bin/pdf_mesh_2d_colored_zero_cochain_sequence\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.txt\
 	  | demo/graphics/pdf
 	$< --raw $(word 2, $^) 1000 --raw $(word 3, $^) $@
 
 demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.pdf:\
-	  bin/pdf_diffusion\
+	  bin/pdf_mesh_2d_colored_zero_cochain_sequence\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt\
 	  | demo/graphics/pdf

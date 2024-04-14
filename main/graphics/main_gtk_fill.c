@@ -1,4 +1,6 @@
 #include <alloca.h>
+#include <stdio.h>
+#include <time.h>
 
 #include <gtk/gtk.h>
 
@@ -6,6 +8,20 @@
 #include "paint_rgb.h"
 #include "gtk_draw.h"
 #include "gtk_run.h"
+
+static void write_log(const char * program_name)
+{
+  time_t rawtime;
+  struct tm * p;
+
+  time(&rawtime);
+  p = gmtime(&rawtime);
+
+  printf("This file was created after rinning %s\n", program_name);
+  printf("Creation time: %02d.%02d.%d %02d:%02d:%02d UTC\n",
+    p->tm_mday, p->tm_mon + 1, p->tm_year + 1900,
+    p->tm_hour, p->tm_min, p->tm_sec);
+}
 
 static int gtk_draw_fill(GtkWidget * widget, cairo_t * cr, void * data)
 {
@@ -45,6 +61,8 @@ int main(int argc, char * argv[])
   gtk_run(gtk_draw_fill, (fill *) a, width, height, speed, title);
 
   gtk_main();
+
+  write_log(argv[0]);
 
   return 0;
 }

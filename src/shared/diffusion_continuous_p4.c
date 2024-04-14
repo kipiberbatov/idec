@@ -5,6 +5,11 @@ static double pi_0(const double * x)
   return 4;
 }
 
+static double pi_1(const double * x)
+{
+  return 1.;
+}
+
 static double initial(const double * x)
 {
   if (x[0] == 0.)
@@ -44,6 +49,7 @@ static double g_neumann(const double * x)
 const diffusion_continuous diffusion_continuous_p4 =
 {
   pi_0,
+  pi_1,
   initial,
   source,
   boundary_dirichlet,

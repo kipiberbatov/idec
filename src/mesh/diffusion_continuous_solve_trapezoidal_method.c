@@ -5,7 +5,9 @@
 
 double * diffusion_continuous_solve_trapezoidal_method(
   const mesh * m,
-  const matrix_sparse * m_laplacian_0,
+  // const matrix_sparse * m_laplacian_0,
+  const matrix_sparse * m_cbd_0,
+  const matrix_sparse * m_cbd_star_1,
   const diffusion_continuous * data_continuous,
   double time_step,
   int number_of_steps)
@@ -22,7 +24,8 @@ double * diffusion_continuous_solve_trapezoidal_method(
   
   result = diffusion_discrete_solve_trapezoidal_method(
     m,
-    m_laplacian_0,
+    m_cbd_0,
+    m_cbd_star_1,
     data_discrete,
     time_step,
     number_of_steps

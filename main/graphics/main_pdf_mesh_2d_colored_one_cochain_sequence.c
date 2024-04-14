@@ -29,7 +29,6 @@ int main(int argc, char * argv[])
   double height, width;
   double * new_coordinates, * u;
   mesh * m;
-  //diffusion * a;
   mesh_2d_colored_one_cochain_sequence a;
   char * out_filename;
   
@@ -106,7 +105,7 @@ int main(int argc, char * argv[])
   
   a.total_colors = total_colors;
   a.new_coordinates = new_coordinates;
-  a.line_width = 1;
+  a.line_width = 3;
   a.min_value = double_array_min(n * m->cn[1], u);
   a.max_value = double_array_max(n * m->cn[1], u);
   a.paint = paint_rgb;
