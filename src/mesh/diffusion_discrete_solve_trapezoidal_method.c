@@ -52,26 +52,29 @@ double * diffusion_discrete_solve_trapezoidal_method(
   double * free_part, * rhs_final;
   double * result;
   double * a;
-  const matrix_sparse * b;
+  matrix_sparse * b;
+  matrix_sparse * m_cbd_star_1_material;
   matrix_sparse * lhs, * rhs;
   
   n = m->cn[0];
   a = data->pi_0;
   
-  b = matrix_sparse_product(m_cbd_star_1, m_cbd_0);
+  m_cbd_star_1_material = matrix_sparse_copy(m_cbd_star_1);
+  matrix_sparse_multiply_with_diagonal_matrix(
+    m_cbd_star_1_material, data->pi_1);
+  b = matrix_sparse_product(m_cbd_star_1_material, m_cbd_0);
   /* NULL pointer checking */
-  matrix_sparse_scalar_multiply(b, -1);
-  
-  /* lhs =  a - (time_step / 2) * b */
-  lhs = matrix_sparse_copy(b);
-  /* NULL pointer checking */
-  matrix_sparse_scalar_multiply(lhs, - time_step / 2);
-  matrix_sparse_add_with_diagonal_matrix(lhs, a);
   
   /* lhs =  a + (time_step / 2) * b */
+  lhs = matrix_sparse_copy(b);
+  /* NULL pointer checking */
+  matrix_sparse_scalar_multiply(lhs, time_step / 2);
+  matrix_sparse_add_with_diagonal_matrix(lhs, a);
+  
+  /* lhs =  a - (time_step / 2) * b */
   rhs = matrix_sparse_copy(b);
   /* NULL pointer checking */
-  matrix_sparse_scalar_multiply(rhs, time_step / 2);
+  matrix_sparse_scalar_multiply(rhs, - time_step / 2);
   matrix_sparse_add_with_diagonal_matrix(rhs, a);
   
   free_part = (double *) malloc(sizeof(double) * n);
@@ -81,7 +84,8 @@ double * diffusion_discrete_solve_trapezoidal_method(
   double_array_multiply_with(free_part, n, time_step);
   
   matrix_sparse_set_identity_rows(lhs, data->boundary_dirichlet);
-  diffusion_discrete_set_neumann_rows(lhs, m, data->boundary_neumann);
+  diffusion_discrete_set_neumann_rows(
+    lhs, m, data->boundary_neumann, data->pi_1);
   /* NULL pointer checking */
   
   rhs_final = (double *) malloc(sizeof(double) * n);
@@ -102,5 +106,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
   free(free_part);
   matrix_sparse_free(rhs);
   matrix_sparse_free(lhs);
+  // matrix_sparse_free(b);
+  // matrix_sparse_free(m_cbd_star_1_material);
   return result;
 }

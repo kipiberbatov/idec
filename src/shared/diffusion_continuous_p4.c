@@ -7,7 +7,7 @@ static double pi_0(const double * x)
 
 static double pi_1(const double * x)
 {
-  return 1.;
+  return 6.;
 }
 
 static double initial(const double * x)

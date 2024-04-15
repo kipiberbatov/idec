@@ -59,7 +59,7 @@ one_cochain_from_scalar_field(double * x, const mesh * m, scalar_field f)
     i1 = m_cf_1_0_i.a1[1];
     x0 = f(m_coord + m_dim_embedded * i0);
     x1 = f(m_coord + m_dim_embedded * i1);
-    x[i] = (x0 + x1) / 2 ;
+    x[i] = (x0 + x1) / 2;
   }
 }
 
@@ -78,7 +78,7 @@ diffusion_discrete * diffusion_continuous_discretize(
     goto data_discrete_free;
   zero_cochain_from_scalar_field(data_discrete->pi_0, m, data_continuous->pi_0);
   
-  data_discrete->pi_1 = (double *) malloc(sizeof(double) * m->cn[0]);
+  data_discrete->pi_1 = (double *) malloc(sizeof(double) * m->cn[1]);
   if (errno)
     goto data_discrete_pi_0_free;
   one_cochain_from_scalar_field(data_discrete->pi_1, m, data_continuous->pi_1);

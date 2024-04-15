@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "double.h"
 #include "diffusion_discrete.h"
 #include "matrix.h"
 #include "mesh.h"
@@ -78,13 +79,27 @@ static void line_vectors_matrix_calculate(
   }
 }
 
-static void normals_calculate(double * normal, const double * m_coord_i)
+/* works only for a meshing of the unit square */
+void normals_calculate(double * normal, const double * m_coord_i)
 {
-  normal[0] = 0.;
-  if (m_coord_i[1] == 0.)
-    normal[1] = -1.;
-  else
-    normal[1] = 1.;
+  const double * x = m_coord_i;
+
+  if ((x[1] == 0. || x[1] == 1.) && x[0] != 0. && x[0] != 1.)
+  {
+    normal[0] = 0.;
+    if (x[1] == 0.)
+      normal[1] = -1.;
+    else
+      normal[1] = 1.;
+  }
+  else if ((x[0] == 0. || x[0] == 1.) && x[1] != 0. && x[1] != 0.)
+  {
+    normal[1] = 0.;
+    if (x[0] == 0.)
+      normal[0] = -1.;
+    else
+      normal[0] = 1.;
+  }
 }
 
 static void global_matrix_modify(
@@ -101,18 +116,19 @@ static void global_matrix_modify(
   {
     i0 = neighbors[j_local];
     position = matrix_sparse_part_pointer(lhs, i, i0);
-    *position = coefficients[j_local];
+    *position = -coefficients[j_local];
   }
   position = matrix_sparse_part_pointer(lhs, i, i);
   *position = 0;
   for (j_local = 0; j_local < size_i; ++j_local)
-    *position -= coefficients[j_local];
+    *position = coefficients[j_local];
 }
 
 void diffusion_discrete_set_neumann_rows(
   matrix_sparse * lhs,
   const mesh * m,
-  const jagged1 * boundary_neumann_discrete)
+  const jagged1 * boundary_neumann_discrete,
+  const double * pi_1)
 {
   int i, i_local, m_dim_embedded, neumann_size, size_i, size_max;
   int * neighbors, * neumann_nodes, * values_i;
@@ -157,7 +173,8 @@ void diffusion_discrete_set_neumann_rows(
     memset(coefficients, 0, sizeof(double) * size_i);
     matrix_times_vector(
       coefficients, size_i, m_dim_embedded, l_inverse, normal);
-    
+    double_array_multiply_with(coefficients, size_i, pi_1[i]);
+
     global_matrix_modify(lhs, i, size_i, neighbors, coefficients);
   }
   
