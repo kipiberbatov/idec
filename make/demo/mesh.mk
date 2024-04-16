@@ -282,6 +282,7 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.txt\
   demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p1_temperature.txt\
   demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature.txt\
+  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p4_temperature.txt\
   demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_2_forman_hodge.txt\
   demo/mesh/mesh_brick_2d_2_forman_node_curvature.txt\
@@ -439,6 +440,15 @@ demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature.txt:\
 	  build/diffusion_continuous_p2.o | demo/mesh
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p2 0.001 100 > $@
+
+demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p4_temperature.txt:\
+	  bin/diffusion_continuous_to_steady_state$(.EXE)\
+	  demo/mesh/mesh_brick_2d_2_forman.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
+	  build/diffusion_continuous_p4.o | demo/mesh
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_continuous_p4 0.001 > $@
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt:\
 	  bin/mesh_qc_hodge_coeff$(.EXE)\

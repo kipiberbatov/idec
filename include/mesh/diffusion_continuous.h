@@ -2,7 +2,6 @@
 #define _diffusion_continuous_h
 
 #include "diffusion_discrete.h"
-#include "mesh.h"
 
 typedef int region_implicit(const double *);
 
@@ -24,11 +23,18 @@ diffusion_discrete * diffusion_continuous_discretize(
 
 double * diffusion_continuous_solve_trapezoidal_method(
   const mesh * m,
-  // const matrix_sparse * m_laplacian_0,
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,
-  const diffusion_continuous * data,
+  const diffusion_continuous * data_continuous,
   double time_step,
   int number_of_steps);
+
+double_array_sequence_dynamic *
+diffusion_continuous_solve_trapezoidal_method_to_steady_state(
+  const mesh * m,
+  const matrix_sparse * m_cbd_0,
+  const matrix_sparse * m_cbd_star_1,
+  const diffusion_continuous * data_continuous,
+  double time_step);
 
 #endif /* _diffusion_continuous_h */

@@ -1,5 +1,5 @@
-#ifndef DOUBLE_H
-#define DOUBLE_H
+#ifndef _double_h
+#define _double_h
 
 #include <stdio.h>
 
@@ -46,6 +46,28 @@ double double_array_min(int n, const double * a);
 
 double double_array_max(int n, const double * a);
 
+double double_array_norm_uniform(int n, const double * a);
+
+double double_array_pair_norm_uniform_relative(
+  int n, const double * a, const double * b);
+
+typedef struct double_array_sequence_dynamic
+{
+  int capacity;
+  int length;
+  int dimension;
+  double ** values;
+} double_array_sequence_dynamic;
+
+void double_array_sequence_dynamic_free(double_array_sequence_dynamic * a);
+
+void double_array_sequence_dynamic_file_print(
+  FILE * out,
+  const double_array_sequence_dynamic * a);
+
+double_array_sequence_dynamic *
+double_array_sequence_dynamic_file_scan(FILE * in);
+
 /******************************* double_matrix ********************************/
 double * double_matrix_fscan(FILE * in, int m, int n, const char * format);
 
@@ -64,4 +86,4 @@ double ** double_array2_fscan(
 double ** double_array2_fscan_by_name(
   const char * name, int a0, const int * a1, const char * format);
 
-#endif /* DOUBLE_H */
+#endif /* _double_h */
