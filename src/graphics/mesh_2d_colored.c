@@ -68,14 +68,19 @@ void mesh_2d_colored_zero_cochain_cairo_draw(
   }
 }
 
-int * mesh_2d_colored_zero_cochain_sequence_get_index_void(void * a)
+int mesh_2d_colored_zero_cochain_sequence_get_index_void(const void * a)
 {
-  return ((mesh_2d_colored_zero_cochain_sequence *) a)->index;
+  return ((const mesh_2d_colored_zero_cochain_sequence *) a)->index;
 }
 
 int mesh_2d_colored_zero_cochain_sequence_get_total_steps_void(const void * a)
 {
   return ((const mesh_2d_colored_zero_cochain_sequence *) a)->total_steps;
+}
+
+void mesh_2d_colored_zero_cochain_sequence_increment_index_void(void * a)
+{
+  ++((mesh_2d_colored_zero_cochain_sequence *) a)->index;
 }
 
 void mesh_2d_colored_zero_cochain_sequence_snapshot_cairo_draw(
@@ -84,15 +89,14 @@ void mesh_2d_colored_zero_cochain_sequence_snapshot_cairo_draw(
   double height,
   mesh_2d_colored_zero_cochain_sequence * a)
 {
-  int * i;
+  int i;
   mesh_2d_colored_zero_cochain c;
   
   i = a->index;
-  
   c.number_of_nodes = a->m->cn[0];
   c.total_colors = a->total_colors;
   c.coordinates = a->new_coordinates;
-  c.values = a->values + c.number_of_nodes * (*i);
+  c.values = a->values + c.number_of_nodes * i;
   c.point_size = a->point_size;
   c.min_value = a->min_value;
   c.max_value = a->max_value;
@@ -182,14 +186,19 @@ void mesh_2d_colored_one_cochain_cairo_draw(
   }
 }
 
-int * mesh_2d_colored_one_cochain_sequence_get_index_void(void * a)
+int mesh_2d_colored_one_cochain_sequence_get_index_void(const void * a)
 {
-  return ((mesh_2d_colored_one_cochain_sequence *) a)->index;
+  return ((const mesh_2d_colored_one_cochain_sequence *) a)->index;
 }
 
 int mesh_2d_colored_one_cochain_sequence_get_total_steps_void(const void * a)
 {
   return ((const mesh_2d_colored_one_cochain_sequence *) a)->total_steps;
+}
+
+void mesh_2d_colored_one_cochain_sequence_increment_index_void(void * a)
+{
+  ++((mesh_2d_colored_one_cochain_sequence *) a)->index;
 }
 
 void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
@@ -198,7 +207,7 @@ void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
   double height,
   mesh_2d_colored_one_cochain_sequence * a)
 {
-  int * i;
+  int i;
   mesh * m;
   mesh_2d_colored_one_cochain c;
   jagged2 c_cf_1_0;
@@ -210,7 +219,7 @@ void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
   c.cf_1_0 = &c_cf_1_0;
   c.total_colors = a->total_colors;
   c.coordinates = a->new_coordinates;
-  c.values = a->values + m->cn[1] * (*i);
+  c.values = a->values + m->cn[1] * i;
   c.line_width = a->line_width;
   c.min_value = a->min_value;
   c.max_value = a->max_value;

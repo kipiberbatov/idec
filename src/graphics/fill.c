@@ -2,7 +2,7 @@
 
 struct fill
 {
-  int * i;
+  int i;
   int n;
   painter paint;
 };
@@ -12,14 +12,14 @@ size_t fill_size(void)
   return sizeof(fill);
 }
 
-int * fill_get_index(fill * a)
+int fill_get_index(const fill * a)
 {
   return a->i;
 }
 
-int * fill_get_index_void(void * a)
+int fill_get_index_void(const void * a)
 {
-  return fill_get_index((fill *) a);
+  return fill_get_index((const fill *) a);
 }
 
 int fill_get_total_steps(const fill * a)
@@ -32,12 +32,22 @@ int fill_get_total_steps_void(const void * a)
   return fill_get_total_steps((const fill *) a);
 }
 
+void fill_increment_index(fill * a)
+{
+  ++a->i;
+}
+
+void fill_increment_index_void(void * a)
+{
+  fill_increment_index((fill *) a);
+}
+
 painter fill_get_paint(fill * a)
 {
   return a->paint;
 }
 
-void fill_set(fill * a, int * i, int n, painter paint)
+void fill_set(fill * a, int i, int n, painter paint)
 {
   a->i = i;
   a->n = n;
@@ -46,7 +56,7 @@ void fill_set(fill * a, int * i, int n, painter paint)
 
 void fill_draw(cairo_t * cr, double width, double height, fill * a)
 {
-  a->paint(cr, *(a->i), a->n);
+  a->paint(cr, a->i, a->n);
   cairo_paint(cr);
 }
 

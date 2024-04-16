@@ -106,7 +106,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
   free(free_part);
   matrix_sparse_free(rhs);
   matrix_sparse_free(lhs);
-  // matrix_sparse_free(b);
-  // matrix_sparse_free(m_cbd_star_1_material);
+  matrix_sparse_free(b);
+  matrix_sparse_free(m_cbd_star_1_material);
   return result;
 }

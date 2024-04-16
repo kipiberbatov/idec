@@ -13,7 +13,6 @@
 /* internal headers */
 #include "double.h"
 #include "diffusion.h"
-#include "drawer.h"
 #include "image.h"
 #include "int.h"
 #include "mesh.h"
@@ -24,8 +23,7 @@ int main(int argc, char * argv[])
 {
   char * m_format, * u_format;
   char * m_filename, * u_filename;
-  int begin, n, steps, total_colors;
-  int * i;
+  int i, n, steps, total_colors;
   double height, point_size, width;
   double * new_coordinates, * u;
   mesh * m;
@@ -44,8 +42,7 @@ int main(int argc, char * argv[])
     goto end;
   }
   
-  begin = 0;
-  i = &begin;
+  i = 0;
   
   m_format = argv[1];
   m_filename = argv[2];
@@ -111,7 +108,8 @@ int main(int argc, char * argv[])
     a,
     diffusion_draw_void,
     diffusion_get_index_void,
-    diffusion_get_total_steps_void);
+    diffusion_get_total_steps_void,
+    diffusion_increment_index_void);
   
   free(new_coordinates);
 u_free:

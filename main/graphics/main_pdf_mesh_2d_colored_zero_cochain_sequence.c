@@ -12,7 +12,6 @@
 
 /* internal headers */
 #include "double.h"
-#include "drawer.h"
 #include "image.h"
 #include "int.h"
 #include "mesh.h"
@@ -20,12 +19,11 @@
 #include "paint_rgb.h"
 #include "pdf_write_to_file.h"
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   char * m_format, * u_format;
   char * m_filename, * u_filename;
-  int begin, n, steps, total_colors;
-  int * i;
+  int i, n, steps, total_colors;
   double height, point_size, width;
   double * new_coordinates, * u;
   mesh * m;
@@ -45,8 +43,7 @@ int main(int argc, char * argv[])
     goto end;
   }
   
-  begin = 0;
-  i = &begin;
+  i = 0;
   
   m_format = argv[1];
   m_filename = argv[2];
@@ -123,7 +120,8 @@ int main(int argc, char * argv[])
     &a,
     mesh_2d_colored_zero_cochain_sequence_snapshot_cairo_draw_void,
     mesh_2d_colored_zero_cochain_sequence_get_index_void,
-    mesh_2d_colored_zero_cochain_sequence_get_total_steps_void);
+    mesh_2d_colored_zero_cochain_sequence_get_total_steps_void,
+    mesh_2d_colored_zero_cochain_sequence_increment_index_void);
   
   free(new_coordinates);
 u_free:

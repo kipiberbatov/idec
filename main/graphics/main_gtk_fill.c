@@ -31,22 +31,21 @@ static int gtk_draw_fill(GtkWidget * widget, cairo_t * cr, void * data)
     data,
     fill_draw_void,
     fill_get_index_void,
-    fill_get_total_steps_void
+    fill_get_total_steps_void,
+    fill_increment_index_void
   );
   return FALSE;
 }
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
-  int begin, n;
-  int * i;
+  int i, n;
   unsigned int speed;
   double height, width;
   fill * a;
   char title[80] = "Changing colors";
   
-  begin = 0;
-  i = &begin;
+  i = 0;
   n = 100;
   
   a = (fill *) alloca(fill_size());

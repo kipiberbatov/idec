@@ -6,10 +6,12 @@ typedef struct diffusion diffusion;
 
 int diffusion_size(void);
 
-int * diffusion_get_index(diffusion * a);
-int * diffusion_get_index_void(void * a);
+int diffusion_get_index(const diffusion * a);
+int diffusion_get_index_void(const void * a);
 int diffusion_get_total_steps(const diffusion * a);
 int diffusion_get_total_steps_void(const void * a);
+void diffusion_increment_index(diffusion * a);
+void diffusion_increment_index_void(void * a);
 mesh * diffusion_get_mesh(diffusion * a);
 double * diffusion_get_new_coordinates(diffusion * a);
 double diffusion_get_point_size(const diffusion * a);
@@ -22,7 +24,7 @@ painter diffusion_get_painter(diffusion * a);
 
 void diffusion_set(
   diffusion * a,
-  int * i,
+  int i,
   int n,
   mesh * m,
   double * new_coordinates,

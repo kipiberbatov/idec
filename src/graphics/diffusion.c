@@ -11,7 +11,7 @@
 
 struct diffusion
 {
-  int * i;
+  int i;
   int n;
   mesh * m;
   double * new_coordinates;
@@ -28,14 +28,14 @@ int diffusion_size(void)
   return (int) sizeof(diffusion);
 }
 
-int * diffusion_get_index(diffusion * a)
+int diffusion_get_index(const diffusion * a)
 {
   return a->i;
 }
 
-int * diffusion_get_index_void(void * a)
+int diffusion_get_index_void(const void * a)
 {
-  return diffusion_get_index((diffusion *) a);
+  return diffusion_get_index((const diffusion *) a);
 }
 
 int diffusion_get_total_steps(const diffusion * a)
@@ -46,6 +46,16 @@ int diffusion_get_total_steps(const diffusion * a)
 int diffusion_get_total_steps_void(const void * a)
 {
   return diffusion_get_total_steps((const diffusion *) a);
+}
+
+void diffusion_increment_index(diffusion * a)
+{
+  ++a->i;
+}
+
+void diffusion_increment_index_void(void * a)
+{
+  diffusion_increment_index((diffusion *) a);
 }
 
 mesh * diffusion_get_mesh(diffusion * a)
@@ -90,7 +100,7 @@ painter diffusion_get_paint(diffusion * a)
 
 void diffusion_set(
   diffusion * a,
-  int * i,
+  int i,
   int n,
   mesh * m,
   double * new_coordinates,
@@ -180,7 +190,7 @@ void colored_2d_zero_cochain_cairo_draw(
 
 void diffusion_draw(cairo_t * cr, double width, double height, diffusion * a)
 {
-  int * i;
+  int i;
   double * u;
   mesh * m;
   colored_2d_zero_cochain c;
@@ -192,7 +202,7 @@ void diffusion_draw(cairo_t * cr, double width, double height, diffusion * a)
   c.size = m->cn[0];
   c.total_colors = diffusion_get_total_colors(a);
   c.coordinates = diffusion_get_new_coordinates(a);
-  c.values = u + m->cn[0] * (*i);
+  c.values = u + m->cn[0] * i;
   c.point_size = diffusion_get_point_size(a);
   c.min_value = diffusion_min_value(a);
   c.max_value = diffusion_max_value(a);

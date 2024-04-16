@@ -25,7 +25,7 @@ mesh_2d_colored_zero_cochain_sequence;
 
 struct mesh_2d_colored_zero_cochain_sequence
 {
-  int * index;
+  int index;
   int total_steps;
   mesh * m;
   double * values;
@@ -38,8 +38,9 @@ struct mesh_2d_colored_zero_cochain_sequence
   painter paint;
 };
 
-int * mesh_2d_colored_zero_cochain_sequence_get_index_void(void * a);
+int mesh_2d_colored_zero_cochain_sequence_get_index_void(const void * a);
 int mesh_2d_colored_zero_cochain_sequence_get_total_steps_void(const void * a);
+void mesh_2d_colored_zero_cochain_sequence_increment_index_void(void * a);
 
 void mesh_2d_colored_zero_cochain_sequence_snapshot_cairo_draw(
   cairo_t * cr,
@@ -72,7 +73,7 @@ mesh_2d_colored_one_cochain_sequence;
 
 struct mesh_2d_colored_one_cochain_sequence
 {
-  int * index;
+  int index;
   int total_steps;
   mesh * m;
   double * values;
@@ -85,8 +86,9 @@ struct mesh_2d_colored_one_cochain_sequence
   painter paint;
 };
 
-int * mesh_2d_colored_one_cochain_sequence_get_index_void(void * a);
+int mesh_2d_colored_one_cochain_sequence_get_index_void(const void * a);
 int mesh_2d_colored_one_cochain_sequence_get_total_steps_void(const void * a);
+void mesh_2d_colored_one_cochain_sequence_increment_index_void(void * a);
 
 void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
   cairo_t * cr,

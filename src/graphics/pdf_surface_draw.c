@@ -6,21 +6,22 @@ void pdf_surface_draw(
   double width,
   double height,
   void * a,
-  drawer draw,
-  get_index_t get_index,
-  get_total_steps_t get_total_steps)
+  void (*draw)(cairo_t *, double, double, void *),
+  int (*get_index)(const void *),
+  int (*get_total_steps)(const void *),
+  void (*increment_index)(void *))
 {
   cairo_t * cr;
-  int n;
-  int * i;
+  int i, n;
   
   i = get_index(a);
   n = get_total_steps(a);
-  while (*i < n - 1)
+  while (i < n)
   {
     cr = cairo_create(surface);
     pdf_draw(cr, width, height, a, draw);
-    *i += 1;
+    increment_index(a);
+    i = get_index(a);
     cairo_destroy(cr);
   }
 }

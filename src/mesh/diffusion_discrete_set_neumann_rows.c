@@ -80,7 +80,7 @@ static void line_vectors_matrix_calculate(
 }
 
 /* works only for a meshing of the unit square */
-void normals_calculate(double * normal, const double * m_coord_i)
+static void normals_calculate(double * normal, const double * m_coord_i)
 {
   const double * x = m_coord_i;
 

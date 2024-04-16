@@ -1,12 +1,11 @@
-#include "drawer.h"
-#include "get_index_t.h"
-#include "get_total_steps_t.h"
+#include <cairo.h>
 
 void pdf_write_to_file(
   const char * filename,
   double width,
   double height,
   void * a,
-  drawer draw,
-  get_index_t get_index,
-  get_total_steps_t total_steps);
+  void (*draw)(cairo_t *, double, double, void *),
+  int (*get_index)(const void *),
+  int (*get_total_steps)(const void *),
+  void (*increment_index)(void *));

@@ -9,15 +9,13 @@
 
 /* internal headers */
 #include "fill.h"
-#include "drawer.h"
 #include "int.h"
 #include "paint_rgb.h"
 #include "pdf_write_to_file.h"
 
 int main(int argc, char * argv[])
 {
-  int begin, n;
-  int * i;
+  int i, n;
   double height, width;
   fill * a;
   char * out_filename;
@@ -34,8 +32,7 @@ int main(int argc, char * argv[])
     return errno;
   }
   
-  begin = 0;
-  i = &begin;
+  i = 0;
   
   n = int_sscan(argv[1]);
   if (errno)
@@ -61,7 +58,8 @@ int main(int argc, char * argv[])
     a,
     fill_draw_void,
     fill_get_index_void,
-    fill_get_total_steps_void);
+    fill_get_total_steps_void,
+    fill_increment_index_void);
   
   return 0;
 }
