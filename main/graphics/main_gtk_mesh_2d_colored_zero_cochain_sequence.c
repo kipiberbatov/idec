@@ -1,38 +1,48 @@
-/* system headers */
 #include <alloca.h>
 #include <errno.h>
-#include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-/* external headers */
-#include <cairo.h>
-#include <cairo-pdf.h>
+#include <gtk/gtk.h>
 
-/* internal headers */
 #include "double.h"
+#include "graphics_log.h"
 #include "image.h"
 #include "int.h"
 #include "mesh.h"
 #include "mesh_2d_colored.h"
 #include "paint_rgb.h"
-#include "pdf_write_to_file.h"
+#include "gtk_draw.h"
+#include "gtk_run.h"
+
+static int gtk_draw_zero_cochain(GtkWidget * widget, cairo_t * cr, void * data)
+{
+  gtk_draw(
+    widget,
+    cr,
+    data,
+    mesh_2d_colored_zero_cochain_sequence_snapshot_cairo_draw_void,
+    mesh_2d_colored_zero_cochain_sequence_get_index_void,
+    mesh_2d_colored_zero_cochain_sequence_get_total_steps_void,
+    mesh_2d_colored_zero_cochain_sequence_increment_index_void
+  );
+  return FALSE;
+}
 
 int main(int argc, char ** argv)
 {
   char * m_format, * u_format;
   char * m_filename, * u_filename;
   int i, n, steps, total_colors;
+  unsigned int speed;
   double height, point_size, width;
   double * new_coordinates, * u;
   mesh * m;
   mesh_2d_colored_zero_cochain_sequence a;
-  char * out_filename;
+  char * title;
   
   errno = 0;
   
-  if (argc != 7)
+  if (argc != 6)
   {
     fprintf(stderr, 
       "Error during execution of function %s in file %s on line %d: "
@@ -94,7 +104,7 @@ int main(int argc, char ** argv)
   image_new_coordinates(new_coordinates, m, width, height);
   point_size = image_point_size(width, height);
   
-  total_colors = 1000;
+  total_colors = 10000;
   
   a.index = i;
   a.total_steps = n;
@@ -108,16 +118,20 @@ int main(int argc, char ** argv)
   a.max_value = double_array_max(n * m->cn[0], u);
   a.paint = paint_rgb;
   
-  out_filename = argv[6];
-  pdf_write_to_file(
-    out_filename,
-    width,
-    height,
-    (void *) &a,
-    mesh_2d_colored_zero_cochain_sequence_snapshot_cairo_draw_void,
-    mesh_2d_colored_zero_cochain_sequence_get_index_void,
-    mesh_2d_colored_zero_cochain_sequence_get_total_steps_void,
-    mesh_2d_colored_zero_cochain_sequence_increment_index_void);
+  speed = 100;
+  title = "Heat flow in 2D";
+  
+  gtk_init(&argc, &argv);
+  
+  gtk_run(gtk_draw_zero_cochain, (void *) &a, width, height, speed, title);
+  
+  gtk_main();
+
+  graphics_log(stdout, argc, argv);
+  printf("Iterations from i = 0 to i = %d were executed\n", a.index);
+  printf("Total range of iterations: i = 0 to i = %d\n", steps);
+  
+  errno = 0;
   
   free(new_coordinates);
 u_free:

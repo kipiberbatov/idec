@@ -113,7 +113,7 @@ int main(int argc, char ** argv)
   
   gtk_init(&argc, &argv);
   
-  gtk_run(gtk_draw_diffusion, (diffusion *) a, width, height, speed, title);
+  gtk_run(gtk_draw_diffusion, (void *) a, width, height, speed, title);
   
   gtk_main();
   

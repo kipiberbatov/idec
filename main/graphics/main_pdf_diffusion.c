@@ -19,7 +19,7 @@
 #include "paint_rgb.h"
 #include "pdf_write_to_file.h"
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   char * m_format, * u_format;
   char * m_filename, * u_filename;

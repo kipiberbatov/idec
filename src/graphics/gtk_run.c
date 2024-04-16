@@ -2,7 +2,7 @@
 #include "gtk_time_handler.h"
 
 void gtk_run(
-  gtk_draw_event_function draw_event,
+  int (*draw_event)(GtkWidget *, cairo_t * cr, void *),
   void * a,
   double width,
   double height,

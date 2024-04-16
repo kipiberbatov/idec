@@ -5,23 +5,11 @@
 #include <gtk/gtk.h>
 
 #include "fill.h"
-#include "paint_rgb.h"
+#include "graphics_log.h"
 #include "gtk_draw.h"
 #include "gtk_run.h"
-
-static void write_log(const char * program_name)
-{
-  time_t rawtime;
-  struct tm * p;
-
-  time(&rawtime);
-  p = gmtime(&rawtime);
-
-  printf("This file was created after rinning %s\n", program_name);
-  printf("Creation time: %02d.%02d.%d %02d:%02d:%02d UTC\n",
-    p->tm_mday, p->tm_mon + 1, p->tm_year + 1900,
-    p->tm_hour, p->tm_min, p->tm_sec);
-}
+#include "int.h"
+#include "paint_rgb.h"
 
 static int gtk_draw_fill(GtkWidget * widget, cairo_t * cr, void * data)
 {
@@ -43,10 +31,29 @@ int main(int argc, char ** argv)
   unsigned int speed;
   double height, width;
   fill * a;
-  char title[80] = "Changing colors";
+  char * title;
   
+  errno = 0;
+  if (argc != 2)
+  {
+    fprintf(stderr, 
+      "Error during execution of function %s in file %s on line %d: "
+      "number of command-line arguments must be 2\n",
+      __func__, __FILE__,__LINE__);
+    errno = EINVAL;
+    return errno;
+  }
+
   i = 0;
-  n = 100;
+  n = int_sscan(argv[1]);
+  if (errno)
+  {
+    fprintf(stderr,
+      "Error during execution of function %s in file %s on line %d: "
+      "unable to scan number of colors\n",
+       __func__, __FILE__,__LINE__);
+    return errno;
+  }
   
   a = (fill *) alloca(fill_size());
   fill_set(a, i, n, paint_rgb);
@@ -54,14 +61,18 @@ int main(int argc, char ** argv)
   width = 500;
   height = 500;
   speed = 100;
+  title = "Changing colors";
 
   gtk_init(&argc, &argv);
   
-  gtk_run(gtk_draw_fill, (fill *) a, width, height, speed, title);
+  gtk_run(gtk_draw_fill, (void *) a, width, height, speed, title);
 
   gtk_main();
 
-  write_log(argv[0]);
+  graphics_log(stdout, argc, argv);
+  i = fill_get_index_void((void *) a);
+  printf("Iterations from i = 0 to i = %d were executed\n", i);
+  printf("Total range of iterations: i = 0 to i = %d\n", n);
 
-  return 0;
+  return errno;
 }

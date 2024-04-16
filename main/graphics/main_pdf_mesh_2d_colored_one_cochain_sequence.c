@@ -112,7 +112,7 @@ int main(int argc, char ** argv)
     out_filename,
     width,
     height,
-    &a,
+    (void *) &a,
     mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw_void,
     mesh_2d_colored_one_cochain_sequence_get_index_void,
     mesh_2d_colored_one_cochain_sequence_get_total_steps_void,

@@ -13,7 +13,7 @@
 #include "paint_rgb.h"
 #include "pdf_write_to_file.h"
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   int i, n;
   double height, width;
@@ -26,7 +26,7 @@ int main(int argc, char * argv[])
   {
     fprintf(stderr, 
       "Error during execution of function %s in file %s on line %d: "
-      "number of command-line arguments must be 2\n",
+      "number of command-line arguments must be 3\n",
       __func__, __FILE__,__LINE__);
     errno = EINVAL;
     return errno;
@@ -55,7 +55,7 @@ int main(int argc, char * argv[])
     out_filename,
     width,
     height,
-    a,
+    (void *) a,
     fill_draw_void,
     fill_get_index_void,
     fill_get_total_steps_void,
