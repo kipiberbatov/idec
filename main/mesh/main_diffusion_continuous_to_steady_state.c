@@ -104,22 +104,21 @@ int main(int argc, char ** argv)
     fprintf(stderr, "Error in %s: cannot scan time_step\n", __func__);
     goto lib_close;
   }
-  //fputs("Reading successful!\n", stderr);
   
   result = diffusion_continuous_solve_trapezoidal_method_to_steady_state(
     m,
     m_cbd_0,
     m_cbd_star_1,
     data,
-    time_step);
-  // if (errno)
-  // {
-  //   fputs("main - cannot calculate x\n", stderr);
-  //   goto lib_close;
-  // }
-  // fputs("Calculation successful!\n", stderr);
-  // fprintf(stderr, "main:\n  length = %d\n  dimension = %d\n", result->length, result->dimension);
+    time_step,
+    0.004);
+  if (errno)
+  {
+    fputs("main - cannot calculate x\n", stderr);
+    goto lib_close;
+  }
   double_array_sequence_dynamic_file_print(stdout, result);
+  
   double_array_sequence_dynamic_free(result);
 lib_close:
   dlclose(lib_name);

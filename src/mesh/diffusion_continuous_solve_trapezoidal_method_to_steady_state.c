@@ -9,7 +9,8 @@ diffusion_continuous_solve_trapezoidal_method_to_steady_state(
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,
   const diffusion_continuous * data_continuous,
-  double time_step)
+  double time_step,
+  double tolerance)
 {
   diffusion_discrete * data_discrete;
   double_array_sequence_dynamic * result = NULL;
@@ -26,7 +27,8 @@ diffusion_continuous_solve_trapezoidal_method_to_steady_state(
     m_cbd_0,
     m_cbd_star_1,
     data_discrete,
-    time_step
+    time_step,
+    tolerance
   );
   if (errno)
   {

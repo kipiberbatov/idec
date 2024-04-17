@@ -38,6 +38,7 @@ diffusion_discrete_solve_trapezoidal_method_to_steady_state(
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,
   const diffusion_discrete * data,
-  double time_step);
+  double time_step,
+  double tolerance);
 
 #endif /* _diffusion_discrete_h */

@@ -29,19 +29,21 @@ static int gtk_draw_diffusion(GtkWidget * widget, cairo_t * cr, void * data)
 
 int main(int argc, char ** argv)
 {
-  char * m_format, * u_format;
+  char * m_format;
   char * m_filename, * u_filename;
-  int i, n, steps, total_colors;
+  int i, n, total_colors;
   unsigned int speed;
   double height, point_size, width;
   double * new_coordinates, * u;
   mesh * m;
   diffusion * a;
   const char title[80] = "Heat flow in 2D";
+  FILE * in;
+  int length;
   
   errno = 0;
   
-  if (argc != 6)
+  if (argc != 4)
   {
     fprintf(stderr, 
       "Error during execution of function %s in file %s on line %d: "
@@ -65,20 +67,42 @@ int main(int argc, char ** argv)
     goto end;
   }
   
-  steps = int_sscan(argv[3]);
+  u_filename = argv[3];
+  
+  in = fopen(u_filename, "r");
   if (errno)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "unable to scan number of time steps\n",
-       __func__, __FILE__,__LINE__);
     goto m_free;
   }
-  n = steps + 1;
   
-  u_format = argv[4];
-  u_filename = argv[5];
-  u = double_matrix_fscan_by_name(u_filename, n, m->cn[0], u_format);
+  n = int_fscan(in);
+  if (errno)
+  {
+    fclose(in);
+    goto m_free;
+  }
+  
+  length = int_fscan(in);
+  if (errno)
+  {
+    fclose(in);
+    goto m_free;
+  }
+  if (length != m->cn[0])
+  {
+    errno = EINVAL;
+    fputs("Not the right mesh\n", stderr);
+    goto m_free;
+  }
+  
+  u = double_matrix_fscan(in, n, m->cn[0], "--raw");
+  if (errno)
+  {
+    fclose(in);
+    goto u_free;
+  }
+  fclose(in);
+
   if (errno)
   {
     fprintf(stderr,

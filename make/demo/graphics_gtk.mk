@@ -1,6 +1,7 @@
 _demo_graphics_gtk :=\
   demo/graphics/log/fill_gtk.log\
   demo/graphics/log/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature_gtk.log\
+  demo/graphics/log/mesh_brick_2d_2_forman_diffusion_continuous_p4_temperature_gtk.log\
   demo/graphics/log/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature_gtk.log\
   demo/graphics/log/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature_gtk.log\
   demo/graphics/log/mesh_brick_2d_10_forman_diffusion_continuous_p4_temperature_gtk.log\
@@ -36,6 +37,13 @@ demo/graphics/log/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature_gtk
 	  demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt\
 	  | demo/graphics/log
 	$< --raw $(word 2, $^) 10000 --raw $(word 3, $^) > $@
+
+demo/graphics/log/mesh_brick_2d_2_forman_diffusion_continuous_p4_temperature_gtk.log:\
+	  bin/gtk_diffusion\
+	  demo/mesh/mesh_brick_2d_2_forman.txt\
+	  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p4_temperature.txt\
+	  | demo/graphics/log
+	$< --raw $(word 2, $^) $(word 3, $^) > $@
 
 demo/graphics/log/mesh_brick_2d_10_forman_diffusion_continuous_p4_temperature_gtk.log:\
 	  bin/gtk_mesh_2d_colored_zero_cochain_sequence\

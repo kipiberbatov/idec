@@ -13,68 +13,45 @@ static void loop(
   const jagged1 * boundary_dirichlet,
   const double * g_dirichlet,
   const jagged1 * boundary_neumann,
-  const double * g_neumann)
+  const double * g_neumann,
+  double tolerance)
 {
-  int i, j, n;
+  int i, n;
   double relative_norm;
-  double ** tmp;
 
-  n = rhs->rows;
   i = 0;
+  n = rhs->rows;
+  
   do
   {
-    // fprintf(stderr, "i = %d\n", i);
-    
     memcpy(rhs_final, free_part, sizeof(double) * n);
-    // fputs("  Copying rhs_final successful!\n", stderr);
     
     matrix_sparse_vector_multiply_add(rhs_final, rhs, result->values[i]);
-    // fputs("  Mutating rhs_final successful!\n", stderr);
     
     /* update rhs_final with the boundary conditions */
     double_array_substitute_inverse(
       rhs_final, boundary_dirichlet->a0, g_dirichlet, boundary_dirichlet->a1);
-    // fputs("  Applying Dirichlet condition successful!\n", stderr);
     
     double_array_substitute_inverse(
       rhs_final, boundary_neumann->a0, g_neumann, boundary_neumann->a1);
-    // fputs("  Applying Neumann condition successful!\n", stderr);
-
     if (i == result->capacity - 1)
     {
-      tmp = (double **) malloc(sizeof(double *) * 2 * result->capacity);
+      double_array_sequence_dynamic_resize(result);
       /* NULL pointer checking */
-      for (j = 0; j < result->capacity; ++j)
-        tmp[j] = result->values[j];
-      free(result->values);
-      result->values = tmp;
-      result->capacity *= 2;
     }
-    // fputs("  Managing capacity successful!\n", stderr);
     
     result->values[i + 1] = malloc(sizeof(double) * n);
-    // fputs("  Allocation successful!\n", stderr);
+    /* NULL pointer checking */
+    
     memcpy(result->values[i + 1], rhs_final, sizeof(double) * n);
-    // fputs("  Copying next iteration successful!\n", stderr);
-    matrix_sparse_linear_solve(lhs, result->values[(i + 1)], "--lu");
-    // fputs("  Linear solving successful!\n", stderr);
-    ++result->length;
-    // fputs("  Incrementing length successful!\n", stderr);
-    // double_array_fprint(stderr, n, result->values[i], "--raw");
-    // fprintf(stderr, "  %g\n", double_array_norm_uniform(n, result->values[i]));
-    // fprintf(stderr, "  %g\n", double_array_norm_uniform(n, result->values[i + 1]));
+    matrix_sparse_linear_solve(lhs, result->values[i + 1], "--lu");
+    /* NULL pointer checking */
     relative_norm = double_array_pair_norm_uniform_relative(
-      n,
-      result->values[i],
-      result->values[i + 1]
-    );
-    // fputs("  Calculating condition successful!\n", stderr);
+      n, result->values[i], result->values[i + 1]);
+    ++result->length;
     ++i;
-    // fprintf(stderr, "dimension = %d\n", result->dimension);
-    // fprintf(stderr, "relative_norm = %g\n", relative_norm);
   }
-  while (relative_norm >= 0.01);
-  //--result->length;
+  while (relative_norm >= tolerance);
 }
 
 double_array_sequence_dynamic *
@@ -83,7 +60,8 @@ diffusion_discrete_solve_trapezoidal_method_to_steady_state(
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,
   const diffusion_discrete * data,
-  double time_step)
+  double time_step,
+  double tolerance)
 { 
   int n;
   double * free_part, * rhs_final;
@@ -127,35 +105,17 @@ diffusion_discrete_solve_trapezoidal_method_to_steady_state(
   
   rhs_final = (double *) malloc(sizeof(double) * n);
   /* NULL pointer checking */
-  
-  // result = (double **) malloc(sizeof(double *));
-  /* NULL pointer checking */
-  //*result = (double *) malloc(sizeof(double) * n);
 
-  result = (double_array_sequence_dynamic *) malloc(
-    sizeof(double_array_sequence_dynamic *));
-  result->capacity = 8;
-  result->length = 1;
-  result->dimension = n;
-  result->values = malloc(sizeof(double *) * result->capacity);
-  result->values[0] = (double *) malloc(sizeof(double) * n);
-  // fputs("Allocation successful!\n", stderr);
+  result = double_array_sequence_dynamic_initialize(n);
+  /* NULL pointer checking */
   
   memcpy(result->values[0], data->initial, sizeof(double) * n);
-  // fputs("Initialization successful!\n", stderr);
-  // fprintf(stderr, "%d\n%d\n", n);
-  // double_array_fprint(stderr, n, result->values[0], "--raw");
-  // double_array_fprint(stderr, n, result->values[0], "--raw");
   
   loop(result, lhs, rhs_final, rhs, free_part,
     data->boundary_dirichlet, data->g_dirichlet,
-    data->boundary_neumann, data->g_neumann);
+    data->boundary_neumann, data->g_neumann,
+    tolerance);
   /* NULL pointer checking */
-  
-  /* World breaks if the next line is omitted. For no reason!
-   * It becomes 0 in main for some reason (it is never modified).
-   */
-  result->dimension = n;
   
   free(rhs_final);
   free(free_part);
