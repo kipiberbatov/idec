@@ -127,21 +127,14 @@ in_close:
 
 void double_array_sequence_dynamic_resize(double_array_sequence_dynamic * a)
 {
-  int capacity, j;
-  double ** tmp, ** values;
+  double ** tmp;
 
-  capacity = a->capacity;
-  values = a->values;
-
-  tmp = (double **) malloc(sizeof(double *) * 2 * capacity);
+  tmp = (double **) realloc(a->values, sizeof(double *) * 2 * a->capacity);
   if (errno)
   {
     fprintf(stderr, "Cannot allocate memory for temporary array\n");
     return;
   }
-  for (j = 0; j < capacity; ++j)
-    tmp[j] = values[j];
-  free(values);
   a->values = tmp;
   a->capacity *= 2;
 }
