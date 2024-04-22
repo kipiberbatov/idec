@@ -20,37 +20,7 @@ void mesh_cell_coord(
 /********************************* mesh_file_scan *********************************/
 mesh * mesh_file_scan_raw(FILE * in);
 
-#define mesh_file_scan_format_total 1
-
-static const char * mesh_file_scan_format[mesh_file_scan_format_total] =
-  {
-    "--raw"
-  };
-
-typedef mesh * (*mesh_file_scan_function_type)(FILE *);
-
-static const mesh_file_scan_function_type 
-mesh_file_scan_function[mesh_file_scan_format_total] =
-  {
-    mesh_file_scan_raw
-  };
-
 /******************************** mesh_file_print *********************************/
 void mesh_file_print_raw(FILE * out, const mesh * a);
-
-#define mesh_file_print_format_total 1
-
-static const char * mesh_file_print_format[mesh_file_print_format_total] =
-  {
-    "--raw"
-  };
-
-typedef void (*mesh_file_print_function_type)(FILE *, const mesh *);
-
-static const mesh_file_print_function_type
-mesh_file_print_function[mesh_file_print_format_total] =
-  {
-    mesh_file_print_raw
-  };
 
 #endif /* MESH_PRIVATE_H */
