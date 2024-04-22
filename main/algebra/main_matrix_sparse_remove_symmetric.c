@@ -19,7 +19,7 @@ int main(int argc, char * argv[])
   /* a = m_laplacian_0 */
   a_name = argv[1];
   a_format = argv[2];
-  a = matrix_sparse_fscan_by_name(a_name, a_format);
+  a = matrix_sparse_file_scan_by_name(a_name, a_format);
   if (errno)
   {
     fputs("main - cannot scan matrix a\n", stderr);
@@ -31,7 +31,7 @@ int main(int argc, char * argv[])
   rows_format = argv[4];
   
   rows_file = fopen(rows_name, "r");
-  rows = jagged1_fscan(rows_file, rows_format);
+  rows = jagged1_file_scan(rows_file, rows_format);
   if (errno)
   {
     fputs("main - cannot scan rows\n", stderr);
@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
   }
   
   out_format = argv[5];
-  matrix_sparse_fprint(stdout, b, out_format);
+  matrix_sparse_file_print(stdout, b, out_format);
 
   matrix_sparse_free(b);
 rows_free:

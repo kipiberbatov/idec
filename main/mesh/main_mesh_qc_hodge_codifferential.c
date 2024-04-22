@@ -4,7 +4,7 @@
 
 /* if only one hodge star is needed */
 
-// static void mesh_qc_hodge_codifferential_p_fprint(
+// static void mesh_qc_hodge_codifferential_p_file_print(
 //   FILE * out, int m_dim, int p, const matrix_sparse * m_cbd_m_dim_minus_p, matrix_sparse ** m_hodge)
 // {
 //   matrix_sparse * m_hodge_codifferential_p;
@@ -18,7 +18,7 @@
 //     matrix_sparse_free(m_hodge_codifferential_p);
 //     return;
 //   }
-//   matrix_sparse_fprint_raw(out, m_hodge_codifferential_p);
+//   matrix_sparse_file_print_raw(out, m_hodge_codifferential_p);
 //   if (errno)
 //   {
 //     fprintf(stderr, "Unsuccessful printing of *d*_%d", p);
@@ -29,7 +29,7 @@
 //   matrix_sparse_free(m_hodge_codifferential_p);
 // }
 
-static void mesh_qc_hodge_codifferential_fprint_raw(
+static void mesh_qc_hodge_codifferential_file_print_raw(
   FILE * out, int m_dim, matrix_sparse ** m_cbd, matrix_sparse ** m_hodge)
 {
   int p;
@@ -45,7 +45,7 @@ static void mesh_qc_hodge_codifferential_fprint_raw(
       perror("");
       return;
     }
-    matrix_sparse_fprint(out, m_hodge_codifferential_p, "--raw");
+    matrix_sparse_file_print(out, m_hodge_codifferential_p, "--raw");
     if (errno)
     {
       fprintf(stderr, "Unsuccessful printing of *d*_%d", p);
@@ -69,7 +69,7 @@ int main()
   out = stdout;
   in = stdin;
   
-  m = mesh_fscan(in, "--raw");
+  m = mesh_file_scan(in, "--raw");
   if (errno)
   {
     perror("During mesh scanning");
@@ -86,7 +86,7 @@ int main()
     return errno;
   }
   
-  m_bd = mesh_fscan_bd(in, m);
+  m_bd = mesh_file_scan_bd(in, m);
   if (errno)
   {
     perror("During calculation of mesh boundary operator");
@@ -104,14 +104,14 @@ int main()
   }
   matrix_sparse_array_free(m_bd, m_dim);
   
-  m_hodge = matrix_sparse_array_fscan(in, m_dim + 1, "--raw");
+  m_hodge = matrix_sparse_array_file_scan(in, m_dim + 1, "--raw");
   if (!m_hodge)
   {
     perror("During calculation of mesh hodge star operator");
     goto m_cbd_free;
   }
   
-  mesh_qc_hodge_codifferential_fprint_raw(out, m_dim, m_cbd, m_hodge);
+  mesh_qc_hodge_codifferential_file_print_raw(out, m_dim, m_cbd, m_hodge);
   if (errno)
     perror("During purinting of mesh hodge codifferential operator");
   

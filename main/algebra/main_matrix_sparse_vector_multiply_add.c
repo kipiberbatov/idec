@@ -26,7 +26,7 @@ int main(int argc, char * argv[])
     goto end;
   }
   
-  a = matrix_sparse_fscan(a_in, "--raw");
+  a = matrix_sparse_file_scan(a_in, "--raw");
   if (errno)
   {
     perror("Problem in matrix_sparse scanning");
@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
     goto a_free;
   }
   
-  x = double_array_fscan(x_in, n, "--raw");
+  x = double_array_file_scan(x_in, n, "--raw");
   if (errno)
   {
     perror("Problem in matrix_sparse scanning");
@@ -59,7 +59,7 @@ int main(int argc, char * argv[])
   }
   
   matrix_sparse_vector_multiply_add(y, a, x);
-  double_array_fprint(stdout, m, y, "--raw");
+  double_array_file_print(stdout, m, y, "--raw");
   
   free(y);
 x_free:

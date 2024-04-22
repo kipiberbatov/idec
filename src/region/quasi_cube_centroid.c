@@ -53,19 +53,19 @@ void quasi_cube_centroid(double * r_centroid, const quasi_cube * r)
   {
   case 0:
     quasi_cube_centroid_from_triangulation(
-      r_centroid, r, r_triangulation_nodes_0);
+      r_centroid, r, quasi_cube_triangulation_nodes_0);
     return;
   case 1:
     quasi_cube_centroid_from_triangulation(
-      r_centroid, r, r_triangulation_nodes_1);
+      r_centroid, r, quasi_cube_triangulation_nodes_1);
     return;
   case 2:
     quasi_cube_centroid_from_triangulation(
-      r_centroid, r, r_triangulation_nodes_2);
+      r_centroid, r, quasi_cube_triangulation_nodes_2);
     return;
   case 3:
     quasi_cube_centroid_from_triangulation(
-      r_centroid, r, r_triangulation_nodes_3);
+      r_centroid, r, quasi_cube_triangulation_nodes_3);
     return;
   default:
     return;

@@ -4,7 +4,7 @@
 
 #include "int.h"
 
-int int_sscan(const char * s)
+int int_string_scan(const char * s)
 {
   int a;
   char * ptr;

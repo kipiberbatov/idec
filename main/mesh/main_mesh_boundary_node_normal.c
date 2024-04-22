@@ -13,7 +13,7 @@ int main(void)
   mesh * m;
   jagged1 * m_boundary_nodes;
   
-  m = mesh_fscan(stdin, "--raw");
+  m = mesh_file_scan(stdin, "--raw");
   if (errno)
   {
     fputs("Error: cannot scan input mesh\n", stderr);

@@ -15,7 +15,7 @@ matrix_sparse * mesh_qc_hodge_codifferential_p(
     matrix_sparse_free(tmp);
     return NULL;
   }
-  //matrix_sparse_fprint_matrix_form_curly(stderr, tmp);
+  //matrix_sparse_file_print_matrix_form_curly(stderr, tmp);
   m_hodge_codifferential_p = matrix_sparse_product(m_hodge[m_dim - p + 1], tmp);
   if (errno)
   {

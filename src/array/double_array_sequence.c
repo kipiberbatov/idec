@@ -34,7 +34,7 @@ void double_array_sequence_dynamic_file_print(
   if (length == 0)
     return;
   for (i = 0; i < length; ++i)
-    double_array_fprint(out, dimension, values[i], "--raw");
+    double_array_file_print(out, dimension, values[i], "--raw");
 }
 
 double_array_sequence_dynamic *
@@ -53,14 +53,14 @@ double_array_sequence_dynamic_file_scan(FILE * in)
     goto end;
   }
   
-  length = int_fscan(in);
+  length = int_file_scan(in);
   if (errno)
   {
     fputs("Cannot scan length\n", stderr);
     goto a_free;
   }
 
-  dimension = int_fscan(in);
+  dimension = int_file_scan(in);
   if (errno)
   {
     fputs("Cannot scan dimension\n", stderr);
@@ -76,7 +76,7 @@ double_array_sequence_dynamic_file_scan(FILE * in)
   
   for (i = 0; i < length; ++i)
   {
-    values[i] = double_array_fscan(in, dimension, "--raw");
+    values[i] = double_array_file_scan(in, dimension, "--raw");
     if (errno)
     {
       fprintf(stderr, "Cannot scan values[%d]\n", i);

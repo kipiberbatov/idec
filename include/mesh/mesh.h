@@ -28,17 +28,17 @@ typedef struct mesh
 /********************************* mesh_free **********************************/
 void mesh_free(mesh * m);
 
-/********************************* mesh_fscan *********************************/
-mesh * mesh_fscan(FILE * in, const char * format);
+/********************************* mesh_file_scan *********************************/
+mesh * mesh_file_scan(FILE * in, const char * format);
 
-mesh * mesh_fscan_by_name(const char * name, const char * format);
+mesh * mesh_file_scan_by_name(const char * name, const char * format);
 
-matrix_sparse * mesh_fscan_bd_p(FILE * in, const mesh * m, int p);
+matrix_sparse * mesh_file_scan_bd_p(FILE * in, const mesh * m, int p);
 
-matrix_sparse ** mesh_fscan_bd(FILE * in, const mesh * m);
+matrix_sparse ** mesh_file_scan_bd(FILE * in, const mesh * m);
 
-/******************************** mesh_fprint *********************************/
-void mesh_fprint(FILE * out, const mesh * m, const char * format);
+/******************************** mesh_file_print *********************************/
+void mesh_file_print(FILE * out, const mesh * m, const char * format);
 
 /******************************* mesh_cf_part *********************************/
 void mesh_cf_part2(jagged2 * m_cf_p_q, const mesh * m, int p, int q);
@@ -109,6 +109,13 @@ jagged1 * mesh_boundary_nodes_from_constraint(
 jagged1 * mesh_neighboring_nodes(const mesh * m, int i);
 
 double * mesh_boundary_node_vectors_matrix(const mesh * m, int i);
+
+void mesh_boundary_node_coordinate_vectors_matrix(
+  double * l,
+  const mesh * m,
+  int i,
+  const int * node_i_neighbors,
+  const jagged1 * node_i_edges);
 
 void mesh_boundary_node_normal(double * normal, const mesh * m, int i);
 

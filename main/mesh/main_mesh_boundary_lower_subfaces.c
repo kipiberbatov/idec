@@ -7,7 +7,7 @@ int main(void)
   jagged1 * m_boundary_hyperfaces;
   jagged1 * m_boundary_0_cells;
   
-  m = mesh_fscan(stdin, "--raw");
+  m = mesh_file_scan(stdin, "--raw");
   if (errno)
   {
     fputs("Error: cannot scan input mesh\n", stderr);
@@ -36,7 +36,7 @@ int main(void)
     goto m_boundary_hyperfaces_free;
   }
   
-  jagged1_fprint(stdout, m_boundary_0_cells, "--raw");
+  jagged1_file_print(stdout, m_boundary_0_cells, "--raw");
   
   jagged1_free(m_boundary_0_cells);
 m_boundary_hyperfaces_free:

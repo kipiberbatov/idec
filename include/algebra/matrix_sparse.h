@@ -27,22 +27,22 @@ void matrix_sparse_free(matrix_sparse * a);
 /* deallocate heap-allocated sparse matrix a without topology information */
 void matrix_sparse_free_shared(matrix_sparse * a);
 
-/**************************** matrix_sparse_fscan *****************************/
-/* Supported formats for "matrix_sparse_fscan":
+/**************************** matrix_sparse_file_scan *****************************/
+/* Supported formats for "matrix_sparse_file_scan":
  * --raw
  */
 
 /* read a matrix from file "in" given in format "format" */
-matrix_sparse * matrix_sparse_fscan(FILE * in, const char * format);
+matrix_sparse * matrix_sparse_file_scan(FILE * in, const char * format);
 
 /* open a file, read the matrix in the specified format and close the file */
-matrix_sparse * matrix_sparse_fscan_by_name(
+matrix_sparse * matrix_sparse_file_scan_by_name(
   const char * name,
   const char * format);
 
 
-/**************************** matrix_sparse_fprint ****************************/
-/* Supported formats for "matrix_sparse_fprint":
+/**************************** matrix_sparse_file_print ****************************/
+/* Supported formats for "matrix_sparse_file_print":
  * --only-values
  * --raw
  * --annotated
@@ -52,7 +52,7 @@ matrix_sparse * matrix_sparse_fscan_by_name(
  */
 
 /* print in file "out" matrix "a" in format "format" */
-void matrix_sparse_fprint(
+void matrix_sparse_file_print(
   FILE * out,
   const matrix_sparse * a,
   const char * format);
@@ -166,7 +166,7 @@ matrix_sparse ** matrix_sparse_laplacian(
   matrix_sparse ** b);
 
 /* calculate laplacians and print them with freeing result on each step */
-void matrix_sparse_laplacian_fprint(
+void matrix_sparse_laplacian_file_print(
   FILE * out,
   int d,
   matrix_sparse ** a,
@@ -223,21 +223,28 @@ double * matrix_sparse_heat_conduction_solve_non_grid(
   double tau,
   int N);
 
+void matrix_sparse_neumann_modify(
+  matrix_sparse * lhs,
+  int i,
+  int size_i,
+  const int * neighbors,
+  const double * coefficients);
+
 /***************************** matrix_sparse_array ****************************/
 /* scan an array of matrices of size n */
-matrix_sparse ** matrix_sparse_array_fscan(
+matrix_sparse ** matrix_sparse_array_file_scan(
   FILE * in,
   int n,
   const char * format);
 
 /* broken, do not use, better to open a file and the scan */
-matrix_sparse ** matrix_sparse_array_fscan_by_name(
+matrix_sparse ** matrix_sparse_array_file_scan_by_name(
   const char * name,
   int n,
   const char * format);
 
 /* print an array of matrices */
-void matrix_sparse_array_fprint(
+void matrix_sparse_array_file_print(
   FILE * out,
   int n,
   matrix_sparse ** a,

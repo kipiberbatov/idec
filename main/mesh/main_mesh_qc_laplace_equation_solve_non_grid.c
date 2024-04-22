@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
   
   m_name = argv[1];
   m_format = argv[2];
-  m = mesh_fscan_by_name(m_name, m_format);
+  m = mesh_file_scan_by_name(m_name, m_format);
   if (errno)
   {
     fputs("main - cannot scan m\n", stderr);
@@ -58,7 +58,7 @@ int main(int argc, char * argv[])
   m_laplacian_0_format = argv[4];
   
   m_laplacian_0 = 
-    matrix_sparse_fscan_by_name(m_laplacian_0_name, m_laplacian_0_format);
+    matrix_sparse_file_scan_by_name(m_laplacian_0_name, m_laplacian_0_format);
   if (errno)
   {
     fputs("main - cannot calculate m_laplacian[0]\n", stderr);
@@ -68,7 +68,7 @@ int main(int argc, char * argv[])
   m_inner_0_name = argv[5];
   m_inner_0_format = argv[6];
   m_inner_0 = 
-    double_array_fscan_by_name(m_inner_0_name, m->cn[0], m_inner_0_format);
+    double_array_file_scan_by_name(m_inner_0_name, m->cn[0], m_inner_0_format);
   if (errno)
   {
     fputs("main - cannot scan m_inner\n", stderr);
@@ -94,7 +94,7 @@ int main(int argc, char * argv[])
   // }
   
   out_format = argv[7];
-  double_array_fprint(stdout, m_laplacian_0->rows, x, out_format);
+  double_array_file_print(stdout, m_laplacian_0->rows, x, out_format);
 
   free(x);
 m_inner_0_free:

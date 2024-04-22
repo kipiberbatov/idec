@@ -3,7 +3,7 @@
 #include "double.h"
 #include "matrix_sparse.h"
 
-static void matrix_sparse_linear_solve_fprint(
+static void matrix_sparse_linear_solve_file_print(
   FILE * out, const char * a_name, const char * a_format, const char * b_name,
   const char * method)
 {
@@ -11,7 +11,7 @@ static void matrix_sparse_linear_solve_fprint(
   double * b;
   FILE * b_in;
 
-  a = matrix_sparse_fscan_by_name(a_name, a_format);
+  a = matrix_sparse_file_scan_by_name(a_name, a_format);
   if (errno)
   {
     perror("Cannot scan the first matrix");
@@ -25,7 +25,7 @@ static void matrix_sparse_linear_solve_fprint(
     goto end;
   }
   
-  b = double_array_fscan(b_in, a->rows, "--raw");
+  b = double_array_file_scan(b_in, a->rows, "--raw");
   if (errno)
   {
     perror("Cannot scan vector");
@@ -41,7 +41,7 @@ static void matrix_sparse_linear_solve_fprint(
     goto b_free;
   }
   
-  double_array_fprint(out, a->rows, b, "--raw");
+  double_array_file_print(out, a->rows, b, "--raw");
   fputs("\n", out);
   
 b_free:
@@ -66,7 +66,7 @@ int main(int argc, char * argv[])
   a_format = argv[2];
   b_name = argv[3];
   method = argv[4];
-  matrix_sparse_linear_solve_fprint(stdout, a_name, a_format, b_name, method);
+  matrix_sparse_linear_solve_file_print(stdout, a_name, a_format, b_name, method);
   if (errno)
   {
     perror("Unsuccessful execution of matrix_sparse_linear_solve");

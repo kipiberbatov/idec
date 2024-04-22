@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 /************************************ int *************************************/
-int int_fscan(FILE * in);
+int int_file_scan(FILE * in);
 
-int int_sscan(const char * s);
+int int_string_scan(const char * s);
 
 int int_power(int a, int n);
 
@@ -17,9 +17,9 @@ int int_binomial(int n, int k);
 void int_swap(int * a, int * b);
 
 /********************************* int_array **********************************/
-int * int_array_fscan(FILE * in, int n, const char * format);
+int * int_array_file_scan(FILE * in, int n, const char * format);
 
-void int_array_fprint(FILE * out, int n, const int * a, const char * format);
+void int_array_file_print(FILE * out, int n, const int * a, const char * format);
 
 void int_array_assign_identity(int * a, int n);
 

@@ -3,7 +3,7 @@
 #include <string.h>
 #include "matrix_sparse.h"
 
-matrix_sparse * matrix_sparse_fscan_by_name(
+matrix_sparse * matrix_sparse_file_scan_by_name(
   const char * name, const char * format)
 {
   FILE * in;
@@ -12,15 +12,15 @@ matrix_sparse * matrix_sparse_fscan_by_name(
   in = fopen(name, "r");
   if (errno)
   {
-    fprintf(stderr, "matrix_sparse_fscan_by_name - cannot open file %s: %s\n",
+    fprintf(stderr, "matrix_sparse_file_scan_by_name - cannot open file %s: %s\n",
             name, strerror(errno));
     goto end;
   }
   
-  a = matrix_sparse_fscan(in, format);
+  a = matrix_sparse_file_scan(in, format);
   if (errno)
   {
-    fprintf(stderr, "matrix_sparse_fscan_by_name - cannot scan a ");
+    fprintf(stderr, "matrix_sparse_file_scan_by_name - cannot scan a ");
     fprintf(stderr, "in format %s: %s\n", format, strerror(errno));
     goto in_close;
   }

@@ -16,8 +16,8 @@ vector_sparse ** mesh_qc_metric_p(
 
 vector_sparse *** mesh_qc_metric(const mesh_qc * m, double ** m_vol);
 
-vector_sparse ** mesh_qc_metric_p_fscan(FILE * in, const mesh_qc * m, int p);
-vector_sparse *** mesh_qc_metric_fscan(FILE * in, const mesh_qc * m);
+vector_sparse ** mesh_qc_metric_p_file_scan(FILE * in, const mesh_qc * m, int p);
+vector_sparse *** mesh_qc_metric_file_scan(FILE * in, const mesh_qc * m);
 
 /************************** mesh_qc_metric_corrected **************************/
 vector_sparse ** mesh_qc_metric_corrected_p(

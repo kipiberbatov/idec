@@ -58,74 +58,74 @@ static int matrix_sparse_row_indices_possible(
   return 1;
 }
 
-matrix_sparse * matrix_sparse_fscan_raw(FILE * in)
+matrix_sparse * matrix_sparse_file_scan_raw(FILE * in)
 {
   matrix_sparse * a;
   
   a = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   if (errno)
   {
-    perror("matrix_sparse_fscan_raw - cannot allocate memory for a");
+    perror("matrix_sparse_file_scan_raw - cannot allocate memory for a");
     goto end;
   }
   
-  a->rows = int_fscan(in);
+  a->rows = int_file_scan(in);
   if (errno)
   {
-    perror("matrix_sparse_fscan_raw - cannot scan a->rows");
+    perror("matrix_sparse_file_scan_raw - cannot scan a->rows");
     goto a_free;
   }
   if (a->rows <= 0)
   {
     errno = EINVAL;
-    perror("matrix_sparse_fscan_raw - a->rows is nonpositive");
+    perror("matrix_sparse_file_scan_raw - a->rows is nonpositive");
     goto a_free;
   }
   
-  a->cols = int_fscan(in);
+  a->cols = int_file_scan(in);
   if (errno)
   {
-    perror("matrix_sparse_fscan_raw - cannot scan a->cols");
+    perror("matrix_sparse_file_scan_raw - cannot scan a->cols");
     goto a_free;
   }
   if (a->cols <= 0)
   {
     errno = EINVAL;
-    perror("matrix_sparse_fscan_raw - a->cols is nonpositive");
+    perror("matrix_sparse_file_scan_raw - a->cols is nonpositive");
     goto a_free;
   }
   
-  a->cols_total = int_array_fscan(in, a->cols + 1, "--raw");
+  a->cols_total = int_array_file_scan(in, a->cols + 1, "--raw");
   if (errno)
   {
-    perror("matrix_sparse_fscan_raw - cannot scan a->cols_total");
+    perror("matrix_sparse_file_scan_raw - cannot scan a->cols_total");
     goto a_free;
   }
   if(!matrix_sparse_cols_total_possible(a->rows, a->cols, a->cols_total))
   {
     errno = EINVAL;
-    perror("matrix_sparse_fscan_raw - a->cols_total is impossible");
+    perror("matrix_sparse_file_scan_raw - a->cols_total is impossible");
     goto a_cols_total_free;
   }
   
-  a->row_indices = int_array_fscan(in, a->cols_total[a->cols], "--raw");
+  a->row_indices = int_array_file_scan(in, a->cols_total[a->cols], "--raw");
   if (errno)
   {
-    perror("matrix_sparse_fscan_raw - cannot scan a->row_indices");
+    perror("matrix_sparse_file_scan_raw - cannot scan a->row_indices");
     goto a_cols_total_free;
   }
   if (!matrix_sparse_row_indices_possible(
     a->rows, a->cols, a->cols_total, a->row_indices))
   {
     errno = EINVAL;
-    perror("matrix_sparse_fscan_raw - a->row_indices is impossible");
+    perror("matrix_sparse_file_scan_raw - a->row_indices is impossible");
     goto a_row_indices_free;
   }
   
-  a->values = double_array_fscan(in, a->cols_total[a->cols], "--raw");
+  a->values = double_array_file_scan(in, a->cols_total[a->cols], "--raw");
   if (errno)
   {
-    perror("matrix_sparse_fscan_raw - cannot scan a->values");
+    perror("matrix_sparse_file_scan_raw - cannot scan a->values");
     goto a_row_indices_free;
   }
   /* there are no constraints on a->values */

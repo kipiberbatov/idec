@@ -11,12 +11,14 @@ typedef struct jagged1
 } jagged1;
 
 void jagged1_free(jagged1 * arr);
-jagged1 * jagged1_fscan(FILE * in, const char * format);
-void jagged1_fprint(FILE * out, const jagged1 * arr, const char * format);
+jagged1 * jagged1_file_scan(FILE * in, const char * format);
+void jagged1_file_print(FILE * out, const jagged1 * arr, const char * format);
 
 int jagged1_part1(const jagged1 * arr, int i1);
 
 int jagged1_total_sum(const jagged1 * arr);
+
+int jagged1_couple_other_object(const jagged1 * arr, int i);
 
 jagged1 * jagged1_complement(int n, const jagged1 * a);
 
@@ -52,12 +54,25 @@ typedef struct jagged2
 } jagged2;
 
 void jagged2_free(jagged2 * arr);
-jagged2 * jagged2_fscan(FILE * in, const char * format);
-void jagged2_fprint(FILE * out, const jagged2 * arr, const char * format);
+jagged2 * jagged2_file_scan(FILE * in, const char * format);
+void jagged2_file_print(FILE * out, const jagged2 * arr, const char * format);
 
 void jagged2_part1(jagged1 * res, const jagged2 * arr, int i1);
 int jagged2_part2(const jagged2 * arr, int i1, int i2);
 
+/*
+Let $a be a subset of {0, ..., m - 1},
+$b = {{b_{0, 0}, ..., b_{0, n_0 - 1}},
+      {b_{m - 1, 0}, ..., b_{m - 1, n_{m - 1} - 1}}}
+We calculate the maximal among n_i for i in $a
+*/
+int jagged2_subset_maximal_size(const jagged1 * subset, const jagged2 * arr);
+
+void jagged2_node_neighbors(
+  int * node_neighbors,
+  const jagged2 * edges_to_nodes,
+  int i,
+  const jagged1 * node_i_edges);
 
 /********************************** jagged3 ***********************************/
 typedef struct jagged3
@@ -69,8 +84,8 @@ typedef struct jagged3
 } jagged3;
 
 void jagged3_free(jagged3 * arr);
-jagged3 * jagged3_fscan(FILE * in, const char * format);
-void jagged3_fprint(FILE * out, const jagged3 * arr, const char * format);
+jagged3 * jagged3_file_scan(FILE * in, const char * format);
+void jagged3_file_print(FILE * out, const jagged3 * arr, const char * format);
 
 void jagged3_part1(jagged2 * res, const jagged3 * arr, int i1);
 void jagged3_part2(jagged1 * res, const jagged3 * arr, int i1, int i2);
@@ -87,8 +102,8 @@ typedef struct jagged4
 } jagged4;
 
 void jagged4_free(jagged4 * arr);
-jagged4 * jagged4_fscan(FILE * in, const char * format);
-void jagged4_fprint(FILE * out, const jagged4 * arr, const char * format);
+jagged4 * jagged4_file_scan(FILE * in, const char * format);
+void jagged4_file_print(FILE * out, const jagged4 * arr, const char * format);
 
 void jagged4_part1(jagged3 * res, const jagged4 * arr, int i1);
 void jagged4_part2(jagged2 * res, const jagged4 * arr, int i1, int i2);

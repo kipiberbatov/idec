@@ -1,7 +1,7 @@
 #include <errno.h>
 #include "matrix_sparse.h"
 
-static void matrix_sparse_part_fprint(FILE * out, const matrix_sparse * a)
+static void matrix_sparse_part_file_print(FILE * out, const matrix_sparse * a)
 {
   int i, j;
   double k;
@@ -25,13 +25,13 @@ int main()
   
   out = stdout;
   in = stdin;
-  a = matrix_sparse_fscan(in, "--raw");
+  a = matrix_sparse_file_scan(in, "--raw");
   if (errno)
   {
     perror("Problem in matrix_sparse scanning");
     goto a_free;
   }
-  matrix_sparse_part_fprint(out, a);
+  matrix_sparse_part_file_print(out, a);
 a_free:
   matrix_sparse_free(a);
   return errno;

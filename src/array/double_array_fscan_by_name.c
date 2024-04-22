@@ -3,7 +3,7 @@
 #include <string.h>
 #include "double.h"
 
-double * double_array_fscan_by_name(
+double * double_array_file_scan_by_name(
   const char * name, int n, const char * format)
 {
   FILE * in;
@@ -12,15 +12,15 @@ double * double_array_fscan_by_name(
   in = fopen(name, "r");
   if (errno)
   {
-    fprintf(stderr, "double_array_fscan_by_name - cannot open file %s: %s\n",
+    fprintf(stderr, "double_array_file_scan_by_name - cannot open file %s: %s\n",
             name, strerror(errno));
     goto end;
   }
   
-  a = double_array_fscan(in, n, format);
+  a = double_array_file_scan(in, n, format);
   if (errno)
   {
-    fprintf(stderr, "double_array_fscan_by_name - cannot scan a ");
+    fprintf(stderr, "double_array_file_scan_by_name - cannot scan a ");
     fprintf(stderr, "in format %s: %s\n", format, strerror(errno));
     goto in_close;
   }

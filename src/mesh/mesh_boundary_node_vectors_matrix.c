@@ -3,13 +3,6 @@
 
 #include "mesh.h"
 
-static int jagged1_couple_other_object(const jagged1 * arr, int i)
-{
-  if (arr->a1[0] == i)
-    return arr->a1[1];
-  return arr->a1[0];
-}
-
 double * mesh_boundary_node_vectors_matrix(const mesh * m, int i)
 {
   int i0, j, j_local, m_dim_embedded, s;

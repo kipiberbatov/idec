@@ -2,6 +2,6 @@
 
 int main()
 {
-  //mesh_qc_integrate_fprint_fscan(stdout, stdin);
+  //mesh_qc_integrate_file_print_file_scan(stdout, stdin);
   return 0;
 }

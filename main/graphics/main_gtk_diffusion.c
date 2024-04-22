@@ -57,7 +57,7 @@ int main(int argc, char ** argv)
   
   m_format = argv[1];
   m_filename = argv[2];
-  m = mesh_fscan_by_name(m_filename, m_format);
+  m = mesh_file_scan_by_name(m_filename, m_format);
   if (errno)
   {
     fprintf(stderr,
@@ -75,14 +75,14 @@ int main(int argc, char ** argv)
     goto m_free;
   }
   
-  n = int_fscan(in);
+  n = int_file_scan(in);
   if (errno)
   {
     fclose(in);
     goto m_free;
   }
   
-  length = int_fscan(in);
+  length = int_file_scan(in);
   if (errno)
   {
     fclose(in);
@@ -95,7 +95,7 @@ int main(int argc, char ** argv)
     goto m_free;
   }
   
-  u = double_matrix_fscan(in, n, m->cn[0], "--raw");
+  u = double_matrix_file_scan(in, n, m->cn[0], "--raw");
   if (errno)
   {
     fclose(in);

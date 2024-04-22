@@ -4,7 +4,7 @@
 #include "mesh_qc.h"
 #include "vector_sparse.h"
 
-static void mesh_qc_inner_fprint_raw(
+static void mesh_qc_inner_file_print_raw(
   FILE * out, const mesh_qc * m,
   const double * m_vol_d, vector_sparse *** m_metric)
 {
@@ -20,11 +20,11 @@ static void mesh_qc_inner_fprint_raw(
     if (errno)
     {
       fprintf(stderr,
-              "mesh_qc_inner_fprint - cannot calculate m_inner[%d]\n", p);
+              "mesh_qc_inner_file_print - cannot calculate m_inner[%d]\n", p);
       return;
     }
     
-    double_array_fprint(out, m_cn[p], m_inner_p, "--raw");
+    double_array_file_print(out, m_cn[p], m_inner_p, "--raw");
     if (p != m_dim)
       fputc('\n', out);
     
@@ -43,7 +43,7 @@ int main()
   out = stdout;
   in = stdin;
   
-  m = mesh_fscan(in, "--raw");
+  m = mesh_file_scan(in, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m\n", stderr);
@@ -57,28 +57,28 @@ int main()
     goto m_free;
   }
   
-  m_bd = mesh_fscan_bd(in, m);
+  m_bd = mesh_file_scan_bd(in, m);
   if (errno)
   {
     fputs("main - cannot scan m->bd\n", stderr);
     goto m_free;
   }
   
-  m_vol = double_array2_fscan(in, m->dim + 1, m->cn, "--raw");
+  m_vol = double_array2_file_scan(in, m->dim + 1, m->cn, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_vol\n", stderr);
     goto m_bd_free;
   }
   
-  m_metric = mesh_qc_metric_fscan(in, m);
+  m_metric = mesh_qc_metric_file_scan(in, m);
   if (errno)
   {
     fputs("main - cannot scan m_metric\n", stderr);
     goto m_vol_free;
   }
   
-  mesh_qc_inner_fprint_raw(out, m, m_vol[m->dim], m_metric);
+  mesh_qc_inner_file_print_raw(out, m, m_vol[m->dim], m_metric);
   if (errno)
   {
     fputs("main - cannot print m_inner\n", stderr);

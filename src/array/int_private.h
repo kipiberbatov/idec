@@ -3,43 +3,43 @@
 
 #include "int.h"
 
-/****************************** int_array_fscan *******************************/
-int * int_array_fscan_raw(FILE * in, int n);
+/****************************** int_array_file_scan *******************************/
+int * int_array_file_scan_raw(FILE * in, int n);
 
-#define INT_ARRAY_FSCAN_FORMAT_TOTAL 1
+#define INT_ARRAY_file_scan_format_total 1
 
-static const char * int_array_fscan_format[INT_ARRAY_FSCAN_FORMAT_TOTAL] =
+static const char * int_array_file_scan_format[INT_ARRAY_file_scan_format_total] =
   {
     "--raw"
   };
 
-typedef int * (*int_array_fscan_function_type)(FILE *, int);
+typedef int * (*int_array_file_scan_function_type)(FILE *, int);
 
-static const int_array_fscan_function_type
-int_array_fscan_function[INT_ARRAY_FSCAN_FORMAT_TOTAL] =
+static const int_array_file_scan_function_type
+int_array_file_scan_function[INT_ARRAY_file_scan_format_total] =
   {
-    int_array_fscan_raw
+    int_array_file_scan_raw
   };
 
-/****************************** int_array_fprint ******************************/
-void int_array_fprint_raw(FILE * out, int n, const int * a);
-void int_array_fprint_curly(FILE * out, int n, const int * a);
+/****************************** int_array_file_print ******************************/
+void int_array_file_print_raw(FILE * out, int n, const int * a);
+void int_array_file_print_curly(FILE * out, int n, const int * a);
 
-#define INT_ARRAY_FPRINT_FORMAT_TOTAL 2
+#define INT_ARRAY_file_print_format_total 2
 
-static const char * int_array_fprint_format[INT_ARRAY_FPRINT_FORMAT_TOTAL] =
+static const char * int_array_file_print_format[INT_ARRAY_file_print_format_total] =
   {
     "--raw",
     "--curly"
   };
 
-typedef void (*int_array_fprint_function_type)(FILE *, int, const int *);
+typedef void (*int_array_file_print_function_type)(FILE *, int, const int *);
 
-static const int_array_fprint_function_type
-int_array_fprint_function[INT_ARRAY_FPRINT_FORMAT_TOTAL] =
+static const int_array_file_print_function_type
+int_array_file_print_function[INT_ARRAY_file_print_format_total] =
   {
-    int_array_fprint_raw,
-    int_array_fprint_curly
+    int_array_file_print_raw,
+    int_array_file_print_curly
   };
 
 #endif /* INT_PRIVATE_H */

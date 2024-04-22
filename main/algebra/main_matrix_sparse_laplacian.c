@@ -17,21 +17,21 @@ int main(int argc, char * argv[])
   /* list = argv[2]; */
   d = atoi(argv[3]);
   
-  a = matrix_sparse_array_fscan(in, d, "--raw");
+  a = matrix_sparse_array_file_scan(in, d, "--raw");
   if (errno)
   {
     perror("Unsuccessful scanning of first operator");
     goto end;
   }
   
-  b = matrix_sparse_array_fscan(in, d, "--raw");
+  b = matrix_sparse_array_file_scan(in, d, "--raw");
   if (errno)
   {
     perror("Unsuccessful scanning of second operator");
     goto a_free;
   }
   
-  matrix_sparse_laplacian_fprint(out, d, a, b, format);
+  matrix_sparse_laplacian_file_print(out, d, a, b, format);
   if (errno)
   {
     perror("Unsuccessful calculation or printing of Lalplacian");

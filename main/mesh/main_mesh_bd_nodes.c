@@ -27,7 +27,7 @@ int main(int argc, char * argv[])
   }
   
   m_format = argv[2];
-  m = mesh_fscan(m_file, m_format);
+  m = mesh_file_scan(m_file, m_format);
   if (errno)
   {
     fputs("main - cannot scan m\n", stderr);
@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
     goto m_free;
   }
   
-  jagged1_fprint(stdout, m_bd_nodes, out_format);
+  jagged1_file_print(stdout, m_bd_nodes, out_format);
 
   jagged1_free(m_bd_nodes);
 m_free:

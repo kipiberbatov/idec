@@ -15,7 +15,7 @@ int main(int argc, char * argv[])
   
   a_name = argv[1];
   a_format = argv[2];
-  a = matrix_sparse_fscan_by_name(a_name, a_format);
+  a = matrix_sparse_file_scan_by_name(a_name, a_format);
   if (errno)
   {
     fprintf(stderr, "main - cannot scan the first matrix a in format %s\n",
@@ -25,7 +25,7 @@ int main(int argc, char * argv[])
   
   b_name = argv[3];
   b_format = argv[4];
-  b = matrix_sparse_fscan_by_name(b_name, b_format);
+  b = matrix_sparse_file_scan_by_name(b_name, b_format);
   if (errno)
   {
     fprintf(stderr, "main - cannot scan the second matrix b in format %s\n",
@@ -41,7 +41,7 @@ int main(int argc, char * argv[])
   }
   
   out_format = argv[5];
-  matrix_sparse_fprint(stdout, c, out_format);
+  matrix_sparse_file_print(stdout, c, out_format);
   if (errno)
   {
     fprintf(stderr, "main - cannot print the result c in format %s\n",

@@ -18,7 +18,7 @@ int main(void)
   jagged2 m_fc_0_1;
   double * result;
   
-  m = mesh_fscan(stdin, "--raw");
+  m = mesh_file_scan(stdin, "--raw");
   if (errno)
   {
     fputs("Error: cannot scan input mesh\n", stderr);

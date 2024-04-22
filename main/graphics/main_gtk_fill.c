@@ -45,7 +45,7 @@ int main(int argc, char ** argv)
   }
 
   i = 0;
-  n = int_sscan(argv[1]);
+  n = int_string_scan(argv[1]);
   if (errno)
   {
     fprintf(stderr,

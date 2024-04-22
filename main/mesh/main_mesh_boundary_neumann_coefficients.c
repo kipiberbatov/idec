@@ -19,7 +19,7 @@ int main(void)
   jagged2 m_fc_0_1;
   double * result;
   
-  m = mesh_fscan(stdin, "--raw");
+  m = mesh_file_scan(stdin, "--raw");
   if (errno)
   {
     fputs("Error: cannot scan input mesh\n", stderr);
@@ -53,7 +53,7 @@ int main(void)
       goto m_boundary_nodes_free;
     }
     printf("%d\n", size);
-    double_array_fprint(stdout, size, result, "--raw");
+    double_array_file_print(stdout, size, result, "--raw");
     puts("");
     //free(result);
   }

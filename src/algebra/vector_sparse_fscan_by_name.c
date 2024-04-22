@@ -3,7 +3,7 @@
 #include <string.h>
 #include "vector_sparse.h"
 
-vector_sparse * vector_sparse_fscan_by_name(
+vector_sparse * vector_sparse_file_scan_by_name(
   const char * name, const char * format)
 {
   FILE * in;
@@ -12,14 +12,14 @@ vector_sparse * vector_sparse_fscan_by_name(
   in = fopen(name, "r");
   if (errno)
   {
-    fprintf(stderr, "vector_sparse_fscan_by_name - cannot open file %s: %s\n",
+    fprintf(stderr, "vector_sparse_file_scan_by_name - cannot open file %s: %s\n",
             name, strerror(errno));
     goto end;
   }
-  a = vector_sparse_fscan(in, format);
+  a = vector_sparse_file_scan(in, format);
   if (errno)
   {
-    fprintf(stderr, "vector_sparse_fscan_by_name - cannot scan a ");
+    fprintf(stderr, "vector_sparse_file_scan_by_name - cannot scan a ");
     fprintf(stderr, "in format %s: %s\n", format, strerror(errno));
     goto in_close;
   }

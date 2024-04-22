@@ -145,7 +145,7 @@ matrix_sparse * mesh_qc_elasticity_cbd_star_2(
 //   return m_cbd_star;
 // }
 //
-// void mesh_qc_cbd_star_fprint(
+// void mesh_qc_cbd_star_file_print(
 //   FILE * out, const mesh_qc * m, matrix_sparse ** m_bd, double ** m_inner)
 // {
 //   int m_dim, p;
@@ -159,24 +159,24 @@ matrix_sparse * mesh_qc_elasticity_cbd_star_2(
 //     m_cbd_star_p =
 //       mesh_qc_cbd_star_single(m, p, m_bd[p - 1], m_inner[p], m_inner[p - 1]);
 //     /* NULL pointer check */
-//     double_fprint_array_raw(out, m_cbd_star_p->nzmax, m_cbd_star_p->x);
+//     double_file_print_array_raw(out, m_cbd_star_p->nzmax, m_cbd_star_p->x);
 //     matrix_sparse_free_shared(m_cbd_star_p);
 //   }
 // }
 //
-// void mesh_qc_cbd_star_fprint_fscan(FILE * out, FILE * in)
+// void mesh_qc_cbd_star_file_print_file_scan(FILE * out, FILE * in)
 // {
 //   mesh_qc * m;
 //   matrix_sparse ** m_bd;
 //   double ** m_inner;
 //
-//   m = mesh_fscan(in);
+//   m = mesh_file_scan(in);
 //   /* NULL pointer check */
-//   m_bd = mesh_fscan_bd(in, m);
+//   m_bd = mesh_file_scan_bd(in, m);
 //   /* NULL pointer check */
-//   m_inner = double_fscan_array2(in, m->dim + 1, m->cn);
+//   m_inner = double_file_scan_array2(in, m->dim + 1, m->cn);
 //   /* NULL pointer check */
-//   mesh_qc_cbd_star_fprint(out, m, m_bd, m_inner);
+//   mesh_qc_cbd_star_file_print(out, m, m_bd, m_inner);
 //   /* NULL pointer check */
 //   double_free_array2(m_inner, m->dim + 1);
 //   matrix_sparse_free_array(m_bd, m->dim);

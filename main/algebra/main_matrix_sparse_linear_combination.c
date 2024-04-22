@@ -2,20 +2,20 @@
 #include <stdlib.h>
 #include "matrix_sparse.h"
 
-static void matrix_sparse_linear_combination_fprint(
+static void matrix_sparse_linear_combination_file_print(
   FILE * out, const char * a_name, const char * a_format, const char * b_name,
   const char * b_format, double alpha, double beta, const char * out_format)
 {
   matrix_sparse * a, * b, * c;
 
-  a = matrix_sparse_fscan_by_name(a_name, a_format);
+  a = matrix_sparse_file_scan_by_name(a_name, a_format);
   if (errno)
   {
     perror("Cannot scan the first matrix");
     goto end;
   }
   
-  b = matrix_sparse_fscan_by_name(b_name, b_format);
+  b = matrix_sparse_file_scan_by_name(b_name, b_format);
   if (errno)
   {
     perror("Cannot scan the second matrix");
@@ -29,7 +29,7 @@ static void matrix_sparse_linear_combination_fprint(
     goto b_free;
   }
   
-  matrix_sparse_fprint(out, c, out_format);
+  matrix_sparse_file_print(out, c, out_format);
   if (errno)
   {
     perror("Cannot print the linear combination");
@@ -81,7 +81,7 @@ int main(int argc, char * argv[])
   
   out_format = argv[7];
   
-  matrix_sparse_linear_combination_fprint(
+  matrix_sparse_linear_combination_file_print(
     stdout, a_name, a_format, b_name, b_format, alpha, beta, out_format);
   if (errno)
   {

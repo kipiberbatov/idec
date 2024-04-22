@@ -2,7 +2,7 @@
 #include "double.h"
 #include "mesh_qc.h"
 
-static void mesh_qc_vol_fprint_raw(FILE * out, const mesh_qc * m)
+static void mesh_qc_vol_file_print_raw(FILE * out, const mesh_qc * m)
 {
   int m_dim, p;
   int * m_cn;
@@ -14,7 +14,7 @@ static void mesh_qc_vol_fprint_raw(FILE * out, const mesh_qc * m)
   {
     m_vol_p = mesh_qc_vol_p(m, p);
     /* NULL pointer check */
-    double_array_fprint(out, m_cn[p], m_vol_p, "--raw");
+    double_array_file_print(out, m_cn[p], m_vol_p, "--raw");
     free(m_vol_p);
   }
 }
@@ -26,9 +26,9 @@ int main()
   
   out = stdout;
   in = stdin;
-  m = mesh_fscan(in, "--raw");
+  m = mesh_file_scan(in, "--raw");
   /* NULL pointer check */
-  mesh_qc_vol_fprint_raw(out, m);
+  mesh_qc_vol_file_print_raw(out, m);
   /* NULL pointer check */
   mesh_free(m);
   return 0;

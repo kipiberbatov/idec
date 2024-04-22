@@ -114,7 +114,7 @@ static void matrix_sparse_laplacian_error_handling(
   free(delta_p);
 }
 
-void matrix_sparse_laplacian_fprint(
+void matrix_sparse_laplacian_file_print(
   FILE * out, int d, matrix_sparse ** a, matrix_sparse ** b,
   const char * format)
 {
@@ -128,7 +128,7 @@ void matrix_sparse_laplacian_fprint(
     matrix_sparse_laplacian_error_handling(delta_p, p);
     return;
   }
-  matrix_sparse_fprint(out, delta_p, format);
+  matrix_sparse_file_print(out, delta_p, format);
   if (errno)
   {
     perror(format);
@@ -146,7 +146,7 @@ void matrix_sparse_laplacian_fprint(
       matrix_sparse_laplacian_error_handling(delta_p, p);
       return;
     }
-    matrix_sparse_fprint(out, delta_p, format);
+    matrix_sparse_file_print(out, delta_p, format);
     if (errno)
     {
       perror(format);
@@ -163,7 +163,7 @@ void matrix_sparse_laplacian_fprint(
     matrix_sparse_laplacian_error_handling(delta_p, p);
     return;
   }
-  matrix_sparse_fprint(out, delta_p, format);
+  matrix_sparse_file_print(out, delta_p, format);
   if (errno)
   {
     perror(format);

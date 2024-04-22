@@ -24,7 +24,7 @@ int main(int argc, char * argv[])
   /* scan sparse matrix */
   a_format = argv[1];
   a_name = argv[2];
-  a = matrix_sparse_fscan_by_name(a_name, a_format);
+  a = matrix_sparse_file_scan_by_name(a_name, a_format);
   if (errno)
   {
     fprintf(stderr, "Cannot scan sparse matrix\n");
@@ -34,7 +34,7 @@ int main(int argc, char * argv[])
   /* scan diagonal matrix */
   d_format = argv[3];
   d_name = argv[4];
-  d = double_array_fscan_by_name(d_name, a->cols, d_format);
+  d = double_array_file_scan_by_name(d_name, a->cols, d_format);
   if (errno)
   {
     fprintf(stderr, "Cannot scan diagonal matrix\n");
@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
   matrix_sparse_multiply_with_diagonal_matrix(a, d);
   
   out_format = argv[5];
-  matrix_sparse_fprint(stdout, a, out_format);
+  matrix_sparse_file_print(stdout, a, out_format);
   
   free(d);
 a_free:

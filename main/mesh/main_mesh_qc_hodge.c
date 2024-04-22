@@ -3,7 +3,7 @@
 #include "double.h"
 #include "mesh_qc.h"
 
-static void mesh_qc_hodge_fprint_raw(
+static void mesh_qc_hodge_file_print_raw(
   FILE * out, const mesh_qc * m, matrix_sparse ** m_bd,
   double ** m_inner, double ** m_coeff)
 {
@@ -18,10 +18,10 @@ static void mesh_qc_hodge_fprint_raw(
     if (errno)
     {
       fprintf(stderr,
-              "mesh_qc_hodge_fprint - cannot calculate m_hodge[%d]\n", p);
+              "mesh_qc_hodge_file_print - cannot calculate m_hodge[%d]\n", p);
       return;
     }
-    matrix_sparse_fprint(out, m_hodge_p, "--raw");
+    matrix_sparse_file_print(out, m_hodge_p, "--raw");
     if (p != m_dim)
       fputc('\n', out);
     free(m_hodge_p);
@@ -38,7 +38,7 @@ int main()
   out = stdout;
   in = stdin;
   
-  m = mesh_fscan(in, "--raw");
+  m = mesh_file_scan(in, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m\n", stderr);
@@ -52,28 +52,28 @@ int main()
     goto m_free;
   }
   
-  m_bd = mesh_fscan_bd(in, m);
+  m_bd = mesh_file_scan_bd(in, m);
   if (errno)
   {
     fputs("main - cannot scan m->bd\n", stderr);
     goto m_free;
   }
   
-  m_inner = double_array2_fscan(in, m->dim + 1, m->cn, "--raw");
+  m_inner = double_array2_file_scan(in, m->dim + 1, m->cn, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_inner\n", stderr);
     goto m_bd_free;
   }
   
-  m_coeff = double_array2_fscan(in, m->dim + 1, m->cn, "--raw");
+  m_coeff = double_array2_file_scan(in, m->dim + 1, m->cn, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_coeff\n", stderr);
     goto m_inner_free;
   }
   
-  mesh_qc_hodge_fprint_raw(out, m, m_bd, m_inner, m_coeff);
+  mesh_qc_hodge_file_print_raw(out, m, m_bd, m_inner, m_coeff);
   if (errno)
   {
     fputs("main - cannot calculate and print m_hodge\n", stderr);

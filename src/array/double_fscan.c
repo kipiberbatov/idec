@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "double.h"
 
-double double_fscan(FILE * in)
+double double_file_scan(FILE * in)
 {
   int correct;
   double a;
@@ -12,9 +12,9 @@ double double_fscan(FILE * in)
   {
     errno = EINVAL;
     if (correct == 0)
-      perror("double_fscan - not a valid floating point number");
+      perror("double_file_scan - not a valid floating point number");
     else
-      perror("double_fscan - there is no number to scan");
+      perror("double_file_scan - there is no number to scan");
     return -1;
   }
   return a;

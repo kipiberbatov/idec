@@ -35,12 +35,12 @@ double vector_sparse_dot_product(
 /******************************** vector_sparse *******************************/
 void vector_sparse_free(vector_sparse * a);
 
-vector_sparse * vector_sparse_fscan(FILE * in, const char * format);
+vector_sparse * vector_sparse_file_scan(FILE * in, const char * format);
 
-vector_sparse * vector_sparse_fscan_by_name(
+vector_sparse * vector_sparse_file_scan_by_name(
   const char * name, const char * format);
 
-void vector_sparse_fprint(
+void vector_sparse_file_print(
   FILE * out, const vector_sparse * a, const char * format);
 
 void vector_sparse_rearrange(vector_sparse * b);
@@ -48,25 +48,25 @@ void vector_sparse_rearrange(vector_sparse * b);
 /**************************** vector_sparse_array *****************************/
 void vector_sparse_array_free(vector_sparse ** arr, int a0);
 
-vector_sparse ** vector_sparse_array_fscan(
+vector_sparse ** vector_sparse_array_file_scan(
   FILE * in, int a0, const char * format);
 
-vector_sparse ** vector_sparse_array_fscan_by_name(
+vector_sparse ** vector_sparse_array_file_scan_by_name(
   const char * name, int a0, const char * format);
 
-void vector_sparse_array_fprint(
+void vector_sparse_array_file_print(
   FILE * out, int a0, vector_sparse ** arr, const char * format);
 
 /**************************** vector_sparse_array2 ****************************/
 void vector_sparse_array2_free(vector_sparse *** arr, int a0, const int * a1);
 
-vector_sparse *** vector_sparse_array2_fscan(
+vector_sparse *** vector_sparse_array2_file_scan(
   FILE * in, int a0, int * a1, const char * format);
 
-vector_sparse *** vector_sparse_array2_fscan_by_name(
+vector_sparse *** vector_sparse_array2_file_scan_by_name(
   const char * name, int a0, const int * a1, const char * format);
 
-void vector_sparse_array2_fprint(
+void vector_sparse_array2_file_print(
   FILE * out, int a0, const int * a1,
   vector_sparse *** arr, const char * format);
 

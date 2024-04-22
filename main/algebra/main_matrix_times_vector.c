@@ -12,11 +12,11 @@ static void example_0(void)
   matrix_file_print(stdout, d, n, a);
   
   puts("\n# x:");
-  double_array_fprint(stdout, d, x, "--raw");
+  double_array_file_print(stdout, d, x, "--raw");
   
   matrix_times_vector(b, n, d, a, x);
   puts("\n# b = a x:");
-  double_array_fprint(stdout, n, b, "--raw");
+  double_array_file_print(stdout, n, b, "--raw");
 }
 
 int main(void)

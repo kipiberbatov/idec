@@ -64,7 +64,7 @@ int main(int argc, char ** argv)
   
   m_format = argv[1];
   m_filename = argv[2];
-  m = mesh_fscan_by_name(m_filename, m_format);
+  m = mesh_file_scan_by_name(m_filename, m_format);
   if (errno)
   {
     fprintf(stderr,
@@ -74,7 +74,7 @@ int main(int argc, char ** argv)
     goto end;
   }
   
-  steps = int_sscan(argv[3]);
+  steps = int_string_scan(argv[3]);
   if (errno)
   {
     fprintf(stderr,
@@ -87,7 +87,7 @@ int main(int argc, char ** argv)
   
   u_format = argv[4];
   u_filename = argv[5];
-  u = double_matrix_fscan_by_name(u_filename, n, m->cn[1], u_format);
+  u = double_matrix_file_scan_by_name(u_filename, n, m->cn[1], u_format);
   if (errno)
   {
     fprintf(stderr,

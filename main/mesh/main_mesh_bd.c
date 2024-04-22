@@ -11,14 +11,14 @@ int main(int argc, char * argv[])
   out = stdout;
   in = stdin;
   
-  m = mesh_fscan(in, "--raw");
+  m = mesh_file_scan(in, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m\n", stderr);
     return errno;
   }
   
-  m_bd = mesh_fscan_bd(in, m);
+  m_bd = mesh_file_scan_bd(in, m);
   if (errno)
   {
     fputs("main - cannot scan m->bd\n", stderr);
@@ -27,7 +27,7 @@ int main(int argc, char * argv[])
   }
   
   format = argv[1];
-  matrix_sparse_array_fprint(out, m->dim, m_bd, format);
+  matrix_sparse_array_file_print(out, m->dim, m_bd, format);
   
   matrix_sparse_array_free(m_bd, m->dim);
   

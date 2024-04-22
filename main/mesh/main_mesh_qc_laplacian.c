@@ -11,14 +11,14 @@ int main()
   out = stdout;
   in = stdin;
   
-  m = mesh_fscan(in, "--raw");
+  m = mesh_file_scan(in, "--raw");
   if (errno)
   {
     fprintf(stderr, "main - cannot scan m\n");
     goto end;
   }
   
-  m_bd = mesh_fscan_bd(in, m);
+  m_bd = mesh_file_scan_bd(in, m);
   if (errno)
   {
     fprintf(stderr, "main - cannot scan m_bd\n");
@@ -32,14 +32,14 @@ int main()
     goto m_bd_free;
   }
   
-  m_cbd_star = mesh_fscan_bd(in, m);
+  m_cbd_star = mesh_file_scan_bd(in, m);
   if (errno)
   {
     fprintf(stderr, "main - cannot scan m_cbd_star\n");
     goto m_cbd_free;
   }
   
-  matrix_sparse_laplacian_fprint(out, m->dim, m_cbd, m_cbd_star, "--raw");
+  matrix_sparse_laplacian_file_print(out, m->dim, m_cbd, m_cbd_star, "--raw");
   if (errno)
   {
     fprintf(stderr, "main - cannot print m_laplacian\n");

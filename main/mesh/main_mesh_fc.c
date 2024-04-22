@@ -7,11 +7,11 @@ int main()
   
   out = stdout;
   in = stdin;
-  m = mesh_fscan(in, "--raw");
+  m = mesh_file_scan(in, "--raw");
   /* NULL pointer check */
   m->fc = mesh_fc(m);
   /* NULL pointer check */
-  jagged4_fprint(out, m->fc, "--raw");
+  jagged4_file_print(out, m->fc, "--raw");
   mesh_free(m);
   return 0;
 }

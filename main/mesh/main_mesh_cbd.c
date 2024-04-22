@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "mesh.h"
 
-static void mesh_cbd_fprint(
+static void mesh_cbd_file_print(
   FILE * out, int m_dim, matrix_sparse ** m_bd, char * format)
 {
   int p;
@@ -18,7 +18,7 @@ static void mesh_cbd_fprint(
       matrix_sparse_free(m_cbd_p);
       return;
     }
-    matrix_sparse_fprint(out, m_cbd_p, format);
+    matrix_sparse_file_print(out, m_cbd_p, format);
     if (errno)
     {
       perror("During matrix printing");
@@ -41,13 +41,13 @@ int main(int argc, char * argv[])
   
   out = stdout;
   in = stdin;
-  m = mesh_fscan(in, "--raw");
+  m = mesh_file_scan(in, "--raw");
   /* NULL pointer check */
   m_dim = m->dim;
-  m_bd = mesh_fscan_bd(in, m);
+  m_bd = mesh_file_scan_bd(in, m);
   /* NULL pointer check */
   format = argv[1];
-  mesh_cbd_fprint(out, m_dim, m_bd, format);
+  mesh_cbd_file_print(out, m_dim, m_bd, format);
   /* NULL pointer check */
   matrix_sparse_array_free(m_bd, m_dim);
   mesh_free(m);

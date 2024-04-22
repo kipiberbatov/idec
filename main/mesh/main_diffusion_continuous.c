@@ -35,7 +35,7 @@ int main(int argc, char ** argv)
   
   m_format = argv[1];
   m_name = argv[2];
-  m = mesh_fscan_by_name(m_name, m_format);
+  m = mesh_file_scan_by_name(m_name, m_format);
   if (errno)
   {
     fputs("main - cannot scan m\n", stderr);
@@ -51,7 +51,7 @@ int main(int argc, char ** argv)
   
   m_cbd_0_name = argv[3];
   
-  m_cbd_0 = matrix_sparse_fscan_by_name(m_cbd_0_name, "--raw");
+  m_cbd_0 = matrix_sparse_file_scan_by_name(m_cbd_0_name, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_cbd_0\n", stderr);
@@ -66,7 +66,7 @@ int main(int argc, char ** argv)
     fprintf(stderr, "Cannot open file %s\n", m_cbd_star_1_name);
     goto m_cbd_0_free;
   }
-  m_cbd_star_1 = mesh_fscan_bd_p(m_cbd_star_1_file, m, 1);
+  m_cbd_star_1 = mesh_file_scan_bd_p(m_cbd_star_1_file, m, 1);
   if (errno)
   {
     fputs("main - cannot scan m_cbd_star_1\n", stderr);
@@ -100,14 +100,14 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  time_step = double_sscan(argv[6]);
+  time_step = double_string_scan(argv[6]);
   if (errno)
   {
     fprintf(stderr, "Error in %s: cannot scan time_step\n", __func__);
     goto lib_close;
   }
 
-  number_of_steps = int_sscan(argv[7]);
+  number_of_steps = int_string_scan(argv[7]);
   if (errno)
   {
     fprintf(stderr, "Error in %s: cannot scan number_of_steps\n", __func__);
@@ -127,7 +127,7 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  double_matrix_fprint(stdout, number_of_steps + 1, m->cn[0], result, "--raw");
+  double_matrix_file_print(stdout, number_of_steps + 1, m->cn[0], result, "--raw");
 
   free(result);
 lib_close:

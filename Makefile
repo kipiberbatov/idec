@@ -41,8 +41,8 @@ endif
 MODULES := array algebra region mesh graphics shared
 
 CPPFLAGS := -MMD -MP
-CFLAGS := -O2 -Wall -flto=thin
-LDFLAGS := -flto=thin -lm
+CFLAGS := -O2 -Wall
+LDFLAGS := -lm
 
 ARRAY_INC_EXE := -iquote include/array
 ARRAY_INC := $(ARRAY_INC_EXE) -iquote src/array

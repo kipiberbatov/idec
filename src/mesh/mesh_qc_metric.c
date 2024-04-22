@@ -130,7 +130,7 @@ vector_sparse *** mesh_qc_metric(const mesh_qc * m, double ** m_vol)
   return m_metric;
 }
 
-static vector_sparse * mesh_qc_metric_p_i_fscan(
+static vector_sparse * mesh_qc_metric_p_i_file_scan(
   FILE * in, int m_cn_0, const jagged1 * m_cf_p_0_i, int p, int i)
 {
   vector_sparse * m_metric_p_i;
@@ -138,7 +138,7 @@ static vector_sparse * mesh_qc_metric_p_i_fscan(
   m_metric_p_i = (vector_sparse *) malloc(sizeof(vector_sparse));
   if (errno)
   {
-    fprintf(stderr, "mesh_qc_metric_p_i_fscan - cannot allocate memory for "
+    fprintf(stderr, "mesh_qc_metric_p_i_file_scan - cannot allocate memory for "
                     "m_metric[%d][%d]\n", p, i);
     goto end;
   }
@@ -150,7 +150,7 @@ static vector_sparse * mesh_qc_metric_p_i_fscan(
     (int *) malloc(sizeof(int) * m_metric_p_i->nonzero_max);
   if (errno)
   {
-    fprintf(stderr, "mesh_qc_metric_p_i_fscan - cannot allocate memory for "
+    fprintf(stderr, "mesh_qc_metric_p_i_file_scan - cannot allocate memory for "
                     "m_metric[%d][%d]->positions\n", p, i);
     goto m_metric_p_i_free;
   }
@@ -158,10 +158,10 @@ static vector_sparse * mesh_qc_metric_p_i_fscan(
          sizeof(int) * m_metric_p_i->nonzero_max);
   
   m_metric_p_i->values =
-    double_array_fscan(in, m_metric_p_i->nonzero_max, "--raw");
+    double_array_file_scan(in, m_metric_p_i->nonzero_max, "--raw");
   if (errno)
   {
-    fprintf(stderr, "mesh_qc_metric_p_i_fscan - cannot scan "
+    fprintf(stderr, "mesh_qc_metric_p_i_file_scan - cannot scan "
                     "m_metric[%d][%d]->values\n", p, i);
     free(m_metric_p_i->positions);
     goto m_metric_p_i_positions_free;
@@ -178,7 +178,7 @@ end:
   return NULL;
 }
 
-vector_sparse ** mesh_qc_metric_p_fscan(FILE * in, const mesh_qc * m, int p)
+vector_sparse ** mesh_qc_metric_p_file_scan(FILE * in, const mesh_qc * m, int p)
 {
   int i, m_cn_p;
   int * m_cn;
@@ -191,7 +191,7 @@ vector_sparse ** mesh_qc_metric_p_fscan(FILE * in, const mesh_qc * m, int p)
   m_metric_p = (vector_sparse **) malloc(sizeof(vector_sparse *) * m_cn_p);
   if (errno)
   {
-    fprintf(stderr, "mesh_qc_metric_p_fscan - cannot allocate memory for "
+    fprintf(stderr, "mesh_qc_metric_p_file_scan - cannot allocate memory for "
                      "m_metric[%d]\n", p);
     return NULL;
   }
@@ -199,11 +199,11 @@ vector_sparse ** mesh_qc_metric_p_fscan(FILE * in, const mesh_qc * m, int p)
   for (i = 0; i < m_cn_p; ++i)
   {
     mesh_cf_part3(&m_cf_p_0_i, m, p, 0, i);
-    m_metric_p[i] = mesh_qc_metric_p_i_fscan(in, m_cn[0], &m_cf_p_0_i, p, i);
+    m_metric_p[i] = mesh_qc_metric_p_i_file_scan(in, m_cn[0], &m_cf_p_0_i, p, i);
     if (errno)
     {
       fprintf(stderr, 
-              "mesh_qc_metric_p_fscan - cannot scan m_metric[%d][%d]\n", p, i);
+              "mesh_qc_metric_p_file_scan - cannot scan m_metric[%d][%d]\n", p, i);
       vector_sparse_array_free(m_metric_p, i);
       return NULL;
     }
@@ -212,7 +212,7 @@ vector_sparse ** mesh_qc_metric_p_fscan(FILE * in, const mesh_qc * m, int p)
   return m_metric_p;
 }
 
-vector_sparse *** mesh_qc_metric_fscan(FILE * in, const mesh_qc * m)
+vector_sparse *** mesh_qc_metric_file_scan(FILE * in, const mesh_qc * m)
 {
   int m_dim, p;
   vector_sparse *** m_metric;
@@ -222,17 +222,17 @@ vector_sparse *** mesh_qc_metric_fscan(FILE * in, const mesh_qc * m)
   m_metric = (vector_sparse ***) malloc(sizeof(vector_sparse **) * (m_dim + 1));
   if (errno)
   {
-    fputs("mesh_qc_metric_fscan - cannot allocate memory for m_metric\n",
+    fputs("mesh_qc_metric_file_scan - cannot allocate memory for m_metric\n",
           stderr);
     return NULL;
   }
   
   for (p = 0; p <= m_dim; ++p)
   {
-    m_metric[p] = mesh_qc_metric_p_fscan(in, m, p);
+    m_metric[p] = mesh_qc_metric_p_file_scan(in, m, p);
     if (errno)
     {
-      fprintf(stderr, "mesh_qc_metric_fscan - cannot scan m_metric[%d]\n", p);
+      fprintf(stderr, "mesh_qc_metric_file_scan - cannot scan m_metric[%d]\n", p);
       vector_sparse_array2_free(m_metric, p, m->cn);
       return NULL;
     }

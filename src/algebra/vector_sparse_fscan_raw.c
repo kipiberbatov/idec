@@ -36,60 +36,60 @@ static int vector_sparse_positions_possible(
   return 1;
 }
 
-vector_sparse * vector_sparse_fscan_raw(FILE * in)
+vector_sparse * vector_sparse_file_scan_raw(FILE * in)
 {
   vector_sparse * a;
   
   a = (vector_sparse *) malloc(sizeof(vector_sparse));
   if (errno)
   {
-    perror("vector_sparse_fscan_raw - cannot allocate memory for a");
+    perror("vector_sparse_file_scan_raw - cannot allocate memory for a");
     goto end;
   }
   
-  a->length = int_fscan(in);
+  a->length = int_file_scan(in);
   if (errno)
   {
-    perror("vector_sparse_fscan_raw - cannot scan a->length");
+    perror("vector_sparse_file_scan_raw - cannot scan a->length");
     goto a_free;
   }
   if (a->length <= 0)
   {
     errno = EINVAL;
-    perror("vector_sparse_fscan_raw - a->length is nonpositive");
+    perror("vector_sparse_file_scan_raw - a->length is nonpositive");
     goto a_free;
   }
   
-  a->nonzero_max = int_fscan(in);
+  a->nonzero_max = int_file_scan(in);
   if (errno)
   {
-    perror("vector_sparse_fscan_raw - cannot scan a->nonzero_max");
+    perror("vector_sparse_file_scan_raw - cannot scan a->nonzero_max");
     goto a_free;
   }
   if (a->nonzero_max <= 0 || a->nonzero_max > a->length)
   {
     errno = EINVAL;
-    perror("vector_sparse_fscan_raw - a->nonzero_max is out of domain");
+    perror("vector_sparse_file_scan_raw - a->nonzero_max is out of domain");
     goto a_free;
   }
   
-  a->positions = int_array_fscan(in, a->nonzero_max, "--raw");
+  a->positions = int_array_file_scan(in, a->nonzero_max, "--raw");
   if (errno)
   {
-    perror("vector_sparse_fscan_raw - cannot scan a->positions");
+    perror("vector_sparse_file_scan_raw - cannot scan a->positions");
     goto a_free;
   }
   if(!vector_sparse_positions_possible(a->length, a->nonzero_max, a->positions))
   {
     errno = EINVAL;
-    perror("vector_sparse_fscan_raw - a->positions is impossible");
+    perror("vector_sparse_file_scan_raw - a->positions is impossible");
     goto a_positions_free;
   }
   
-  a->values = double_array_fscan(in, a->nonzero_max, "--raw");
+  a->values = double_array_file_scan(in, a->nonzero_max, "--raw");
   if (errno)
   {
-    perror("vector_sparse_fscan_raw - cannot scan a->values");
+    perror("vector_sparse_file_scan_raw - cannot scan a->values");
     goto a_positions_free;
   }
   

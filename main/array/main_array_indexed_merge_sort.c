@@ -15,7 +15,7 @@ int main()
   out = stdout;
   in = stdin;
   
-  arr = jagged1_fscan(in, "--raw");
+  arr = jagged1_file_scan(in, "--raw");
   if (errno)
   {
     fputs("main - cannot scan arr\n", stderr);
@@ -48,7 +48,7 @@ int main()
   }
   
   fprintf(stdout, "%d\n", arr->a0);
-  int_array_fprint(out, n, a.values, "--raw");
+  int_array_file_print(out, n, a.values, "--raw");
 
 a_values_free:
   free(a.values);

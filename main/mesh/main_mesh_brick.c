@@ -3,7 +3,7 @@
 #include "int.h"
 #include "mesh_brick.h"
 
-static void mesh_brick_fprint_raw(
+static void mesh_brick_file_print_raw(
   FILE * out, int d, const double * brick_lengths, const int * n)
 {
   int p;
@@ -14,10 +14,10 @@ static void mesh_brick_fprint_raw(
   m = mesh_brick(d, brick_lengths, n);
   if (errno)
   {
-    fputs("mesh_brick_fprint - cannot calculate m\n", stderr);
+    fputs("mesh_brick_file_print - cannot calculate m\n", stderr);
     goto end;
   }
-  mesh_fprint(out, m, "--raw");
+  mesh_file_print(out, m, "--raw");
   
   for (p = 1; p <= d; ++p)
     m_bd_sizes[p - 1] = mesh_bd_nzmax(m, p);
@@ -25,12 +25,12 @@ static void mesh_brick_fprint_raw(
   m_bd = mesh_brick_bd(m->dim, n, m_bd_sizes);
   if (errno)
   {
-    fputs("mesh_brick_fprint - cannot calculate m->bd\n", stderr);
+    fputs("mesh_brick_file_print - cannot calculate m->bd\n", stderr);
     goto m_free;
   }
   
   for (p = 0; p < d; ++p)
-    int_array_fprint(out, m_bd_sizes[p], m_bd[p], "--raw");
+    int_array_file_print(out, m_bd_sizes[p], m_bd[p], "--raw");
   
   int_array2_free(m_bd, d);
 m_free:
@@ -53,11 +53,11 @@ int main(int argc, char * argv[])
   for (p = 0; p < d; ++p)
     n[p] = atoi(argv[2 + d + p]);
   
-  mesh_brick_fprint_raw(stdout, d, brick_lengths, n);
+  mesh_brick_file_print_raw(stdout, d, brick_lengths, n);
   
   if (errno)
   {
-    fputs("mesh_brick_fprint - find and print m->bd\n", stderr);
+    fputs("mesh_brick_file_print - find and print m->bd\n", stderr);
     return errno;
   }
 

@@ -242,7 +242,7 @@ void mesh_bd_check(
     m_bd_check = matrix_sparse_product(m_bd[p], m_bd[p + 1]);
     /* NULL pointer check */
     fprintf(out, "%s_%d . %s_%d:\n\n", name, p + 1, name, p + 2);
-    matrix_sparse_fprint(out, m_bd_check, "-annotated");
+    matrix_sparse_file_print(out, m_bd_check, "-annotated");
     fputs("\n", out);
     free(m_bd_check);
   }

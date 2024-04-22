@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include "matrix_sparse.h"
 
-static void matrix_sparse_transpose_fprint(
+static void matrix_sparse_transpose_file_print(
   FILE * out, const char * a_name, const char * a_format,
   const char * out_format)
 {
   matrix_sparse * a, * b;
 
-  a = matrix_sparse_fscan_by_name(a_name, a_format);
+  a = matrix_sparse_file_scan_by_name(a_name, a_format);
   if (errno)
   {
     perror("Cannot scan the first matrix");
@@ -20,7 +20,7 @@ static void matrix_sparse_transpose_fprint(
     perror("Cannot find the matrix product");
     goto a_free;
   }
-  matrix_sparse_fprint(out, b, out_format);
+  matrix_sparse_file_print(out, b, out_format);
   if (errno)
   {
     perror("Cannot print the matrix product");
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
   a_format = argv[1];
   a_name = argv[2];
   out_format = argv[3];
-  matrix_sparse_transpose_fprint(stdout, a_name, a_format, out_format);
+  matrix_sparse_transpose_file_print(stdout, a_name, a_format, out_format);
   if (errno)
   {
     perror("Unsuccessful execution of matrix_sparse_transpose");

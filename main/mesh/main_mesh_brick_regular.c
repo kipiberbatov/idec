@@ -3,7 +3,7 @@
 #include "int.h"
 #include "mesh_brick.h"
 
-static void mesh_brick_regular_fprint_raw(FILE * out, int d, int n)
+static void mesh_brick_regular_file_print_raw(FILE * out, int d, int n)
 {
   int p;
   int m_bd_sizes[MAX_DIM], n_list[MAX_DIM];
@@ -13,10 +13,10 @@ static void mesh_brick_regular_fprint_raw(FILE * out, int d, int n)
   m = mesh_brick_regular(d, n);
   if (errno)
   {
-    fputs("mesh_brick_regular_fprint - cannot calculate m\n", stderr);
+    fputs("mesh_brick_regular_file_print - cannot calculate m\n", stderr);
     goto end;
   }
-  mesh_fprint(out, m, "--raw");
+  mesh_file_print(out, m, "--raw");
   
   int_array_assign_constant(n_list, d, n);
   for (p = 1; p <= d; ++p)
@@ -25,11 +25,11 @@ static void mesh_brick_regular_fprint_raw(FILE * out, int d, int n)
   m_bd = mesh_brick_bd(m->dim, n_list, m_bd_sizes);
   if (errno)
   {
-    fputs("mesh_brick_regular_fprint - cannot calculate m->bd\n", stderr);
+    fputs("mesh_brick_regular_file_print - cannot calculate m->bd\n", stderr);
     goto m_free;
   }
   for (p = 0; p < d; ++p)
-    int_array_fprint(out, m_bd_sizes[p], m_bd[p], "--raw");
+    int_array_file_print(out, m_bd_sizes[p], m_bd[p], "--raw");
   
   int_array2_free(m_bd, d);
 m_free:
@@ -63,7 +63,7 @@ int main(int argc, char * argv[])
     goto end;
   }
   
-  mesh_brick_regular_fprint_raw(stdout, d, n);
+  mesh_brick_regular_file_print_raw(stdout, d, n);
   if (errno)
   {
     fputs("main - cannot calculate and print the mesh m\n", stderr);

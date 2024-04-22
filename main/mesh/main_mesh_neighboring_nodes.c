@@ -12,7 +12,7 @@ int main(void)
   mesh * m;
   jagged1 * m_boundary_nodes, * neighbors;
   
-  m = mesh_fscan(stdin, "--raw");
+  m = mesh_file_scan(stdin, "--raw");
   if (errno)
   {
     fputs("Error: cannot scan input mesh\n", stderr);
@@ -42,7 +42,7 @@ int main(void)
       fprintf(stderr, "Error: cannot calculate the neighbors of N_%d \n", i);
       goto m_boundary_nodes_free;
     }
-    jagged1_fprint(stdout, neighbors, "--raw");
+    jagged1_file_print(stdout, neighbors, "--raw");
     puts("");
     jagged1_free(neighbors);
   }

@@ -21,7 +21,7 @@ int main(int argc, char * argv[])
     goto end;
   }
   
-  d = int_sscan(argv[1]);
+  d = int_string_scan(argv[1]);
   if (errno)
   {
     fputs("main - cannot scan d\n", stderr);
@@ -36,7 +36,7 @@ int main(int argc, char * argv[])
     fputs("main - cannot open file containing m_laplacian\n", stderr);
     goto end;
   }
-  m_laplacian = matrix_sparse_array_fscan(
+  m_laplacian = matrix_sparse_array_file_scan(
     m_laplacian_file,
     d + 1,
     m_laplacian_format
@@ -64,7 +64,7 @@ int main(int argc, char * argv[])
     fputs("main - cannot open file containing m_inner\n", stderr);
     goto m_cn_free;
   }
-  m_inner = double_array2_fscan(
+  m_inner = double_array2_file_scan(
     m_inner_file,
     d + 1,
     m_cn,
@@ -79,7 +79,7 @@ int main(int argc, char * argv[])
   matrix_sparse_laplacian_symmetric(m_laplacian, d, m_inner);
   
   out_format = argv[6];
-  matrix_sparse_array_fprint(stdout, d + 1, m_laplacian, out_format);
+  matrix_sparse_array_file_print(stdout, d + 1, m_laplacian, out_format);
 
   double_array2_free(m_inner, d + 1);
 m_inner_file_close:

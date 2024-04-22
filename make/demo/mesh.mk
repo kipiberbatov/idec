@@ -130,7 +130,7 @@ demo/mesh/mesh_brick_2d_1_forman_laplacian.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_1_forman_laplacian_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman_laplacian.txt | demo/mesh
 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
@@ -149,7 +149,7 @@ demo/mesh/mesh_brick_2d_1_forman_hodge.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_1_forman_hodge_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman_hodge.txt | demo/mesh
 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
@@ -162,7 +162,7 @@ demo/mesh/mesh_brick_2d_1_forman_hodge_codifferential.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_1_forman_hodge_codifferential_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman_hodge_codifferential.txt | demo/mesh
 	$< --matrix-form-curly -list 2 < $(word 2, $^) > $@
 
@@ -175,7 +175,7 @@ demo/mesh/mesh_brick_2d_1_forman_hodge_laplacian.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_1_forman_hodge_laplacian_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman_hodge_laplacian.txt | demo/mesh
 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
@@ -504,7 +504,7 @@ demo/mesh/mesh_brick_2d_2_forman_laplacian_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_2_forman_laplacian_corrected_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman_laplacian_corrected.txt | demo/mesh
 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
@@ -518,7 +518,7 @@ demo/mesh/mesh_brick_2d_2_forman_hodge_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_corrected_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman_hodge_corrected.txt | demo/mesh
 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
@@ -531,7 +531,7 @@ demo/mesh/mesh_brick_2d_2_forman_hodge_codifferential_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_2_forman_hodge_codifferential_corrected_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman_hodge_codifferential_corrected.txt | demo/mesh
 	$< --matrix-form-curly -list 2 < $(word 2, $^) > $@
 
@@ -632,12 +632,12 @@ demo/mesh/mesh_brick_2d_4_laplacian_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_4_laplacian_corrected_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_4_laplacian_corrected.txt | demo/mesh
 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_4_laplacian_corrected_mathematica_sparse.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_4_laplacian_corrected.txt | demo/mesh
 	$< --mathematica-sparse -list 3 < $(word 2, $^) > $@
 
@@ -656,12 +656,12 @@ demo/mesh/mesh_brick_2d_4_hodge_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_4_hodge_corrected_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_4_hodge_corrected.txt | demo/mesh
 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_4_hodge_corrected_mathematica_sparse.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_4_hodge_corrected.txt | demo/mesh
 	$< --mathematica-sparse -list 3 < $(word 2, $^) > $@
 
@@ -674,7 +674,7 @@ demo/mesh/mesh_brick_2d_4_hodge_codifferential_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_4_hodge_codifferential_corrected_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_brick_2d_4_hodge_codifferential_corrected.txt | demo/mesh
 	$< --matrix-form-curly -list 2 < $(word 2, $^) > $@
 
@@ -1132,7 +1132,7 @@ demo/mesh/mesh_two_triangles_forman_laplacian_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_two_triangles_forman_laplacian_corrected_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_two_triangles_forman_laplacian_corrected.txt | demo/mesh
 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 
@@ -1143,7 +1143,7 @@ demo/mesh/mesh_two_triangles_forman_laplacian_corrected_symmetric.txt:\
 	$< 2 $(word 2, $^) --raw $(word 3, $^) --raw --raw > $@
 
 demo/mesh/mesh_two_triangles_forman_laplacian_corrected_symmetric_matrix_form.txt:\
-	  bin/matrix_sparse_fprint$(.EXE)\
+	  bin/matrix_sparse_file_print$(.EXE)\
 	  demo/mesh/mesh_two_triangles_forman_laplacian_corrected_symmetric.txt  | demo/mesh
 	$< --matrix-form-curly -list 3 < $(word 2, $^) > $@
 

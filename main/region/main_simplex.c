@@ -2,7 +2,7 @@
 #include "double.h"
 #include "simplex.h"
 
-static void simplex_measure_fprint(FILE * out, const simplex * r)
+static void simplex_measure_file_print(FILE * out, const simplex * r)
 {
   double r_area;
 
@@ -10,13 +10,13 @@ static void simplex_measure_fprint(FILE * out, const simplex * r)
   fprintf(out, "area : %g\n", r_area);
 }
 
-static void simplex_centroid_fprint(FILE * out, const simplex * r)
+static void simplex_centroid_file_print(FILE * out, const simplex * r)
 {
   double r_centroid[3];
 
   simplex_centroid(r_centroid, r);
   fputs("centroid : ", out);
-  double_array_fprint(out, r->dim_embedded, r_centroid, "--raw");
+  double_array_file_print(out, r->dim_embedded, r_centroid, "--raw");
   fputc('\n', out);
 }
 
@@ -27,15 +27,15 @@ int main()
   
   out = stdout;
   in = stdin;
-  r = simplex_fscan(in);
+  r = simplex_file_scan(in);
   if (errno)
   {
     perror("Problem in simplex scanning");
     simplex_free(r);
     return errno;
   }
-  simplex_measure_fprint(out, r);
-  simplex_centroid_fprint(out, r);
+  simplex_measure_file_print(out, r);
+  simplex_centroid_file_print(out, r);
   simplex_free(r);
   return 0;
 }

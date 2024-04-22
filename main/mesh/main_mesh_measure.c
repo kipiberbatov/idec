@@ -3,7 +3,7 @@
 #include "double.h"
 #include "mesh.h"
 
-// static void mesh_measure_fprint_raw(FILE * out, const mesh * m)
+// static void mesh_measure_file_print_raw(FILE * out, const mesh * m)
 // {
 //   int m_dim, p;
 //   int * m_cn;
@@ -17,10 +17,10 @@
 //     if (errno)
 //     {
 //       fprintf(stderr,
-//               "mesh_measure_fprint_raw - cannot calculate m_vol[%d]\n", p);
+//               "mesh_measure_file_print_raw - cannot calculate m_vol[%d]\n", p);
 //       return;
 //     }
-//     double_array_fprint(out, m_cn[p], m_vol_p, "--raw");
+//     double_array_file_print(out, m_cn[p], m_vol_p, "--raw");
 //     free(m_vol_p);
 //   }
 // }
@@ -36,7 +36,7 @@ int main()
   out = stdout;
   in = stdin;
   
-  m = mesh_fscan(in, "--raw");
+  m = mesh_file_scan(in, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m\n", stderr);
@@ -56,7 +56,7 @@ int main()
   ind = 0;
   for (p = 0; p <= m_dim; ++p)
   {
-    double_array_fprint(out, m_cn[p], m_vol + ind, "--raw");
+    double_array_file_print(out, m_cn[p], m_vol + ind, "--raw");
     ind += m_cn[p];
   }
   
