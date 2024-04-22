@@ -1,3 +1,5 @@
+#include "matrix.h"
+
 static double matrix_determinant_2(const double * a)
 {
   const double * a_0 = a;
@@ -15,7 +17,7 @@ static double matrix_determinant_3(const double * a)
        + a_2[0] * a_0[1] * a_1[2] - a_2[0] * a_1[1] * a_0[2];
 }
 
-double matrix_determinant(int d, double * a)
+double matrix_determinant(int d, const double * a)
 {
   switch (d)
   {

@@ -41,7 +41,8 @@ endif
 MODULES := array algebra region mesh graphics shared
 
 CPPFLAGS := -MMD -MP
-CFLAGS := -O2 -Wall
+CFLAGS := -O2 -Wall -flto=thin
+LDFLAGS := -flto=thin -lm
 
 ARRAY_INC_EXE := -iquote include/array
 ARRAY_INC := $(ARRAY_INC_EXE) -iquote src/array
@@ -261,7 +262,7 @@ ARRAY_EXE :=\
 bin_array: bin $(ARRAY_EXE)
 
 $(ARRAY_EXE): bin/%$(.EXE): main/array/main_%$(.SRC) $(ARRAY_LDLIBS)
-	$(CC) $(CFLAGS) $(ARRAY_INC_EXE) $(CCFLAGS) $< $(ARRAY_LDLIBS) -o $@
+	$(CC) $(CFLAGS) $(ARRAY_INC_EXE) $(CCFLAGS) $< $(ARRAY_LDLIBS) $(LDFLAGS) -o $@
 
 # algebra
 ALGEBRA_EXE_NAMES := $(wildcard main/algebra/*$(.SRC))
@@ -272,7 +273,7 @@ ALGEBRA_EXE :=\
 bin_algebra: bin $(ALGEBRA_EXE)
 
 $(ALGEBRA_EXE): bin/%$(.EXE): main/algebra/main_%$(.SRC) $(ALGEBRA_LDLIBS)
-	$(CC) $(CFLAGS) $(ALGEBRA_INC_EXE) $(CCFLAGS) $< $(ALGEBRA_LDLIBS) -lm -o $@
+	$(CC) $(CFLAGS) $(ALGEBRA_INC_EXE) $(CCFLAGS) $< $(ALGEBRA_LDLIBS) $(LDFLAGS) -o $@
 
 # region
 REGION_EXE_NAMES := $(wildcard main/region/*$(.SRC))
@@ -283,7 +284,7 @@ REGION_EXE :=\
 bin_region: bin $(REGION_EXE)
 
 $(REGION_EXE): bin/%$(.EXE): main/region/main_%$(.SRC) $(REGION_LDLIBS)
-	$(CC) $(CFLAGS) $(REGION_INC_EXE) $(CCFLAGS) $< $(REGION_LDLIBS) -lm -o $@
+	$(CC) $(CFLAGS) $(REGION_INC_EXE) $(CCFLAGS) $< $(REGION_LDLIBS) $(LDFLAGS) -o $@
 
 # mesh
 MESH_EXE_NAMES := $(wildcard main/mesh/*$(.SRC))
@@ -294,7 +295,7 @@ MESH_EXE :=\
 bin_mesh: bin $(MESH_EXE)
 
 $(MESH_EXE): bin/%$(.EXE): main/mesh/main_%$(.SRC) $(MESH_LDLIBS)
-	$(CC) $(CFLAGS) $(MESH_INC_EXE) $(CCFLAGS) $< $(MESH_LDLIBS) -lm -o $@
+	$(CC) $(CFLAGS) $(MESH_INC_EXE) $(CCFLAGS) $< $(MESH_LDLIBS) $(LDFLAGS) -o $@
 
 # graphics
 GRAPHICS_EXE_NAMES := $(wildcard main/graphics/*$(.SRC))
@@ -305,7 +306,8 @@ GRAPHICS_EXE :=\
 bin_graphics: bin $(GRAPHICS_EXE)
 
 $(GRAPHICS_EXE): bin/%$(.EXE): main/graphics/main_%$(.SRC) $(GRAPHICS_LDLIBS)
-	$(CC) $(CFLAGS) $(GRAPHICS_INC_EXE) $(CCFLAGS) $< $(shell pkg-config --libs gtk+-3.0) $(GRAPHICS_LDLIBS) -lm -o $@
+	$(CC) $(CFLAGS) $(GRAPHICS_INC_EXE) $(CCFLAGS) $< \
+	  $(shell pkg-config --libs gtk+-3.0) $(GRAPHICS_LDLIBS) $(LDFLAGS) -o $@
 
 # all
 .PHONY: bin_all

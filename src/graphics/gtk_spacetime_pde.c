@@ -35,21 +35,23 @@ static void unit_square_point_draw_in_window(
 void
 gtk_spacetime_pde(cairo_t * cr, double width, double height, diffusion * a)
 {
-  int j, m_cn_0, m_dim_embedded;
-  double * m_coord, * m_coord_j, * u_i;
+  int i, j, m_cn_0, m_dim_embedded, total_colors;
+  double min_value, max_value;
+  double * m_coord, * m_coord_j, * u, * u_i;
   rgb color;
+  mesh * m;
 
-  int * i = diffusion_get_index(a);
-  mesh * m = diffusion_get_mesh(a);
-  double * u = diffusion_get_values(a);
-  double min_value = diffusion_min_value(a);
-  double max_value = diffusion_max_value(a);
-  int total_colors = diffusion_get_total_colors(a);
+  i = diffusion_get_index(a);
+  m = diffusion_get_mesh(a);
+  u = diffusion_get_values(a);
+  min_value = diffusion_min_value(a);
+  max_value = diffusion_max_value(a);
+  total_colors = diffusion_get_total_colors(a);
 
   m_cn_0 = m->cn[0];
   m_coord = m->coord;
   m_dim_embedded = m->dim_embedded;
-  u_i = u + m_cn_0 * (*i);
+  u_i = u + m_cn_0 * i;
 
   for (j = 0; j < m_cn_0; ++j)
   {
