@@ -37,7 +37,7 @@ double double_array_dot_product(int d, const double * a, const double * b);
 
 double double_array_norm(int d, const double * a);
 
-void double_array_normalise(double * res, int d, const double * a);
+void double_array_normalize(double * res, int d, const double * a);
 
 void double_array_difference(
   double * res, int d, const double * a, const double * b);

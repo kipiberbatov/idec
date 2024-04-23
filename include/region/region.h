@@ -1,52 +1,9 @@
-#ifndef REGION_H
-#define REGION_H
+#ifndef _region_h
+#define _region_h
 
-#include "point.h"
-#include "line.h"
-#include "triangle.h"
-
-typedef enum region_names_list
-{
-  /* 0D */
-  POINT,
-  /* 1D */
-  LINE,
-  /* 2D */
-  TRIANGLE
-  // QUAD,
-  // SQUARE,
-  // RECTANGLE,
-  // RHOMBUS,
-  // PARALLELOGRAM,
-  // PENTAGON,
-  // HEXAGON,
-  // POLYGON,
-  // REGULAR_POLYGON,
-  // /* 3D */
-  // TETRAHEDRON,
-  // PYRAMID,
-  // CUBE,
-  // PRISM,
-  // PARALLELEPIPED,
-  // HEXAHEDRON,
-  // /* nD */
-  // SIMPLEX,
-  // QUASI_CUBE,
-  // N_CUBE
-} region_names_list;
-
-typedef struct region
-{
-  region_names_list name;
-  void * object;
-} region;
-
-/***************************** memory_management ******************************/
-region * region_new(region_names_list r_name, void * r_object);
-
-void region_free(region * r);
+typedef struct region region;
 
 /********************************* geometry ***********************************/
-double region_measure(region * r);
+double region_measure(const region * r);
 
-#endif /* REGION_H */
+#endif /* _region_h */

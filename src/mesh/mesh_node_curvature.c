@@ -30,8 +30,8 @@ static double angle_2d_general(int d, const double a0[3], const double a1[3])
   double dot;
   double v0[3], v1[3];
   
-  double_array_normalise(v0, d, a0);
-  double_array_normalise(v1, d, a1);
+  double_array_normalize(v0, d, a0);
+  double_array_normalize(v1, d, a1);
   dot = double_array_dot_product(d, v0, v1);
   return acos(dot);
 }
@@ -42,8 +42,8 @@ static double angle_2d(const double a[3][3])
   double dot;
   double v0[3], v1[3];
 
-  double_array_normalise(v0, 2, a[0]);
-  double_array_normalise(v1, 2, a[1]);
+  double_array_normalize(v0, 2, a[0]);
+  double_array_normalize(v1, 2, a[1]);
   dot = double_array_dot_product(2, v0, v1);
   return acos(dot);
 }

@@ -17,13 +17,11 @@ void diffusion_discrete_set_neumann_rows(
   int * neighbors, * neumann_nodes;
   jagged1 m_fc_0_1_i;
   jagged2 m_cf_1_0, m_fc_0_1;
-  double * m_coord; /* list of vectors */
   double * l, * l_inverse; /* vector */
   double * coefficients; /* vector */
   double normal[3]; /* vector */
   
   m_dim_embedded = m->dim_embedded;
-  m_coord = m->coord;
   mesh_fc_part2(&m_fc_0_1, m, 0, 1);
   mesh_cf_part2(&m_cf_1_0, m, 1, 0);
   
