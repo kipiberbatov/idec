@@ -1,5 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "double.h"
 #include "mesh_qc.h"
 
@@ -30,23 +32,33 @@ static void mesh_qc_metric_corrected_file_print_only_values(
   }
 }
 
-int main()
+int main(int argc, char ** argv)
 {
-  int m_dim;
-  int * m_cn;
   mesh_qc * m;
   matrix_sparse ** m_bd;
   double * node_curvatures;
   double ** m_vol;
-  FILE * in, * out;
+  FILE * m_file;
   
-  out = stdout;
-  in = stdin;
+  if (argc != 4)
+  {
+    errno = EINVAL;
+    fprintf(stderr, "Number of command line arguments must be 4\n");
+    goto end;
+  }
   
-  m = mesh_file_scan(in, "--raw");
+  m_file = fopen(argv[1], "r");
+  if (errno)
+  {
+    fprintf(stderr, "Cannot open mesh file: %s\n", strerror(errno));
+    goto end;
+  }
+  
+  m = mesh_file_scan(m_file, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m\n", stderr);
+    fclose(m_file);
     goto end;
   }
   
@@ -54,34 +66,35 @@ int main()
   if (errno)
   {
     fputs("main - cannot calculate m->fc\n", stderr);
+    fclose(m_file);
     goto m_free;
   }
   
-  m_dim = m->dim;
-  m_cn = m->cn;
-  
-  m_bd = mesh_file_scan_boundary(in, m);
+  m_bd = mesh_file_scan_boundary(m_file, m);
   if (errno)
   {
     fputs("main - cannot scan m_bd\n", stderr);
+    fclose(m_file);
     goto m_free;
   }
+
+  fclose(m_file);
   
-  m_vol = double_array2_file_scan(in, m_dim + 1, m_cn, "--raw");
+  m_vol = double_array2_file_scan_by_name(argv[2], m->dim + 1, m->cn, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_vol\n", stderr);
     goto m_bd_free;
   }
   
-  node_curvatures = double_array_file_scan(in, m_cn[0], "--raw");
+  node_curvatures = double_array_file_scan_by_name(argv[3], m->cn[0], "--raw");
   if (errno)
   {
     fputs("main - cannot scan node_curvature\n", stderr);
     goto m_vol_free;
   }
   
-  mesh_qc_metric_corrected_file_print_only_values(out, m, m_vol, node_curvatures);
+  mesh_qc_metric_corrected_file_print_only_values(stdout, m, m_vol, node_curvatures);
   if (errno)
   {
     fputs("main - cannot print m_metric\n", stderr);
@@ -91,9 +104,9 @@ int main()
 node_curvatures_free:
   free(node_curvatures);
 m_vol_free:
-  double_array2_free(m_vol, m_dim + 1);
+  double_array2_free(m_vol, m->dim + 1);
 m_bd_free:
-  matrix_sparse_array_free(m_bd, m_dim);
+  matrix_sparse_array_free(m_bd, m->dim);
 m_free:
   mesh_free(m);
 end:

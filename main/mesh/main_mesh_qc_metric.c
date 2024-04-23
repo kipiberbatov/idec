@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "double.h"
 #include "mesh_qc.h"
 
@@ -31,38 +32,53 @@ static void mesh_qc_metric_file_print_only_values(
   }
 }
 
-int main()
+int main(int argc, char ** argv)
 {
   mesh_qc * m;
   matrix_sparse ** m_bd;
   double ** m_vol;
-  FILE * in, * out;
-  
-  out = stdout;
-  in = stdin;
-  
-  m = mesh_file_scan(in, "--raw");
-  if (errno)
+  FILE * m_file;
+
+  if (argc != 3)
   {
-    fputs("main - cannot scan m\n", stderr);
+    errno = EINVAL;
+    fprintf(stderr, "Number of command line arguments must be 3\n");
     goto end;
   }
   
-  m_bd = mesh_file_scan_boundary(in, m);
+  m_file = fopen(argv[1], "r");
+  if (errno)
+  {
+    fprintf(stderr, "Cannot open mesh file: %s\n", strerror(errno));
+    goto end;
+  }
+
+  m = mesh_file_scan(m_file, "--raw");
+  if (errno)
+  {
+    fputs("main - cannot scan m\n", stderr);
+    fclose(m_file);
+    goto end;
+  }
+  
+  m_bd = mesh_file_scan_boundary(m_file, m);
   if (errno)
   {
     fputs("main - cannot scan m_bd\n", stderr);
+    fclose(m_file);
     goto m_free;
   }
   
-  m_vol = double_array2_file_scan(in, m->dim + 1, m->cn, "--raw");
+  fclose(m_file);
+  
+  m_vol = double_array2_file_scan_by_name(argv[2], m->dim + 1, m->cn, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_vol\n", stderr);
     goto m_bd_free;
   }
   
-  mesh_qc_metric_file_print_only_values(out, m, m_vol);
+  mesh_qc_metric_file_print_only_values(stdout, m, m_vol);
   if (errno)
   {
     fputs("main - cannot print m_metric\n", stderr);

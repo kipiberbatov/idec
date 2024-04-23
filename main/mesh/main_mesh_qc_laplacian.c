@@ -1,29 +1,53 @@
 #include <errno.h>
 #include <string.h>
+
 #include "mesh.h"
 
-int main()
+int main(int argc, char ** argv)
 {
   mesh * m;
   matrix_sparse ** m_bd, ** m_cbd, ** m_cbd_star;
-  FILE * in, * out;
-  
-  out = stdout;
-  in = stdin;
-  
-  m = mesh_file_scan(in, "--raw");
-  if (errno)
+  FILE * m_file, * m_cbd_star_file;
+
+  if (argc != 3)
   {
-    fprintf(stderr, "main - cannot scan m\n");
+    errno = EINVAL;
+    fprintf(stderr, "Number of command line arguments must be 4\n");
     goto end;
   }
-  
-  m_bd = mesh_file_scan_boundary(in, m);
+
+  m_file = fopen(argv[1], "r");
   if (errno)
   {
-    fprintf(stderr, "main - cannot scan m_bd\n");
+    fprintf(stderr, "Cannot open mesh file: %s\n", strerror(errno));
+    goto end;
+  }
+
+  m = mesh_file_scan(m_file, "--raw");
+  if (errno)
+  {
+    fputs("main - cannot scan m\n", stderr);
+    fclose(m_file);
+    goto end;
+  }
+
+  m->fc = mesh_fc(m);
+  if (errno)
+  {
+    fputs("main - cannot calculate m->fc\n", stderr);
+    fclose(m_file);
     goto m_free;
   }
+  
+  m_bd = mesh_file_scan_boundary(m_file, m);
+  if (errno)
+  {
+    fputs("main - cannot scan m_bd\n", stderr);
+    fclose(m_file);
+    goto m_free;
+  }
+  
+  fclose(m_file);
   
   m_cbd = mesh_coboundary(m->dim, m_bd);
   if (errno)
@@ -32,14 +56,23 @@ int main()
     goto m_bd_free;
   }
   
-  m_cbd_star = mesh_file_scan_boundary(in, m);
+  m_cbd_star_file = fopen(argv[2], "r");
   if (errno)
   {
-    fprintf(stderr, "main - cannot scan m_cbd_star\n");
+    fprintf(stderr, "main: cannot open m_cbd_star_file: %s\n", strerror(errno));
     goto m_cbd_free;
   }
+
+  m_cbd_star = mesh_file_scan_boundary(m_cbd_star_file, m);
+  if (errno)
+  {
+    fputs("main: cannot scan m_cbd_star\n", stderr);
+    fclose(m_cbd_star_file);
+    goto m_cbd_free;
+  }
+  fclose(m_cbd_star_file);
   
-  matrix_sparse_laplacian_file_print(out, m->dim, m_cbd, m_cbd_star, "--raw");
+  matrix_sparse_laplacian_file_print(stdout, m->dim, m_cbd, m_cbd_star, "--raw");
   if (errno)
   {
     fprintf(stderr, "main - cannot print m_laplacian\n");

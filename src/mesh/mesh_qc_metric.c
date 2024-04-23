@@ -1,7 +1,9 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-// #include "array_indexed.h"
+
+/* #include "array_indexed.h" */
+
 #include "double.h"
 #include "int.h"
 #include "mesh_qc.h"
