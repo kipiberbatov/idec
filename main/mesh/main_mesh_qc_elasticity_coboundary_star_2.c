@@ -3,7 +3,7 @@
 #include "double.h"
 #include "mesh_qc.h"
 
-static void mesh_qc_elasticity_cbd_star_2_file_print_raw(
+static void mesh_qc_elasticity_coboundary_star_2_file_print_raw(
   FILE * out, const mesh_qc * m, const matrix_sparse * m_bd_2,
   const double * m_inner_2, const double * m_inner_1, double mu)
 {
@@ -11,7 +11,7 @@ static void mesh_qc_elasticity_cbd_star_2_file_print_raw(
   matrix_sparse * m_elasticity_cbd_star_2;
   
   m_elasticity_cbd_star_2 =
-    mesh_qc_elasticity_cbd_star_2(m, m_bd_2, m_inner_2, m_inner_1, mu);
+    mesh_qc_elasticity_coboundary_star_2(m, m_bd_2, m_inner_2, m_inner_1, mu);
   /* NULL pointer check */
   
   m_elasticity_cbd_star_2_nonzero_max
@@ -33,11 +33,11 @@ int main(int argc, char * argv[])
   mu = atof(argv[1]);
   m = mesh_file_scan(stdin, "--raw");
   /* NULL pointer check */
-  m_bd = mesh_file_scan_bd(stdin, m);
+  m_bd = mesh_file_scan_boundary(stdin, m);
   /* NULL pointer check */
   m_inner = double_array2_file_scan(stdin, m->dim + 1, m->cn, "--raw");
   /* NULL pointer check */
-  mesh_qc_elasticity_cbd_star_2_file_print_raw(
+  mesh_qc_elasticity_coboundary_star_2_file_print_raw(
     stdout, m, m_bd[1], m_inner[2], m_inner[1], mu);
   /* NULL pointer check */
   double_array2_free(m_inner, m->dim + 1);

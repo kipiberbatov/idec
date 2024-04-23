@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "mesh_qc.h"
 
-// static double * mesh_qc_cbd_star_physical_single_x(
+// static double * mesh_qc_coboundary_star_physical_single_x(
 //   const mesh_qc * m, int p, const matrix_sparse * m_bd_p,
 //   const double * m_inner_p, const double * m_inner_p_minus_1,
 //   const double * c_p_minus_1)
@@ -36,7 +36,7 @@
 //   return m_cbd_star_p_x;
 // }
 
-static double * mesh_qc_cbd_star_physical_constant_single_x(
+static double * mesh_qc_coboundary_star_physical_constant_single_x(
   const mesh_qc * m, int p, const matrix_sparse * m_bd_p,
   const double * m_inner_p, const double * m_inner_p_minus_1,
   double c_p_minus_1)
@@ -72,7 +72,7 @@ static double * mesh_qc_cbd_star_physical_constant_single_x(
   return m_cbd_star_p_x;
 }
 
-static matrix_sparse * mesh_qc_cbd_star_physical_constant_single(
+static matrix_sparse * mesh_qc_coboundary_star_physical_constant_single(
   const mesh_qc * m, int p, const matrix_sparse * m_bd_p,
   const double * m_inner_p, const double * m_inner_p_minus_1,
   double c_p_minus_1)
@@ -87,32 +87,32 @@ static matrix_sparse * mesh_qc_cbd_star_physical_constant_single(
   m_cbd_star_p->cols_total = m_bd_p->cols_total;
   m_cbd_star_p->row_indices = m_bd_p->row_indices;
   m_cbd_star_p->values =
-    mesh_qc_cbd_star_physical_constant_single_x(m, p, m_bd_p, m_inner_p,
+    mesh_qc_coboundary_star_physical_constant_single_x(m, p, m_bd_p, m_inner_p,
                                                 m_inner_p_minus_1, c_p_minus_1);
   /* NULL pointer check */
   //m_cbd_star_p->nz = m_bd_p->nz;
   return m_cbd_star_p;
 }
 
-matrix_sparse * mesh_qc_elasticity_cbd_star_1(
+matrix_sparse * mesh_qc_elasticity_coboundary_star_1(
   const mesh_qc * m, const matrix_sparse * m_bd_1, const double * m_inner_1,
   const double * m_inner_0, double lambda, double mu)
 {
   matrix_sparse * res;
   
-  res = mesh_qc_cbd_star_physical_constant_single(m, 1, m_bd_1, m_inner_1,
+  res = mesh_qc_coboundary_star_physical_constant_single(m, 1, m_bd_1, m_inner_1,
                                                   m_inner_0, lambda + 2 * mu);
   /* NULL pointer check */
   return res;
 }
 
-matrix_sparse * mesh_qc_elasticity_cbd_star_2(
+matrix_sparse * mesh_qc_elasticity_coboundary_star_2(
   const mesh_qc * m, const matrix_sparse * m_bd_2,
   const double * m_inner_2, const double * m_inner_1, double mu)
 {
   matrix_sparse * res;
 
-  res = mesh_qc_cbd_star_physical_constant_single(m, 2, m_bd_2, m_inner_2,
+  res = mesh_qc_coboundary_star_physical_constant_single(m, 2, m_bd_2, m_inner_2,
                                                   m_inner_1, -mu);
   /* NULL pointer check */
   return res;
@@ -126,7 +126,7 @@ matrix_sparse * mesh_qc_elasticity_cbd_star_2(
 //   res = 3;
 // }
 
-// matrix_sparse ** mesh_qc_cbd_star_physical(
+// matrix_sparse ** mesh_qc_coboundary_star_physical(
 //   const mesh_qc * m, matrix_sparse ** m_bd, double ** m_inner)
 // {
 //   int m_dim, p;
@@ -138,14 +138,14 @@ matrix_sparse * mesh_qc_elasticity_cbd_star_2(
 //   for (p = 1; p <= 2; ++p)
 //   {
 //     m_cbd_star[p - 1] =
-//       mesh_qc_cbd_star_physical_single(m, p, m_bd[p - 1], m_inner[p],
+//       mesh_qc_coboundary_star_physical_single(m, p, m_bd[p - 1], m_inner[p],
 //                                        m_inner[p - 1], c[p - 1]);
 //     /* NULL pointer check */
 //   }
 //   return m_cbd_star;
 // }
 //
-// void mesh_qc_cbd_star_file_print(
+// void mesh_qc_coboundary_star_file_print(
 //   FILE * out, const mesh_qc * m, matrix_sparse ** m_bd, double ** m_inner)
 // {
 //   int m_dim, p;
@@ -157,14 +157,14 @@ matrix_sparse * mesh_qc_elasticity_cbd_star_2(
 //   for (p = 1; p <= m_dim; ++p)
 //   {
 //     m_cbd_star_p =
-//       mesh_qc_cbd_star_single(m, p, m_bd[p - 1], m_inner[p], m_inner[p - 1]);
+//       mesh_qc_coboundary_star_single(m, p, m_bd[p - 1], m_inner[p], m_inner[p - 1]);
 //     /* NULL pointer check */
 //     double_file_print_array_raw(out, m_cbd_star_p->nzmax, m_cbd_star_p->x);
 //     matrix_sparse_free_shared(m_cbd_star_p);
 //   }
 // }
 //
-// void mesh_qc_cbd_star_file_print_file_scan(FILE * out, FILE * in)
+// void mesh_qc_coboundary_star_file_print_file_scan(FILE * out, FILE * in)
 // {
 //   mesh_qc * m;
 //   matrix_sparse ** m_bd;
@@ -172,11 +172,11 @@ matrix_sparse * mesh_qc_elasticity_cbd_star_2(
 //
 //   m = mesh_file_scan(in);
 //   /* NULL pointer check */
-//   m_bd = mesh_file_scan_bd(in, m);
+//   m_bd = mesh_file_scan_boundary(in, m);
 //   /* NULL pointer check */
 //   m_inner = double_file_scan_array2(in, m->dim + 1, m->cn);
 //   /* NULL pointer check */
-//   mesh_qc_cbd_star_file_print(out, m, m_bd, m_inner);
+//   mesh_qc_coboundary_star_file_print(out, m, m_bd, m_inner);
 //   /* NULL pointer check */
 //   double_free_array2(m_inner, m->dim + 1);
 //   matrix_sparse_free_array(m_bd, m->dim);

@@ -1,20 +1,20 @@
 #include "mesh_qc.h"
 
-void mesh_qc_bd_layer_0_1_nodes_file_print_raw(FILE * out, const mesh * m)
+void mesh_qc_boundary_layer_0_1_nodes_file_print_raw(FILE * out, const mesh * m)
 {
   jagged1 * m_bd_layer_0_hyperfaces;
   jagged1 * m_bd_layer_0_cells;
   jagged1 * m_bd_layer_0_1_nodes;
   
-  m_bd_layer_0_hyperfaces = mesh_qc_bd_layer_0_hyperfaces(m);
+  m_bd_layer_0_hyperfaces = mesh_qc_boundary_layer_0_hyperfaces(m);
   /* NULL pointer check */
   // jagged1_file_print_raw(out, m_bd_layer_0_hyperfaces);
   
-  m_bd_layer_0_cells = mesh_qc_bd_layer_0_cells(m, m_bd_layer_0_hyperfaces);
+  m_bd_layer_0_cells = mesh_qc_boundary_layer_0_cells(m, m_bd_layer_0_hyperfaces);
   /* NULL pointer check */
   // jagged1_file_print_raw(out, m_bd_layer_0_cells);
   
-  m_bd_layer_0_1_nodes = mesh_qc_bd_layer_0_1_nodes(m, m_bd_layer_0_cells);
+  m_bd_layer_0_1_nodes = mesh_qc_boundary_layer_0_1_nodes(m, m_bd_layer_0_cells);
   /* NULL pointer check */
   jagged1_file_print(out, m_bd_layer_0_1_nodes, "--raw");
   /* successful writing check */
@@ -35,7 +35,7 @@ int main()
   /* NULL pointer and successful scanning check */
   m->fc = mesh_fc(m);
   /* NULL pointer and successful scanning check */
-  mesh_qc_bd_layer_0_1_nodes_file_print_raw(out, m);
+  mesh_qc_boundary_layer_0_1_nodes_file_print_raw(out, m);
   /* successful writing check */
   mesh_free(m);
   return 0;

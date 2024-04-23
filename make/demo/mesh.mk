@@ -30,7 +30,7 @@ DEMO_MESH_BRICK_REGULAR_2D_1 := \
   demo/mesh/mesh_brick_2d_1.txt\
   demo/mesh/mesh_brick_2d_1_vol.txt\
   demo/mesh/mesh_brick_2d_1_forman.txt\
-  demo/mesh/mesh_brick_2d_1_forman_bd.txt\
+  demo/mesh/mesh_brick_2d_1_forman_boundary.txt\
   demo/mesh/mesh_brick_2d_1_forman_cbd.txt\
   demo/mesh/mesh_brick_2d_1_forman_vol.txt\
   demo/mesh/mesh_brick_2d_1_forman_metric.txt\
@@ -69,17 +69,17 @@ demo/mesh/mesh_brick_2d_1_vol.txt:\
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_1_forman.txt:\
-	  bin/forman_bd$(.EXE)\
+	  bin/forman_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
-demo/mesh/mesh_brick_2d_1_forman_bd.txt:\
-	  bin/mesh_bd$(.EXE)\
+demo/mesh/mesh_brick_2d_1_forman_boundary.txt:\
+	  bin/mesh_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman.txt | demo/mesh
 	$< --raw < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_1_forman_cbd.txt:\
-	  bin/mesh_cbd$(.EXE)\
+	  bin/mesh_coboundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman.txt | demo/mesh
 	$< --raw < $(word 2, $^) > $@
 
@@ -114,7 +114,7 @@ demo/mesh/mesh_brick_2d_1_forman_inner.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_1_forman_cbd_star.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman.txt\
 	  demo/mesh/mesh_brick_2d_1_forman_inner.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -203,7 +203,7 @@ demo/mesh/mesh_brick_2d_1_forman_inner_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_1_forman_cbd_star_corrected.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_2d_1_forman.txt\
 	  demo/mesh/mesh_brick_2d_1_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -233,7 +233,7 @@ demo/mesh/mesh_brick_2d_1_forman_displacement.txt:\
 	$< < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_1_forman_elasticity_cbd_star_1_1_1.txt:\
-	  bin/mesh_qc_elasticity_cbd_star_1\
+	  bin/mesh_qc_elasticity_coboundary_star_1\
 	  demo/mesh/mesh_brick_2d_1_forman.txt\
 	  demo/mesh/mesh_brick_2d_1_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -241,7 +241,7 @@ demo/mesh/mesh_brick_2d_1_forman_elasticity_cbd_star_1_1_1.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_1_forman_elasticity_cbd_star_2_1_1.txt:\
-	  bin/mesh_qc_elasticity_cbd_star_2\
+	  bin/mesh_qc_elasticity_coboundary_star_2\
 	  demo/mesh/mesh_brick_2d_1_forman.txt\
 	  demo/mesh/mesh_brick_2d_1_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -270,7 +270,7 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2_forman_nodes_neumann_neighbors.txt\
   demo/mesh/mesh_brick_2d_2_forman_nodes_neumann_vector_matrices.txt\
   demo/mesh/mesh_brick_2d_2_forman_nodes_neumann_coefficients.txt\
-  demo/mesh/mesh_brick_2d_2_forman_bd.txt\
+  demo/mesh/mesh_brick_2d_2_forman_boundary.txt\
   demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
   demo/mesh/mesh_brick_2d_2_forman_vol.txt\
   demo/mesh/mesh_brick_2d_2_forman_metric.txt\
@@ -310,7 +310,7 @@ demo/mesh/mesh_brick_2d_2_vol.txt:\
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_2_forman.txt:\
-	  bin/forman_bd$(.EXE)\
+	  bin/forman_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
@@ -354,13 +354,13 @@ demo/mesh/mesh_brick_2d_2_forman_nodes_neumann_coefficients.txt:\
 	  demo/mesh/mesh_brick_2d_2_forman.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
-demo/mesh/mesh_brick_2d_2_forman_bd.txt:\
-	  bin/mesh_bd$(.EXE)\
+demo/mesh/mesh_brick_2d_2_forman_boundary.txt:\
+	  bin/mesh_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt | demo/mesh
 	$< --raw < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_2_forman_cbd.txt:\
-	  bin/mesh_cbd$(.EXE)\
+	  bin/mesh_coboundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt | demo/mesh
 	$< --raw < $(word 2, $^) > $@
 
@@ -386,7 +386,7 @@ demo/mesh/mesh_brick_2d_2_forman_inner.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_inner.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -488,7 +488,7 @@ demo/mesh/mesh_brick_2d_2_forman_inner_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_2_forman_cbd_star_corrected.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -578,12 +578,12 @@ demo/mesh/mesh_brick_2d_4.txt:\
 	$< 2 4 > $@
 
 demo/mesh/mesh_brick_2d_4_bd.txt:\
-	  bin/mesh_bd$(.EXE)\
+	  bin/mesh_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_4.txt | demo/mesh
 	$< --raw < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_4_cbd.txt:\
-	  bin/mesh_cbd$(.EXE)\
+	  bin/mesh_coboundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_4.txt | demo/mesh
 	$< --raw < $(word 2, $^) > $@
 
@@ -616,7 +616,7 @@ demo/mesh/mesh_brick_2d_4_inner_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_4_cbd_star_corrected.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_2d_4.txt\
 	  demo/mesh/mesh_brick_2d_4_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -699,7 +699,7 @@ demo/mesh/mesh_brick_2d_4_laplacian_corrected_symmetric2.txt:\
 	$< 2 $(word 2, $^) --raw $(word 3, $^) --raw > $@ --matrix-form-curly
 
 demo/mesh/mesh_brick_2d_4_bd_nodes.txt:\
-	  bin/mesh_bd_nodes$(.EXE)\
+	  bin/mesh_boundary_nodes$(.EXE)\
 	  demo/mesh/mesh_brick_2d_4.txt | demo/mesh
 	$< $(word 2, $^) --raw > $@ --raw
 	
@@ -743,7 +743,7 @@ DEMO_MESH_BRICK_REGULAR_2D_5 := \
   demo/mesh/mesh_brick_2d_5_forman_laplacian.txt\
   demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.txt\
   demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt\
-  demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt\
+  demo/mesh/mesh_brick_2d_5_forman_boundary_layer_0_1_nodes.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge.txt\
   demo/mesh/mesh_brick_2d_5_forman_node_curvature.txt\
@@ -761,7 +761,7 @@ demo/mesh/mesh_brick_2d_5.txt:\
 	$< 2 5 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_cbd.txt:\
-	  bin/mesh_cbd$(.EXE)\
+	  bin/mesh_coboundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt | demo/mesh
 	$< --raw < $(word 2, $^) > $@
 
@@ -771,7 +771,7 @@ demo/mesh/mesh_brick_2d_5_vol.txt:\
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_5_forman.txt:\
-	  bin/forman_bd$(.EXE)\
+	  bin/forman_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
@@ -806,7 +806,7 @@ demo/mesh/mesh_brick_2d_5_forman_inner.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_inner.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -839,8 +839,8 @@ demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt:\
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p4 0.0001 10000 > $@
 
-demo/mesh/mesh_brick_2d_5_forman_bd_layer_0_1_nodes.txt:\
-	  bin/mesh_qc_bd_layer$(.EXE)\
+demo/mesh/mesh_brick_2d_5_forman_boundary_layer_0_1_nodes.txt:\
+	  bin/mesh_qc_boundary_layer$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt | demo/mesh
 	$< < $(word 2, $^) > $@
 
@@ -882,7 +882,7 @@ demo/mesh/mesh_brick_2d_5_forman_inner_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_5_forman_cbd_star_corrected.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -910,7 +910,7 @@ DEMO_MESH_BRICK_REGULAR_2D_10 := \
   demo/mesh/mesh_brick_2d_10.txt\
   demo/mesh/mesh_brick_2d_10_vol.txt\
   demo/mesh/mesh_brick_2d_10_forman.txt\
-  demo/mesh/mesh_brick_2d_10_forman_bd.txt\
+  demo/mesh/mesh_brick_2d_10_forman_boundary.txt\
   demo/mesh/mesh_brick_2d_10_forman_cbd.txt\
   demo/mesh/mesh_brick_2d_10_forman_vol.txt\
   demo/mesh/mesh_brick_2d_10_forman_metric.txt\
@@ -933,17 +933,17 @@ demo/mesh/mesh_brick_2d_10_vol.txt:\
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_10_forman.txt:\
-	  bin/forman_bd$(.EXE)\
+	  bin/forman_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_10.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
-demo/mesh/mesh_brick_2d_10_forman_bd.txt:\
-	  bin/mesh_bd$(.EXE)\
+demo/mesh/mesh_brick_2d_10_forman_boundary.txt:\
+	  bin/mesh_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_10_forman.txt | demo/mesh
 	$< --raw < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_2d_10_forman_cbd.txt:\
-	  bin/mesh_cbd$(.EXE)\
+	  bin/mesh_coboundary$(.EXE)\
 	  demo/mesh/mesh_brick_2d_10_forman.txt | demo/mesh
 	$< --raw < $(word 2, $^) > $@
 
@@ -969,7 +969,7 @@ demo/mesh/mesh_brick_2d_10_forman_inner.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_2d_10_forman_cbd_star.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_2d_10_forman.txt\
 	  demo/mesh/mesh_brick_2d_10_forman_inner.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1037,7 +1037,7 @@ demo/mesh/mesh_two_triangles_vol.txt:\
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_two_triangles_forman.txt:\
-	  bin/forman_bd$(.EXE)\
+	  bin/forman_boundary$(.EXE)\
 	  manual/mesh/mesh_two_triangles.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
@@ -1063,7 +1063,7 @@ demo/mesh/mesh_two_triangles_forman_inner.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_two_triangles_forman_cbd_star.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_two_triangles_forman.txt\
 	  demo/mesh/mesh_two_triangles_forman_inner.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1116,7 +1116,7 @@ demo/mesh/mesh_two_triangles_forman_inner_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_two_triangles_forman_cbd_star_corrected.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_two_triangles_forman.txt\
 	  demo/mesh/mesh_two_triangles_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1190,7 +1190,7 @@ demo/mesh/mesh_triangle_and_square_vol.txt:\
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_triangle_and_square_forman.txt:\
-	  bin/forman_bd$(.EXE)\
+	  bin/forman_boundary$(.EXE)\
 	  manual/mesh/mesh_triangle_and_square.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
@@ -1216,7 +1216,7 @@ demo/mesh/mesh_triangle_and_square_forman_inner.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_triangle_and_square_forman_cbd_star.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_triangle_and_square_forman.txt\
 	  demo/mesh/mesh_triangle_and_square_forman_inner.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1269,7 +1269,7 @@ demo/mesh/mesh_triangle_and_square_forman_inner_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_triangle_and_square_forman_cbd_star_corrected.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_triangle_and_square_forman.txt\
 	  demo/mesh/mesh_triangle_and_square_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1334,7 +1334,7 @@ demo/mesh/mesh_brick_3d_1_vol.txt:\
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_3d_1_forman.txt:\
-	  bin/forman_bd$(.EXE)\
+	  bin/forman_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_3d_1.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
@@ -1360,7 +1360,7 @@ demo/mesh/mesh_brick_3d_1_forman_inner.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_3d_1_forman_cbd_star.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_3d_1_forman.txt\
 	  demo/mesh/mesh_brick_3d_1_forman_inner.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1413,7 +1413,7 @@ demo/mesh/mesh_brick_3d_1_forman_inner_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_3d_1_forman_cbd_star_corrected.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_3d_1_forman.txt\
 	  demo/mesh/mesh_brick_3d_1_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1469,7 +1469,7 @@ demo/mesh/mesh_brick_3d_2_vol.txt:\
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_3d_2_forman.txt:\
-	  bin/forman_bd$(.EXE)\
+	  bin/forman_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_3d_2.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
@@ -1495,7 +1495,7 @@ demo/mesh/mesh_brick_3d_2_forman_inner.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_3d_2_forman.txt\
 	  demo/mesh/mesh_brick_3d_2_forman_inner.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1548,7 +1548,7 @@ demo/mesh/mesh_brick_3d_2_forman_inner_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_3d_2_forman_cbd_star_corrected.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_3d_2_forman.txt\
 	  demo/mesh/mesh_brick_3d_2_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1604,7 +1604,7 @@ demo/mesh/mesh_brick_3d_5_vol.txt:\
 	$< < $(word 2, $^) > $@
 
 demo/mesh/mesh_brick_3d_5_forman.txt:\
-	  bin/forman_bd$(.EXE)\
+	  bin/forman_boundary$(.EXE)\
 	  demo/mesh/mesh_brick_3d_5.txt | demo/mesh
 	$< < $(word 2, $^) > $@
 
@@ -1630,7 +1630,7 @@ demo/mesh/mesh_brick_3d_5_forman_inner.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_3d_5_forman_cbd_star.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_3d_5_forman.txt\
 	  demo/mesh/mesh_brick_3d_5_forman_inner.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt
@@ -1683,7 +1683,7 @@ demo/mesh/mesh_brick_3d_5_forman_inner_corrected.txt:\
 	rm tmp.txt
 
 demo/mesh/mesh_brick_3d_5_forman_cbd_star_corrected.txt:\
-	  bin/mesh_qc_cbd_star$(.EXE)\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
 	  demo/mesh/mesh_brick_3d_5_forman.txt\
 	  demo/mesh/mesh_brick_3d_5_forman_inner_corrected.txt | demo/mesh
 	cat $(wordlist 2, $(words $^), $^) > tmp.txt

@@ -18,21 +18,21 @@ int main()
     goto end;
   }
   
-  m_bd = mesh_file_scan_bd(in, m);
+  m_bd = mesh_file_scan_boundary(in, m);
   if (errno)
   {
     fprintf(stderr, "main - cannot scan m_bd\n");
     goto m_free;
   }
   
-  m_cbd = mesh_cbd(m->dim, m_bd);
+  m_cbd = mesh_coboundary(m->dim, m_bd);
   if (errno)
   {
     fprintf(stderr, "main - cannot scan m_cbd\n");
     goto m_bd_free;
   }
   
-  m_cbd_star = mesh_file_scan_bd(in, m);
+  m_cbd_star = mesh_file_scan_boundary(in, m);
   if (errno)
   {
     fprintf(stderr, "main - cannot scan m_cbd_star\n");

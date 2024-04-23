@@ -30,7 +30,7 @@ static void mesh_displacement_unit_cochain_file_print_file_scan(FILE * out, FILE
   /* NULL pointer check */
   m->fc = mesh_fc(m);
   /* NULL pointer check */
-  m_bd = mesh_file_scan_bd(in, m);
+  m_bd = mesh_file_scan_boundary(in, m);
   /* NULL pointer check */
   u = (double *) malloc(sizeof(double) * m->cn[1]);
   for (i = 0; i < m->cn[1]; ++i)

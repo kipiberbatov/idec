@@ -60,7 +60,7 @@ int main()
   m_dim = m->dim;
   m_cn = m->cn;
   
-  m_bd = mesh_file_scan_bd(in, m);
+  m_bd = mesh_file_scan_boundary(in, m);
   if (errno)
   {
     fputs("main - cannot scan m_bd\n", stderr);

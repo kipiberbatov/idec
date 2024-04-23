@@ -3,7 +3,7 @@
 #include "int.h"
 #include "mesh.h"
 
-int mesh_bd_nzmax(const mesh * m, int p)
+int mesh_boundary_nzmax(const mesh * m, int p)
 {
   int i, m_cn_p;
   int * hyperfaces_a1;
@@ -28,7 +28,7 @@ int mesh_bd_nzmax(const mesh * m, int p)
   return m_bd_nzmax;
 }
 
-int * mesh_bd_p(const mesh * m, int p)
+int * mesh_boundary_p(const mesh * m, int p)
 {
   int i, m_cn_p;
   int * m_bd_p;
@@ -52,7 +52,7 @@ int * mesh_bd_p(const mesh * m, int p)
   return m_bd_p;
 }
 
-int * mesh_bd_i(const mesh * m, int p)
+int * mesh_boundary_i(const mesh * m, int p)
 {
   int i, ind, j_loc, m_bd_nzmax, m_cn_p;
   int * m_bd_i;
@@ -63,7 +63,7 @@ int * mesh_bd_i(const mesh * m, int p)
   m_cn_p = m->cn[p];
   m_cf = m->cf;
   jagged4_part2(&topology, m_cf, p - 1, p - 1);
-  m_bd_nzmax = mesh_bd_nzmax(m, p);
+  m_bd_nzmax = mesh_boundary_nzmax(m, p);
   m_bd_i = (int *) malloc(m_bd_nzmax * sizeof(int));
   ind = 0;
   for (i = 0; i < m_cn_p; ++i)
@@ -97,7 +97,7 @@ int * mesh_bd_i(const mesh * m, int p)
 //   free(tmp);
 // }
 
-static void mesh_bd_values(matrix_sparse * m_bd, const mesh * m, int p)
+static void mesh_boundary_values(matrix_sparse * m_bd, const mesh * m, int p)
 {
   int hyperfaces_a0, i, ind, j, j_loc, m_cn_p, pos0, pos1, sign;
   //int * a_positions;
@@ -156,31 +156,31 @@ static void mesh_bd_values(matrix_sparse * m_bd, const mesh * m, int p)
   }
 }
 
-matrix_sparse * mesh_bd_single(const mesh * m, int p)
+matrix_sparse * mesh_boundary_single(const mesh * m, int p)
 {
   int m_bd_nonzero_max;
   matrix_sparse * m_bd;
   
-  m_bd_nonzero_max = mesh_bd_nzmax(m, p);
+  m_bd_nonzero_max = mesh_boundary_nzmax(m, p);
   m_bd = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   /* NULL pointer check */
-  //m_bd->nzmax = mesh_bd_nzmax(m, p);
+  //m_bd->nzmax = mesh_boundary_nzmax(m, p);
   /* NULL pointer check */
   m_bd->rows = m->cn[p - 1];
   m_bd->cols = m->cn[p];
-  m_bd->cols_total = mesh_bd_p(m, p);
+  m_bd->cols_total = mesh_boundary_p(m, p);
   /* NULL pointer check */
   m_bd->row_indices = (int *) malloc(sizeof(int) * m_bd_nonzero_max);
   /* NULL pointer check */
   m_bd->values = (double *) malloc(sizeof(double) * m_bd_nonzero_max);
   /* NULL pointer check */
-  mesh_bd_values(m_bd, m, p);
+  mesh_boundary_values(m_bd, m, p);
   /* NULL pointer check because of local dynamic memory */
   //m_bd->nz = -1;
   return m_bd;
 }
 
-// static void matrix_sparse * mesh_bd_p(const mesh * m, int p, double * m_bd_x);
+// static void matrix_sparse * mesh_boundary_p(const mesh * m, int p, double * m_bd_x);
 // {
 //   int i, m_bd_n;
 //   int * m_bd_p;
@@ -213,7 +213,7 @@ matrix_sparse * mesh_bd_single(const mesh * m, int p)
 //   return m_bd;
 // }
 
-matrix_sparse ** mesh_bd(const mesh * m)
+matrix_sparse ** mesh_boundary(const mesh * m)
 {
   int m_dim, p;
   matrix_sparse ** m_bd;
@@ -224,14 +224,14 @@ matrix_sparse ** mesh_bd(const mesh * m)
 
   for (p = 1; p <= m_dim; ++p)
   {
-    m_bd[p - 1] = mesh_bd_single(m, p);
-    //m_bd[p - 1] = mesh_bd_p(m, p);
+    m_bd[p - 1] = mesh_boundary_single(m, p);
+    //m_bd[p - 1] = mesh_boundary_p(m, p);
     /* NULL pointer check */
   }
   return m_bd;
 }
 
-void mesh_bd_check(
+void mesh_boundary_check(
   FILE * out, int m_dim, matrix_sparse ** m_bd, const char * name)
 {
   int p;

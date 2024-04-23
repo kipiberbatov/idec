@@ -64,7 +64,7 @@ int main(int argc, char ** argv)
     fprintf(stderr, "Cannot open file %s\n", m_cbd_star_1_name);
     goto m_cbd_0_free;
   }
-  m_cbd_star_1 = mesh_file_scan_bd_p(m_cbd_star_1_file, m, 1);
+  m_cbd_star_1 = mesh_file_scan_boundary_p(m_cbd_star_1_file, m, 1);
   if (errno)
   {
     fputs("main - cannot scan m_cbd_star_1\n", stderr);

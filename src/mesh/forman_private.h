@@ -42,8 +42,8 @@ void forman_cf_a4(
 
 jagged4 * forman_cf(const mesh * m, const int * m_forman_cn);
 
-/********************************** forman_bd *********************************/
-matrix_sparse * forman_bd_p_f(
+/********************************** forman_boundary *********************************/
+matrix_sparse * forman_boundary_p_f(
   const mesh * m_forman, matrix_sparse ** bd,
   const jagged3 * m_forman_cbi, int p_f);
 

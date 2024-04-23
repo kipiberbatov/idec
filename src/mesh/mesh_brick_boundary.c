@@ -3,7 +3,7 @@
 #include "int.h"
 #include "mesh_brick_private.h"
 
-static void mesh_brick_bd_p(int * m_bd_p, int d, const int * n, int p)
+static void mesh_brick_boundary_p(int * m_bd_p, int d, const int * n, int p)
 {
   int bin_d_p, ind, sign_p, sign_v, u, v, y_ind, y_size;
   int a[MAX_DIM], n_bar_p[MAX_DIM];
@@ -32,7 +32,7 @@ static void mesh_brick_bd_p(int * m_bd_p, int d, const int * n, int p)
   }
 }
 
-int ** mesh_brick_bd(int d, const int * n, const int * m_bd_sizes)
+int ** mesh_brick_boundary(int d, const int * n, const int * m_bd_sizes)
 {
   int p;
   int ** m_bd;
@@ -40,7 +40,7 @@ int ** mesh_brick_bd(int d, const int * n, const int * m_bd_sizes)
   m_bd = (int **) malloc(sizeof(int *) * d);
   if (errno)
   {
-    fputs("mesh_brick_bd - cannot allocate memory for m->bd\n", stderr);
+    fputs("mesh_brick_boundary - cannot allocate memory for m->bd\n", stderr);
     return NULL;
   }
   
@@ -49,13 +49,13 @@ int ** mesh_brick_bd(int d, const int * n, const int * m_bd_sizes)
     m_bd[p - 1] = (int *) malloc(sizeof(int) * m_bd_sizes[p - 1]);
     if (errno)
     {
-      fprintf(stderr, "mesh_brick_bd - cannot allocate memory for "
+      fprintf(stderr, "mesh_brick_boundary - cannot allocate memory for "
               "m->bd[%d]\n", p - 1);
       int_array2_free(m_bd, p - 1);
       return NULL;
     }
     
-    mesh_brick_bd_p(m_bd[p - 1], d, n, p);
+    mesh_brick_boundary_p(m_bd[p - 1], d, n, p);
   }
   return m_bd;
 }

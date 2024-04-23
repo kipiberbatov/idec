@@ -4,7 +4,7 @@
 #include "double.h"
 #include "mesh.h"
 
-static void mesh_bd_p_cols_total(
+static void mesh_boundary_p_cols_total(
   int * m_bd_p_cols_total, int m_bd_p_cols, const int * m_cfn_p_q_a1)
 {
   int i;
@@ -14,7 +14,7 @@ static void mesh_bd_p_cols_total(
     m_bd_p_cols_total[i + 1] = m_bd_p_cols_total[i] + m_cfn_p_q_a1[i];
 }
 
-matrix_sparse * mesh_file_scan_bd_p(FILE * in, const mesh * m, int p)
+matrix_sparse * mesh_file_scan_boundary_p(FILE * in, const mesh * m, int p)
 {
   int m_bd_p_nonzero_max;
   jagged1 m_cfn_p_q; /* q = p - 1 */
@@ -28,7 +28,7 @@ matrix_sparse * mesh_file_scan_bd_p(FILE * in, const mesh * m, int p)
   if (errno)
   {
     fprintf(stderr,
-            "mesh_file_scan_bd_p - cannot allocate memory for m->bd[%d]\n", p);
+            "mesh_file_scan_boundary_p - cannot allocate memory for m->bd[%d]\n", p);
     goto end;
   }
   
@@ -38,18 +38,18 @@ matrix_sparse * mesh_file_scan_bd_p(FILE * in, const mesh * m, int p)
   m_bd_p->cols_total = (int *) malloc(sizeof(int) * (m_bd_p->cols + 1));
   if (errno)
   {
-    fprintf(stderr, "mesh_file_scan_bd_p - cannot allocate memory for "
+    fprintf(stderr, "mesh_file_scan_boundary_p - cannot allocate memory for "
             "m->bd[%d]->cols_total\n", p);
     goto m_bd_p_free;
   }
-  mesh_bd_p_cols_total(m_bd_p->cols_total, m_bd_p->cols, m_cfn_p_q.a1);
+  mesh_boundary_p_cols_total(m_bd_p->cols_total, m_bd_p->cols, m_cfn_p_q.a1);
   
   m_bd_p_nonzero_max = m_bd_p->cols_total[m_bd_p->cols];
   
   m_bd_p->row_indices = (int *) malloc(sizeof(int) * m_bd_p_nonzero_max);
   if (errno)
   {
-    fprintf(stderr, "mesh_file_scan_bd_p - cannot allocate memory for "
+    fprintf(stderr, "mesh_file_scan_boundary_p - cannot allocate memory for "
             "m->bd[%d]->row_indices\n", p);
     goto m_bd_p_cols_total_free;
   }
@@ -58,7 +58,7 @@ matrix_sparse * mesh_file_scan_bd_p(FILE * in, const mesh * m, int p)
   m_bd_p->values = double_array_file_scan(in, m_bd_p_nonzero_max, "--raw");
   if (errno)
   {
-    fprintf(stderr, "mesh_file_scan_bd_p - cannot scan m->bd[%d]->values\n", p);
+    fprintf(stderr, "mesh_file_scan_boundary_p - cannot scan m->bd[%d]->values\n", p);
     goto m_bd_p_row_indices_free;
   }
   
@@ -75,7 +75,7 @@ end:
   return NULL;
 }
 
-matrix_sparse ** mesh_file_scan_bd(FILE * in, const mesh * m)
+matrix_sparse ** mesh_file_scan_boundary(FILE * in, const mesh * m)
 {
   int m_dim, p;
   matrix_sparse ** m_bd;
@@ -85,16 +85,16 @@ matrix_sparse ** mesh_file_scan_bd(FILE * in, const mesh * m)
   m_bd = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * m_dim);
   if (errno)
   {
-    fputs("mesh_file_scan_bd - cannot allocate memory for m->bd\n", stderr);
+    fputs("mesh_file_scan_boundary - cannot allocate memory for m->bd\n", stderr);
     return NULL;
   }
   
   for (p = 1; p <= m_dim; ++p)
   {
-    m_bd[p - 1] = mesh_file_scan_bd_p(in, m, p);
+    m_bd[p - 1] = mesh_file_scan_boundary_p(in, m, p);
     if (errno)
     {
-      fprintf(stderr, "mesh_file_scan_bd - cannot scan m->bd[%d]\n", p - 1);
+      fprintf(stderr, "mesh_file_scan_boundary - cannot scan m->bd[%d]\n", p - 1);
       matrix_sparse_array_free(m_bd, p - 1);
       return NULL;
     }

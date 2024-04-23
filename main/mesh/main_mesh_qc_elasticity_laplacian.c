@@ -24,15 +24,15 @@ int main()
   
   m = mesh_file_scan(stdin, "--raw");
   /* NULL pointer check */
-  m_bd = mesh_file_scan_bd(stdin, m);
+  m_bd = mesh_file_scan_boundary(stdin, m);
   /* NULL pointer check */
   m_cbd_0 = matrix_sparse_transpose(m_bd[0]);
   /* NULL pointer check */
   m_cbd_1 = matrix_sparse_transpose(m_bd[1]);
   /* NULL pointer check */
-  m_cbd_star_elasticity_1 = mesh_file_scan_bd_p(stdin, m, 1);
+  m_cbd_star_elasticity_1 = mesh_file_scan_boundary_p(stdin, m, 1);
   /* NULL pointer check */
-  m_cbd_star_elasticity_2 = mesh_file_scan_bd_p(stdin, m, 2);
+  m_cbd_star_elasticity_2 = mesh_file_scan_boundary_p(stdin, m, 2);
   /* NULL pointer check */
   mesh_qc_elasticity_laplacian_file_print_raw(
     stdout, m_cbd_0, m_cbd_1, m_cbd_star_elasticity_1, m_cbd_star_elasticity_2);

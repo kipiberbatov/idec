@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "mesh_qc.h"
 
-jagged1 * mesh_qc_bd_layer_0_hyperfaces(const mesh * m)
+jagged1 * mesh_qc_boundary_layer_0_hyperfaces(const mesh * m)
 {
   int ind, j, m_dim, m_bd_layer_0_hyperfaces_a0;
   int * m_bd_layer_0_hyperfaces_a1;
@@ -32,7 +32,7 @@ jagged1 * mesh_qc_bd_layer_0_hyperfaces(const mesh * m)
   return m_bd_layer_0_hyperfaces;
 }
 
-jagged1 * mesh_qc_bd_layer_0_cells(
+jagged1 * mesh_qc_boundary_layer_0_cells(
   const mesh * m, const jagged1 * m_bd_layer_0_hyperfaces)
 {
   int ind, j, m_dim, m_bd_layer_0_cells_duplicated_a0,
@@ -67,7 +67,7 @@ jagged1 * mesh_qc_bd_layer_0_cells(
   return m_bd_layer_0_cells;
 }
 
-jagged1 * mesh_qc_bd_layer_0_1_nodes(
+jagged1 * mesh_qc_boundary_layer_0_1_nodes(
   const mesh * m, const jagged1 * m_bd_layer_0_cells)
 {
   int i, i_loc, ind, j_loc, m_dim, m_bd_layer_0_cells_a0,

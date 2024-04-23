@@ -86,7 +86,7 @@ int main()
     return errno;
   }
   
-  m_bd = mesh_file_scan_bd(in, m);
+  m_bd = mesh_file_scan_boundary(in, m);
   if (errno)
   {
     perror("During calculation of mesh boundary operator");
@@ -95,7 +95,7 @@ int main()
   }
   mesh_free(m);
   
-  m_cbd = mesh_cbd(m_dim, m_bd);
+  m_cbd = mesh_coboundary(m_dim, m_bd);
   if (errno)
   {
     perror("During calculation of mesh coboundary operator");

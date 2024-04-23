@@ -64,7 +64,7 @@ int main(int argc, char * argv[])
     goto m_free;
   }
   
-  m_nodes_bd = mesh_bd_nodes(m);
+  m_nodes_bd = mesh_boundary_nodes(m);
   if (errno)
   {
     fputs("main - cannot calculate m_nodes_bd\n", stderr);

@@ -1,1 +1,1 @@
-#ifndef FORMAN_H#define FORMAN_H#include "mesh.h"mesh * forman(const mesh * m);matrix_sparse ** forman_bd(  const mesh * m, const mesh * m_forman, matrix_sparse ** m_bd);#endif /* FORMAN_H */
+#ifndef FORMAN_H#define FORMAN_H#include "mesh.h"mesh * forman(const mesh * m);matrix_sparse ** forman_boundary(  const mesh * m, const mesh * m_forman, matrix_sparse ** m_bd);#endif /* FORMAN_H */

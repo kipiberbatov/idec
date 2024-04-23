@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
   }
   
   out_format = argv[3];
-  m_bd_nodes = mesh_bd_nodes(m);
+  m_bd_nodes = mesh_boundary_nodes(m);
   if (errno)
   {
     fputs("main - cannot calculate m_bd_nodes\n", stderr);

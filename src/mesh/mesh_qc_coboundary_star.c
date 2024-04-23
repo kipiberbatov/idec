@@ -3,7 +3,7 @@
 #include "mesh_qc.h"
 
 /* q = p - 1 */
-static double * mesh_qc_cbd_star_p_x(
+static double * mesh_qc_coboundary_star_p_x(
   const mesh_qc * m, int p, const matrix_sparse * m_bd_p,
   const double * m_inner_p, const double * m_inner_q)
 {
@@ -36,7 +36,7 @@ static double * mesh_qc_cbd_star_p_x(
 }
 
 /* q = p - 1 */
-matrix_sparse * mesh_qc_cbd_star_p(
+matrix_sparse * mesh_qc_coboundary_star_p(
   const mesh_qc * m, int p, const matrix_sparse * m_bd_p,
   const double * m_inner_p, const double * m_inner_q)
 {
@@ -50,13 +50,13 @@ matrix_sparse * mesh_qc_cbd_star_p(
   m_cbd_star_p->cols_total = m_bd_p->cols_total;
   m_cbd_star_p->row_indices = m_bd_p->row_indices;
   m_cbd_star_p->values = 
-    mesh_qc_cbd_star_p_x(m, p, m_bd_p, m_inner_p, m_inner_q);
+    mesh_qc_coboundary_star_p_x(m, p, m_bd_p, m_inner_p, m_inner_q);
   /* NULL pointer check */
   //m_cbd_star_p->nz = m_bd_p->nz;
   return m_cbd_star_p;
 }
 
-matrix_sparse ** mesh_qc_cbd_star(
+matrix_sparse ** mesh_qc_coboundary_star(
   const mesh_qc * m, matrix_sparse ** m_bd, double ** m_inner)
 {
   int m_dim, p;
@@ -68,7 +68,7 @@ matrix_sparse ** mesh_qc_cbd_star(
   for (p = 1; p <= m_dim; ++p)
   {
     m_cbd_star[p - 1] =
-      mesh_qc_cbd_star_p(m, p, m_bd[p - 1], m_inner[p], m_inner[p - 1]);
+      mesh_qc_coboundary_star_p(m, p, m_bd[p - 1], m_inner[p], m_inner[p - 1]);
     /* NULL pointer check */
   }
   return m_cbd_star;

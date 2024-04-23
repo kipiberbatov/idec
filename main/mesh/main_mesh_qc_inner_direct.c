@@ -58,7 +58,7 @@ int main()
     goto m_free;
   }
   
-  m_bd = mesh_file_scan_bd(in, m);
+  m_bd = mesh_file_scan_boundary(in, m);
   if (errno)
   {
     fputs("main - cannot scan m->bd\n", stderr);

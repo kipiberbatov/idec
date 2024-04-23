@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "mesh.h"
 
-static void mesh_cbd_file_print(
+static void mesh_coboundary_file_print(
   FILE * out, int m_dim, matrix_sparse ** m_bd, char * format)
 {
   int p;
@@ -44,10 +44,10 @@ int main(int argc, char * argv[])
   m = mesh_file_scan(in, "--raw");
   /* NULL pointer check */
   m_dim = m->dim;
-  m_bd = mesh_file_scan_bd(in, m);
+  m_bd = mesh_file_scan_boundary(in, m);
   /* NULL pointer check */
   format = argv[1];
-  mesh_cbd_file_print(out, m_dim, m_bd, format);
+  mesh_coboundary_file_print(out, m_dim, m_bd, format);
   /* NULL pointer check */
   matrix_sparse_array_free(m_bd, m_dim);
   mesh_free(m);

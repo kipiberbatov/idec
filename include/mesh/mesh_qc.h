@@ -48,13 +48,13 @@ double * mesh_qc_inner_direct_p(
 );
 
 double ** mesh_qc_inner_direct(const mesh_qc * m);
-/***************************** mesh_qc_cbd_star *******************************/
+/***************************** mesh_qc_coboundary_star *******************************/
 /* q = p - 1 */
-matrix_sparse * mesh_qc_cbd_star_p(
+matrix_sparse * mesh_qc_coboundary_star_p(
   const mesh_qc * m, int p, const matrix_sparse * m_bd_p,
   const double * m_inner_p, const double * m_inner_q);
 
-matrix_sparse ** mesh_qc_cbd_star(
+matrix_sparse ** mesh_qc_coboundary_star(
   const mesh_qc * m, matrix_sparse ** m_bd, double ** m_inner);
 
 /******************************* mesh_qc_hodge ********************************/
@@ -78,21 +78,21 @@ matrix_sparse ** mesh_qc_hodge_codifferential(
   int m_dim, matrix_sparse ** m_cbd, matrix_sparse ** m_hodge);
 
 /***************************** mesh_qc_elasticity *****************************/
-matrix_sparse * mesh_qc_elasticity_cbd_star_1(
+matrix_sparse * mesh_qc_elasticity_coboundary_star_1(
   const mesh_qc * m, const matrix_sparse * m_bd_1, const double * m_inner_1,
   const double * m_inner_0, double lambda, double mu);
 
-matrix_sparse * mesh_qc_elasticity_cbd_star_2(
+matrix_sparse * mesh_qc_elasticity_coboundary_star_2(
   const mesh_qc * m, const matrix_sparse * m_bd_2,
   const double * m_inner_2, const double * m_inner_1, double mu);
 
-/****************************** mesh_qc_bd_layer ******************************/
-jagged1 * mesh_qc_bd_layer_0_hyperfaces(const mesh * m);
+/****************************** mesh_qc_boundary_layer ******************************/
+jagged1 * mesh_qc_boundary_layer_0_hyperfaces(const mesh * m);
 
-jagged1 * mesh_qc_bd_layer_0_cells(
+jagged1 * mesh_qc_boundary_layer_0_cells(
   const mesh * m, const jagged1 * m_bd_layer_0_hyperfaces);
 
-jagged1 * mesh_qc_bd_layer_0_1_nodes(
+jagged1 * mesh_qc_boundary_layer_0_1_nodes(
   const mesh * m, const jagged1 * m_bd_layer_0_cells);
   
 #endif /* MESH_QC_H */

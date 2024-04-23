@@ -1,5 +1,5 @@
-#ifndef MESH_H
-#define MESH_H
+#ifndef _mesh_h
+#define _mesh_h
 
 #include "matrix_sparse.h"
 #include "jagged.h"
@@ -28,16 +28,16 @@ typedef struct mesh
 /********************************* mesh_free **********************************/
 void mesh_free(mesh * m);
 
-/********************************* mesh_file_scan *********************************/
+/******************************* mesh_file_scan *******************************/
 mesh * mesh_file_scan(FILE * in, const char * format);
 
 mesh * mesh_file_scan_by_name(const char * name, const char * format);
 
-matrix_sparse * mesh_file_scan_bd_p(FILE * in, const mesh * m, int p);
+matrix_sparse * mesh_file_scan_boundary_p(FILE * in, const mesh * m, int p);
 
-matrix_sparse ** mesh_file_scan_bd(FILE * in, const mesh * m);
+matrix_sparse ** mesh_file_scan_boundary(FILE * in, const mesh * m);
 
-/******************************** mesh_file_print *********************************/
+/****************************** mesh_file_print *******************************/
 void mesh_file_print(FILE * out, const mesh * m, const char * format);
 
 /******************************* mesh_cf_part *********************************/
@@ -59,27 +59,27 @@ void mesh_fc_part3(jagged1 * m_fc_q_p_j, const mesh * m, int q, int p, int j);
 void mesh_fcn_part2(jagged1 * m_fcn_q_p, const mesh * m, int q, int p);
 int mesh_fcn_part3(const mesh * m, int q, int p, int j);
 
-/**************************** mesh_bd_hyperfaces ******************************/
-jagged1 * mesh_bd_hyperfaces(const mesh * m);
-jagged1 * mesh_bd_cells(const mesh * m, const jagged1 * m_bd_hyperfaces);
-jagged1 * mesh_almost_bd_cells(
+/**************************** mesh_boundary_cells *****************************/
+/* jagged1 * mesh_boundary_hyperfaces(const mesh * m); */
+jagged1 * mesh_boundary_cells(const mesh * m, const jagged1 * m_bd_hyperfaces);
+jagged1 * mesh_almost_boundary_cells(
   const mesh * m, const jagged1 * m_bd_cells, int p);
 
-/********************************** mesh_bd ***********************************/
-int mesh_bd_nzmax(const mesh * m, int p);
-int * mesh_bd_p(const mesh * m, int p);
-int * mesh_bd_i(const mesh * m, int p);
-matrix_sparse * mesh_bd_single(const mesh * m, int p);
-matrix_sparse ** mesh_bd(const mesh * m);
+/******************************* mesh_boundary ********************************/
+int mesh_boundary_nzmax(const mesh * m, int p);
+int * mesh_boundary_p(const mesh * m, int p);
+int * mesh_boundary_i(const mesh * m, int p);
+matrix_sparse * mesh_boundary_single(const mesh * m, int p);
+matrix_sparse ** mesh_boundary(const mesh * m);
 
-void mesh_bd_check(
+void mesh_boundary_check(
   FILE * out, int m_dim, matrix_sparse ** m_bd, const char * name);
 
-jagged1 * mesh_bd_nodes(const mesh * m);
+jagged1 * mesh_boundary_nodes(const mesh * m);
 
-/********************************* mesh_cbd ***********************************/
-matrix_sparse * mesh_cbd_p(matrix_sparse * m_bd_p);
-matrix_sparse ** mesh_cbd(int m_dim, matrix_sparse ** m_bd);
+/********************************* mesh_coboundary ***********************************/
+matrix_sparse * mesh_coboundary_p(matrix_sparse * m_bd_p);
+matrix_sparse ** mesh_coboundary(int m_dim, matrix_sparse ** m_bd);
 
 /******************************** mesh_measure ********************************/
 double * mesh_measure(const mesh * m);
@@ -130,4 +130,4 @@ $normal holds coordinates of the exterior to that node.*/
 // void mesh_point_normal(double * normal, const mesh * m, int i,
 //   const jagged1 * m_nodes_bd);
 
-#endif /* MESH_H */
+#endif /* _mesh_h */
