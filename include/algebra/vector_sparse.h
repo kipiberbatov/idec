@@ -1,16 +1,7 @@
-#ifndef VEC_SPARSE_H
-#define VEC_SPARSE_H
+#ifndef _vector_sparse_h
+#define _vector_sparse_h
 
 #include <stdio.h>
-//#include "cs.h"
-
-// typedef struct vector_sparse
-// {
-//   int nzmax;
-//   int n;
-//   int * p;
-//   double * x;
-// } vector_sparse;
 
 typedef struct vector_sparse
 {
@@ -61,7 +52,7 @@ void vector_sparse_array_file_print(
 void vector_sparse_array2_free(vector_sparse *** arr, int a0, const int * a1);
 
 vector_sparse *** vector_sparse_array2_file_scan(
-  FILE * in, int a0, int * a1, const char * format);
+  FILE * in, int a0, const int * a1, const char * format);
 
 vector_sparse *** vector_sparse_array2_file_scan_by_name(
   const char * name, int a0, const int * a1, const char * format);
@@ -87,4 +78,4 @@ void vector_sparse_array2_file_print(
 //
 // vector_sparse * vector_sparse_matrix_times_vector(const cs * a, const vector_sparse * b);
 
-#endif /* VEC_SPARSE_H */
+#endif /* _vector_sparse_h */

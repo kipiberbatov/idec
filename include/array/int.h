@@ -1,5 +1,5 @@
-#ifndef INT_H
-#define INT_H
+#ifndef _int_h
+#define _int_h
 
 #include <stdio.h>
 
@@ -59,4 +59,4 @@ void int_array_4_values_set(int * a, int x0, int x1, int x2, int x3);
 /********************************* int_array2 *********************************/
 void int_array2_free(int ** arr, int a0);
 
-#endif /* INT_H */
+#endif /* _int_h */

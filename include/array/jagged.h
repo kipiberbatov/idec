@@ -1,5 +1,5 @@
-#ifndef JAGGED_H
-#define JAGGED_H
+#ifndef _jagged_h
+#define _jagged_h
 
 #include <stdio.h>
 
@@ -110,4 +110,4 @@ void jagged4_part2(jagged2 * res, const jagged4 * arr, int i1, int i2);
 void jagged4_part3(jagged1 * res, const jagged4 * arr, int i1, int i2, int i3);
 int jagged4_part4(const jagged4 * arr, int i1, int i2, int i3, int i4);
 
-#endif /* JAGGED_H */
+#endif /* _jagged_h */

@@ -4,7 +4,7 @@
 #include "vector_sparse.h"
 
 vector_sparse *** vector_sparse_array2_file_scan(
-  FILE * in, int a0, int * a1, const char * format)
+  FILE * in, int a0, const int * a1, const char * format)
 {
   int i;
   vector_sparse *** arr;

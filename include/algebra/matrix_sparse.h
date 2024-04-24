@@ -1,5 +1,5 @@
-#ifndef MATRIX_SPARSE_H
-#define MATRIX_SPARSE_H
+#ifndef _matrix_sparse_h
+#define _matrix_sparse_h
 
 #include <stdio.h>
 #include "jagged.h"
@@ -256,4 +256,4 @@ void matrix_sparse_array_free(matrix_sparse ** a, int n);
 /* deallocate an array of n matrices sharing a common stencil */
 void matrix_sparse_array_free_shared(matrix_sparse ** a, int n);
 
-#endif /* MATRIX_SPARSE_H */
+#endif /* _matrix_sparse_h */

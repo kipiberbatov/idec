@@ -4,7 +4,7 @@
 double * double_matrix_file_scan_by_name(
   const char * name, int m, int n, const char * format)
 {
-  double *a;
+  double * a;
   
   a = double_array_file_scan_by_name(name, m * n, format);
   if (errno)

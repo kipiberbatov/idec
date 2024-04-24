@@ -1,5 +1,5 @@
-#ifndef ARRAY_INDEXED_H
-#define ARRAY_INDEXED_H
+#ifndef _array_indexed_h
+#define _array_indexed_h
 
 typedef struct array_indexed
 {
@@ -9,4 +9,4 @@ typedef struct array_indexed
 
 void array_indexed_merge_sort(array_indexed * a, int n);
 
-#endif /* ARRAY_INDEXED_H */
+#endif /* _array_indexed_h */

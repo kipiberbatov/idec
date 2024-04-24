@@ -1,30 +1,34 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "vector_sparse.h"
 
 vector_sparse ** vector_sparse_array_file_scan_by_name(
   const char * name, int a0, const char * format)
 {
-  int i;
-  vector_sparse ** a;
-  
-  a = (vector_sparse **) malloc(sizeof(vector_sparse *) * a0);
+  FILE * in;
+  vector_sparse ** a = NULL;
+
+  in = fopen(name, "r");
   if (errno)
   {
-    perror("vector_sparse_array_file_scan_by_name - cannot allocate memory for a");
-    return NULL;
+    fprintf(stderr,
+      "vector_sparse_array_file_scan_by_name: cannot open file %s: %s\n",
+      name, strerror(errno));
+    goto end;
   }
-  for (i = 0; i < a0; ++i)
+  
+  a = vector_sparse_array_file_scan(in, a0, format);
+  if (errno)
   {
-    a[i] = vector_sparse_file_scan_by_name(name, format);
-    if (errno)
-    {
-      fprintf(stderr, "vector_sparse_array_file_scan_by_name - cannot scan ");
-      fprintf(stderr, "a[%d]: %s\n", i, strerror(errno));
-      vector_sparse_array_free(a, i);
-      return NULL;
-    }
+    fprintf(stderr,
+      "vector_sparse_array_file_scan_by_name: cannot scan file %s", name);
+    goto in_close;
   }
+
+in_close:
+  fclose(in);
+end:
   return a;
 }

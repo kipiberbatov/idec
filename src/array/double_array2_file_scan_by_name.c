@@ -6,37 +6,27 @@
 double ** double_array2_file_scan_by_name(
   const char * name, int a0, const int * a1, const char * format)
 {
-  int i;
-  double ** a = NULL;
   FILE * in;
+  double ** a = NULL;
 
   in = fopen(name, "r");
   if (errno)
   {
-    fprintf(stderr, "double_array2_file_scan_by_name: cannot open file %s: %s\n",
-            name, strerror(errno));
+    fprintf(stderr,
+      "double_array2_file_scan_by_name: cannot open file %s: %s\n",
+      name, strerror(errno));
     goto end;
   }
   
-  a = (double **) malloc(sizeof(double *) * a0);
+  a = double_array2_file_scan(in, a0, a1, format);
   if (errno)
   {
-    fputs("double_array2_file_scan_by_name: cannot allocate memory for a\n",
-          stderr);
-    return NULL;
+    fprintf(stderr,
+      "double_array2_file_scan_by_name: cannot scan file %s", name);
+    goto in_close;
   }
-  for (i = 0; i < a0; ++i)
-  {
-    a[i] = double_array_file_scan(in, a1[i], format);
-    if (errno)
-    {
-      fprintf(stderr, "double_array2_file_scan_by_name - cannot scan ");
-      fprintf(stderr, "a[%d]: %s\n", i, strerror(errno));
-      double_array2_free(a, i);
-      fclose(in);
-      return NULL;
-    }
-  }
+
+in_close:
   fclose(in);
 end:
   return a;

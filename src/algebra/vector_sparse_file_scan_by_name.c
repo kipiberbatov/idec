@@ -16,6 +16,7 @@ vector_sparse * vector_sparse_file_scan_by_name(
             name, strerror(errno));
     goto end;
   }
+
   a = vector_sparse_file_scan(in, format);
   if (errno)
   {
@@ -23,6 +24,7 @@ vector_sparse * vector_sparse_file_scan_by_name(
     fprintf(stderr, "in format %s: %s\n", format, strerror(errno));
     goto in_close;
   }
+
 in_close:
   fclose(in);
 end:

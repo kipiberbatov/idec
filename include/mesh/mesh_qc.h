@@ -1,5 +1,5 @@
-#ifndef MESH_QC_H
-#define MESH_QC_H
+#ifndef _mesh_qc_h
+#define _mesh_qc_h
 
 #include "mesh.h"
 #include "quasi_cube.h"
@@ -95,4 +95,4 @@ jagged1 * mesh_qc_boundary_layer_0_cells(
 jagged1 * mesh_qc_boundary_layer_0_1_nodes(
   const mesh * m, const jagged1 * m_bd_layer_0_cells);
   
-#endif /* MESH_QC_H */
+#endif /* _mesh_qc_h */

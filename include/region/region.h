@@ -3,7 +3,6 @@
 
 typedef struct region region;
 
-/********************************* geometry ***********************************/
 double region_measure(const region * r);
 
 #endif /* _region_h */
