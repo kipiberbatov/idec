@@ -12,7 +12,7 @@
 
 /* internal headers */
 #include "double.h"
-#include "image.h"
+#include "frame.h"
 #include "int.h"
 #include "mesh.h"
 #include "mesh_2d_colored.h"
@@ -29,6 +29,9 @@ int main(int argc, char ** argv)
   mesh * m;
   mesh_2d_colored_one_cochain_sequence a;
   char * out_filename;
+  margin window_margin;
+  frame_mesh_data data;
+  frame window_frame;
   
   errno = 0;
   
@@ -91,7 +94,19 @@ int main(int argc, char ** argv)
   
   width = 500;
   height = 500;
-  image_new_coordinates(new_coordinates, m, width, height);
+  window_margin.left = 50;
+  window_margin.right = 50;
+  window_margin.top = 50;
+  window_margin.bottom = 50;
+  data.coordinates = new_coordinates;
+  frame_internal_info_for_set_of_points(
+    &window_frame,
+    &data,
+    m->cn[0],
+    m->coord,
+    width,
+    height,
+    &window_margin);
   
   total_colors = 1000;
   
@@ -102,7 +117,7 @@ int main(int argc, char ** argv)
   
   a.total_colors = total_colors;
   a.new_coordinates = new_coordinates;
-  a.line_width = 3;
+  a.line_width = data.line_width;
   a.min_value = double_array_min(n * m->cn[1], u);
   a.max_value = double_array_max(n * m->cn[1], u);
   a.paint = paint_rgb;
