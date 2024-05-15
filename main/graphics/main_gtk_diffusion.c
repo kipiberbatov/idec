@@ -6,7 +6,7 @@
 
 #include "double.h"
 #include "diffusion.h"
-#include "image.h"
+#include "frame.h"
 #include "int.h"
 #include "mesh.h"
 #include "paint_rgb.h"
@@ -33,13 +33,16 @@ int main(int argc, char ** argv)
   char * m_filename, * u_filename;
   int i, n, total_colors;
   unsigned int speed;
-  double height, point_size, width;
+  double height, width;
   double * new_coordinates, * u;
   mesh * m;
   diffusion * a;
   const char title[80] = "Heat flow in 2D";
   FILE * in;
   int length;
+  margin window_margin;
+  frame_mesh_data data;
+  frame window_frame;
   
   errno = 0;
   
@@ -124,14 +127,25 @@ int main(int argc, char ** argv)
   
   width = 500;
   height = 500;
-  image_new_coordinates(new_coordinates, m, width, height);
-  point_size = image_point_size(width, height);
+  window_margin.left = 50;
+  window_margin.right = 50;
+  window_margin.top = 50;
+  window_margin.bottom = 50;
+  data.coordinates = new_coordinates;
+  frame_internal_info_for_set_of_points(
+    &window_frame,
+    &data,
+    m->cn[0],
+    m->coord,
+    width,
+    height,
+    &window_margin);
   
   total_colors = 10000;
   
   a = (diffusion *) alloca(diffusion_size());
   diffusion_set(a,
-    i, n, m, new_coordinates, point_size, u, total_colors, paint_rgb);
+    i, n, m, new_coordinates, data.point_size, u, total_colors, paint_rgb);
   
   speed = 100;
   

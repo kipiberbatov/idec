@@ -69,6 +69,8 @@ int main(int argc, char ** argv)
 
   gtk_main();
 
+  errno = 0;
+
   graphics_log(stdout, argc, argv);
   i = fill_get_index_void((void *) a);
   printf("Iterations from i = 0 to i = %d were executed\n", i);

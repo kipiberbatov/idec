@@ -1,5 +1,5 @@
 .PHONY: demo_mesh
-demo_mesh: bin_mesh demo_mesh_brick_regular | demo/mesh
+demo_mesh: bin_mesh demo_mesh_brick_regular demo_mesh_square | demo/mesh
 
 demo/mesh: | demo
 	mkdir -p $@
@@ -1141,6 +1141,79 @@ demo/mesh/mesh_triangle_and_square_forman_hodge_corrected.txt:\
 	  demo/mesh/mesh_triangle_and_square_forman_hodge_coeff.txt | demo/mesh
 	$^ > $@
 
+DEMO_MESH_SQUARE := \
+  demo/mesh/mesh_square_2.txt\
+  demo/mesh/mesh_square_4.txt\
+  demo/mesh/mesh_square_8.txt\
+  demo/mesh/mesh_square_8_cbd.txt\
+  demo/mesh/mesh_square_8_vol.txt\
+  demo/mesh/mesh_square_8_inner.txt\
+  demo/mesh/mesh_square_8_cbd_star.txt\
+  demo/mesh/mesh_square_8_diffusion_continuous_p5_temperature.txt\
+
+.PHONY: demo_mesh_square
+demo_mesh_square: $(DEMO_MESH_SQUARE) | demo/mesh
+
+# demo/mesh/mesh_square_vol.txt:\
+# 	  bin/mesh_qc_vol$(.EXE)\
+# 	  demo/mesh/mesh_square.txt | demo/mesh
+# 	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_square_2.txt:\
+	  bin/forman_boundary$(.EXE)\
+	  manual/mesh/mesh_square.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_square_4.txt:\
+	  bin/forman_boundary$(.EXE)\
+	  demo/mesh/mesh_square_2.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_square_8.txt:\
+	  bin/forman_boundary$(.EXE)\
+	  demo/mesh/mesh_square_4.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_square_8_cbd.txt:\
+	  bin/mesh_coboundary$(.EXE)\
+	  demo/mesh/mesh_square_8.txt | demo/mesh
+	$< --raw < $(word 2, $^) > $@
+
+demo/mesh/mesh_square_8_vol.txt:\
+	  bin/mesh_qc_vol$(.EXE)\
+	  demo/mesh/mesh_square_8.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_square_8_inner.txt:\
+	  bin/mesh_qc_inner_direct$(.EXE)\
+	  demo/mesh/mesh_square_8.txt\
+	  demo/mesh/mesh_square_8_vol.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_square_8_cbd_star.txt:\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
+	  demo/mesh/mesh_square_8.txt\
+	  demo/mesh/mesh_square_8_inner.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_square_8_diffusion_continuous_p5_temperature.txt:\
+	  bin/diffusion_continuous$(.EXE)\
+	  demo/mesh/mesh_square_8.txt\
+	  demo/mesh/mesh_square_8_cbd.txt\
+	  demo/mesh/mesh_square_8_cbd_star.txt\
+	  build/diffusion_continuous_p5.o | demo/mesh
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_continuous_p5 0.001 4000 > $@
+
+# demo/mesh/mesh_square_8_diffusion_continuous_p5_temperature.txt:\
+# 	  bin/diffusion_continuous_to_steady_state$(.EXE)\
+# 	  demo/mesh/mesh_square_8.txt\
+# 	  demo/mesh/mesh_square_8_cbd.txt\
+# 	  demo/mesh/mesh_square_8_cbd_star.txt\
+# 	  build/diffusion_continuous_p5.o | demo/mesh
+# 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+# 	  diffusion_continuous_p5 0.001 > $@
+
 # d = 3
 DEMO_MESH_BRICK_REGULAR_3D :=\
   demo_mesh_brick_regular_3d_1\
@@ -1521,6 +1594,7 @@ DEMO_MESH_BRICK_REGULAR_ALL :=\
   $(DEMO_MESH_BRICK_REGULAR_2)\
   $(DEMO_MESH_TWO_TRIANGLES)\
   $(DEMO_MESH_TRIANGLE_AND_SQUARE)\
+  $(DEMO_MESH_SQUARE)\
   $(DEMO_MESH_BRICK_REGULAR_3)\
   $(DEMO_MESH_BRICK_REGULAR_4)\
 

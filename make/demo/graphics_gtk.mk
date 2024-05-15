@@ -6,6 +6,7 @@ _demo_graphics_gtk :=\
   demo/graphics/log/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature_gtk.log\
   demo/graphics/log/mesh_brick_2d_10_forman_diffusion_continuous_p4_temperature_gtk.log\
   demo/graphics/log/mesh_brick_2d_10_forman_diffusion_continuous_p4_flux_gtk.log\
+  demo/graphics/log/mesh_square_8_diffusion_continuous_p5_temperature_gtk.log\
 
 .PHONY: demo_graphics_gtk
 demo_graphics_gtk: bin_all $(_demo_graphics_gtk) | demo/graphics/log
@@ -58,6 +59,20 @@ demo/graphics/log/mesh_brick_2d_10_forman_diffusion_continuous_p4_flux_gtk.log:\
 	  demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_flux.txt\
 	  | demo/graphics/log
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) > $@
+
+demo/graphics/log/mesh_square_8_diffusion_continuous_p5_temperature_gtk.log:\
+	  bin/gtk_mesh_2d_colored_zero_cochain_sequence\
+	  demo/mesh/mesh_square_8.txt\
+	  demo/mesh/mesh_square_8_diffusion_continuous_p5_temperature.txt\
+	  | demo/graphics/log
+	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) > $@
+
+# demo/graphics/log/mesh_square_8_diffusion_continuous_p5_temperature_gtk.log:\
+# 	  bin/gtk_diffusion\
+# 	  demo/mesh/mesh_square_8.txt\
+# 	  demo/mesh/mesh_square_8_diffusion_continuous_p5_temperature.txt\
+# 	  | demo/graphics/log
+# 	$< --raw $(word 2, $^) $(word 3, $^) > $@
 
 .PHONY: demo_graphics_gtk_clean
 demo_graphics_gtk_clean:
