@@ -14,22 +14,22 @@ demo/array: | demo
 
 demo/array/int_array_0_sorted.txt:\
 	  bin/array_indexed_merge_sort$(.EXE)\
-	  manual/array/int_array_0.txt | demo/array
+	  data/array/int_array_0.txt | demo/array
 	$< < $(word 2, $^) > $@
 
 demo/array/int_array_0_curly.txt:\
 	  bin/jagged1$(.EXE)\
-	  manual/array/int_array_0.txt | demo/array
+	  data/array/int_array_0.txt | demo/array
 	$< < $(word 2, $^) > $@
 
 demo/array/jagged4_0_curly.txt:\
 	  bin/jagged4$(.EXE)\
-	  manual/array/jagged4_0.txt | demo/array
+	  data/array/jagged4_0.txt | demo/array
 	$< < $(word 2, $^) > $@
 
 demo/array/jagged4_1_curly.txt:\
 	  bin/jagged4$(.EXE)\
-	  manual/array/jagged4_1.txt | demo/array
+	  data/array/jagged4_1.txt | demo/array
 	$< < $(word 2, $^) > $@
 
 demo/array/cartesian_product_3_2_3.txt:\

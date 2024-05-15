@@ -921,12 +921,12 @@ demo_mesh_two_triangles: $(DEMO_MESH_TWO_TRIANGLES) | demo/mesh
 
 demo/mesh/mesh_two_triangles_vol.txt:\
 	  bin/mesh_measure$(.EXE)\
-	  manual/mesh/mesh_two_triangles.txt | demo/mesh
+	  data/mesh/mesh_two_triangles.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_two_triangles_forman.txt:\
 	  bin/forman_boundary$(.EXE)\
-	  manual/mesh/mesh_two_triangles.txt | demo/mesh
+	  data/mesh/mesh_two_triangles.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_two_triangles_forman_vol.txt:\
@@ -1054,12 +1054,12 @@ demo_mesh_triangle_and_square: $(DEMO_MESH_TRIANGLE_AND_SQUARE) | demo/mesh
 
 demo/mesh/mesh_triangle_and_square_vol.txt:\
 	  bin/mesh_measure$(.EXE)\
-	  manual/mesh/mesh_triangle_and_square.txt | demo/mesh
+	  data/mesh/mesh_triangle_and_square.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_triangle_and_square_forman.txt:\
 	  bin/forman_boundary$(.EXE)\
-	  manual/mesh/mesh_triangle_and_square.txt | demo/mesh
+	  data/mesh/mesh_triangle_and_square.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_triangle_and_square_forman_vol.txt:\
@@ -1161,7 +1161,7 @@ demo_mesh_square: $(DEMO_MESH_SQUARE) | demo/mesh
 
 demo/mesh/mesh_square_2.txt:\
 	  bin/forman_boundary$(.EXE)\
-	  manual/mesh/mesh_square.txt | demo/mesh
+	  data/mesh/mesh_square.txt | demo/mesh
 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_square_4.txt:\

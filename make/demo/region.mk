@@ -10,12 +10,12 @@ demo/region: | demo
 
 demo/region/simplex_2d_0_measure_and_centroid.txt:\
 	  bin/simplex$(.EXE)\
-	  manual/region/simplex_2d_0.txt | demo/region
+	  data/region/simplex_2d_0.txt | demo/region
 	$< < $(word 2, $^) > $@
 
 demo/region/quasi_cube_2d_0_measure_and_centroid.txt:\
 	  bin/quasi_cube$(.EXE)\
-	  manual/region/quasi_cube_2d_0.txt | demo/region
+	  data/region/quasi_cube_2d_0.txt | demo/region
 	$< < $(word 2, $^) > $@
 
 .PHONY: demo_region_clean
