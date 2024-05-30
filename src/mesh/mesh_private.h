@@ -19,6 +19,7 @@ void mesh_cell_coord(
 
 /********************************* mesh_file_scan *********************************/
 mesh * mesh_file_scan_raw(FILE * in);
+mesh * mesh_file_scan_tess(FILE * in);
 
 /******************************** mesh_file_print *********************************/
 void mesh_file_print_raw(FILE * out, const mesh * a);

@@ -13,7 +13,6 @@ void mesh_file_scan_tess_get_id(int * c, FILE * in, int * error, int cn_d)
     *error = errno;
     if (*error)
     {
-      *error = 1;
       fprintf(stderr, "Cannot scan %d-th cell's id\n", i + 1);
       return;
     }

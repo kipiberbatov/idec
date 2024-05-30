@@ -8,6 +8,8 @@ mesh * mesh_file_scan(FILE * in, const char * format)
 
   if (!strcmp(format, "--raw"))
     m = mesh_file_scan_raw(in);
+  else if (!strcmp(format, "--tess"))
+    m = mesh_file_scan_tess(in);
   else
   {
     errno = EINVAL;
