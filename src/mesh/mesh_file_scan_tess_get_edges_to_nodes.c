@@ -23,7 +23,7 @@ void mesh_file_scan_tess_get_edges_to_nodes(int * edges_to_nodes, FILE * in,
       fprintf(stderr, "Invalid edge index\n");
       return;
     }
-    for (j = 0; j < 1; ++j)
+    for (j = 0; j <= 1; ++j)
     {
       edges_to_nodes[i * 2 + j] = int_file_scan(in);
       *error = errno;
@@ -44,7 +44,9 @@ void mesh_file_scan_tess_get_edges_to_nodes(int * edges_to_nodes, FILE * in,
     if (x != 0)
     {
       *error = 1;
-      fprintf(stderr, "Last values must be zeroes\n");
+      fprintf(stderr, "mesh_file_scan_tess_get_edges_to_nodes: "
+        "i = %d, last values must be zeroes\n", i);
+      fprintf(stderr, "Instead, we have %d\n", x);
       return;
     }
   }

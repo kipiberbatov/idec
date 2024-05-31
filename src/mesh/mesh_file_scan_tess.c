@@ -1,4 +1,6 @@
+#include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "int.h"
 #include "mesh.h"
@@ -10,16 +12,67 @@ static mesh * mesh_file_scan_tess_private(int * error, FILE * in);
 mesh * mesh_file_scan_tess(FILE * in)
 {
   int error = 0;
-  return mesh_file_scan_tess_private(&error, in);
+  mesh * m;
+
+  m = mesh_file_scan_tess_private(&error, in);
+  errno = error;
+  return m;
+}
+
+static void mesh_file_scan_tess_set_cf_a4(
+  int * cf_a4,
+  int cn_1,
+  int cn_2,
+  int faces_total_edges,
+  const int * edges_to_nodes,
+  const int * faces_number_of_sides,
+  const int * faces_to_subfaces)
+{
+  int i, index, index_local, j, sides;
+
+  memcpy(cf_a4, edges_to_nodes, sizeof(int) * 2 * cn_1);
+  index = 2 * cn_1;
+  index_local = 0;
+  for (i = 0; i < cn_2; ++i)
+  {
+    sides = faces_number_of_sides[i];
+    for (j = 0; j < sides; ++j)
+    {
+      cf_a4[index + j] = faces_to_subfaces[index_local + j];
+      cf_a4[faces_total_edges + index + j]
+      = faces_to_subfaces[index_local + sides + j];
+    }
+    index += sides;
+    index_local += 2 * sides;
+  }
+}
+
+static void mesh_file_scan_tess_set_cf_a3(int * cf_a3, int cn_1, int cn_2,
+  const int * faces_number_of_sides)
+{
+  int i, index, sides;
+
+  for (i = 0; i < cn_1; ++i)
+    cf_a3[i] = 2;
+  index = cn_1;
+  for (i = 0; i < cn_2; ++i)
+  {
+    sides = faces_number_of_sides[i];
+    cf_a3[index] = sides;
+    cf_a3[index + cn_2] = sides;
+    ++index;
+  }
 }
 
 mesh * mesh_file_scan_tess_private(int * error, FILE * in)
 {
   int d, faces_total_edges, position;
+  int cf_a2_size, cf_a3_size, cf_a4_size;
   int * c = NULL, * cn = NULL, * edges_to_nodes = NULL,
       * faces_number_of_sides = NULL, * faces_to_subfaces = NULL;
   double * coordinates = NULL;
   mesh * m = NULL;
+  jagged4 * cf = NULL;
 
   mesh_file_scan_tess_check_preamble(in, error);
   if (*error)
@@ -89,10 +142,6 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   if (*error)
     goto clean_on_failure;
   
-  
-  // /* ignore orientation type */
-  // string_file_scan(in, buffer, sizeof(buffer));
-  
   /* ignore orientation values */
   mesh_file_scan_tess_skip_ori(in, error, cn[d]);
   if (*error)
@@ -146,8 +195,8 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   if (*error)
     goto clean_on_failure;
   
-  // if (d == 1)
-  //   do_final_stuff();
+  /* todo: if (d == 1) */
+  
   /* check for "\n **face\n " */
   mesh_file_scan_tess_check_text_for_face(in, error);
   if (*error)
@@ -166,6 +215,7 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
     fputs("Unable to allocate memory for faces_number_of_sides\n", stderr);
     goto clean_on_failure;
   }
+
   position = ftell(in);
   mesh_file_scan_tess_get_faces_number_of_sides(faces_number_of_sides,
     in, error, cn[2]);
@@ -185,46 +235,68 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
 
   mesh_file_scan_tess_get_faces_to_subfaces(faces_to_subfaces,
     in, cn[2], faces_total_edges);
-  
-  // cf_0 = d;
-  // cf->a1 = (int *) malloc(sizeof(int) * cf_0);
-  // if (errno)
-  // {
-  //   perror("mesh_file_scan_cf - cannot allocate memory for m->cf->a1");
-  //   goto clean_on_failure;
-  // }
-  // mesh_cf_a1(cf->a1, d);
 
-  // cf_a2_size = int_array_total_sum(d, cf->a1);
-  // cf->a2 = (int *) malloc(sizeof(int) * cf_a2_size);
-  // if (errno)
-  // {
-  //   perror("mesh_file_scan_cf - cannot allocate memory for m->cf->a2");
-  //   goto clean_on_failure;
-  // }
-  // mesh_cf_a2(cf->a2, d, cf->a1);
+  cf = (jagged4 *) malloc(sizeof(jagged4));
+  if (errno)
+  {
+    fprintf(stderr, "%s:%d: cannot allocate memory\n", __FILE__, __LINE__);
+    goto clean_on_failure;
+  }
   
-  // cf_a3_size = int_array_total_sum(cf_a2_size, cf->a2);
-  // // allocate cf->a3
-  // // calculate cf->a3
+  cf->a0 = d;
+  cf->a1 = (int *) malloc(sizeof(int) * cf->a0);
+  if (errno)
+  {
+    fprintf(stderr, "%s:%d: cannot allocate memory\n", __FILE__, __LINE__);
+    goto clean_on_failure;
+  }
+  mesh_cf_a1(cf->a1, d);
+
+  cf_a2_size = int_array_total_sum(d, cf->a1);
+  cf->a2 = (int *) malloc(sizeof(int) * cf_a2_size);
+  if (errno)
+  {
+    fprintf(stderr, "%s:%d: cannot allocate memory\n", __FILE__, __LINE__);
+    goto clean_on_failure;
+  }
+  mesh_cf_a2(cf->a2, d, cn);
   
-  // // index = 0;
-  // // for (i = 0; i < );
+  cf_a3_size = int_array_total_sum(cf_a2_size, cf->a2);
+  cf->a3 = (int *) malloc(sizeof(int) * cf_a3_size);
+  if (errno)
+  {
+    fprintf(stderr, "%s:%d: cannot allocate memory\n", __FILE__, __LINE__);
+    goto clean_on_failure;
+  }
+  mesh_file_scan_tess_set_cf_a3(cf->a3, cn[1], cn[2], faces_number_of_sides);
   
-  // cf_a4_size = int_array_total_sum(cf_a3_size, cf->a3);
-  // cf->a4 = values;
+  cf_a4_size = int_array_total_sum(cf_a3_size, cf->a3);
+  cf->a4 = (int *) malloc(sizeof(int) * cf_a4_size);
+  if (errno)
+  {
+    fprintf(stderr, "%s:%d: cannot allocate memory\n", __FILE__, __LINE__);
+    goto clean_on_failure;
+  }
+  mesh_file_scan_tess_set_cf_a4(cf->a4, cn[1], cn[2], faces_total_edges,
+    edges_to_nodes, faces_number_of_sides, faces_to_subfaces);
+  free(faces_to_subfaces);
+  free(faces_number_of_sides);
+  free(edges_to_nodes);
 
   m->dim = d;
   m->dim_embedded = d;
+  m->coord = coordinates;
   m->cn = cn;
   m->c = c;
-  // m->cf = cf;
-  m->coord = coordinates;
+  m->cf = cf;
+  /* mesh_file_print(stdout, m, "--raw"); */
   return m;
   
   /* cleaning if an error occurs */
 clean_on_failure:
+  jagged4_free(cf);
   free(faces_to_subfaces);
+  free(faces_number_of_sides);
   free(edges_to_nodes);
   free(coordinates);
   free(c);

@@ -47,7 +47,9 @@ void mesh_file_scan_tess_get_coordinates(double * coordinates, FILE * in,
       if (x != 0)
       {
         *error = 1;
-        fprintf(stderr, "Last values must be zeroes\n");
+        fprintf(stderr, "mesh_file_scan_tess_get_edges_to_nodes: "
+        "i = %d, last values must be zeroes\n", i);
+        fprintf(stderr, "Instead, we have %g\n", x);
         return;
       }
     }

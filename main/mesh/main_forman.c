@@ -32,11 +32,17 @@ end:
   return m_forman;
 }
 
-int main()
+int main(int argc, char ** argv)
 {
   mesh * m_forman;
+
+  if (argc != 2)
+  {
+    fputs("main - number of command line arguments should be 1\n", stderr);
+    return errno;
+  }
   
-  m_forman = forman_mesh_file_scan(stdin, "--raw");
+  m_forman = forman_mesh_file_scan(stdin, argv[1]);
   if (errno)
   {
     fputs("main - cannot calculate m_forman\n", stderr);

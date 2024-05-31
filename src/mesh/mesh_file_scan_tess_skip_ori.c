@@ -15,7 +15,8 @@ void mesh_file_scan_tess_skip_ori(FILE * in, int * error, int cn_d)
       *error = errno;
       if (*error)
       {
-        fprintf(stderr, "Missing value\n");
+        fprintf(stderr,
+          "mesh_file_scan_tess_skip_ori: missing value (%d, %d)\n", i, j);
         return;
       }
     }

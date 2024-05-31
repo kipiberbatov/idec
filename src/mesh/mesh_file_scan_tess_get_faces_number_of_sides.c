@@ -15,13 +15,15 @@ void mesh_file_scan_tess_get_faces_number_of_sides(
     *error = errno;
     if (*error)
     {
-      fprintf(stderr, "Cannot scan %d-th 1-cell id\n", i);
+      fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+        "cannot scan %d-th 1-cell id\n", i);
       return;
     }
     if (c_i != (i + 1))
     {
       *error = 1;
-      fprintf(stderr, "Invalid edge index\n");
+      fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+        "invalid edge index\n");
       return;
     }
 
@@ -29,13 +31,16 @@ void mesh_file_scan_tess_get_faces_number_of_sides(
     *error = errno;
     if (*error)
     {
-      fprintf(stderr, "Cannot scan %d-th 2-cell number of sides\n", i);
+      fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+        "cannot scan %d-th 2-cell number of sides\n", i);
       return;
     }
-    if (faces_number_of_sides[i] <= 3)
+    if (faces_number_of_sides[i] < 3)
     {
       *error = 1;
-      fprintf(stderr, "Invalid number of sides\n");
+      fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+        " i = %d, invalid number of sides (must be at least 3), it is %d\n",
+        i, faces_number_of_sides[i]);
       return;
     }
 
@@ -45,28 +50,33 @@ void mesh_file_scan_tess_get_faces_number_of_sides(
       *error = errno;
       if (*error)
       {
-        fprintf(stderr, "Unable to scan subface (%d, %d)\n", i, j);
+        fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+          "unable to scan subface (%d, %d)\n", i, j);
         return;
       }
       if (x <= 0)
       {
         *error = 1;
-        fprintf(stderr, "Invalid index of a vertex, must be positive\n");
+        fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+          "invalid index of a vertex, must be positive, it is %d\n", x);
         return;
       }
     }
 
-    tmp = int_file_scan(i);
+    tmp = int_file_scan(in);
     *error = errno;
     if (*error)
     {
-      fprintf(stderr, "Cannot scan %d-th 2-cell number of sides\n", i);
+      fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+        "cannot scan %d-th 2-cell number of sides\n", i);
       return;
     }
     if (faces_number_of_sides[i] != tmp)
     {
       *error = 1;
-      fprintf(stderr, "Invalid number of sides\n");
+      fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+        "i = %d, invalid number of sides should be %d but it is %d\n",
+        i, tmp, faces_number_of_sides[i]);
       return;
     }
 
@@ -76,7 +86,8 @@ void mesh_file_scan_tess_get_faces_number_of_sides(
       *error = errno;
       if (*error)
       {
-        fprintf(stderr, "Unable to scan subface (%d, %d)\n", i, j);
+        fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+          "unable to scan subface (%d, %d)\n", i, j);
         return;
       }
     }
@@ -87,7 +98,8 @@ void mesh_file_scan_tess_get_faces_number_of_sides(
       *error = errno;
       if (*error)
       {
-        fprintf(stderr, "Missing value\n");
+        fprintf(stderr, "mesh_file_scan_tess_get_faces_number_of_sides: "
+          "missing value, (i, j) = (%d, %d)\n", i, j);
         return;
       }
     }

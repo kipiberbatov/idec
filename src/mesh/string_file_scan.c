@@ -12,7 +12,7 @@ void string_file_scan(FILE * in, char * s, int n)
       s[i] = '\0';
       return;
     }
-    s[i] = 'c';
+    s[i] = c;
     ++i;
   }
   s[n - 1] = '\0';

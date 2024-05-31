@@ -9,13 +9,13 @@ void mesh_file_scan_tess_check_preamble(FILE * in, int * error)
   char * str;
 
   /* check for "***tess\n *format\n   " */
-  str = "***tess\n *format\n   ";
+  str = "***tess\n **format\n   ";
   string_file_scan(in, buffer, strlen(str) + 1);
   if (strcmp(buffer, str))
   {
     *error = 1;
-    fprintf(stderr, "Error: input file should start with\n\n%s\n\n", str);
-    fprintf(stderr, "Instead, it starts with\n\n%s\n\n", buffer);
+    fprintf(stderr, "Error: expected\n\n%s\n\n", str);
+    fprintf(stderr, "Instead, we have\n\n%s\n\n", buffer);
     return;
   }
   
@@ -26,7 +26,7 @@ void mesh_file_scan_tess_check_preamble(FILE * in, int * error)
     *error = 1;
     fputs("Error: input file should have its format '2.0' or '3.3' or '3.4'\n",
       stderr);
-    fprintf(stderr, "Instead, it starts with '%s'\n", str);
+    fprintf(stderr, "Instead, we have '%s'\n", str);
     return;
   }
   
@@ -36,7 +36,8 @@ void mesh_file_scan_tess_check_preamble(FILE * in, int * error)
   if (strcmp(buffer, str))
   {
     *error = 1;
-    fputs("file should have its 4-th line ' **general'\n", stderr);
+    fprintf(stderr, "Error: expected\n\n%s\n\n", str);
+    fprintf(stderr, "Instead, we have\n\n%s\n\n", buffer);
     return;
   }
 }
