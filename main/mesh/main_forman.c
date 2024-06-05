@@ -11,14 +11,6 @@ static mesh * forman_mesh_file_scan(FILE * in, const char * format)
     fputs("forman_mesh_file_scan - cannot scan m\n", stderr);
     goto end;
   }
-  
-  m->fc = mesh_fc(m);
-  if (errno)
-  {
-    fputs("forman_mesh_file_scan - cannot calculate m->fc\n", stderr);
-    goto m_free;
-  }
-  
   m_forman = forman(m);
   if (errno)
   {
@@ -48,7 +40,7 @@ int main(int argc, char ** argv)
     fputs("main - cannot calculate m_forman\n", stderr);
     return errno;
   }
-  
+
   mesh_file_print(stdout, m_forman, "--raw");
   mesh_free(m_forman);
   return 0;

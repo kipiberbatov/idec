@@ -11,7 +11,7 @@ void mesh_file_scan_tess_skip_seed(FILE * in, int * error, int cn_d,
 
   for (i = 0; i < cn_d; ++i)
   {
-    c_i = int_file_scan(in);
+    c_i = int_file_scan(in) - 1;
     *error = errno;
     if (*error)
     {

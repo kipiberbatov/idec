@@ -14,6 +14,8 @@ jagged4 * mesh_cf_file_scan(FILE * in, int m_dim, const int * m_cn)
     perror("mesh_file_scan_cf - cannot allocate memory for m->cf");
     goto end;
   }
+
+  m_cf->a0 = m_dim;
   
   m_cf->a1 = (int * ) malloc(sizeof(int) * m_dim);
   if (errno)

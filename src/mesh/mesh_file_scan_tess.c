@@ -66,7 +66,7 @@ static void mesh_file_scan_tess_set_cf_a3(int * cf_a3, int cn_1, int cn_2,
 
 mesh * mesh_file_scan_tess_private(int * error, FILE * in)
 {
-  int d, faces_total_edges, position;
+  int d, faces_total_edges, m_c_size, position;
   int cf_a2_size, cf_a3_size, cf_a4_size;
   int * c = NULL, * cn = NULL, * edges_to_nodes = NULL,
       * faces_number_of_sides = NULL, * faces_to_subfaces = NULL;
@@ -282,14 +282,17 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   free(faces_to_subfaces);
   free(faces_number_of_sides);
   free(edges_to_nodes);
+  free(c);
 
   m->dim = d;
   m->dim_embedded = d;
   m->coord = coordinates;
   m->cn = cn;
-  m->c = c;
+  m_c_size = int_array_total_sum(d + 1, cn);
+  m->c = (int *) malloc(sizeof(int) * m_c_size);
+  mesh_c(m->c, d, cn);
   m->cf = cf;
-  /* mesh_file_print(stdout, m, "--raw"); */
+  
   return m;
   
   /* cleaning if an error occurs */

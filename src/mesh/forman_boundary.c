@@ -131,10 +131,12 @@ matrix_sparse ** forman_boundary(
   }
   for (p_f = 1; p_f <= m_dim; ++p_f)
   {
-    m_forman_boundary[p_f - 1] = forman_boundary_p_f(m_forman, m_bd, m_forman_cbi, p_f);
+    m_forman_boundary[p_f - 1]
+    = forman_boundary_p_f(m_forman, m_bd, m_forman_cbi, p_f);
     if (errno)
     {
-      fprintf(stderr, "forman_boundary - cannot calculate m_forman_boundary[%d]", p_f - 1);
+      fprintf(stderr,
+        "forman_boundary - cannot calculate m_forman_boundary[%d]", p_f - 1);
       perror("");
       goto m_forman_boundary_p_f_free;
     }

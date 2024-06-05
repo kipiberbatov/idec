@@ -7,42 +7,31 @@
 void forman_cn(int * m_forman_cn, const mesh * m);
 
 /********************************* forman_cf **********************************/
-/* Boring work with indices to construct forman_cf. */
-/* Use the code as it is. I do not remember the exact implementation details. */
 
-/* cbi = cells by indices
- * fi = first indices 
- * si = second indces
- */
+/*
+cbi = cells by indices
 
+The result is the list of all quadruples of the form (p, i, q, j), where
+c(q, i) is a subface of c(p, i).
+
+The list is in particularly defined as follows:
+cbi.a0 = m->dim + 1
+cbi.a1 = m_forman_cn
+cbi.a2 = {4}^total(m_forman_cn)
+cbi.a3[r, a, b] = (p, i, q, j), where
+  . (p, i) corresponds to the deflattening of m_forman_cn
+  . q = p - r
+  . j comes from the delattening of b
+*/
 jagged3 * forman_cbi(const mesh * m, const int * m_forman_cn);
-jagged2 * forman_fi(const mesh * m);
-jagged3 * forman_si(const mesh * m);
 
-jagged2 * forman_u(
-  const mesh * m, int p_f, int q_f, int p, int i, int q, int j);
+void forman_cf_a3(int * m_forman_cf_a3, const mesh * m);
 
-jagged3 * forman_v(
-  const mesh * m, const jagged2 * m_forman_u, int p_f, int q_f, int q, int j);
-
-void forman_polytope_vertices(
-  int * m_forman_cell_to_faces, const mesh * m, const jagged2 * m_forman_u,
-  const jagged3 * m_forman_v, const jagged2 * m_forman_fi,
-  const jagged3 * m_forman_si, int p_f, int q_f, int q);
-  
-void forman_cell_to_faces(
-  int * m_forman_cell_to_faces, const mesh * m, const jagged3 * m_forman_cbi,
-  const jagged2 * m_forman_fi, const jagged3 * m_forman_si,
-  int p_f, int q_f, int i_f);
-
-void forman_cf_a3(int * m_forman_cf_a3, int m_dim, const int * m_forman_cn);
-
-void forman_cf_a4(
-  int * m_forman_cf_a4, const mesh * m, const int * m_forman_cn);
+void forman_cf_a4(int * m_forman_cf_a4, const mesh * m);
 
 jagged4 * forman_cf(const mesh * m, const int * m_forman_cn);
 
-/********************************** forman_boundary *********************************/
+/******************************* forman_boundary ******************************/
 matrix_sparse * forman_boundary_p_f(
   const mesh * m_forman, matrix_sparse ** bd,
   const jagged3 * m_forman_cbi, int p_f);
