@@ -25,7 +25,8 @@ cbi.a3[r, a, b] = (p, i, q, j), where
 */
 jagged3 * forman_cbi(const mesh * m, const int * m_forman_cn);
 
-void forman_cf_a3(int * m_forman_cf_a3, const mesh * m);
+void
+forman_cf_a3(int * m_forman_cf_a3, const mesh * m, const int * m_forman_cn);
 
 void forman_cf_a4(int * m_forman_cf_a4, const mesh * m);
 

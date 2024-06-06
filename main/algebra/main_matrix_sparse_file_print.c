@@ -33,7 +33,7 @@ static void matrix_sparse_array_file_print_file_scan(
     matrix_sparse_file_print_file_scan(out, in, format);
     if (errno)
     {
-      fprintf(stderr, "During the printing of the %d-th matrix", p);
+      fprintf(stderr, "During the printing of the %d-th matrix: ", p);
       perror("");
     }
     if (p < d - 1)
@@ -58,8 +58,8 @@ int main(int argc, char * argv[])
     }
     d = atoi(argv[3]);
     matrix_sparse_array_file_print_file_scan(stdout, stdin, format, d);
-    return 0;
+    return errno;
   }
   matrix_sparse_file_print_file_scan(stdout, stdin, format);
-  return 0;
+  return errno;
 }

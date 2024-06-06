@@ -1,5 +1,10 @@
 .PHONY: demo_mesh
-demo_mesh: bin_mesh demo_mesh_brick_regular demo_mesh_square | demo/mesh
+demo_mesh:\
+  bin_mesh\
+  demo_mesh_brick_regular\
+  demo_mesh_square\
+  demo_mesh_square_pyramid\
+  | demo/mesh
 
 demo/mesh: | demo
 	mkdir -p $@
@@ -1573,6 +1578,17 @@ DEMO_MESH_BRICK_REGULAR_3 :=\
   $(DEMO_MESH_BRICK_REGULAR_3D_2)\
   $(DEMO_MESH_BRICK_REGULAR_3D_5)\
 
+DEMO_MESH_SQUARE_PYRAMID := \
+  demo/mesh/mesh_square_pyramid_forman.txt\
+
+.PHONY: demo_mesh_square_pyramid
+demo_mesh_square_pyramid: $(DEMO_MESH_SQUARE_PYRAMID) | demo/mesh
+
+demo/mesh/mesh_square_pyramid_forman.txt:\
+	  bin/forman$(.EXE)\
+	  data/mesh/mesh_square_pyramid.txt | demo/mesh
+	$< --raw < $(word 2, $^) > $@
+
 # d = 4
 DEMO_MESH_BRICK_REGULAR_4D := demo_mesh_brick_regular_4d_2
 
@@ -1596,6 +1612,7 @@ DEMO_MESH_BRICK_REGULAR_ALL :=\
   $(DEMO_MESH_TRIANGLE_AND_SQUARE)\
   $(DEMO_MESH_SQUARE)\
   $(DEMO_MESH_BRICK_REGULAR_3)\
+  $(DEMO_MESH_SQUARE_PYRAMID)\
   $(DEMO_MESH_BRICK_REGULAR_4)\
 
 .PHONY: demo_mesh_clean

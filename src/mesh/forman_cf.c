@@ -44,7 +44,7 @@ jagged4 * forman_cf(const mesh * m, const int * m_forman_cn)
     perror("forman_cf - cannot allocate memory for m_forman->cf->a3");
     goto m_forman_cf_a2_free;
   }
-  forman_cf_a3(m_forman_cf->a3, m);
+  forman_cf_a3(m_forman_cf->a3, m, m_forman_cn);
 
   m_forman_cf_a4_size
   =  int_array_total_sum(m_forman_cf_a3_size, m_forman_cf->a3);
