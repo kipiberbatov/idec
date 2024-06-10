@@ -3,6 +3,9 @@ demo_mesh:\
   bin_mesh\
   demo_mesh_brick_regular\
   demo_mesh_square\
+  demo_mesh_two_triangles\
+  demo_mesh_triangle_and_square\
+  demo_mesh_pentagon\
   demo_mesh_square_pyramid\
   | demo/mesh
 
@@ -11,8 +14,6 @@ demo/mesh: | demo
 
 DEMO_MESH_BRICK_REGULAR :=\
   demo_mesh_brick_regular_2d\
-  demo_mesh_two_triangles\
-  demo_mesh_triangle_and_square\
   demo_mesh_brick_regular_3d\
   demo_mesh_brick_regular_4d\
 
@@ -1146,6 +1147,115 @@ demo/mesh/mesh_triangle_and_square_forman_hodge_corrected.txt:\
 	  demo/mesh/mesh_triangle_and_square_forman_hodge_coeff.txt | demo/mesh
 	$^ > $@
 
+DEMO_MESH_PENTAGON := \
+  demo/mesh/mesh_pentagon_vol.txt\
+  demo/mesh/mesh_pentagon_forman.txt\
+  demo/mesh/mesh_pentagon_forman_vol.txt\
+  demo/mesh/mesh_pentagon_forman_metric.txt\
+  demo/mesh/mesh_pentagon_forman_inner.txt\
+  demo/mesh/mesh_pentagon_forman_cbd_star.txt\
+  demo/mesh/mesh_pentagon_forman_laplacian.txt\
+  demo/mesh/mesh_pentagon_forman_hodge_coeff.txt\
+  demo/mesh/mesh_pentagon_forman_hodge.txt\
+  demo/mesh/mesh_pentagon_forman_node_curvature.txt\
+  demo/mesh/mesh_pentagon_forman_metric_corrected.txt\
+  demo/mesh/mesh_pentagon_forman_inner_corrected.txt\
+  demo/mesh/mesh_pentagon_forman_cbd_star_corrected.txt\
+  demo/mesh/mesh_pentagon_forman_laplacian_corrected.txt\
+  demo/mesh/mesh_pentagon_forman_hodge_corrected.txt\
+
+.PHONY: demo_mesh_pentagon
+demo_mesh_pentagon: $(DEMO_MESH_PENTAGON) | demo/mesh
+
+demo/mesh/mesh_pentagon_vol.txt:\
+	  bin/mesh_measure$(.EXE)\
+	  data/mesh/mesh_pentagon.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_pentagon_forman.txt:\
+	  bin/forman_boundary$(.EXE)\
+	  data/mesh/mesh_pentagon.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_pentagon_forman_vol.txt:\
+	  bin/mesh_qc_vol$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_pentagon_forman_metric.txt:\
+	  bin/mesh_qc_metric$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_vol.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_pentagon_forman_inner.txt:\
+	  bin/mesh_qc_inner_direct$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_vol.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_pentagon_forman_cbd_star.txt:\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_inner.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_pentagon_forman_laplacian.txt:\
+	  bin/mesh_qc_laplacian$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_cbd_star.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_pentagon_forman_hodge_coeff.txt:\
+	  bin/mesh_qc_hodge_coeff$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt | demo/mesh
+	$< < $(word 2, $^) > $@
+
+demo/mesh/mesh_pentagon_forman_hodge.txt:\
+	  bin/mesh_qc_hodge$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_inner.txt\
+	  demo/mesh/mesh_pentagon_forman_hodge_coeff.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_pentagon_forman_node_curvature.txt:\
+	  bin/mesh_node_curvature$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt | demo/mesh
+	$< < $(word 2, $^) > $@
+
+demo/mesh/mesh_pentagon_forman_metric_corrected.txt:\
+	  bin/mesh_qc_metric_corrected$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_vol.txt\
+	  demo/mesh/mesh_pentagon_forman_node_curvature.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_pentagon_forman_inner_corrected.txt:\
+	  bin/mesh_qc_inner$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_vol.txt\
+	  demo/mesh/mesh_pentagon_forman_metric_corrected.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_pentagon_forman_cbd_star_corrected.txt:\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_inner_corrected.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_pentagon_forman_laplacian_corrected.txt:\
+	  bin/mesh_qc_laplacian$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_cbd_star_corrected.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_pentagon_forman_hodge_corrected.txt:\
+	  bin/mesh_qc_hodge$(.EXE)\
+	  demo/mesh/mesh_pentagon_forman.txt\
+	  demo/mesh/mesh_pentagon_forman_inner_corrected.txt\
+	  demo/mesh/mesh_pentagon_forman_hodge_coeff.txt | demo/mesh
+	$^ > $@
+
 DEMO_MESH_SQUARE := \
   demo/mesh/mesh_square_2.txt\
   demo/mesh/mesh_square_4.txt\
@@ -1611,6 +1721,7 @@ DEMO_MESH_BRICK_REGULAR_ALL :=\
   $(DEMO_MESH_TWO_TRIANGLES)\
   $(DEMO_MESH_TRIANGLE_AND_SQUARE)\
   $(DEMO_MESH_SQUARE)\
+  $(DEMO_MESH_PENTAGON)\
   $(DEMO_MESH_BRICK_REGULAR_3)\
   $(DEMO_MESH_SQUARE_PYRAMID)\
   $(DEMO_MESH_BRICK_REGULAR_4)\
