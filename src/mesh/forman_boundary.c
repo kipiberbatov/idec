@@ -1,63 +1,147 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "forman_private.h"
-#include "int.h"
+#include "forman.h"
 
-static double * forman_boundary_x(
-  const mesh * m_forman, matrix_sparse ** m_bd,
-  int m_forman_boundary_p_f_nzmax, const jagged3 * m_forman_cbi, int p_f)
+/* p_f = 1 */
+static void forman_boundary_values_on_edges(double * m_boundary_values,
+  const mesh * m, matrix_sparse ** m_bd)
 {
-  int i, i_f, ind, j, j_f, j_f_loc, k, l, p, q, r, s;
-  int * m_forman_cn;
-  double sign, sign_loc;
-  double * m_forman_boundary_p_f_x;
-  jagged1 m_forman_cbi_p_f_i_f, m_forman_cbi_p_f_minus_1_j_f,
-          m_forman_hyperface;
-  jagged2 m_forman_cbi_p_f, m_forman_cbi_p_f_minus_1, m_forman_hyperfaces;
-  jagged4 * m_forman_cf;
+  int d, i, index, l, l_local, m_cn_p, p;
+  int * m_cn;
+  matrix_sparse * m_bd_p;
+  jagged1 m_cf_p_pm1_i;
+  jagged2 m_cf_p_pm1;
   
-  m_forman_cn = m_forman->cn;
-  m_forman_cf = m_forman->cf;
-  jagged3_part1(&m_forman_cbi_p_f, m_forman_cbi, p_f);
-  jagged3_part1(&m_forman_cbi_p_f_minus_1, m_forman_cbi, p_f - 1);
-  jagged4_part2(&m_forman_hyperfaces, m_forman_cf, p_f - 1, p_f - 1);
-  
-  m_forman_boundary_p_f_x = (double *) malloc(sizeof(double) * m_forman_boundary_p_f_nzmax);
-  if (errno)
+  d = m->dim;
+  m_cn = m->cn;
+  index = 0;
+
+  for (p = 1; p <= d; ++p)
   {
-    perror("forman_boundary_x - cannot allocate memory for m_forman_boundary_p_f_x");
-    return NULL;
-  }
-  ind = 0;
-  for (i_f = 0; i_f < m_forman_cn[p_f]; ++i_f)
-  {
-    jagged2_part1(&m_forman_cbi_p_f_i_f, &m_forman_cbi_p_f, i_f);
-    int_array_4_values_get(m_forman_cbi_p_f_i_f.a1, &r, &k, &s, &l);
-    jagged2_part1(&m_forman_hyperface, &m_forman_hyperfaces, i_f);
-    for (j_f_loc = 0; j_f_loc < m_forman_hyperface.a0; ++j_f_loc)
+    m_bd_p = m_bd[p - 1];
+    m_cn_p = m_cn[p];
+    mesh_cf_part2(&m_cf_p_pm1, m, p, p - 1);
+    for (i = 0; i < m_cn_p; ++i)
     {
-      j_f = jagged1_part1(&m_forman_hyperface, j_f_loc);
-      jagged2_part1(&m_forman_cbi_p_f_minus_1_j_f,
-                    &m_forman_cbi_p_f_minus_1, j_f);
-      int_array_4_values_get(m_forman_cbi_p_f_minus_1_j_f.a1, &p, &i, &q, &j);
-      if (r == p)
+      jagged2_part1(&m_cf_p_pm1_i, &m_cf_p_pm1, i);
+      for (l_local = 0; l_local < m_cf_p_pm1_i.a0; ++l_local)
       {
-        sign_loc = p_f % 2 == 0 ? 1. : -1.;
-        sign = sign_loc * matrix_sparse_part(m_bd[q - 1], l, j);
+        l = m_cf_p_pm1_i.a1[l_local];
+        m_boundary_values[index] = matrix_sparse_part(m_bd_p, l, i);
+        m_boundary_values[index + 1] = -m_boundary_values[index];
+        index += 2;
       }
-      else
-        sign = matrix_sparse_part(m_bd[p], i, k);
-      m_forman_boundary_p_f_x[ind + j_f_loc] = sign;
     }
-    ind += m_forman_hyperface.a0;
   }
-  return m_forman_boundary_p_f_x;
 }
 
-matrix_sparse * forman_boundary_p_f(
-  const mesh * m_forman, matrix_sparse ** m_bd,
-  const jagged3 * m_forman_cbi, int p_f)
+static void forman_boundary_values_general_l3_begin(
+  double * m_boundary_values, int * index,
+  const mesh * m,
+  const matrix_sparse * m_bd_p,
+  const jagged2 * m_cf_pm1_s,
+  const jagged1 * m_cf_p_pm1_i,
+  int i,
+  int l)
+{
+  int j, j_local, m_cf_p_pm1_i_a0;
+  int * m_cf_p_pm1_i_a1;
+  jagged1 m_cf_pm1_s_j;
+
+  m_cf_p_pm1_i_a0 = m_cf_p_pm1_i->a0;
+  m_cf_p_pm1_i_a1 = m_cf_p_pm1_i->a1;
+
+  for (j_local = 0; j_local < m_cf_p_pm1_i_a0; ++j_local)
+  {
+    j = m_cf_p_pm1_i_a1[j_local];
+    jagged2_part1(&m_cf_pm1_s_j, m_cf_pm1_s, j);
+    if (jagged1_member(&m_cf_pm1_s_j, l))
+    {
+
+      m_boundary_values[*index] = matrix_sparse_part(m_bd_p, j, i);
+      ++*index;
+    }
+  }
+}
+
+static void forman_boundary_values_general_l3_end(
+  double * m_boundary_values,
+  int * index,
+  const mesh * m,
+  const matrix_sparse * m_bd_sp1,
+  const jagged2 * m_cf_sp1_s,
+  const jagged1 * m_cf_p_sp1_i,
+  int l,
+  int sign)
+{
+  int k, k_local, m_cf_p_sp1_i_a0;
+  int * m_cf_p_sp1_i_a1;
+  jagged1 m_cf_sp1_s_k;
+
+  m_cf_p_sp1_i_a0 = m_cf_p_sp1_i->a0;
+  m_cf_p_sp1_i_a1 = m_cf_p_sp1_i->a1;
+
+  for (k_local = 0; k_local < m_cf_p_sp1_i_a0; ++k_local)
+  {
+    k = m_cf_p_sp1_i_a1[k_local];
+    jagged2_part1(&m_cf_sp1_s_k, m_cf_sp1_s, k);
+    if (jagged1_member(&m_cf_sp1_s_k, l))
+    {
+      m_boundary_values[*index] = sign * matrix_sparse_part(m_bd_sp1, l, k);
+      ++*index;
+    }
+  }
+}
+
+/* p_f >= 2 */
+static void forman_boundary_values_general(double * m_boundary_values,
+  const mesh * m, matrix_sparse ** m_bd, int p_f)
+{
+  int d, i, index, l_local, l, m_cn_p, p, s;
+  int * m_cn;
+  double sign;
+  jagged1 m_cf_p_pm1_i, m_cf_p_s_i, m_cf_p_sp1_i;
+  jagged2 m_cf_p_pm1, m_cf_p_s, m_cf_p_sp1, m_cf_pm1_s, m_cf_sp1_s;
+  matrix_sparse * m_bd_p, * m_bd_sp1;
+
+  d = m->dim;
+  m_cn = m->cn;
+  sign = (p_f % 2 ? -1. : 1.); /* sign = (-1)^{p_f} */
+  index = 0;
+  
+  for (p = p_f; p <= d; ++p)
+  {
+    m_bd_p = m_bd[p - 1];
+    m_cn_p = m_cn[p];
+    s = p - p_f;
+    m_bd_sp1 = m_bd[s];
+    mesh_cf_part2(&m_cf_p_pm1, m, p, p - 1);
+    mesh_cf_part2(&m_cf_p_sp1, m, p, s + 1);
+    mesh_cf_part2(&m_cf_p_s, m, p, s);
+    mesh_cf_part2(&m_cf_pm1_s, m, p - 1, s);
+    mesh_cf_part2(&m_cf_sp1_s, m, s + 1, s);
+
+    for (i = 0; i < m_cn_p; ++i)
+    {
+      jagged2_part1(&m_cf_p_pm1_i, &m_cf_p_pm1, i);
+      jagged2_part1(&m_cf_p_sp1_i, &m_cf_p_sp1, i);
+      jagged2_part1(&m_cf_p_s_i, &m_cf_p_s, i);
+      for (l_local = 0; l_local < m_cf_p_s_i.a0; ++l_local)
+      {
+        l = m_cf_p_s_i.a1[l_local];
+        forman_boundary_values_general_l3_begin(m_boundary_values, &index,
+          m, m_bd_p, &m_cf_pm1_s, &m_cf_p_pm1_i, i, l);
+        forman_boundary_values_general_l3_end(m_boundary_values, &index,
+          m, m_bd_sp1, &m_cf_sp1_s, &m_cf_p_sp1_i, l, sign);
+        
+      }
+    }
+  }
+}
+
+static matrix_sparse * forman_boundary_single(
+  const mesh * m, const mesh * m_forman, matrix_sparse ** m_bd, int p_f)
 {
   int m_forman_boundary_p_f_nonzero_max;
   int * m_forman_cn;
@@ -67,33 +151,47 @@ matrix_sparse * forman_boundary_p_f(
   m_forman_boundary_p_f = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   if (errno)
   {
-    perror("forman_boundary_p_f - cannot allocate memory for m_forman_boundary_p_f");
+    fprintf(stderr,
+      "forman_boundary_single: "
+      "cannot allocate memory for m_forman_boundary_p_f\n");
     goto end;
   }
   m_forman_boundary_p_f_nonzero_max = mesh_boundary_nzmax(m_forman, p_f);
   m_forman_boundary_p_f->rows = m_forman_cn[p_f - 1];
   m_forman_boundary_p_f->cols = m_forman_cn[p_f];
+  
   m_forman_boundary_p_f->cols_total = mesh_boundary_p(m_forman, p_f);
   if (errno)
   {
-    perror("forman_boundary_p_f - cannot calculate m_forman_boundary_p_f->p");
+    fprintf(stderr,
+      "forman_boundary_single: "
+      "cannot calculate m_forman_boundary_p_f->p\n");
     goto m_forman_boundary_p_f_free;
   }
+  
   m_forman_boundary_p_f->row_indices = mesh_boundary_i(m_forman, p_f);
   if (errno)
   {
-    perror("forman_boundary_p_f - cannot calculate m_forman_boundary_p_f->i");
+    fprintf(stderr,
+      "forman_boundary_single: "
+      "cannot calculate m_forman_boundary_p_f->i\n");
     goto m_forman_boundary_p_f_p_free;
   }
-  m_forman_boundary_p_f->values = 
-       forman_boundary_x(m_forman, m_bd, m_forman_boundary_p_f_nonzero_max, 
-                   m_forman_cbi, p_f);
+  
+  m_forman_boundary_p_f->values
+  = (double *) malloc(sizeof(double) * m_forman_boundary_p_f_nonzero_max);
   if (errno)
   {
-    perror("forman_boundary_p_f - cannot calculate m_forman_boundary_p_f->x");
+    fprintf(stderr,
+      "forman_boundary_single: "
+      "cannot allocate memory for m_forman_boundary_p_f->values\n");
     goto m_forman_boundary_p_f_i_free;
   }
-  //m_forman_boundary_p_f->nz = -1;
+  if (p_f == 1)
+    forman_boundary_values_on_edges(m_forman_boundary_p_f->values, m, m_bd);
+  else
+    forman_boundary_values_general(m_forman_boundary_p_f->values, m, m_bd, p_f);
+  
   return m_forman_boundary_p_f;
   
   /* cleaning if an error occurs */
@@ -107,47 +205,36 @@ end:
   return NULL;
 }
 
-matrix_sparse ** forman_boundary(
-  const mesh * m, const mesh * m_forman, matrix_sparse ** m_bd)
+matrix_sparse ** 
+forman_boundary(const mesh * m, const mesh * m_forman, matrix_sparse ** m_bd)
 {
-  int m_dim, p_f;
-  int * m_forman_cn;
+  int d, p_f;
   matrix_sparse ** m_forman_boundary;
-  jagged3 * m_forman_cbi;
+  
+  d = m->dim;
 
-  m_dim = m->dim;
-  m_forman_cn = m_forman->cn;
-  m_forman_boundary = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * m_dim);
+  m_forman_boundary = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * d);
   if (errno)
   {
-    perror("forman_boundary - cannot allocate memory for m_forman_boundary");
+    fprintf(stderr,
+      "forman_boundary: cannot allocate memory for m_forman_boundary\n");
     goto end;
   }
-  m_forman_cbi = forman_cbi(m, m_forman_cn);
-  if (errno)
+  for (p_f = 1; p_f <= d; ++p_f)
   {
-    perror("forman_boundary - cannot calculate m_forman_cbi");
-    goto m_forman_boundary_free;
-  }
-  for (p_f = 1; p_f <= m_dim; ++p_f)
-  {
-    m_forman_boundary[p_f - 1]
-    = forman_boundary_p_f(m_forman, m_bd, m_forman_cbi, p_f);
+    m_forman_boundary[p_f - 1] = forman_boundary_single(m, m_forman, m_bd, p_f);
     if (errno)
     {
       fprintf(stderr,
-        "forman_boundary - cannot calculate m_forman_boundary[%d]", p_f - 1);
-      perror("");
+        "forman_boundary: cannot calculate m_forman_boundary[%d]\n", p_f - 1);
       goto m_forman_boundary_p_f_free;
     }
   }
-  jagged3_free(m_forman_cbi);
   return m_forman_boundary;
   
   /* cleaning if an error occurs */
 m_forman_boundary_p_f_free:
   matrix_sparse_array_free(m_forman_boundary, p_f - 1);
-m_forman_boundary_free:
   free(m_forman_boundary);
 end:
   return NULL;

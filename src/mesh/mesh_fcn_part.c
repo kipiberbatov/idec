@@ -11,17 +11,3 @@ void mesh_fcn_part2(jagged1 * m_fcn_q_p, const mesh * m, int q, int p)
   m_fcn.a3 = m->fc->a3;
   jagged3_part2(m_fcn_q_p, &m_fcn, q, p - q - 1);
 }
-
-int mesh_fcn_part3(const mesh * m, int q, int p, int j)
-{
-  jagged3 m_fcn;
-  
-  if (q == p)
-    return 1;
-  
-  m_fcn.a0 = m->fc->a0;
-  m_fcn.a1 = m->fc->a1;
-  m_fcn.a2 = m->fc->a2;
-  m_fcn.a3 = m->fc->a3;
-  return jagged3_part3(&m_fcn, q, p - q - 1, j);
-}

@@ -46,18 +46,15 @@ void mesh_cf_part3(jagged1 * m_cf_p_q_i, const mesh * m, int p, int q, int i);
 
 /******************************* mesh_cfn_part ********************************/
 void mesh_cfn_part2(jagged1 * m_cfn_p_q, const mesh * m, int p, int q);
-int mesh_cfn_part3(const mesh * m, int p, int q, int i);
 
 /********************************** mesh_fc ***********************************/
 jagged4 * mesh_fc(const mesh * m);
 
 /******************************* mesh_fc_part *********************************/
 void mesh_fc_part2(jagged2 * m_fc_q_p, const mesh * m, int q, int p);
-void mesh_fc_part3(jagged1 * m_fc_q_p_j, const mesh * m, int q, int p, int j);
 
 /******************************* mesh_fcn_part ********************************/
 void mesh_fcn_part2(jagged1 * m_fcn_q_p, const mesh * m, int q, int p);
-int mesh_fcn_part3(const mesh * m, int q, int p, int j);
 
 /**************************** mesh_boundary_cells *****************************/
 /* jagged1 * mesh_boundary_hyperfaces(const mesh * m); */

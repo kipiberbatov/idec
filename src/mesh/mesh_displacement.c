@@ -1,66 +1,74 @@
+#include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
+
+#include "double.h"
 #include "mesh.h"
 
-static void point_difference(
-  double * res, int d, const double * a, const double * b)
-{
-  int i;
-  
-  for (i = 0; i < d; ++i)
-    res[i] = b[i] - a[i];
-}
-
-static void vector_scalar_multiply_by(double * a, int d, double lambda)
-{
-  int i;
-  
-  for (i = 0; i < d; ++i)
-    a[i] *= lambda;
-}
-
-static void vector_add_to(double * a, int d, const double * b)
-{
-  int i;
-  
-  for (i = 0; i < d; ++i)
-    a[i] += b[i];
-}
-
-double ** mesh_displacement(
+static void mesh_displacement_values(double ** result,
   const mesh * m, const matrix_sparse * m_bd_0, const double * u)
 {
   int i, j, j_loc, m_cn_0, m_dim_embedded;
   double sign;
   double tmp[MAX_DIM];
   double * m_coord;
-  double ** res;
-  jagged1 edges, edge_nodes;
+  jagged1 m_cf_1_0_j, m_fc_0_1_i;
+  jagged2 m_cf_1_0, m_fc_0_1;
   
   m_dim_embedded = m->dim_embedded;
   m_cn_0 = m->cn[0];
   m_coord = m->coord;
-  res = (double **) calloc(m_cn_0, sizeof(double *));
-  /* NULL pointer check */
+  mesh_cf_part2(&m_cf_1_0, m, 1, 0);
+  mesh_fc_part2(&m_fc_0_1, m, 0, 1);
+  
   for (i = 0; i < m_cn_0; ++i)
   {
-    res[i] = (double *) calloc(m_dim_embedded, sizeof(double));
-    /* NULL pointer check */
-  }
-  for (i = 0; i < m_cn_0; ++i)
-  {
-    mesh_fc_part3(&edges, m, 0, 1, i);
-    for (j_loc = 0; j_loc < edges.a0; ++j_loc)
+    jagged2_part1(&m_fc_0_1_i, &m_fc_0_1, i);
+    for (j_loc = 0; j_loc < m_fc_0_1_i.a0; ++j_loc)
     {
-      j = edges.a1[j_loc];
-      mesh_cf_part3(&edge_nodes, m, 1, 0, j);
+      j = m_fc_0_1_i.a1[j_loc];
+      jagged2_part1(&m_cf_1_0_j, &m_cf_1_0, j);
       sign = matrix_sparse_part(m_bd_0, i, j);
-      point_difference(tmp, m_dim_embedded, 
-                       m_coord + m_dim_embedded * edge_nodes.a1[0],
-                       m_coord + m_dim_embedded * edge_nodes.a1[1]);
-      vector_scalar_multiply_by(tmp, m_dim_embedded, - sign * u[j]);
-      vector_add_to(res[i], m_dim_embedded, tmp);
+      double_array_difference(
+        tmp, m_dim_embedded, 
+        m_coord + m_dim_embedded * m_cf_1_0_j.a1[0],
+        m_coord + m_dim_embedded * m_cf_1_0_j.a1[1]);
+      double_array_multiply_with(tmp, m_dim_embedded, - sign * u[j]);
+      double_array_add_to(result[i], m_dim_embedded, tmp);
     }
   }
-  return res;
+}
+
+double ** mesh_displacement(
+  const mesh * m, const matrix_sparse * m_bd_0, const double * u)
+{
+  int i, m_cn_0, m_dim_embedded;
+  double ** result;
+  
+  m_dim_embedded = m->dim_embedded;
+  m_cn_0 = m->cn[0];
+
+  result = (double **) calloc(m_cn_0, sizeof(double *));
+  if (errno)
+  {
+    fprintf(stderr, "mesh_displacement: cannot allocate memory for result\n");
+    return NULL;
+  }
+
+  for (i = 0; i < m_cn_0; ++i)
+  {
+    result[i] = (double *) calloc(m_dim_embedded, sizeof(double));
+    if (errno)
+    {
+      fprintf(stderr,
+        "mesh_displacement: cannot allocate memory for result[%d]\n", i);
+      double_array2_free(result, i);
+      return NULL;
+    }
+  }
+
+  mesh_displacement_values(result, m, m_bd_0, u);
+  
+  return result;
 }
   

@@ -8,7 +8,6 @@
 jagged4 * forman_cf(const mesh * m, const int * m_forman_cn)
 {
   int m_forman_cf_a2_size, m_forman_cf_a3_size, m_forman_cf_a4_size;
-  jagged3 * m_forman_si;
   jagged4 * m_forman_cf;
   
   m_forman_cf = (jagged4 *) malloc(sizeof(jagged4));
