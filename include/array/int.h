@@ -51,11 +51,6 @@ void int_array_combination_next(int * a, int m, int n);
 
 int int_array_combination_index(int * comb, int m, int n);
 
-void int_array_4_values_get(
-  const int * a, int * x0, int * x1, int * x2, int * x3);
-
-void int_array_4_values_set(int * a, int x0, int x1, int x2, int x3);
-
 /********************************* int_array2 *********************************/
 void int_array2_free(int ** arr, int a0);
 
