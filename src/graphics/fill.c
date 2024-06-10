@@ -42,7 +42,7 @@ void fill_increment_index_void(void * a)
   fill_increment_index((fill *) a);
 }
 
-painter fill_get_paint(fill * a)
+painter fill_get_paint(const fill * a)
 {
   return a->paint;
 }
@@ -54,13 +54,13 @@ void fill_set(fill * a, int i, int n, painter paint)
   a->paint = paint;
 }
 
-void fill_draw(cairo_t * cr, double width, double height, fill * a)
+void fill_draw(cairo_t * cr, double width, double height, const fill * a)
 {
   a->paint(cr, a->i, a->n);
   cairo_paint(cr);
 }
 
-void fill_draw_void(cairo_t * cr, double width, double height, void * a)
+void fill_draw_void(cairo_t * cr, double width, double height, const void * a)
 {
-  fill_draw(cr, width, height, (fill *) a);
+  fill_draw(cr, width, height, (const fill *) a);
 }

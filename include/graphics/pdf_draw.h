@@ -5,4 +5,4 @@ void pdf_draw(
 	double width,
 	double height,
 	void * a,
-	void (*draw)(cairo_t *, double, double, void *));
+	void (*draw)(cairo_t *, double, double, const void *));

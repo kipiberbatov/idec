@@ -16,9 +16,9 @@ int fill_get_total_steps_void(const void * a);
 void fill_increment_index(fill * a);
 void fill_increment_index_void(void * a);
 
-painter fill_get_paint(fill * a);
+painter fill_get_paint(const fill * a);
 
 void fill_set(fill * a, int i, int n, painter paint);
 
-void fill_draw(cairo_t * cr, double width, double height, fill * a);
-void fill_draw_void(cairo_t * cr, double width, double height, void * a);
+void fill_draw(cairo_t * cr, double width, double height, const fill * a);
+void fill_draw_void(cairo_t * cr, double width, double height, const void * a);

@@ -177,27 +177,27 @@ build_all: $(patsubst %, build_%, $(MODULES))
 
 # array
 ARRAY_HEADER_DEP :=\
-  $(patsubst build/%$(.OBJ), build/%$(.DEP), $(ARRAY_OBJ_NAMES))
+  $(patsubst src/array/%$(.SRC), build/%$(.DEP), $(ARRAY_OBJ_NAMES))
 
 # algebra
 ALGEBRA_HEADER_DEP :=\
-  $(patsubst build/%$(.OBJ), build/%$(.DEP), $(ALGEBRA_OBJ_NAMES))
+  $(patsubst src/algebra/%$(.SRC), build/%$(.DEP), $(ALGEBRA_OBJ_NAMES))
 
 # region
 REGION_HEADER_DEP :=\
-  $(patsubst build/%$(.OBJ), build/%$(.DEP), $(REGION_OBJ_NAMES))
+  $(patsubst src/region/%$(.SRC), build/%$(.DEP), $(REGION_OBJ_NAMES))
 
 # mesh
 MESH_HEADER_DEP :=\
-  $(patsubst build/%$(.OBJ), build/%$(.DEP), $(MESH_OBJ_NAMES))
+  $(patsubst src/mesh/%$(.SRC), build/%$(.DEP), $(MESH_OBJ_NAMES))
 
 # graphics
 GRAPHICS_HEADER_DEP :=\
-  $(patsubst build/%$(.OBJ), build/%$(.DEP), $(GRAPHICS_OBJ_NAMES))
+  $(patsubst src/graphics/%$(.SRC), build/%$(.DEP), $(GRAPHICS_OBJ_NAMES))
 
 # shared
 SHARED_HEADER_DEP :=\
-  $(patsubst build/%$(.OBJ), build/%$(.DEP), $(SHARED_OBJ_NAMES))
+  $(patsubst src/shared/%$(.SRC), build/%$(.DEP), $(SHARED_OBJ_NAMES))
 
 ################################## archiving ###################################
 lib: | build

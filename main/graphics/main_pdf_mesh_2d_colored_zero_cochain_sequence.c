@@ -15,7 +15,7 @@
 #include "frame.h"
 #include "int.h"
 #include "mesh.h"
-#include "mesh_2d_colored.h"
+#include "mesh_2d_colored_zero_cochain_sequence.h"
 #include "paint_rgb.h"
 #include "pdf_write_to_file.h"
 

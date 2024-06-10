@@ -58,12 +58,12 @@ void diffusion_increment_index_void(void * a)
   diffusion_increment_index((diffusion *) a);
 }
 
-mesh * diffusion_get_mesh(diffusion * a)
+mesh * diffusion_get_mesh(const diffusion * a)
 {
   return a->m;
 }
 
-double * diffusion_get_new_coordinates(diffusion * a)
+double * diffusion_get_new_coordinates(const diffusion * a)
 {
   return a->new_coordinates;
 }
@@ -73,7 +73,7 @@ double diffusion_get_point_size(const diffusion * a)
   return a->point_size;
 }
 
-double * diffusion_get_values(diffusion * a)
+double * diffusion_get_values(const diffusion * a)
 {
   return a->u;
 }
@@ -93,7 +93,7 @@ int diffusion_get_total_colors(const diffusion * a)
   return a->total_colors;
 }
 
-painter diffusion_get_paint(diffusion * a)
+painter diffusion_get_paint(const diffusion * a)
 {
   return a->paint;
 }
@@ -133,7 +133,7 @@ struct colored_2d_point
   painter paint;
 };
 
-void colored_2d_point_draw(cairo_t * cr, colored_2d_point * p)
+void colored_2d_point_draw(cairo_t * cr, const colored_2d_point * p)
 {
   int ind;
   
@@ -188,7 +188,8 @@ void colored_2d_zero_cochain_cairo_draw(
   }
 }
 
-void diffusion_draw(cairo_t * cr, double width, double height, diffusion * a)
+void
+diffusion_draw(cairo_t * cr, double width, double height, const diffusion * a)
 {
   int i;
   double * u;
@@ -210,7 +211,8 @@ void diffusion_draw(cairo_t * cr, double width, double height, diffusion * a)
   colored_2d_zero_cochain_cairo_draw(cr, &c);
 }
 
-void diffusion_draw_void(cairo_t * cr, double width, double height, void * a)
+void
+diffusion_draw_void(cairo_t * cr, double width, double height, const void * a)
 {
-  diffusion_draw(cr, width, height, (diffusion *) a);
+  diffusion_draw(cr, width, height, (const diffusion *) a);
 }

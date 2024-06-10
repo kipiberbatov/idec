@@ -5,7 +5,7 @@ void pdf_draw(
   double width,
   double height,
   void * a,
-  void (*draw)(cairo_t *, double, double, void *))
+  void (*draw)(cairo_t *, double, double, const void *))
 {
   cairo_save(cr);
   cairo_set_source_rgb(cr, 1, 1, 1);
