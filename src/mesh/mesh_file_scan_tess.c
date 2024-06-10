@@ -279,6 +279,12 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   }
   mesh_file_scan_tess_set_cf_a4(cf->a4, cn[1], cn[2], faces_total_edges,
     edges_to_nodes, faces_number_of_sides, faces_to_subfaces);
+  m->c = (int *) malloc(sizeof(int) * m_c_size);
+  if (errno)
+  {
+    fprintf(stderr, "%s:%d: cannot allocate memory\n", __FILE__, __LINE__);
+    goto clean_on_failure;
+  }
   free(faces_to_subfaces);
   free(faces_number_of_sides);
   free(edges_to_nodes);
@@ -289,14 +295,15 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   m->coord = coordinates;
   m->cn = cn;
   m_c_size = int_array_total_sum(d + 1, cn);
-  m->c = (int *) malloc(sizeof(int) * m_c_size);
   mesh_c(m->c, d, cn);
   m->cf = cf;
+  m->fc = NULL;
   
   return m;
   
   /* cleaning if an error occurs */
 clean_on_failure:
+  free(m->c);
   jagged4_free(cf);
   free(faces_to_subfaces);
   free(faces_number_of_sides);

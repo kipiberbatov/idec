@@ -6,6 +6,7 @@ demo_mesh:\
   demo_mesh_two_triangles\
   demo_mesh_triangle_and_square\
   demo_mesh_pentagon\
+  demo_mesh_2d_10_grains\
   demo_mesh_square_pyramid\
   | demo/mesh
 
@@ -1256,6 +1257,17 @@ demo/mesh/mesh_pentagon_forman_hodge_corrected.txt:\
 	  demo/mesh/mesh_pentagon_forman_hodge_coeff.txt | demo/mesh
 	$^ > $@
 
+DEMO_MESH_2d_10_GRAINS := demo/mesh/mesh_2d_10_grains_forman.txt
+
+.PHONY: demo_mesh_2d_10_grains
+demo_mesh_2d_10_grains: $(DEMO_MESH_2d_10_GRAINS) | demo/mesh
+
+demo/mesh/mesh_2d_10_grains_forman.txt:\
+	  bin/forman$(.EXE)\
+	  data/mesh/mesh_2d_10_grains.tess\
+	  | demo/mesh
+	$< --tess < $(word 2, $^) > $@
+
 DEMO_MESH_SQUARE := \
   demo/mesh/mesh_square_2.txt\
   demo/mesh/mesh_square_4.txt\
@@ -1722,6 +1734,7 @@ DEMO_MESH_BRICK_REGULAR_ALL :=\
   $(DEMO_MESH_TRIANGLE_AND_SQUARE)\
   $(DEMO_MESH_SQUARE)\
   $(DEMO_MESH_PENTAGON)\
+  $(DEMO_MESH_2d_10_GRAINS)\
   $(DEMO_MESH_BRICK_REGULAR_3)\
   $(DEMO_MESH_SQUARE_PYRAMID)\
   $(DEMO_MESH_BRICK_REGULAR_4)\
