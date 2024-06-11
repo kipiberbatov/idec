@@ -50,7 +50,7 @@
 
 \begin{definition}
   Let $n$ be a positive integer and $T$ be a type (e.g., integers)
-  A jagged array of order $n$ is defined recursively as follows:
+  A \textbf{jagged} array of order $n$ is defined recursively as follows:
   \begin{enumerate}
     \item
       jagged array of order $0$ is an object of type $T$;
@@ -66,18 +66,21 @@
       $()$ are $(0, 1, 2)$ jagged arrays of order $1$ (ordinary arrays);
     \item
       $((0, 1, 2), (3), ())$ is a jagged array of order $2$
-      (note that its last elements is the empty array of order $1$);
+      (note that its last element is the empty array of order $1$);
     \item
       $(((0, 1, 2), (3)),())$ is a jagged array of order $3$
-      (note that its last elements is the empty array of order $2$);
+      (note that its last element is the empty array of order $2$);
   \end{itemize}
 \end{example}
 
 \begin{definition}
   Let $n > 0$.
   A jagged array of order $n$ is represented in memory by a structure of $n + 1$
-  fields as follows: an integer $a_0$, $n - 1$ pointers to (arrays of) integers
-  $a_1, ..., a_{n - 1}$, a pointer $a_n$ to an array of type $T$.
+  fields as follows:
+  an integer $a_0$,
+  $n - 1$ pointers $a_1, ..., a_{n - 1}$ to integer
+  (any of them points to the  $0$-th element of an array of integers),
+  a pointer $a_n$ to the $0$-th element of an array of type $T$.
   
   The fields $a_0, ..., a_{n - 1}$ represent the internal structure,
   while $a_n$ holds the values.
@@ -89,7 +92,8 @@
   For $i = 0, ..., a_0 - 1$, $j  = 0, ..., a_1[i] - 1$,
   $a_2[a_1[0] + ... + a_1[i - 1] + j]$
   is the number of its elements of order $n - 3$ in $x[i][j]$.
-  Continue in the same manner, $a[n]$ represents the flattened version of $x$.
+  Continue in the same manner for higher orders.
+  Finally, $a_n$ represents the flattened version of $x$.
 \end{definition}
 
 \begin{example}
@@ -107,5 +111,195 @@
     \end{split}
   \end{equation}
 \end{example}
+
+\section{Meshes}
+
+\begin{definition}
+  Let $d$ be a natural number.
+  A \textbf{mesh} of dimension $d$ is a finite set of polytopes of dimension at
+  most $d$ such that:
+  \begin{itemize}
+    \item
+      if $X$ is an element of $M$, then all subfaces of $X$ are also in $M$;
+    \item
+      the intersection of elements of $M$ is a finite (possibly empty) union of
+      elements of $M$.
+  \end{itemize}
+  For an integer $p \in [0, d]$, the set of elements (polytopes) of dimension
+  $p$ in $M$ is denoted by $M_p$.
+\end{definition}
+
+\begin{definition}
+  A mesh is represented in memory by its topology and geometry.
+  The topology is represented using:
+  \begin{itemize}
+    \item
+      integer \emph{dim} ($d$) storing mesh's dimension;
+    \item
+      array \emph{cn} storing the number of $p$-cells for $p = 0, ..., d$; 
+    \item
+      a jagged array \emph{cf} of order $4$ storing its topology.
+      More precisely, if $0 < p \leq d$, $0 \leq q < p$,
+      $0 \leq i < {\rm cn}[p]$, then ${\rm cf}[p][q][i]$ stores the indices of
+      all $q$-dimensional subfaces of the $i$-th $p$-cell.
+  \end{itemize}
+  For a mesh of flat polytopes, the topology is represented by:
+  \begin{itemize}
+    \item
+      integer \emph{dim\_embedded} ($d$) storing mesh's embedding dimension;
+    \item
+      array of floating point numbers \emph{coord} of length
+      ${\rm cn}[0] * {\rm dim\_embedded}$ storing coordinates of the nodes
+      (${\rm cn}[0]$ nodes of dimension $\mathbb{R}^{{\rm cn}[0]}$).
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  Consider two triangles dividing a square.
+  Representation of the topology: ${\rm dim} = 2$, ${\rm cn} = \{4, 5, 2\}$,
+  \begin{equation}
+    {\rm cf} =
+    (
+      (
+        ((0, 1), (1, 2), (2, 3), (3, 0), (0, 2)),
+      ),
+      (
+        ((0, 1, 2), (0, 1, 3)),
+        ((0, 1, 4), (2, 3, 4))
+      )
+    ).
+  \end{equation}
+  Representation of the geometry: ${\rm dim\_embedded} = 2$,
+  ${\rm coord} = (-1, -1, 1, -1, 1, 1, 1, -1)$
+  (the latter represents the nodes with coordinates
+  $(-1, -1), (1, -1), (1, 1), (1, -1)$ respectively).
+\end{example}
+
+\section{Combinatorial differential forms and Forman decomposition}
+
+\begin{definition}
+  Let $d \in \mathbb{N}$, $M$ be a mesh of dimension $d$, $0 \leq p_f \leq d$.
+  A \textbf{combinatorial differential form} of dimension $p_f$-form on $M$
+  is a linear map
+  \begin{equation}
+    \omega \colon C_\bullet M \to C_\bullet M
+  \end{equation}
+  such that for any $p \in [p_f, d]$, $c_p \in M_p$, $\omega(c_p)$ is a linear
+  combination of the $(p - p_f)$-subfaces of $M$.
+
+  The space of all $p_f$-forms on $M$ is denoted by $\Omega^{p_f} M$.
+  The space of all combinatorial differential forms is the direct sum
+  \begin{equation}
+    \Omega^\bullet M := \bigoplus_{p_f = 0}^{d} \Omega^{p_f} M.
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  Let $d \in \mathbb{N}$, $M$ be a mesh of dimension $d$ with boundary operator
+  $\partial$.
+  The \textbf{discrete differential} on $M$ is the linear map
+  \begin{equation}
+    D \colon \Omega^\bullet \to \Omega^\bullet
+  \end{equation}
+  which maps a $p$-form $\omega$ to a $(p + 1)$-form by the formula
+  \begin{equation}
+    D \omega := \omega \circ \partial - (-1)^p \partial \circ \omega.
+  \end{equation}
+\end{definition}
+
+\begin{proposition}
+  Let $d \in \mathbb{N}$, $M$ be a mesh of dimension $d$ with boundary operator
+  $\partial$, $D$ is the discrete differential on $M$.
+  Then $(\Omega^\bullet M, D)$ is a cochain complex, i.e.,
+  \begin{equation}
+    D^2 = 0.
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+  A straightforward computation using the fact that $\partial^2 = 0$.
+  Indeed, let $\omega \in \Omega^p M$.
+  Then
+  \begin{equation}
+    D^2(\omega)
+    = D(D \omega)
+    = D(\omega \circ \partial - (-1)^p \partial \circ \omega)
+    = \omega \circ \partial \circ \partial
+      - (-1)^{p + 1} \partial \circ \omega \circ \partial
+      - (-1)^p \partial \circ \omega \circ \partial
+      - (-1)^p (-1)^{p + 1} \partial \circ \partial \circ \omega
+    = 0.
+  \end{equation}
+\end{proof}
+
+\begin{definition}
+  Let $d \in \mathbb{N}$, $M$ be a mesh of dimension $d$.
+  Consider a mesh $K$ constructed as follows.
+  The nodes of $K$ are the centroids of the cells of $M$.
+  (In general, the topology of $K$ can always be constructed while the geometry
+  is tricky.
+  For simplicity we may assume that all the cells of $M$ are convex,
+  although for non-simplicial or non-brick meshes in dimensions $3$ and above
+  the resulting mesh may contain non-flat polytopes.)
+
+  For $p_f \in [0, d]$, a $p_f$-cell of $K$ is constructed as follows.
+  Let $p \in [p_f, d]$, $s = p - p_f$ consider two cells
+  \begin{equation}
+    c(p, i) \succeq c(s, l)
+  \end{equation}
+  Then a $p_f$-cell is such a pair $(c(p, i), c(s, l))$.
+  If $q_f \in [0, p_f]$, $q \in [q_f, d]$, $r = q - q_f$,
+  \begin{equation}
+    c(q, j) \succeq c(r, k),
+  \end{equation}
+  then $(c(q, j), c(r, k))$ is a subface of $(c(p, i), c(s, l))$ if
+  \begin{equation}
+    c(p, i) \succeq c(q, j) \succeq c(r, k) \succeq c(s, l).
+  \end{equation}
+  The constructed space is a mesh which we call the \textbf{Forman subdivision}.
+\end{definition}
+
+\begin{definition}
+  Let $d \in \mathbb{N}$, $M$ be a mesh of dimension $d$, $K$ be its Forman
+  subdivision.
+  Let $\varepsilon_M$ be the relative orientation on $M$.
+  We construct the relative orientation $\varepsilon_K$ as follows.
+  Let $p_f \in [1, d]$ $p \in [p_f, d]$, $s = p - p_f$ and we have the
+  $p_f$-cell $c_K(p_f, i_f) = (c(p, i), c(s, l))$ on $K$.
+  Its hypefaces come in two forms.
+  \begin{enumerate}
+    \item
+      $c_K(p_f - 1, j_f) = (c(p - 1, j), c(s, l))$, where
+      $c(p, i) \succ c(p - 1, j) \succeq c(s, l)$.
+      In this case
+      \begin{equation}
+        \varepsilon_K(c_K(p_f, i_f), c_K(p_f - 1, j_f))
+        = \varepsilon_M(c_M(p, i), c_M(p - 1, j))
+      \end{equation}
+    \item
+      $c_K(p_f - 1, j_f) = (c(p, i), c(s + 1, k))$, where
+      $c(p, i) \succeq c(s + 1, k) \succ c(s, l)$.
+      In this case
+      \begin{equation}
+        \varepsilon_K(c_K(p_f, i_f), c_K(p_f - 1, j_f))
+        = (-1)^{p_f} \varepsilon_M(c_M(s + 1, k), c_M(s, l)).
+      \end{equation}
+  \end{enumerate}
+\end{definition}
+
+\begin{theorem}
+  Let $d \in \mathbb{N}$, $M$ be a mesh of dimension $d$,
+  $\varepsilon_M$ be a relative orientation on $M$ with corresponding boundary
+  operator $\partial_M$ and discrete differential $D_M$.
+  Let $K$ be the Forman subdivision of $M$,
+  $\varepsilon_K$ be the orientation on $K$ constructed above,
+  $d_K$ be the corresponding coboundary operator on $K$.
+  Then
+  \begin{equation}
+    (\Omega^p M, D_M) \cong (C^p K, d_K).
+  \end{equation}
+  with the isomorphism being the mapping of the basis forms to basis cochains
+  introduced in the construction of $K$.
+\end{theorem}
 
 \end{document}
