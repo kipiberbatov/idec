@@ -15,19 +15,19 @@ MKDIR := mkdir
 ifeq ($(OS), Windows_NT)
   .EXE := .exe
   .DLL := .dll
-  .LIB := .lib 
+  .LIB := .lib
   .OBJ := .obj
 else
   .EXE :=
   .LIB := .a
   .OBJ := .o
   UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S), Linux)
-  .DLL := .so
-endif
-ifeq ($(UNAME_S), Darwin)
-  .DLL := .dylib
-endif
+  ifeq ($(UNAME_S), Linux)
+    .DLL := .so
+  endif
+  ifeq ($(UNAME_S), Darwin)
+    .DLL := .dylib
+  endif
 endif
 
 ########################### high-level dependencies ############################
