@@ -475,6 +475,8 @@ shared_clean: build_shared_clean
 .PHONY: shared_distclean
 shared_distclean: lib_shared_clean #bin_shared_clean demo_shared_clean
 
+-include make/docs/latex.mk
+
 # all
 .PHONY: build_clean
 build_clean:

@@ -1,0 +1,111 @@
+\documentclass[fleqn]{article}
+\usepackage[margin = 0.6in, paper = a4paper]{geometry}
+\usepackage[multiple]{footmisc}
+\usepackage{authblk}
+\usepackage{xcolor}
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bookmark}
+\usepackage{hyperref}
+\hypersetup{
+  pdfauthor = {Kiprian Berbatov},
+  pdftitle = {IDEC Documentation},
+  pdfsubject = {Discrete calculus},
+  pdfkeywords = {discrete, microstructure, calculus, geometry},
+  pdfcreator = {pdflatex},
+  pdfproducer = {Latex2e with hyperref},
+  colorlinks = true,
+  linkcolor = blue,
+  citecolor = green,
+  urlcolor = cyan,
+  bookmarksnumbered = true
+}
+\usepackage[nameinlink]{cleveref}
+
+\counterwithin{equation}{section}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{discussion}[theorem]{}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\renewcommand{\thefootnote}{\arabic{footnote}}
+
+\title{IDEC documentation}
+\author{Kiprian Berbatov}
+\date{June 11, 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Jagged arrays}
+
+\begin{definition}
+  Let $n$ be a positive integer and $T$ be a type (e.g., integers)
+  A jagged array of order $n$ is defined recursively as follows:
+  \begin{enumerate}
+    \item
+      jagged array of order $0$ is an object of type $T$;
+    \item
+      for $n > 0$, jagged array of order $n$ is a finite (possibly empty)
+      sequence of jagged arrays of order $n - 1$.
+  \end{enumerate}
+\end{definition}
+
+\begin{example}
+  \begin{itemize}
+    \item
+      $()$ are $(0, 1, 2)$ jagged arrays of order $1$ (ordinary arrays);
+    \item
+      $((0, 1, 2), (3), ())$ is a jagged array of order $2$
+      (note that its last elements is the empty array of order $1$);
+    \item
+      $(((0, 1, 2), (3)),())$ is a jagged array of order $3$
+      (note that its last elements is the empty array of order $2$);
+  \end{itemize}
+\end{example}
+
+\begin{definition}
+  Let $n > 0$.
+  A jagged array of order $n$ is represented in memory by a structure of $n + 1$
+  fields as follows: an integer $a_0$, $n - 1$ pointers to (arrays of) integers
+  $a_1, ..., a_{n - 1}$, a pointer $a_n$ to an array of type $T$.
+  
+  The fields $a_0, ..., a_{n - 1}$ represent the internal structure,
+  while $a_n$ holds the values.
+  More precisely, let $x$ be a jagged array of order $n$.
+  $a_0$ is the number of its elements of order $n - 1$.
+  For $i = 0, ..., a_0 - 1$,
+  $a_1[i]$ represents the number of elements of order $n - 2$ in $x[i]$.
+  There are totally $b_2 = a_1[0] + ... a_1[a_0 - 1]$ elements of order $n - 2$.
+  For $i = 0, ..., a_0 - 1$, $j  = 0, ..., a_1[i] - 1$,
+  $a_2[a_1[0] + ... + a_1[i - 1] + j]$
+  is the number of its elements of order $n - 3$ in $x[i][j]$.
+  Continue in the same manner, $a[n]$ represents the flattened version of $x$.
+\end{definition}
+
+\begin{example}
+  Consider the jagged array of order $3$
+  \begin{equation}
+    x = (((0, 1, 2), (3, 4)), (), (()), ((5, 6), ())).
+  \end{equation}
+  Then $x$ has the following representation:
+  \begin{equation}
+    \begin{split}
+      & x.a0 = 4 \\
+      & x.a1 = (2, 0, 1, 2) \\
+      & x.a2 = (3, 2, 0, 2, 0) \\
+      & x.a3 = (0, 1, 2, 3, 4 , 5, 6)
+    \end{split}
+  \end{equation}
+\end{example}
+
+\end{document}
