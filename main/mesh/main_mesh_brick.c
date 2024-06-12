@@ -20,7 +20,7 @@ static void mesh_brick_file_print_raw(
   mesh_file_print(out, m, "--raw");
   
   for (p = 1; p <= d; ++p)
-    m_bd_sizes[p - 1] = mesh_boundary_nzmax(m, p);
+    m_bd_sizes[p - 1] = mesh_boundary_nonzero_max(m, p);
   
   m_bd = mesh_brick_boundary(m->dim, n, m_bd_sizes);
   if (errno)

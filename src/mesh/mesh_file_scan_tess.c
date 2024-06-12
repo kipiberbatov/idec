@@ -279,6 +279,7 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   }
   mesh_file_scan_tess_set_cf_a4(cf->a4, cn[1], cn[2], faces_total_edges,
     edges_to_nodes, faces_number_of_sides, faces_to_subfaces);
+  m_c_size = int_array_total_sum(d + 1, cn);
   m->c = (int *) malloc(sizeof(int) * m_c_size);
   if (errno)
   {
@@ -294,7 +295,6 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   m->dim_embedded = d;
   m->coord = coordinates;
   m->cn = cn;
-  m_c_size = int_array_total_sum(d + 1, cn);
   mesh_c(m->c, d, cn);
   m->cf = cf;
   m->fc = NULL;

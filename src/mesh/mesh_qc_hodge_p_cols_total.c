@@ -3,10 +3,11 @@
 static void mesh_qc_hodge_p_cols_total_d(
   int * m_hodge_p_cols_total, const mesh * m)
 {
-  int i, m_cn_d, d_exp;
+  int d, d_exp, i, m_cn_d;
   
-  m_cn_d = m->cn[m->dim];
-  d_exp = 1 << m->dim;
+  d = m->dim;
+  m_cn_d = m->cn[d];
+  d_exp = 1 << d;
   for (i = 0; i <= m_cn_d; ++i)
     m_hodge_p_cols_total[i] = d_exp * i;
 }

@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* #include "array_indexed.h" */
-
 #include "double.h"
 #include "int.h"
 #include "mesh_qc.h"
@@ -48,19 +46,9 @@ static vector_sparse * mesh_qc_metric_p_i(
   double_array_assign_constant(
     m_metric_p_i->values, m_metric_p_i->nonzero_max, 1 / denominator_p_i);
   
-  // vector_sparse_rearange(m_metric_p_i);
-  // if (errno)
-  // {
-  //   fprintf(stderr,
-  //           "mesh_qc_metric_p_i - cannot rearange m_metric[%d][%d]\n", p, i);
-  //   goto m_metric_p_i_values_free;
-  // }
-  
   return m_metric_p_i;
   
   /* cleaning if an error occurs */
-// m_metric_p_i_values_free:
-//   free(m_metric_p_i->values);
 m_metric_p_i_positions_free:
   free(m_metric_p_i->positions);
 m_metric_p_i_free:

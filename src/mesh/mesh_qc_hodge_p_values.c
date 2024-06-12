@@ -4,13 +4,14 @@ static void mesh_qc_hodge_p_values_d(
   double * m_hodge_p_values, const mesh * m,
   const double * m_inner_q, const double * m_coeff_q)
 {
-  int d_exp, i, ind, j, j_loc, m_cn_d;
+  int d, d_exp, i, ind, j, j_loc, m_cn_d;
   jagged1 m_cf_d_0_i;
   jagged2 m_cf_d_0;
   
-  d_exp = 1 << m->dim;
-  m_cn_d = m->cn[m->dim];
-  mesh_cf_part2(&m_cf_d_0, m, m->dim, 0);
+  d = m->dim;
+  d_exp = 1 << d;
+  m_cn_d = m->cn[d];
+  mesh_cf_part2(&m_cf_d_0, m, d, 0);
   
   ind = 0;
   for (i = 0; i < m_cn_d; ++i)
@@ -29,13 +30,14 @@ static void mesh_qc_hodge_p_values_0(
   double * m_hodge_p_values, const mesh * m,
   const double * m_inner_q, const double * m_coeff_q)
 {
-  int d_exp, i, ind, k, k_loc, m_cn_0;
+  int d, d_exp, i, ind, k, k_loc, m_cn_0;
   jagged1 m_fc_0_d_i;
   jagged2 m_fc_0_d;
   
-  d_exp = 1 << m->dim;
+  d = m->dim;
+  d_exp = 1 << d;
   m_cn_0 = m->cn[0];
-  mesh_fc_part2(&m_fc_0_d, m, 0, m->dim);
+  mesh_fc_part2(&m_fc_0_d, m, 0, d);
   
   ind = 0;
   for (i = 0; i < m_cn_0; ++i)
@@ -54,19 +56,19 @@ static void mesh_qc_hodge_p_values_nontrivial(
   double * m_hodge_p_values, const mesh * m, matrix_sparse ** m_bd, int p,
   const double * m_inner_q, const double * m_coeff_q)
 {
-  int d_exp, i, ind, j, j_loc, k, k_loc, m_cn_p, m_dim, node, p_exp, q;
+  int d, d_exp, i, ind, j, j_loc, k, k_loc, m_cn_p, node, p_exp, q;
   int nodes[8], perp[8]; /* #nodes(quasi_cube) = 2^3 = 8 */
   double sign;
   jagged1 m_fc_p_d_i;
   jagged2 m_cf_d_q, m_cf_p_0, m_cf_q_0, m_fc_p_d;
   
-  m_dim = m->dim;
-  d_exp = 1 << m_dim;
+  d = m->dim;
+  d_exp = 1 << d;
   m_cn_p = m->cn[p];
   p_exp = 1 << p;
-  q = m_dim - p;
-  mesh_fc_part2(&m_fc_p_d, m, p, m_dim);
-  mesh_cf_part2(&m_cf_d_q, m, m_dim, q);
+  q = d - p;
+  mesh_fc_part2(&m_fc_p_d, m, p, d);
+  mesh_cf_part2(&m_cf_d_q, m, d, q);
   mesh_cf_part2(&m_cf_p_0, m, p, 0);
   mesh_cf_part2(&m_cf_q_0, m, q, 0);
   
@@ -82,7 +84,7 @@ static void mesh_qc_hodge_p_values_nontrivial(
       {
         j = perp[j_loc];
         node = nodes[j_loc];
-        sign = mesh_qc_cup_product_sign(m_bd, node, p, i, q, j, m_dim, k);
+        sign = mesh_qc_cup_product_sign(m_bd, node, p, i, q, j, d, k);
         m_hodge_p_values[ind] = (sign / d_exp) * (m_coeff_q[j] / m_inner_q[j]);
         ++ind;
       }

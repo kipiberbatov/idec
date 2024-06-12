@@ -151,40 +151,47 @@ static matrix_sparse * forman_boundary_single(
   m_forman_boundary_p_f = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   if (errno)
   {
-    fprintf(stderr,
-      "forman_boundary_single: "
-      "cannot allocate memory for m_forman_boundary_p_f\n");
+    fputs("Runtime error! Stack trace:\n", stderr);
+    fputs("  forman_boundary_single: "
+      "cannot allocate memory for m_forman_boundary_p_f\n", stderr);
     goto end;
   }
-  m_forman_boundary_p_f_nonzero_max = mesh_boundary_nzmax(m_forman, p_f);
+  m_forman_boundary_p_f_nonzero_max = mesh_boundary_nonzero_max(m_forman, p_f);
   m_forman_boundary_p_f->rows = m_forman_cn[p_f - 1];
   m_forman_boundary_p_f->cols = m_forman_cn[p_f];
   
-  m_forman_boundary_p_f->cols_total = mesh_boundary_p(m_forman, p_f);
+  m_forman_boundary_p_f->cols_total
+  = (int *) malloc((m_forman_boundary_p_f->cols + 1) * sizeof(int));
   if (errno)
   {
-    fprintf(stderr,
-      "forman_boundary_single: "
-      "cannot calculate m_forman_boundary_p_f->p\n");
+    fputs("Runtime error! Stack trace:\n", stderr);
+    fputs("  forman_boundary_single: "
+      "cannot allocate memory for m_forman_boundary_p_f->cols_total\n",
+      stderr);
     goto m_forman_boundary_p_f_free;
   }
+  mesh_boundary_cols_total(m_forman_boundary_p_f->cols_total, m_forman, p_f);
   
-  m_forman_boundary_p_f->row_indices = mesh_boundary_i(m_forman, p_f);
+  m_forman_boundary_p_f->row_indices
+  = (int *) malloc(sizeof(int) * m_forman_boundary_p_f_nonzero_max);
   if (errno)
   {
-    fprintf(stderr,
-      "forman_boundary_single: "
-      "cannot calculate m_forman_boundary_p_f->i\n");
+    fputs("Runtime error! Stack trace:\n", stderr);
+    fputs("  forman_boundary_single: "
+      "cannot allocate memory for m_forman_boundary_p_f->row_indices\n",
+      stderr);
     goto m_forman_boundary_p_f_p_free;
   }
+  mesh_boundary_row_indices(m_forman_boundary_p_f->row_indices, m_forman, p_f);
   
   m_forman_boundary_p_f->values
   = (double *) malloc(sizeof(double) * m_forman_boundary_p_f_nonzero_max);
   if (errno)
   {
-    fprintf(stderr,
-      "forman_boundary_single: "
-      "cannot allocate memory for m_forman_boundary_p_f->values\n");
+    fputs("Runtime error! Stack trace:\n", stderr);
+    fputs("  forman_boundary_single: "
+      "cannot allocate memory for m_forman_boundary_p_f->values\n",
+      stderr);
     goto m_forman_boundary_p_f_i_free;
   }
   if (p_f == 1)

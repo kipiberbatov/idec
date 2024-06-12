@@ -63,9 +63,9 @@ jagged1 * mesh_almost_boundary_cells(
   const mesh * m, const jagged1 * m_bd_cells, int p);
 
 /******************************* mesh_boundary ********************************/
-int mesh_boundary_nzmax(const mesh * m, int p);
-int * mesh_boundary_p(const mesh * m, int p);
-int * mesh_boundary_i(const mesh * m, int p);
+int mesh_boundary_nonzero_max(const mesh * m, int p);
+void mesh_boundary_cols_total(int * m_bd_cols_total, const mesh * m, int p);
+void mesh_boundary_row_indices(int * m_bd_row_indices, const mesh * m, int p);
 matrix_sparse * mesh_boundary_single(const mesh * m, int p);
 matrix_sparse ** mesh_boundary(const mesh * m);
 
