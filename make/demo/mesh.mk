@@ -1718,7 +1718,9 @@ DEMO_MESH_BRICK_REGULAR_4D := demo_mesh_brick_regular_4d_2
 demo_mesh_brick_regular_4d: $(DEMO_MESH_BRICK_REGULAR_4D) | demo/mesh
 
 # d = 4, n = 2
-DEMO_MESH_BRICK_REGULAR_4D_2 := demo/mesh/mesh_brick_4d_2.txt
+DEMO_MESH_BRICK_REGULAR_4D_2 :=\
+  demo/mesh/mesh_brick_4d_2.txt\
+  demo/mesh/mesh_brick_4d_2_forman.txt
 
 .PHONY: demo_mesh_brick_regular_4d_2
 demo_mesh_brick_regular_4d_2: $(DEMO_MESH_BRICK_REGULAR_4D_2) | demo/mesh
@@ -1726,9 +1728,47 @@ demo_mesh_brick_regular_4d_2: $(DEMO_MESH_BRICK_REGULAR_4D_2) | demo/mesh
 demo/mesh/mesh_brick_4d_2.txt: bin/mesh_brick_regular$(.EXE) | demo/mesh
 	$< 4 2 > $@
 
+demo/mesh/mesh_brick_4d_2_forman.txt:\
+	  bin/forman_boundary$(.EXE)\
+	  demo/mesh/mesh_brick_4d_2.txt | demo/mesh
+	$< < $(word 2, $^) > $@
+
+# dimensions 8, 9, 10
+DEMO_MESH_BRICK_REGULAR_HIGH_DIMENSIONS :=\
+  demo/mesh/mesh_brick_8d_1.txt\
+  demo/mesh/mesh_brick_8d_2.txt\
+  demo/mesh/mesh_brick_9d_1.txt\
+  demo/mesh/mesh_brick_9d_2.txt\
+  demo/mesh/mesh_brick_10d_1.txt\
+  demo/mesh/mesh_brick_8d_1_forman.txt\
+
+.PHONY: demo_mesh_brick_regular_high_dimensions
+demo_mesh_brick_regular_high_dimensions:\
+  $(DEMO_MESH_BRICK_REGULAR_HIGH_DIMENSIONS) | demo/mesh
+
+demo/mesh/mesh_brick_8d_1.txt: bin/mesh_brick_regular$(.EXE) | demo/mesh
+	$< 8 1 > $@
+
+demo/mesh/mesh_brick_8d_2.txt: bin/mesh_brick_regular$(.EXE) | demo/mesh
+	$< 8 2 > $@
+
+demo/mesh/mesh_brick_9d_1.txt: bin/mesh_brick_regular$(.EXE) | demo/mesh
+	$< 9 1 > $@
+
+demo/mesh/mesh_brick_9d_2.txt: bin/mesh_brick_regular$(.EXE) | demo/mesh
+	$< 9 2 > $@
+
+demo/mesh/mesh_brick_10d_1.txt: bin/mesh_brick_regular$(.EXE) | demo/mesh
+	$< 10 1 > $@
+
+demo/mesh/mesh_brick_8d_1_forman.txt:\
+	  bin/forman_boundary$(.EXE)\
+	  demo/mesh/mesh_brick_8d_1.txt | demo/mesh
+	$< < $(word 2, $^) > $@
+
 DEMO_MESH_BRICK_REGULAR_4 := $(DEMO_MESH_BRICK_REGULAR_4D_2)
 
-DEMO_MESH_BRICK_REGULAR_ALL :=\
+DEMO_MESH_ALL :=\
   $(DEMO_MESH_BRICK_REGULAR_2)\
   $(DEMO_MESH_TWO_TRIANGLES)\
   $(DEMO_MESH_TRIANGLE_AND_SQUARE)\
@@ -1738,8 +1778,9 @@ DEMO_MESH_BRICK_REGULAR_ALL :=\
   $(DEMO_MESH_BRICK_REGULAR_3)\
   $(DEMO_MESH_SQUARE_PYRAMID)\
   $(DEMO_MESH_BRICK_REGULAR_4)\
+  $(DEMO_MESH_BRICK_REGULAR_HIGH_DIMENSIONS)\
 
 .PHONY: demo_mesh_clean
 demo_mesh_clean:
-	-$(RM) $(DEMO_MESH_BRICK_REGULAR_ALL) $(DEMO_MESH_TWO_TRIANGLES)
+	-$(RM) $(DEMO_MESH_ALL)
 	-$(RM) -r demo/mesh 
