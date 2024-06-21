@@ -1,4 +1,4 @@
-# idec
+# IDEC
 Intrinsic Discrete Exterior Calculus
 
 Software library implementing the operations in [https://arxiv.org/abs/2201.03704](https://arxiv.org/abs/2201.03704)
@@ -11,7 +11,7 @@ Software library implementing the operations in [https://arxiv.org/abs/2201.0370
 - graphics: examples using [Cairo](https://www.cairographics.org) and [GTK 3](https://docs.gtk.org/gtk3/)
 - shared: inputs that are dynamically loaded during execution; they contain input data for numerical examples
 
-## Perequisites
+## Prerequisites
 
 You need the following programs and libraries installed on your system:
 - git
