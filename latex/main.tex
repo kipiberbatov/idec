@@ -302,4 +302,190 @@
   introduced in the construction of $K$.
 \end{theorem}
 
+\section{Approximating with vector fields with 1-cochains}
+
+\begin{definition}
+  Let $m, n \in \mathbb{N}$, $A$ be a real $m \times n$ matrix.
+  An $n \times m$ matrix $B$ is called \textbf{Moore-Penrose inverse} or
+  \textbf{pseudo-inverse} if
+  \begin{subequations}
+    \begin{align}
+      A B A & = A, \\
+      B A B & = B, \\
+      (A B)^T & = A B, \\
+      (B A)^T & = B A.
+    \end{align}
+  \end{subequations}
+\end{definition}
+
+\begin{theorem}
+  Let $m, n \in \mathbb{N}$, $A$ be a real $m \times n$ matrix.
+  Then $A$ has a unique Moore-Penrose inverse, denoted by $A^*$.
+\end{theorem}
+
+\begin{remark}
+  If the matrix $A$ is of full rank there exists a closed formula for $A^*$.
+  \begin{enumerate}
+    \item
+      If $A$ is a square matrix with full rank, i.e., an invertible one, then
+      $A^* = A^{-1}$.
+    \item
+      If $m > n$ and $A$ is an $m \times n$ matrix of full rank, then its
+      columns are linearly independent which means that $A^T A$ is
+      symmetric and positive definite and hence invertible.
+      (Its inverse $(A^T A)^{-1}$ is also symmetric and positive definite.)
+      It is then easy to check that
+      \begin{equation}
+        B := (A^T A)^{-1} A^T
+      \end{equation}
+      is the Moore-Penrose inverse of $A$.
+      Indeed, since obviously $B$ is a left inverse of $A$, and 
+      \begin{subequations}
+        \begin{align}
+          & A B A && = A (B A) = A I_n = A, \\
+          & B A B && = (B A) B = I_n B = B, \\
+          & (A B)^T && = (A (A^T A)^{-1} A^T)^T
+            = (A^T)^T ((A^T A)^{-1})^T A^T = A (A^T A)^{-1} A^T = A B, \\
+          & (B A)^T && = I_n^T = I_n = B A.
+        \end{align}
+      \end{subequations}
+    \item
+      If $m < n$ and $A$ is an $m \times n$ matrix of full rank, then an
+      analogous reasoning to the previous point shows that
+      \begin{equation}
+        A^* = A^T (A A^T)^{-1}.
+      \end{equation}
+  \end{enumerate}
+\end{remark}
+
+\begin{definition}
+  Let $d\in \mathbb{N}$ and $M$ be a mesh of dimension $d$.
+  We say that $M$ is \textbf{flat} if the following conditions are satisfied:
+  \begin{enumerate}
+    \item
+      it is pure, i.e., all of its cells lie within some $d$-cell;
+    \item
+      all its cells are flat (but possibly degenerate) polytopes;
+    \item
+      it can be embedded in $\mathbb{R}^d$.
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  Let:
+  \begin{enumerate}
+    \item
+      $d \in \mathbb{N},\ d \geq 1$;
+    \item
+      $K$ be a flat mesh of dimension $d$
+      (with a chosen embeddeding in $\mathbb{R}^d$);
+    \item
+      $\epsilon$ be a relative orientation on $K$;
+    \item
+      $\mathcal{N}_i$ be a node in $K$ connected to $n > 0$ edges;
+    \item
+      $\mathcal{E}_{j_0}, ..., \mathcal{E}_{j_{n - 1}}$ be all the edges
+      containing $\mathcal{N}_i$ as a node;
+    \item
+      $\mathcal{N}_{i_0}, ..., \mathcal{N}_{i_{n - 1}}$ be the other than
+      other $\mathcal{N}_i$ of
+      $\mathcal{E}_{j_0}, ..., \mathcal{E}_{j_{n - 1}}$ respectively.
+  \end{enumerate}
+  We define the \textbf{node matrix} $\mathcal{L}_{\mathcal{N}_i}$ of
+  $\mathcal{N}_i$ by
+  \begin{equation}
+    \mathcal{L}_{\mathcal{N}_i} :=
+    \begin{pmatrix}
+      x_{i_0, 0} - x_{i, 0} & \cdots & x_{i_0, d - 1} - x_{i, d - 1} \\
+      \vdots & \ddots & \vdots \\
+      x_{i_{n - 1}, 0} - x_{i, 0} & \cdots & x_{i_{n - 1}, d - 1} - x_{i, d - 1}
+    \end{pmatrix}
+    \in \mathbb{R}^{n \times d}.
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  Let $d \in \mathbb{N}\ \text{with}\ d \geq 1$, $K$ be a mesh of dimension $d$,
+  $\pi^1 \in C^1 K$, $\mathcal{N}_i \in K_0$.
+  Define the \textbf{neighbor representation} $\widehat{\pi^1}_{\mathcal{N}_i}$
+  of $\pi^1$ at $\mathcal{N}_i$ by
+  \begin{equation}
+    \widehat{\pi^1}_{\mathcal{N}_i} :=
+    ( \epsilon_K(\mathcal{E}_{j_0}, \mathcal{N}_{i_0}) \pi^1(\mathcal{E}_{j_0}),
+      \cdots,
+        \epsilon_K(\mathcal{E}_{j_{k - 1}}, \mathcal{N}_{i_{k - 1}})
+        \pi^1(\mathcal{E}_{j_{k - 1}})
+    ) \in \mathbb{R}^n.
+  \end{equation}
+  Define the \textbf{1-cochain embedding} ${\overline{\pi^1}}_{\mathcal{N}_i}$
+  of $\pi^1$ at $\mathcal{N}_i$ by
+  \begin{equation}
+    {\overline{\pi^1}}_{\mathcal{N}_i} :=
+    \left(\mathcal{L}_{\mathcal{N}_i}\right)^* \widehat{\pi^1}_{\mathcal{N}_i}
+    \in \mathbb{R}^d.
+  \end{equation}
+\end{definition}
+
+\begin{example}
+  Let $h \in \mathbb{R}^+$ and $K$ be a regular subdivision with size $h$
+  of some interval,
+  all the edges in $K$ are oriented from left to right,
+  $\pi^1 \in C^1 K$.
+  \begin{enumerate}
+    \item
+      Consider an interior point $\mathcal{N}_i$ with neighboring edges
+      $\mathcal{E}_{i - 1}$ and $\mathcal{E}_i$ and corresponing neighboring
+      nodes $\mathcal{N}_{i - 1}$ and $\mathcal{N}_{i + 1}$.
+      Then
+      \begin{equation}
+        \mathcal{L}_{\mathcal{N}_i} =
+        \begin{pmatrix}
+          -h \\
+          h
+        \end{pmatrix}
+        \Rightarrow
+        (\mathcal{L}_{\mathcal{N}_i})^* =
+          \frac{1}{2 h}
+          \begin{pmatrix}
+            -1 & 1
+          \end{pmatrix}
+      \end{equation}
+      and
+      \begin{equation}
+        \widehat{\pi^1}_{\mathcal{N}_i} =
+        \begin{pmatrix}
+          - \pi^1 \mathcal{E}_{i - 1} \\
+          \pi^1 \mathcal{E}_{i + 1}
+        \end{pmatrix}
+        \Rightarrow
+        {\overline{\pi^1}}_{\mathcal{N}_i} =
+          \frac{1}{2 h}
+          \begin{pmatrix}
+            -1 & 1
+          \end{pmatrix}
+          \begin{pmatrix}
+            - \pi^1 \mathcal{E}_{i - 1} \\
+            \pi^1 \mathcal{E}_{i + 1}
+          \end{pmatrix}
+        = \frac{1}{2 h}
+          \left( \pi^1 \mathcal{E}_{i - 1} + \pi^1 \mathcal{E}_{i + 1} \right).
+      \end{equation}
+  \end{enumerate}
+\end{example}
+
+\begin{definition}
+  Let $K$ be an embedded flat mesh and $u$ be a vector field on $|K|$.
+  Define the approximation $\underline{u} \in C^1 K$ as follows.
+  Let $\mathcal{E}_i$ be an edge with endpoints $\mathcal{N}_{i_0}$ and
+  $\mathcal{N}_{i_1}$, oriented from $\mathcal{N}_{i_0}$ to $\mathcal{N}_{i_1}$.
+  Then
+  \begin{equation}
+    \underline{u}_{\mathcal{E}_i} := 
+      \frac{1}{2}
+      ( \mathcal{L}_{\mathcal{N}_{i_0}} u_{\mathcal{N}_{i_0}} 
+        + \mathcal{L}_{\mathcal{N}_{i_1}} u_{\mathcal{N}_{i_1}} 
+      ).
+  \end{equation}
+\end{definition}
+
 \end{document}
