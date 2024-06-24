@@ -61,9 +61,10 @@
 \end{definition}
 
 \begin{example}
+  \leavevmode
   \begin{itemize}
     \item
-      $()$ are $(0, 1, 2)$ jagged arrays of order $1$ (ordinary arrays);
+      $()$ and $(0, 1, 2)$ are jagged arrays of order $1$ (ordinary arrays);
     \item
       $((0, 1, 2), (3), ())$ is a jagged array of order $2$
       (note that its last element is the empty array of order $1$);
@@ -179,13 +180,13 @@
 
 \begin{definition}
   Let $d \in \mathbb{N}$, $M$ be a mesh of dimension $d$, $0 \leq p_f \leq d$.
-  A \textbf{combinatorial differential form} of dimension $p_f$-form on $M$
-  is a linear map
+  A \textbf{combinatorial differential form} of dimension $p_f$
+  (called $p_f$-form for short) on $M$ is a linear map
   \begin{equation}
     \omega \colon C_\bullet M \to C_\bullet M
   \end{equation}
-  such that for any $p \in [p_f, d]$, $c_p \in M_p$, $\omega(c_p)$ is a linear
-  combination of the $(p - p_f)$-subfaces of $M$.
+  such that for any $p \in [p_f, d]$ and any $c_p \in M_p$,
+  $\omega(c_p)$ is a linear combination of the $(p - p_f)$-subfaces of $c_p$.
 
   The space of all $p_f$-forms on $M$ is denoted by $\Omega^{p_f} M$.
   The space of all combinatorial differential forms is the direct sum
@@ -260,25 +261,49 @@
 \end{definition}
 
 \begin{definition}
-  Let $d \in \mathbb{N}$, $M$ be a mesh of dimension $d$, $K$ be its Forman
-  subdivision.
-  Let $\varepsilon_M$ be the relative orientation on $M$.
+  Let
+    $d \in \mathbb{N}$,
+    $M$ be a mesh of dimension $d$,
+    $K$ be the Forman subdivision of $M$,
+    $\varepsilon_M$ be the relative orientation on $M$.
   We construct the relative orientation $\varepsilon_K$ as follows.
-  Let $p_f \in [1, d]$ $p \in [p_f, d]$, $s = p - p_f$ and we have the
-  $p_f$-cell $c_K(p_f, i_f) = (c(p, i), c(s, l))$ on $K$.
-  Its hypefaces come in two forms.
+  Let 
+    $p_f \in [1, d]$,
+    $p \in [p_f, d]$,
+    $s = p - p_f$,
+    $c_K(p_f, i_f)$ be a $p_f$-cell on $K$,
+  \begin{equation}
+    c_K(p_f, i_f) = (c(p, i), c(s, l))\
+    \text{for some $c(p, i) \in C_p M$ and $c(s, l) \in C_s M$}.
+  \end{equation}
+  Let $c_K(p_f - 1, j_f)$ be a hyperface of $c_K(p_f, i_f)$.
+  Then there exist $q, r \in \mathbb{N}$ such that
+  $p \geq q \geq r \geq s$ and $q - r = p_f - 1$,
+  such that
+  \begin{equation}
+    c_K(p_f - 1, j_f) = (c(q, j), c(r, k))\
+    \text{for some $c(q, j) \in C_p M$ and $c(r, k) \in C_r M$}.
+  \end{equation}
+  There are two possibilities for $q$ and $r$:
+  $(q, r) = (p - 1, s)$ or $(q, r) = (p, s + 1)$.
   \begin{enumerate}
     \item
-      $c_K(p_f - 1, j_f) = (c(p - 1, j), c(s, l))$, where
-      $c(p, i) \succ c(p - 1, j) \succeq c(s, l)$.
+      If $(q, r) = (p - 1, s)$, then
+      \begin{equation}
+        c_K(p_f - 1, j_f) = (c(p - 1, j), c(s, l)),\
+        \text{where $c(p, i) \succ c(p - 1, j) \succeq c(s, l)$}.
+      \end{equation}
       In this case
       \begin{equation}
         \varepsilon_K(c_K(p_f, i_f), c_K(p_f - 1, j_f))
-        = \varepsilon_M(c_M(p, i), c_M(p - 1, j))
+        = \varepsilon_M(c_M(p, i), c_M(p - 1, j)).
       \end{equation}
     \item
-      $c_K(p_f - 1, j_f) = (c(p, i), c(s + 1, k))$, where
-      $c(p, i) \succeq c(s + 1, k) \succ c(s, l)$.
+      If $(q, r) = (p, s + 1)$, then
+      \begin{equation}
+        c_K(p_f - 1, j_f) = (c(p, i), c(s + 1, k)),\
+        \text{where $c(p, i) \succeq c(s + 1, k) \succ c(s, l)$}.
+      \end{equation}
       In this case
       \begin{equation}
         \varepsilon_K(c_K(p_f, i_f), c_K(p_f - 1, j_f))
@@ -495,7 +520,7 @@
     = \frac{1}{2} (h u(x_i) + h u(x_{i + 1}))
     = h \frac{u(x_i) + u(x_{i + 1})}{2}.
   \end{equation}
-  Let's calculate the consecutive application of approximation and embedding.
+  Let's calculate the consecutive application of approximation and embedding
   (and vice versa).
   \begin{equation}
     \underline{\left(\overline{\pi^1}\right)}(\mathcal{E}_i)
