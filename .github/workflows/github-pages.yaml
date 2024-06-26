@@ -1,0 +1,67 @@
+# Build project and deploy to a static website
+name: Github Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Update apt-get
+        run: sudo apt-get update
+
+      - name: Install TeX Live
+        run: sudo apt-get install -y texlive
+ 
+      - name: Install TeX Live packages
+        uses: teatimeguest/setup-texlive-action@v3
+        with:
+          packages: |
+            geometry
+            xcolor
+            amsmath
+            amsfonts
+            amscls
+            bookmark
+            hyperref
+            ec
+
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+
+      - name: Build website
+        run: make site
+
+      - name: Set up Github Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: website
+          retention-days: 7
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

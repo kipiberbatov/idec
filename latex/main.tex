@@ -1,7 +1,5 @@
 \documentclass[fleqn]{article}
 \usepackage[margin = 0.6in, paper = a4paper]{geometry}
-\usepackage[multiple]{footmisc}
-\usepackage{authblk}
 \usepackage{xcolor}
 \usepackage[fleqn]{amsmath}
 \usepackage{amssymb}
@@ -21,7 +19,6 @@
   urlcolor = cyan,
   bookmarksnumbered = true
 }
-\usepackage[nameinlink]{cleveref}
 
 \counterwithin{equation}{section}
 \theoremstyle{definition}
@@ -991,5 +988,45 @@
   is the identity operator when $\pi^1$ (respectively $u$) is linear with
   respect to the index $i$.
 \end{example}
+
+\section{Discrete elasticity}
+
+\begin{discussion}[Discrete elasticity]
+  Let $M$ be a mesh of dimension $3$, $K$ be the Forman decomposition of $M$.
+  Let $L$ and $F$ denote length and force measures respectively.
+  
+  Discrete displacement is represented by
+  \begin{equation}
+    \eta^1 [L^2] \in C^1 K.
+  \end{equation}
+  Displacement gradient is represented by
+  \begin{equation}
+    \epsilon^0 [1] \in C^0 K,\ \epsilon^2 [L^2] \in C^2 K.
+  \end{equation}
+  Stress (force) is represented by
+  \begin{equation}
+    \tau^0 [F] \in C^0 K,\ \tau^2 [F L^2] \in C^2 K.
+  \end{equation}
+  Body force is represented by
+  \begin{equation}
+    \mathfrak{b}^1 [F] \in C^1 K.
+  \end{equation}
+  Let $\lambda, \mu [F] \in \R$ be the Lam{\'e} parameters.
+  Our model is the following.
+  \begin{subequations}
+    \begin{align}
+      & \epsilon^0 = \delta_1^\star \eta^1
+      & (\text{volumetric displacement gradient}), \\
+      & \epsilon^2 = \delta_1 \eta^1 
+      & (\text{deviatoric displacement gradient}), \\
+      & \tau^0 = \lambda \epsilon^0
+      & (\text{hydrostatic force}), \\
+      & \tau^2 = \mu \epsilon^2
+      & (\text{deviatoric force}), \\
+      & \delta_0 \tau^0 + \delta_2^\star \tau^2 + \mathfrak{b}^1 = 0
+      & (\text{conservation of linear momentum}).
+    \end{align}
+  \end{subequations}
+\end{discussion}
 
 \end{document}

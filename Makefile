@@ -56,8 +56,11 @@ REGION_INC := $(REGION_INC_EXE) -iquote src/region
 MESH_INC_EXE := $(ALGEBRA_INC_EXE) -iquote include/region -iquote include/mesh
 MESH_INC := $(MESH_INC_EXE) -iquote src/mesh
 
-GRAPHICS_INC_EXE := $(MESH_INC_EXE) -iquote include/graphics \
-  $(shell pkg-config --cflags gtk+-3.0)
+# GRAPHICS_INC_EXE := $(MESH_INC_EXE) -iquote include/graphics\
+#    $(shell pkg-config --cflags gtk+-3.0)
+# GRAPHICS_INC := $(GRAPHICS_INC_EXE) -iquote src/graphics
+
+GRAPHICS_INC_EXE := $(MESH_INC_EXE) -iquote include/graphics
 GRAPHICS_INC := $(GRAPHICS_INC_EXE) -iquote src/graphics
 
 SHARED_INC_EXE := $(MESH_INC_EXE) -iquote include/shared
@@ -155,7 +158,8 @@ GRAPHICS_OBJ :=\
 build_graphics: build $(GRAPHICS_OBJ)
 
 $(GRAPHICS_OBJ): build/%$(.OBJ): src/graphics/%$(.SRC)
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(GRAPHICS_INC) -c $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(GRAPHICS_INC) \
+	  $(shell pkg-config --cflags gtk+-3.0) -c $< -o $@
 
 # shared
 SHARED_OBJ_NAMES := $(wildcard src/shared/*$(.SRC))
@@ -306,7 +310,8 @@ GRAPHICS_EXE :=\
 bin_graphics: bin $(GRAPHICS_EXE)
 
 $(GRAPHICS_EXE): bin/%$(.EXE): main/graphics/main_%$(.SRC) $(GRAPHICS_LDLIBS)
-	$(CC) $(CFLAGS) $(GRAPHICS_INC_EXE) $(CCFLAGS) $< \
+	$(CC) $(CFLAGS) $(GRAPHICS_INC_EXE) $(shell pkg-config --cflags gtk+-3.0)\
+	  $(CCFLAGS) $< \
 	  $(shell pkg-config --libs gtk+-3.0) $(GRAPHICS_LDLIBS) $(LDFLAGS) -o $@
 
 # all
@@ -476,6 +481,7 @@ shared_clean: build_shared_clean
 shared_distclean: lib_shared_clean #bin_shared_clean demo_shared_clean
 
 -include make/docs/latex.mk
+-include make/site.mk
 
 # all
 .PHONY: build_clean
