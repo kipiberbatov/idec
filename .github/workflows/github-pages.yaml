@@ -38,6 +38,8 @@ jobs:
             amscls
             bookmark
             hyperref
+            tcolorbox
+            etoolbox
             ec
 
       - name: Set up Git repository

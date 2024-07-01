@@ -19,19 +19,61 @@
   urlcolor = cyan,
   bookmarksnumbered = true
 }
+% \usepackage[most]{tcolorbox}
+\newcommand\coloredcomponent[2]{}
+% \newcommand\coloredcomponent[2]{}
+% {
+%   \tcolorboxenvironment{#1}
+%   {
+%     breakable,
+%     enhanced,
+%     colback = white,
+%     colframe = #2,
+%     boxrule = 1pt,
+%     left = 2pt,
+%     right = 2pt,
+%     top = 2pt,
+%     bottom = 2pt,
+%     sharp corners,
+%     before skip = \topsep,
+%     after skip = \topsep,
+%   }
+% }
 
 \counterwithin{equation}{section}
 \theoremstyle{definition}
+
 \newtheorem{theorem}{Theorem}[section]
+\coloredcomponent{theorem}{blue}
+
 \newtheorem{proposition}[theorem]{Proposition}
+\coloredcomponent{proposition}{blue}
+
 \newtheorem{lemma}[theorem]{Lemma}
+\coloredcomponent{lemma}{blue}
+
 \newtheorem{corollary}[theorem]{Corollary}
+\coloredcomponent{corollary}{blue}
+
 \newtheorem{hypothesis}[theorem]{Hypothesis}
+\coloredcomponent{hypothesis}{red}
+
 \newtheorem{notation}[theorem]{Notation}
+\coloredcomponent{notation}{green}
+
 \newtheorem{definition}[theorem]{Definition}
+\coloredcomponent{definition}{green}
+
 \newtheorem{discussion}[theorem]{}
+\coloredcomponent{discussion}{yellow}
+
 \newtheorem{example}[theorem]{Example}
+\coloredcomponent{example}{purple}
+
 \newtheorem{remark}[theorem]{Remark}
+\coloredcomponent{remark}{orange}
+
+\coloredcomponent{proof}{cyan}
 
 \renewcommand{\thefootnote}{\arabic{footnote}}
 
@@ -80,8 +122,10 @@
 \section{Jagged arrays}
 
 \begin{definition}
+  \label{idec:jagged:definition}
   Let $n$ be a positive integer and $T$ be a type (e.g., integers)
-  A \textbf{jagged} array of order $n$ is defined recursively as follows:
+  A \textbf{jagged array}
+  of order $n$ is defined recursively as follows:
   \begin{enumerate}
     \item
       jagged array of order $0$ is an object of type $T$;
@@ -107,7 +151,8 @@
 
 \begin{definition}
   Let $n > 0$.
-  A jagged array of order $n$ is represented in memory by a structure of $n + 1$
+  A \hyperref[idec:jagged:definition]{jagged array}
+  of order $n$ is represented in memory by a structure of $n + 1$
   fields as follows:
   an integer $a_0$,
   $n - 1$ pointers $a_1, ..., a_{n - 1}$ to integer
@@ -129,7 +174,7 @@
 \end{definition}
 
 \begin{example}
-  Consider the jagged array of order $3$
+  Consider the \hyperref[idec:jagged:definition]{jagged array} of order $3$
   \begin{equation}
     x = (((0, 1, 2), (3, 4)), (), (()), ((5, 6), ())).
   \end{equation}
@@ -147,8 +192,10 @@
 \section{Meshes}
 
 \begin{definition}
+  \label{idec:mesh:definition}
   Let $d$ be a natural number.
-  A \textbf{mesh} of dimension $d$ is a finite set of polytopes of dimension at
+  A \textbf{mesh}
+  of dimension $d$ is a finite set of polytopes of dimension at
   most $d$ such that:
   \begin{itemize}
     \item
@@ -162,7 +209,8 @@
 \end{definition}
 
 \begin{definition}
-  A mesh is represented in memory by its topology and geometry.
+  A \hyperref[idec:mesh:definition]{mesh}
+  is represented in memory by its topology and geometry.
   The topology is represented using:
   \begin{itemize}
     \item
@@ -212,7 +260,7 @@
 \begin{theorem}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $p \in \{2, ..., d\}$,
     $a_p \in M_p$,
     $c_{p - 2} \in M_{p - 2}$,
@@ -227,16 +275,17 @@
 \end{theorem}
 
 \begin{definition}
+  \label{idec:relative_orientation:definition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $R$ be a commutative ring with unity.
   A family of maps
   \begin{equation}
     \{\varepsilon_p \colon M_p \times M_{p - 1} \to \{-1, 0, 1\}\}_{p = 1}^d
   \end{equation}
-  is called a \textbf{relative orientation} on $M$ if the following conditions
-  are satisfied:
+  is called a \textbf{relative orientation}
+  on $M$ if the following conditions are satisfied:
   \begin{enumerate}
     \item
       for any $p \in \{1, ..., d\}$, $a_p \in M_p$, $b_{p - 1} \in M_{p - 1}$,
@@ -274,7 +323,7 @@
 \begin{theorem}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $R$ be a commutative ring with unity.
   Then there exists a relative orientation on $M$.
 \end{theorem}
@@ -282,13 +331,14 @@
 \section{Chains and boundary operator on meshes}
 
 \begin{definition}
+  \label{idec:mesh_chain:definition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $p \in \N,\ p \in [0, d]$,
     $R$ be a commutative ring with unity (for instance, $R = \R$).
-  The space $C_p(M, R)$ of p-\textbf{chains} on $M$ with coefficients in $R$
-  is the free $R$-module
+  The space $C_p(M, R)$ of \textbf{$p$-chains}
+  on $M$ with coefficients in $R$ is the free $R$-module
   (vector space over $R$ when $R$ is a field, e.g., when $R = \R$)
   generated by $M_p$:
   \begin{equation}
@@ -306,18 +356,19 @@
 \begin{definition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $R$ be a commutative ring with unity.
-  The space $C_\bullet(M, R)$ of all chains on $M$ is the direct sum
+  The space $C_\bullet(M, R)$ of all \textbf{chains} on $M$ is the direct sum
   \begin{equation}
-    C_\bullet(M, R) := \bigoplus_{p = 0}^d C_p(M, R).
+    C_\bullet(M, R) := \bigoplus_{p = 0}^d
+    \hyperref[idec:mesh_chain:definition]{C_p(M, R)}.
   \end{equation}
 \end{definition}
 
 \begin{definition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $R$ be a commutative ring with unity,
     $\varepsilon$ be a relative orientation on $M$,
     $p \in \{1, ..., d\}$,
@@ -348,7 +399,7 @@
 \begin{proposition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $R$ be a commutative ring with unity,
     $\varepsilon$ be a relative orientation on $M$.
   Then the algebra $(C_\bullet M, \partial)$ is a chain complex, i.e.,
@@ -391,20 +442,20 @@
     \end{split}
   \end{equation}
   (the last equation follows from the last condition in the definition of
-  relative orientation).
+  \hyperref[idec:relative_orientation:definition]{relative orientation}).
 \end{proof}
 
 \begin{proposition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $R$ be a commutative ring with unity,
     $\varepsilon$ and $\varepsilon'$ be a relative orientations on $M$
       with corresponding boundary operators
       $\partial$ and $\partial'$ respectively.
   Then
   \begin{equation}
-    (C_\bullet(M, R), \partial') \cong (C_\bullet(M, R), \partial')
+    (C_\bullet(M, R), \partial) \cong (C_\bullet(M, R), \partial')
   \end{equation}
   ($\cong$ is understood as isomorphism of chain complexes).
 \end{proposition}
@@ -422,10 +473,10 @@
 \begin{definition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimensions $d$,
     $R$ be a commutative ring with unity.
-  The space $C^\bullet(M, R)$ of \textbf{cochains} is the dual to the space of
-  chains, i.e.,
+  The space $C^\bullet(M, R)$ of \textbf{cochains} is the dual to the
+  \hyperref[idec:mesh_chain:definition]{space of chains}, i.e.,
   \begin{equation}
     C^\bullet(M, R) := (C_\bullet(M, R))^* = \Hom_R(C_\bullet(M, R), R)
   \end{equation}
@@ -442,7 +493,7 @@
 \begin{definition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $R$ be a commutative ring with unity,
     $\partial$ be a boundary operator on $M$.
   Then the corresponding \textbf{coboundary operator} on $M$ $\delta$ is the
@@ -470,7 +521,7 @@
 \begin{proposition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimensions $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $R$ be a commutative ring with unity,
     $\partial$ be a boundary operator on $M$,
     $\delta$ be the corresponding coboundary operator.
@@ -500,7 +551,10 @@
 \section{Combinatorial differential forms and Forman decomposition}
 
 \begin{definition}
-  Let $d \in \N$, $M$ be a mesh of dimension $d$, $0 \leq p_f \leq d$.
+  Let
+    $d \in \N$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
+    $0 \leq p_f \leq d$.
   A \textbf{combinatorial differential form} of dimension $p_f$
   (called $p_f$-form for short) on $M$ is a linear map
   \begin{equation}
@@ -517,8 +571,10 @@
 \end{definition}
 
 \begin{definition}
-  Let $d \in \N$, $M$ be a mesh of dimension $d$ with boundary operator
-  $\partial$.
+  Let
+    $d \in \N$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$
+    $\partial$ be a boundary operator on $M$.
   The \textbf{discrete differential} on $M$ is the linear map
   \begin{equation}
     D \colon \Omega^\bullet \to \Omega^\bullet
@@ -530,8 +586,11 @@
 \end{definition}
 
 \begin{proposition}
-  Let $d \in \N$, $M$ be a mesh of dimension $d$ with boundary operator
-  $\partial$, $D$ is the discrete differential on $M$.
+  Let
+    $d \in \N$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
+    $\partial$ be a boundary operator on $M$m
+    $D$ be the discrete differential on $M$.
   Then $(\Omega^\bullet M, D)$ is a cochain complex, i.e.,
   \begin{equation}
     D^2 = 0.
@@ -563,7 +622,9 @@
 \end{proof}
 
 \begin{definition}
-  Let $d \in \N$, $M$ be a mesh of dimension $d$.
+  Let
+    $d \in \N$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$.
   Consider a mesh $K$ constructed as follows.
   The nodes of $K$ are the centroids of the cells of $M$.
   (In general, the topology of $K$ can always be constructed while the geometry
@@ -592,7 +653,7 @@
 \begin{definition}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimension $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $K$ be the Forman subdivision of $M$,
     $\varepsilon_M$ be the relative orientation on $M$.
   We construct the relative orientation $\varepsilon_K$ as follows.
@@ -644,7 +705,7 @@
 \begin{theorem}
   Let
     $d \in \N$,
-    $M$ be a mesh of dimension $d$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
     $\varepsilon_M$ be a relative orientation on $M$
       with corresponding boundary operator $\partial_M$
       and discrete differential $D_M$.
@@ -674,9 +735,19 @@
 \end{example}
 
 \begin{definition}
-  Let $M$ be a mesh.
+  Let $M$ be a \hyperref[idec:mesh:definition]{mesh}.
   We say that $M$ is a \textbf{quasi-cubical mesh}
   if all cells of $M$ are quasi-cubes.
+\end{definition}
+
+\begin{definition}
+  Let
+    $(P, \preceq)$ be a partially ordered set,
+    $a, b \in P$ with $a \preceq b$.
+  The \textbf{closed interval} $[a, b]$ is defined as
+  \begin{equation}
+    [a, b] := \set{x \in P}{a \preceq x\ \&\ x \preceq b}.
+  \end{equation}
 \end{definition}
 
 \begin{definition}
@@ -685,12 +756,14 @@
 \end{definition}
 
 \begin{proposition}
-  Let $M$ be a mesh and $K$ be its Forman decomposition.
+  Let
+    $M$ be a \hyperref[idec:mesh:definition]{mesh}
+    and $K$ be its Forman decomposition.
   Then $M$ is interval-simplicial if and only if $K$ is quasi-cubical.
 \end{proposition}
 
 \begin{proposition}
-  Let $M$ be a mesh of dimension at most $2$.
+  Let $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension at most $2$.
   Then $M$ is interval-simplicial.
   In particular, its Forman decomposition is quasi-cubical.
 \end{proposition}
@@ -702,7 +775,7 @@
 \end{definition}
 
 \begin{proposition}
-  Let $M$ be a mesh of dimension $3$.
+  Let $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $3$.
   Then $M$ is interval-simplicial if and only if all $3$-cells of $M$
   are simple polytopes.
 \end{proposition}

@@ -6,6 +6,7 @@ docs:
 
 docs/main.pdf: latex/main.tex | docs
 	pdflatex -output-directory=docs $<
+	pdflatex -output-directory=docs $<
 
 .PHONY: docs_clean
 docs_clean:
