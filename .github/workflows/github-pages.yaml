@@ -24,23 +24,8 @@ jobs:
       - name: Update apt-get
         run: sudo apt-get update
 
-      - name: Install TeX Live
-        run: sudo apt-get install -y texlive
- 
-      - name: Install TeX Live packages
-        uses: teatimeguest/setup-texlive-action@v3
-        with:
-          packages: |
-            geometry
-            xcolor
-            amsmath
-            amsfonts
-            amscls
-            bookmark
-            hyperref
-            tcolorbox
-            etoolbox
-            ec
+      - name: Install TeX Live and most used packages
+        run: sudo apt-get install -y texlive-latex-extra
 
       - name: Set up Git repository
         uses: actions/checkout@v4
@@ -64,6 +49,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy website to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

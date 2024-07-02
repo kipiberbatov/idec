@@ -19,26 +19,25 @@
   urlcolor = cyan,
   bookmarksnumbered = true
 }
-% \usepackage[most]{tcolorbox}
-\newcommand\coloredcomponent[2]{}
-% \newcommand\coloredcomponent[2]{}
-% {
-%   \tcolorboxenvironment{#1}
-%   {
-%     breakable,
-%     enhanced,
-%     colback = white,
-%     colframe = #2,
-%     boxrule = 1pt,
-%     left = 2pt,
-%     right = 2pt,
-%     top = 2pt,
-%     bottom = 2pt,
-%     sharp corners,
-%     before skip = \topsep,
-%     after skip = \topsep,
-%   }
-% }
+\usepackage[most]{tcolorbox}
+\newcommand\coloredcomponent[2]
+{
+  \tcolorboxenvironment{#1}
+  {
+    breakable,
+    enhanced,
+    colback = white,
+    colframe = #2,
+    boxrule = 1pt,
+    left = 2pt,
+    right = 2pt,
+    top = 2pt,
+    bottom = 2pt,
+    sharp corners,
+    before skip = \topsep,
+    after skip = \topsep,
+  }
+}
 
 \counterwithin{equation}{section}
 \theoremstyle{definition}
