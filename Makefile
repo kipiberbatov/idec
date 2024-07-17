@@ -41,7 +41,7 @@ endif
 MODULES := array algebra region mesh graphics shared
 
 CPPFLAGS := -MMD -MP
-CFLAGS := -O2 -Wall
+CFLAGS := -O2 -Wall -Wfatal-errors
 LDFLAGS := -lm
 
 ARRAY_INC_EXE := -iquote include/array

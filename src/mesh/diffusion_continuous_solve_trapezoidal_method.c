@@ -3,6 +3,9 @@
 #include "diffusion_continuous.h"
 #include "diffusion_discrete.h"
 
+#define FUNCTION "diffusion_continuous_solve_trapezoidal_method"
+#define START_ERROR_MESSAGE fprintf(stderr,"  %s: ", FUNCTION)
+
 double * diffusion_continuous_solve_trapezoidal_method(
   const mesh * m,
   const matrix_sparse * m_cbd_0,
@@ -17,7 +20,8 @@ double * diffusion_continuous_solve_trapezoidal_method(
   data_discrete = diffusion_continuous_discretize(m, data_continuous);
   if (errno)
   {
-    fprintf(stderr, "Error - cannot do discrete calculations\n");
+    START_ERROR_MESSAGE;
+    fprintf(stderr, "cannot discretize continuous data\n");
     goto end;
   }
   
@@ -31,7 +35,8 @@ double * diffusion_continuous_solve_trapezoidal_method(
   );
   if (errno)
   {
-    fprintf(stderr, "Error - cannot solve system\n");
+    START_ERROR_MESSAGE;
+    fprintf(stderr, "cannot find discretized result\n");
     goto data_discrete_free;
   }
 

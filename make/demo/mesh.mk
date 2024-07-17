@@ -1473,7 +1473,9 @@ DEMO_MESH_BRICK_REGULAR_3D_2 := \
   demo/mesh/mesh_brick_3d_2_forman_vol.txt\
   demo/mesh/mesh_brick_3d_2_forman_metric.txt\
   demo/mesh/mesh_brick_3d_2_forman_inner.txt\
+  demo/mesh/mesh_brick_3d_2_forman_cbd.txt\
   demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt\
+  demo/mesh/mesh_brick_3d_2_forman_diffusion_continuous_p6_temperature.txt\
   demo/mesh/mesh_brick_3d_2_forman_laplacian.txt\
   demo/mesh/mesh_brick_3d_2_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_3d_2_forman_hodge.txt\
@@ -1523,6 +1525,20 @@ demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt:\
 	  demo/mesh/mesh_brick_3d_2_forman.txt\
 	  demo/mesh/mesh_brick_3d_2_forman_inner.txt | demo/mesh
 	$^ > $@
+
+demo/mesh/mesh_brick_3d_2_forman_cbd.txt:\
+	  bin/mesh_coboundary$(.EXE)\
+	  demo/mesh/mesh_brick_3d_2_forman.txt | demo/mesh
+	$< --raw < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_2_forman_diffusion_continuous_p6_temperature.txt:\
+	  bin/diffusion_continuous$(.EXE)\
+	  demo/mesh/mesh_brick_3d_2_forman.txt\
+	  demo/mesh/mesh_brick_3d_2_forman_cbd.txt\
+	  demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt\
+	  build/diffusion_continuous_p6.o | demo/mesh
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_continuous_p6 0.001 100 > $@
 
 demo/mesh/mesh_brick_3d_2_forman_laplacian.txt:\
 	  bin/mesh_qc_laplacian$(.EXE)\

@@ -19,5 +19,5 @@ void matrix_sparse_neumann_modify(
   position = matrix_sparse_part_pointer(lhs, i, i);
   *position = 0;
   for (j_local = 0; j_local < size_i; ++j_local)
-    *position = coefficients[j_local];
+    *position += coefficients[j_local];
 }

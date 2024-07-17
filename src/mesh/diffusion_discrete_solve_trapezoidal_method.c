@@ -24,7 +24,7 @@ static void loop(
   int number_of_steps)
 {
   int i, n;
-  
+
   n = rhs->rows;
   for (i = 0; i < number_of_steps; ++i)
   {
@@ -32,11 +32,11 @@ static void loop(
     /* $rhs_final += rhs * y_i$ */
     memcpy(rhs_final, free_part, sizeof(double) * n);
     matrix_sparse_vector_multiply_add(rhs_final, rhs, result + i * n);
-    
+
     /* update Dirichlet rows of rhs_final by Dirichlet boundary conditions */
     double_array_substitute_inverse(
       rhs_final, boundary_dirichlet->a0, g_dirichlet, boundary_dirichlet->a1);
-    
+
     /* update Neumann rows of rhs_final by Neumann boundary conditions */
     double_array_substitute_inverse(
       rhs_final, boundary_neumann->a0, g_neumann, boundary_neumann->a1);
@@ -70,10 +70,10 @@ double * diffusion_discrete_solve_trapezoidal_method(
   matrix_sparse * b;
   matrix_sparse * m_cbd_star_1_material;
   matrix_sparse * lhs, * rhs;
-  
+
   n = m->cn[0];
   a = data->pi_0;
-  
+
   m_cbd_star_1_material = matrix_sparse_copy(m_cbd_star_1);
   if (errno)
   {
@@ -83,15 +83,17 @@ double * diffusion_discrete_solve_trapezoidal_method(
   }
   matrix_sparse_multiply_with_diagonal_matrix(
     m_cbd_star_1_material, data->pi_1);
-  
+
   b = matrix_sparse_product(m_cbd_star_1_material, m_cbd_0);
   if (errno)
   {
     START_ERROR_MESSAGE;
     fputs("cannot calculate matrix b\n", stderr);
-    goto m_cbd_star_1_material_free;
+    matrix_sparse_free(m_cbd_star_1_material);
+    goto end;
   }
-  
+  matrix_sparse_free(m_cbd_star_1_material);
+
   /* $lhs =  a + (time_step / 2) * b$ */
   lhs = matrix_sparse_copy(b);
   if (errno)
@@ -102,7 +104,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
   }
   matrix_sparse_scalar_multiply(lhs, time_step / 2);
   matrix_sparse_add_with_diagonal_matrix(lhs, a);
-  
+
   /* $rhs =  a - (time_step / 2) * b$ */
   rhs = matrix_sparse_copy(b);
   if (errno)
@@ -113,7 +115,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
   }
   matrix_sparse_scalar_multiply(rhs, - time_step / 2);
   matrix_sparse_add_with_diagonal_matrix(rhs, a);
-  
+
   /* $free_part = time_step * data->source$ */
   free_part = (double *) malloc(sizeof(double) * n);
   if (errno)
@@ -125,10 +127,10 @@ double * diffusion_discrete_solve_trapezoidal_method(
   }
   memcpy(free_part, data->source, sizeof(double) * n);
   double_array_multiply_with(free_part, n, time_step);
-  
+
   /* apply Dirichlet boundary condition on matrix $lhs$ */
   matrix_sparse_set_identity_rows(lhs, data->boundary_dirichlet);
-  
+
   /* apply Neumann boundary condition on matrix $lhs$ */
   diffusion_discrete_set_neumann_rows(
     lhs, m, data->boundary_neumann, data->pi_1);
@@ -138,7 +140,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
     fputs("cannot apply Neumann boundary condition\n", stderr);
     goto free_part_free;
   }
-  
+
   /* allocate memory for $rhs_final$ -> uppdated at each step of the loop */
   rhs_final = (double *) malloc(sizeof(double) * n);
   if (errno)
@@ -148,7 +150,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
     fputs("cannot allocate memory for rhs_final\n", stderr);
     goto free_part_free;
   }
-  
+
   /* allocate memory for $result$ -> $n$ elements filled at each step */
   result = (double *) malloc(sizeof(double) * (number_of_steps + 1) * n);
   if (errno)
@@ -161,7 +163,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
 
   /* the initial $n$ elements of $result$ are the initial condition */
   memcpy(result, data->initial, sizeof(double) * n);
-  
+
   /* The following $number_of_steps$ elements of $result$ (each of size $n$)
    * are calculated iteratively with $rhs_final$ updating at each step.
    */
@@ -188,8 +190,6 @@ lhs_free:
   matrix_sparse_free(lhs);
 b_free:
   matrix_sparse_free(b);
-m_cbd_star_1_material_free:
-  matrix_sparse_free(m_cbd_star_1_material);
 end:
   return result;
 }

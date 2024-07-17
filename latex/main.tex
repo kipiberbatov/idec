@@ -824,14 +824,18 @@
     $d \in \N$,
     $K$ be a quasi-cubical mesh of dimension $d$,
     $p \in \{0, ..., d\}$.
-  The \textbf{inner product of $p$-cochains} is defined as follows.
+  The \textbf{inner product of $p$-cochains}
+  $\inner \colon C^p K \times C^p K \to C^p K$
+  is defined as follows.
   If $b_p \in K_p$, then
   \begin{equation}
     \inner{b^p}{b^p}_p :=
     \frac{1}{2^d \mu(b_p)} \sum_{c_{d - p} \perp b_p} \mu(c_{d - p}).
   \end{equation}
-  The inner product between two different basis $p$-cochains
-  is defined to be zero.
+  The inner product between two different $p$-cochains in the standard basis is
+  defined to be zero
+  (hence, the standard cocahin basis is an orthogonal basis with respect to the
+  inner product).
   Extending by bilinearity, we define the inner product of arbitrary
   $p$-cochains (since we already have it for pairs of basis $p$-cochains).
 \end{definition}
@@ -840,7 +844,7 @@
   Let
     $d \in \N$,
     $h \in \R^+$
-    $K$ a cubical grid of size $h$ with dimension $d$,
+    $K$ be a quasi-cubical mesh of dimension $d$ with size $h$,
     $p \in \{0, ..., d\}$,
     $b_p$ be an internal $p$-cell in $K$.
   Then
@@ -853,43 +857,54 @@
   Let
     $d \in \N$,
     $K$ be a quasi-cubical mesh of dimension $d$,
+    $\partial$ be a boundary operator on $K$,
     $p \in \{1, ..., d\}$.
   The \textbf{adjoint coboundary operator on $p$-cochain}
-  $\delta_p^\star \colon C^p K \to C^{p - 1} K$
+  $\delta^\star_p \colon C^p K \to C^{p - 1} K$
   is defined as the adjoint of $\delta_{p - 1}$
   with respect to the inner product of cochains.
-  In other words, for any $a^p \in C^p K,\ b^{p - 1} \in C^{p - 1}$,
+  In other words, for any $\pi^p \in C^p K,\ \rho^{p - 1} \in C^{p - 1}$,
   \begin{equation}
-    \inner{\delta_p^\star a^p}{b^{p - 1}}_{p - 1}
-    = \inner{a^p}{\delta_{p - 1} b^{p - 1}}_p.
+    \inner{\delta_p^\star \pi^p}{\rho^{p - 1}}_{p - 1}
+    = \inner{\pi^p}{\delta_{p - 1} \rho^{p - 1}}_p.
   \end{equation}
 \end{definition}
-
 \begin{proposition}
   Let
     $d \in \N$,
     $K$ be a quasi-cubical mesh of dimension $d$,
-    $p \in \{1, ..., d\}$.
-  Then for any $a^p \in C^p K$,
+    $\varepsilon$ be a relative orientation on $K$,
+    $p \in \{1, ..., d\}$,
+    $\pi^p \in C^p K$,
+    $b_{p - 1} \in K_{p - 1}$
+  Then
   \begin{equation}
-    \delta^\star_p a^p =
-    \sum_{b_{p - 1} \prec a_p}
+    (\delta^\star_p \pi^p) b_{p - 1} =
+    \sum_{a_p \succ b_{p - 1}}
       \frac
       {\inner{a^p}{a^p}}
       {\inner{b^{p - 1}}{b^{p - 1}}}
       \varepsilon(a_p, b_{p - 1})
-      b^{p - 1}
+      \pi^p(a_p).
   \end{equation}
 \end{proposition}
 
 \begin{corollary}
-  On a regular grid
+  Let
+    $d \in \N$,
+    $h \in \R^+$
+    $K$ a cubical grid of dimension $d$ with size $h$
+      with its standard orientation,
+    $p \in \{0, ..., d\}$,
+    $\pi^p \in C^p K$,
+    $b_{p - 1} \in K_{p - 1}$ be an internal cell.
+  Then
   \begin{equation}
-    \delta^\star_p a^p =
+    (\delta^\star_p \pi^p) b_{p - 1} =
     \frac{1}{h^2}
     \sum_{b_{p - 1} \prec a_p}
       \varepsilon(a_p, b_{p - 1})
-      b^{p - 1}
+      \pi^p(a_p).
   \end{equation}
 \end{corollary}
 
@@ -1133,7 +1148,7 @@
   \end{equation}
   Displacement gradient is represented by
   \begin{equation}
-    \epsilon^0 [1] \in C^0 K,\ \epsilon^2 [L^2] \in C^2 K.
+    \epsilon^0 [1] \in C^0 K,\ \omega^2 [L^2] \in C^2 K.
   \end{equation}
   Stress (force) is represented by
   \begin{equation}
@@ -1149,11 +1164,11 @@
     \begin{align}
       & \epsilon^0 = \delta_1^\star \eta^1
       & (\text{volumetric displacement gradient}), \\
-      & \epsilon^2 = \delta_1 \eta^1 
+      & \omega^2 = \delta_1 \eta^1 
       & (\text{deviatoric displacement gradient}), \\
       & \tau^0 = \lambda \epsilon^0
       & (\text{hydrostatic force}), \\
-      & \tau^2 = \mu \epsilon^2
+      & \tau^2 = \mu \omega^2
       & (\text{deviatoric force}), \\
       & \delta_0 \tau^0 + \delta_2^\star \tau^2 + \mathfrak{b}^1 = 0
       & (\text{conservation of linear momentum}).
@@ -1173,7 +1188,7 @@
   Let
     ${\bf u}$ be the displacement vector,
     $\boldsymbol{\epsilon}$ be the strain tensor,
-    $\boldsymbol{\omega}$ be the rotation tensor
+    $\boldsymbol{\omega}$ be the rotation tensor,
     $\boldsymbol{\sigma}$ be the stress tensor.
   Then at any point $x = (x_1, x_2, x_3)$ we have:
   \begin{equation}
@@ -1193,8 +1208,8 @@
     \boldsymbol{\omega} =
       \frac{\theta}{2}
       \begin{pmatrix}
-        0 & 0 & - x_2  \\
-        0 & 0 & x_1 \\
+        0 & -2 x_3 & - x_2  \\
+        2 x_3 & 0 & x_1 \\
         x_2 & -x_1 & 0
       \end{pmatrix},\
     \boldsymbol{\sigma} =
@@ -1204,6 +1219,12 @@
         0 & 0 & x_1 \\
         -x_2 & x_1 & 0
       \end{pmatrix}.
+  \end{equation}
+  Note that the skew-symmetric matrix $\boldsymbol{\omega}$ corresponds to the
+  vector
+  \begin{equation}
+    \label{idec/discrete_elasticity/example_9_1:equation:rotation_vector}
+    \boldsymbol{\omega} \mapsto \frac{\theta}{2} (-x_1, -x_2, 2 x_3)^T.
   \end{equation}
   Let $h \in \R^+$ and consider a $3$D regular grid $K$ of size $h$.
   For integers $i, j, k$, nodes in $K$ have coordinates
@@ -1228,7 +1249,11 @@
   $\mathcal{F}^{(p, q)}_{(i, j, k)}$ and represent squares starting at
   $\mathcal{N}_{(i, j, k)}$ with basis vectors going in directions
   $e_p$ and $e_q$.
-  For instance, the oriented boundary of $\mathcal{F}^{(p, q)}_{(i, j, k)}$ is
+  Also use the identification of cochains
+  \begin{equation}
+    \mathcal{F}^{(q, p)}_{(i, j, k)} := -\mathcal{F}^{(p, q)}_{(i, j, k)}.
+  \end{equation}
+  For instance, the oriented boundary of $\mathcal{F}^{(1, 2}_{(i, j, k)}$ is
   \begin{equation}
     \partial_2 \mathcal{F}^{(1, 2)}_{(i, j, k)} =
     - \mathcal{E}^{(1)}_{(i, j + 1, k)}
@@ -1265,97 +1290,109 @@
   \begin{subequations}
     \begin{alignat}{2}
       & \eta^1 \mathcal{E}^{(1)}_{(i, j, k)} && 
-        = \frac{h}{2}\theta (-x_2 x_3 - x_2 x3)
+        = \frac{h}{2} \theta (-x_2 x_3 - x_2 x_3)
         = - \theta h x_2 x_3
         = - \theta j k h^3, \\
       & \eta^1 \mathcal{E}^{(2)}_{(i, j, k)} && 
-        = \frac{h}{2}\theta (x_1 x_3 + x_1 x3)
+        = \frac{h}{2} \theta (x_1 x_3 + x_1 x_3)
         = \theta h x_1 x_3
         = \theta i k h^3, \\
       & \eta^1 \mathcal{E}^{(3)}_{(i, j, k)} && 
-        = \frac{h}{2}\theta (0 + 0)
+        = \frac{h}{2} \theta (0 + 0)
         = 0.
     \end{alignat}
   \end{subequations}
-  For $\epsilon^2 := \delta_1 \eta^1$, using that
+  For $\omega^2 := \delta_1 \eta^1$, using that
   $\epsilon(c_2) = \eta^1(\partial c_2)$, we get:
   \begin{subequations}
-    \begin{alignat}{2}
-      & \epsilon^2 \mathcal{F}^{(1, 2)}_{(i, j, k)} &&
-        = ( - \eta^1 \mathcal{E}^{(1)}_{(i, j + 1, k)}
-            + \eta^1 \mathcal{E}^{(1)}_{(i, j, k)}
-          )
-        + ( \eta^1 \mathcal{E}^{(2)}_{(i + 1, j, k)}
-            - \eta^1 \mathcal{E}^{(2)}_{(i, j, k)}
-          )
-        = \theta k h^3 + \theta k h^3
-        = 2 \theta k h^3, \\
-      & \epsilon^2 \mathcal{F}^{(1, 3)}_{(i, j, k)} && 
-        = ( - \eta^1 \mathcal{E}^{(1)}_{(i, j, k + 1)}
-            + \eta^1 \mathcal{E}^{(1)}_{(i, j, k)}
-          )
-        + ( \eta^1 \mathcal{E}^{(3)}_{(i + 1, j, k)}
-            - \eta^1 \mathcal{E}^{(3)}_{(i, j, k)}
-          )
-        = \theta j h^3 + 0 = \theta j h^3, \\
-      & \epsilon^2 \mathcal{F}^{(2, 3)}_{(i, j, k)} && 
-        = ( - \eta^1 \mathcal{E}^{(2)}_{(i, j, k + 1)}
-            + \eta^1 \mathcal{E}^{(2)}_{(i, j, k)}
-          )
-        + ( \eta^1 \mathcal{E}^{(3)}_{(i, j + 1, k)}
-            - \eta^1 \mathcal{E}^{(3)}_{(i, j, k)}
-          )
-        = - \theta i h^3 + 0
-        = - \theta i h^3.
+    \begin{alignat}{3}
+      & \omega^2 \mathcal{F}^{(2, 3)}_{(i, j, k)}
+      && =
+        ( - \eta^1 \mathcal{E}^{(2)}_{(i, j, k + 1)}
+          + \eta^1 \mathcal{E}^{(2)}_{(i, j, k)}
+        )
+      + ( \eta^1 \mathcal{E}^{(3)}_{(i, j + 1, k)}
+          - \eta^1 \mathcal{E}^{(3)}_{(i, j, k)}
+        )
+      = - \theta i h^3 + 0
+      && = - \theta i h^3, \\
+%
+      & \omega^2 \mathcal{F}^{(3, 1)}_{(i, j, k)}
+      && = 
+        ( - \eta^1 \mathcal{E}^{(3)}_{(i + 1, j, k)}
+          + \eta^1 \mathcal{E}^{(3)}_{(i, j, k)}
+        )
+      + ( \eta^1 \mathcal{E}^{(1)}_{(i, j, k + 1)}
+          + \eta^1 \mathcal{E}^{(1)}_{(i, j, k)}
+        )
+      = 0 - \theta j h^3
+      && = - \theta j h^3, \\
+%
+      & \omega^2 \mathcal{F}^{(1, 2)}_{(i, j, k)}
+      && = 
+        ( - \eta^1 \mathcal{E}^{(1)}_{(i, j + 1, k)}
+          + \eta^1 \mathcal{E}^{(1)}_{(i, j, k)}
+        )
+      + ( \eta^1 \mathcal{E}^{(2)}_{(i + 1, j, k)}
+          - \eta^1 \mathcal{E}^{(2)}_{(i, j, k)}
+        )
+      = \theta k h^3 + \theta k h^3
+      && = 2 \theta k h^3.
     \end{alignat}
   \end{subequations}
-  We have $\tau^2 = \mu \epsilon^2$ and hence
-  $\delta_2^\star \tau^2 = \mu \delta_2^\star \epsilon^2$.
-  Then 
+  We see the clear correspondence (by a factor of $2 h^2$) to the ``flattened''
+  version of $\boldsymbol{\omega}$,
+  \Cref{idec/discrete_elasticity/example_9_1:equation:rotation_vector}. 
+  
+  We have $\tau^2 = \mu \omega^2$ and hence
+  $\delta_2^\star \tau^2 = \mu \delta_2^\star \omega^2$.
+  Then
   \begin{subequations}
-    \begin{alignat}{2}
-      & (\delta_2^\star \tau^2) \mathcal{E}^{(1)}_{(i, j, k)} &&
-        =
-          \frac{\mu}{h^2}
-          (
-            ( \epsilon^2 \mathcal{F}^{(1, 2)}_{(i, j, k)}
-              - \epsilon^2 \mathcal{F}^{(1, 2)}_{(i, j - 1, k)}
-            )
-            -
-            ( \epsilon^2 \mathcal{F}^{(1, 3)}_{(i, j, k)}
-              - \epsilon^2 \mathcal{F}^{(1, 3)}_{(i, j, k - 1)}
-            )
+    \begin{alignat}{3}
+      & (\delta_2^\star \tau^2) \mathcal{E}^{(1)}_{(i, j, k)}
+      && =
+        \frac{\mu}{h^2}
+        (
+          ( \omega^2 \mathcal{F}^{(1, 2)}_{(i, j, k)}
+            - \omega^2 \mathcal{F}^{(1, 2)}_{(i, j - 1, k)}
           )
-        = \frac{\mu}{h^2} (0  - 0)
-        = 0, \\
-      & (\delta_2^\star \tau^2) \mathcal{E}^{(2)}_{(i, j, k)} &&
-        =
-          \frac{\mu}{h^2}
-          (
-            ( - \epsilon^2 \mathcal{F}^{(1, 2)}_{(i, j, k)}
-              + \epsilon^2 \mathcal{F}^{(1, 2)}_{(i - 1, j, k)}
-            )
-            -
-            ( \epsilon^2 \mathcal{F}^{(2, 3)}_{(i, j, k)}
-              - \epsilon^2 \mathcal{F}^{(2, 3)}_{(i, j, k - 1)}
-            )
+          -
+          ( \omega^2 \mathcal{F}^{(1, 3)}_{(i, j, k)}
+            - \omega^2 \mathcal{F}^{(1, 3)}_{(i, j, k - 1)}
           )
-        = \frac{\mu}{h^2} (0  - 0)
-        = 0, \\
-      & (\delta_2^\star \tau^2) \mathcal{E}^{(3)}_{(i, j, k)} &&
-        =
-          \frac{\mu}{h^2}
-          (
-            ( - \epsilon^2 \mathcal{F}^{(1, 3)}_{(i, j, k)}
-              + \epsilon^2 \mathcal{F}^{(1, 3)}_{(i - 1, j, k)}
-            )
-            -
-            ( - \epsilon^2 \mathcal{F}^{(2, 3)}_{(i, j, k)}
-              + \epsilon^2 \mathcal{F}^{(2, 3)}_{(i, j - 1, k)}
-            )
+        )
+      = \frac{\mu}{h^2} (0 - 0)
+      && = 0, \\
+%
+      & (\delta_2^\star \tau^2) \mathcal{E}^{(2)}_{(i, j, k)}
+      && =
+        \frac{\mu}{h^2}
+        (
+          ( \omega^2 \mathcal{F}^{(1, 2)}_{(i - 1, j, k)}
+            - \omega^2 \mathcal{F}^{(1, 2)}_{(i, j, k)}
           )
-        = \frac{\mu}{h^2} (0  - 0)
-        = 0.
+          -
+          ( \omega^2 \mathcal{F}^{(2, 3)}_{(i, j, k)}
+            - \omega^2 \mathcal{F}^{(2, 3)}_{(i, j, k - 1)}
+          )
+        )
+      = \frac{\mu}{h^2} (0 - 0)
+      &&  = 0, \\
+%
+      & (\delta_2^\star \tau^2) \mathcal{E}^{(3)}_{(i, j, k)}
+      && =
+        \frac{\mu}{h^2}
+        (
+          ( \omega^2 \mathcal{F}^{(1, 3)}_{(i - 1, j, k)}
+            - \omega^2 \mathcal{F}^{(1, 3)}_{(i, j, k)}
+          )
+          -
+          ( \omega^2 \mathcal{F}^{(2, 3)}_{(i, j - 1, k)}
+            - \omega^2 \mathcal{F}^{(2, 3)}_{(i, j, k)}
+          )
+        )
+      = \frac{\mu}{h^2} (0 - 0)
+      && = 0.
     \end{alignat}
   \end{subequations}
   Hence, $\delta_2^\star \tau^2 = 0$.

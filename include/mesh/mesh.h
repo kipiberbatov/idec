@@ -74,7 +74,7 @@ void mesh_boundary_check(
 
 jagged1 * mesh_boundary_nodes(const mesh * m);
 
-/********************************* mesh_coboundary ***********************************/
+/****************************** mesh_coboundary *******************************/
 matrix_sparse * mesh_coboundary_p(matrix_sparse * m_bd_p);
 matrix_sparse ** mesh_coboundary(int m_dim, matrix_sparse ** m_bd);
 
@@ -117,6 +117,25 @@ void mesh_boundary_node_coordinate_vectors_matrix(
 void mesh_boundary_node_normal(double * normal, const mesh * m, int i);
 
 double * mesh_boundary_neumann_coefficients(const mesh * m, int i);
+
+/******************************* mesh_hyperface *******************************/
+void mesh_hyperface_normal_vector(
+  double * hyperface_normal,
+  int d, const jagged2 * m_cf_dm1_0, const double * m_coord, int i);
+
+/****************************** mesh_node_normal ******************************/
+void mesh_node_normal(
+  double * normal,
+  double * hyperface_normals,
+  const mesh * m,
+  const jagged1 * boundary_hyperfaces,
+  const jagged2 * m_cf_dm1_0,
+  const jagged2 * m_fc_0_dm1,
+  double m_size,
+  int i);
+
+/********************************* mesh_size **********************************/
+double mesh_size(const mesh * m);
 
 // void mesh_boundary_node_vectors_matrix(
 //   double * result, int * size, const mesh * m, int i);
