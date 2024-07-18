@@ -2,10 +2,20 @@
 
 int int_power(int a, int n)
 {
-  int i, res;
-
-  res = 1;
-  for (i = 0; i < n; ++ i)
-    res *= a;
-  return res;
+  int flag, result, tmp;
+  
+  if (n == 0)
+    return 1;
+  result = 1;
+  tmp = a;
+  while (n > 1)
+  {
+    flag = n % 2;
+    if (flag)
+      result *= tmp;
+    tmp *= tmp;
+    n /= 2;
+  }
+  result *= tmp;
+  return result;
 }
