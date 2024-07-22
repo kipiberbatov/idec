@@ -117,7 +117,8 @@ int main(int argc, char ** argv)
     width,
     height,
     &window_margin);
-  
+  fprintf(stderr, "point_size = %g\n", data.point_size);
+
   total_colors = 1000;
   
   a.index = i;
@@ -127,9 +128,11 @@ int main(int argc, char ** argv)
   
   a.total_colors = total_colors;
   a.new_coordinates = new_coordinates;
-  a.point_size = data.point_size;
+  // double_matrix_file_print(stderr, m->cn[0], 2, new_coordinates, "--raw");
+  a.point_size = 10 * data.point_size;
   a.min_value = double_array_min(n * m->cn[0], u);
   a.max_value = double_array_max(n * m->cn[0], u);
+  fprintf(stderr, "min = %g, max = %g\n", a.min_value, a.max_value);
   a.paint = paint_rgb;
   
   speed = 100;

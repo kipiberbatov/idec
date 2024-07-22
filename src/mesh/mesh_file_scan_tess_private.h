@@ -44,3 +44,6 @@ void mesh_file_scan_tess_get_faces_number_of_sides(
 
 void mesh_file_scan_tess_get_faces_to_subfaces(int * faces_to_subfaces,
   FILE * in, int cn_2, int faces_total_edges);
+
+void mesh_file_scan_tess_get_boundary_values(double * bd_values_2,
+  FILE * in, int cn_2, int faces_total_edges);

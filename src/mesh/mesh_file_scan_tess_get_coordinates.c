@@ -4,6 +4,8 @@
 #include "int.h"
 #include "mesh_file_scan_tess_private.h"
 
+#define EPSILON .0000000001
+
 void mesh_file_scan_tess_get_coordinates(double * coordinates, FILE * in,
   int * error, int d, int cn_0)
 {
@@ -27,13 +29,17 @@ void mesh_file_scan_tess_get_coordinates(double * coordinates, FILE * in,
     }
     for (j = 0; j < d; ++j)
     {
-      coordinates[i * d + j] = double_file_scan(in);
+      x = double_file_scan(in);
       *error = errno;
       if (*error)
       {
         fprintf(stderr, "Unable to scan a coordinate (%d, %d)\n", i, j);
         return;
       }
+      if (x < EPSILON && -x < EPSILON)
+        coordinates[d * i + j] = 0;
+      else
+        coordinates[d * i + j] = x;
     }
     for (j = d; j < 4; ++j)
     {

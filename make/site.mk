@@ -14,8 +14,9 @@ website:
 	mkdir -p $@
 
 .PHONY: site_fast
-site_fast: website/index.html website/style.css docs_all_fast | website
-	cp docs/main.pdf $|
+site_fast: latex/main.tex website/index.html website/style.css | docs website
+	pdflatex -output-directory=$(word 1, $|) $<
+	cp docs/main.pdf $(word 2, $|)
 
 .PHONY: site_clean
 site_clean:

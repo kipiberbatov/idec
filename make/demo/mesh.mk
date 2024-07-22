@@ -1257,16 +1257,74 @@ demo/mesh/mesh_pentagon_forman_hodge_corrected.txt:\
 	  demo/mesh/mesh_pentagon_forman_hodge_coeff.txt | demo/mesh
 	$^ > $@
 
-DEMO_MESH_2d_10_GRAINS := demo/mesh/mesh_2d_10_grains_forman.txt
+DEMO_MESH_2d_10_GRAINS :=\
+  demo/mesh/mesh_2d_10_grains.txt\
+  demo/mesh/mesh_2d_10_grains_forman.txt\
+  demo/mesh/mesh_2d_10_grains_forman_cbd.txt\
+  demo/mesh/mesh_2d_10_grains_forman_vol.txt\
+  demo/mesh/mesh_2d_10_grains_forman_inner.txt\
+  demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt\
+  demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_temperature.txt\
+  demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p4_flux.txt\
 
 .PHONY: demo_mesh_2d_10_grains
 demo_mesh_2d_10_grains: $(DEMO_MESH_2d_10_GRAINS) | demo/mesh
 
-demo/mesh/mesh_2d_10_grains_forman.txt:\
-	  bin/forman$(.EXE)\
+demo/mesh/mesh_2d_10_grains.txt:\
+	  bin/mesh_and_boundary_file_scan$(.EXE)\
 	  data/mesh/mesh_2d_10_grains.tess\
 	  | demo/mesh
 	$< --tess < $(word 2, $^) > $@
+
+# demo/mesh/mesh_2d_10_grains_forman.txt:\
+# 	  bin/forman$(.EXE)\
+# 	  data/mesh/mesh_2d_10_grains.tess\
+# 	  | demo/mesh
+# 	$< --tess < $(word 2, $^) > $@
+
+demo/mesh/mesh_2d_10_grains_forman.txt:\
+	  bin/forman_boundary$(.EXE)\
+	  demo/mesh/mesh_2d_10_grains.txt\
+	  | demo/mesh
+	$< --raw < $(word 2, $^) > $@
+
+demo/mesh/mesh_2d_10_grains_forman_cbd.txt:\
+	  bin/mesh_coboundary$(.EXE)\
+	  demo/mesh/mesh_2d_10_grains_forman.txt | demo/mesh
+	$< --raw < $(word 2, $^) > $@
+
+demo/mesh/mesh_2d_10_grains_forman_vol.txt:\
+	  bin/mesh_qc_vol$(.EXE)\
+	  demo/mesh/mesh_2d_10_grains_forman.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_2d_10_grains_forman_inner.txt:\
+	  bin/mesh_qc_inner_direct$(.EXE)\
+	  demo/mesh/mesh_2d_10_grains_forman.txt\
+	  demo/mesh/mesh_2d_10_grains_forman_vol.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt:\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
+	  demo/mesh/mesh_2d_10_grains_forman.txt\
+	  demo/mesh/mesh_2d_10_grains_forman_inner.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_temperature.txt:\
+	  bin/diffusion_continuous$(.EXE)\
+	  demo/mesh/mesh_2d_10_grains_forman.txt\
+	  demo/mesh/mesh_2d_10_grains_forman_cbd.txt\
+	  demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt\
+	  build/diffusion_continuous_p7.o | demo/mesh
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_continuous_p7 0.001 1000 > $@
+
+demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_flux.txt:\
+	  bin/diffusion_discrete_calculate_flux$(.EXE)\
+	  demo/mesh/mesh_2d_10_grains_forman.txt\
+	  demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_temperature.txt \
+	  | demo/mesh
+	$< $(word 2, $^) 1000 $(word 3, $^) > $@
 
 DEMO_MESH_SQUARE := \
   demo/mesh/mesh_square_2.txt\
@@ -1280,11 +1338,6 @@ DEMO_MESH_SQUARE := \
 
 .PHONY: demo_mesh_square
 demo_mesh_square: $(DEMO_MESH_SQUARE) | demo/mesh
-
-# demo/mesh/mesh_square_vol.txt:\
-# 	  bin/mesh_qc_vol$(.EXE)\
-# 	  demo/mesh/mesh_square.txt | demo/mesh
-# 	 $< < $(word 2, $^) > $@
 
 demo/mesh/mesh_square_2.txt:\
 	  bin/forman_boundary$(.EXE)\

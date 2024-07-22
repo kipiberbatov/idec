@@ -2,7 +2,8 @@
 #include "double.h"
 #include "forman.h"
 
-static void mesh_boundary_file_print_raw(FILE * out, int m_dim, matrix_sparse ** m_bd)
+static void mesh_boundary_file_print_raw(
+  FILE * out, int m_dim, matrix_sparse ** m_bd)
 {
   int m_bd_p_nonzero_max, p;
   const matrix_sparse * m_bd_p;
@@ -32,7 +33,8 @@ static void forman_boundary_file_print_raw(
   m_forman_boundary = forman_boundary(m, m_forman, m_bd);
   if (errno)
   {
-    fputs("forman_boundary_file_print - cannot calculate m_forman->bd\n", stderr);
+    fputs("forman_boundary_file_print - cannot calculate m_forman->bd\n",
+      stderr);
     goto m_forman_free;
   }
   
@@ -45,7 +47,7 @@ end:
   return;
 }
 
-int main()
+int main(void)
 {
   mesh * m;
   matrix_sparse ** m_bd;

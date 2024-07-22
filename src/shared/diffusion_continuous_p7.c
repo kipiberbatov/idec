@@ -26,7 +26,7 @@ static int double_almost_zero(double a)
 
 static double initial(const double * x)
 {
-  if (double_almost_zero(x[0]) && (0. <= x[1] && x[1] <= 1.))
+  if (double_almost_zero(x[0]) && (0. <= x[1] && x[1] <= 15.))
     return 100.;
   else
     return 0.;
@@ -62,7 +62,7 @@ static double source(const double * x)
 
 static int boundary_dirichlet(const double * x)
 {
-  return (x[0] == 0.) && (0. <= x[1] && x[1] <= 1.);
+  return (x[0] == 0.) && (0. <= x[1] && x[1] <= 15.);
 }
 
 static double g_dirichlet(const double * x)
@@ -72,7 +72,7 @@ static double g_dirichlet(const double * x)
 
 static int boundary_neumann(const double * x)
 {
-  return ((x[1] == 0. || x[1] == 1.) && (0. < x[0] && x[0] < 1.));
+  return ((x[1] == 0. || x[1] == 15.) && (0. < x[0] && x[0] < 20.));
 }
 
 static double g_neumann(const double * x)
@@ -80,7 +80,7 @@ static double g_neumann(const double * x)
   return 0;
 }
 
-const diffusion_continuous diffusion_continuous_p4 =
+const diffusion_continuous diffusion_continuous_p7 =
 {
   pi_0,
   pi_1,

@@ -1479,7 +1479,7 @@
     v \usmile (\sigma^p \smile \tau^q)
     = v \otimes (\sigma^p \smile \tau^q)
     = (v \otimes \sigma^p) \usmile \tau^q
-    = (v \usmile \sigma^p) \usmile \tau^q
+    = (v \usmile \sigma^p) \usmile \tau^q.
   \end{equation}
 \end{proof}
 
@@ -1513,19 +1513,19 @@
     $\sigma^p \in C^p K$.
   Then
   \begin{equation}
-    \nabla(v \usmile \sigma^p)
-    = \nabla v \usmile \sigma^p + v \usmile \delta \sigma^p.
+    \nabla_p(v \usmile \sigma^p)
+    = \nabla_0 v \usmile \sigma^p + v \usmile \delta_p \sigma^p.
   \end{equation}
 \end{proposition}
 
 \begin{proof}
   \begin{equation}
-    \nabla(v \usmile \sigma^p)
-    := \nabla(v \otimes \sigma^p)
-    = \nabla((v \otimes 1) \usmile \sigma^p)
-    = \nabla(v \otimes 1) \usmile \sigma^p
-      + (v \otimes 1) \usmile \delta \sigma^p
-    =: \nabla v \usmile \sigma^p + v \usmile \delta \sigma^p.
+    \nabla_p(v \usmile \sigma^p)
+    := \nabla_p(v \otimes \sigma^p)
+    = \nabla_p((v \otimes 1) \usmile \sigma^p)
+    = \nabla_0(v \otimes 1) \usmile \sigma^p
+      + (v \otimes 1) \usmile \delta_p \sigma^p
+    =: \nabla_0 v \usmile \sigma^p + v \usmile \delta_p \sigma^p.
   \end{equation}
 \end{proof}
 
@@ -1538,9 +1538,9 @@
   Then $\nabla$ satisfies the graded Leibnitz rule:
   for any $p, q \in \N$, $\sigma_V^p \in C^p(K, V)$, $\tau^q \in C^q K$, 
   \begin{equation}
-    \nabla(\sigma_V^p \usmile \tau^q)
-    = \nabla \sigma_V^p \usmile \tau^q
-      + (-1)^p \sigma_V^p \usmile \delta \tau^q.
+    \nabla_{p + q}(\sigma_V^p \usmile \tau^q)
+    = \nabla_p \sigma_V^p \usmile \tau^q
+      + (-1)^p \sigma_V^p \usmile \delta_q \tau^q.
   \end{equation}
 \end{proposition}
 
@@ -1550,15 +1550,15 @@
   Then
   \begin{equation}
     \begin{split}
-      \nabla(\sigma_V^p \usmile \tau^q)
-      & = \nabla(v \usmile (\theta^p \smile \tau^q)) \\
-      & = \nabla v \usmile (\theta^p \smile \tau^q)
-          + v \usmile (\delta \theta^p \smile \tau^q)
-          + (-1)^p v \usmile (\theta^p \smile \delta \tau^q) \\
-      & = \nabla(v \usmile \theta^p) \usmile \tau^q
-          + (-1)^p (v \usmile \theta^p) \usmile \delta \tau^q \\
-      & = \nabla \sigma_V^p \usmile \tau^q
-          + (-1)^p \sigma_V^p \usmile \delta \tau^q.
+      \nabla_{p + q}(\sigma_V^p \usmile \tau^q)
+      & = \nabla_{p + q}(v \usmile (\theta^p \smile \tau^q)) \\
+      & = \nabla_0 v \usmile (\theta^p \smile \tau^q)
+          + v \usmile (\delta_p \theta^p \smile \tau^q)
+          + (-1)^p v \usmile (\theta^p \smile \delta_q \tau^q) \\
+      & = \nabla_p(v \usmile \theta^p) \usmile \tau^q
+          + (-1)^p (v \usmile \theta^p) \usmile \delta_q \tau^q \\
+      & = \nabla_p \sigma_V^p \usmile \tau^q
+          + (-1)^p \sigma_V^p \usmile \delta_q \tau^q.
     \end{split}
   \end{equation}
 \end{proof}
@@ -1581,24 +1581,29 @@
     \Omega^\bullet(\abs{K}, \R^d)
   \end{equation}
   the space of $\R^d$-valued smooth differential forms on $\abs{K}$.
-  We define the approximation
+  Let
   \begin{equation}
-    S \colon \Omega^0(\abs{K}, \R^d) \to C^0(K, C_1 K)
+    S \colon \chi \abs{K} \to C^1 K
+  \end{equation}
+  be the discretization of vector fields into $1$-forms.
+  We define the discretization of vector-valued smooth $0$-forms,
+  \begin{equation}
+    {\bf S} \colon \Omega^0(\abs{K}, \R^d) \to C^0(K, C_1 K),
   \end{equation}
   as follows: if for $p = 0, ..., d - 1$,
-  $u_p \colon \abs{K} \to \R$ is smooth with approximation
+  $u_p \colon \abs{K} \to \R$ is smooth with discretization
   $\eta_{(p)}^0 \in C^1 K = \widetilde{u_p}$, then
   \begin{equation}
-    S(\sum_{p = 0}^{d - 1} u_p \frac{\partial}{\partial x_p})
+    {\bf S}\left(\sum_{p = 0}^{d - 1} u_p \frac{\partial}{\partial x_p}\right)
     := \sum_{p = 0}^{d - 1} e_p \smile \eta_{(p)}^0.
   \end{equation}
   Then if we take the vector gradient ${\boldsymbol \nabla}$
   (which comes from the Levi-Civitta connection on the flat metric on
   $\abs{K}$), then for any smooth function $f \colon \abs{K} \to \R$,
   \begin{equation}
-    S({\boldsymbol \nabla} f)
+    {\bf S}({\boldsymbol \nabla} f)
     = \sum_{p = 0}^{d - 1}
-      e_p \usmile \widetilde{\frac{\partial}{\partial x_p} f}.
+      e_p \usmile S\left(\frac{\partial}{\partial x_p} f\right).
   \end{equation}
 \end{example}
 

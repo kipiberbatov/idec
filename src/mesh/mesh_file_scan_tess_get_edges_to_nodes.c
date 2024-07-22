@@ -25,14 +25,14 @@ void mesh_file_scan_tess_get_edges_to_nodes(int * edges_to_nodes, FILE * in,
     }
     for (j = 0; j <= 1; ++j)
     {
-      edges_to_nodes[i * 2 + j] = int_file_scan(in);
+      edges_to_nodes[2 * i + j] = int_file_scan(in);
       *error = errno;
       if (*error)
       {
         fprintf(stderr, "Unable to scan edge node (%d, %d)\n", i, j);
         return;
       }
-      --edges_to_nodes[i * 2 + j];
+      --edges_to_nodes[2 * i + j];
     }
     x = int_file_scan(in);
     *error = errno;
