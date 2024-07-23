@@ -24,8 +24,11 @@ static void loop(
   int number_of_steps)
 {
   int i, n;
-
+  
   n = rhs->rows;
+  // fprintf(stderr, "result[%d]:\n", 0);
+  // double_array_file_print(stderr, n, result, "--raw");
+  // fputs("\n", stderr);
   for (i = 0; i < number_of_steps; ++i)
   {
     /* let $y_i := result + i * n$ be the $i$-th solution vector */
@@ -40,6 +43,12 @@ static void loop(
     /* update Neumann rows of rhs_final by Neumann boundary conditions */
     double_array_substitute_inverse(
       rhs_final, boundary_neumann->a0, g_neumann, boundary_neumann->a1);
+    // if (i < 2)
+    // {
+    //   fprintf(stderr, "rhs[%d]:\n", i + 1);
+    //   double_array_file_print(stderr, n, rhs_final, "--raw");
+    //   fputs("\n", stderr);
+    // }
 
     /* $y_{i + 1} = lhs^{-1} . rhs_final$ */
     memcpy(result + (i + 1) * n, rhs_final, sizeof(double) * n);
@@ -49,6 +58,12 @@ static void loop(
       fprintf(stderr, "  loop: error in iteration %d\n", i);
       return;
     }
+    // if (i < 2)
+    // {
+    //   fprintf(stderr, "result[%d]:\n", i + 1);
+    //   double_array_file_print(stderr, n, result + (i + 1) * n, "--raw");
+    //   fputs("\n", stderr);
+    // }
   }
 }
 
@@ -163,7 +178,24 @@ double * diffusion_discrete_solve_trapezoidal_method(
 
   /* the initial $n$ elements of $result$ are the initial condition */
   memcpy(result, data->initial, sizeof(double) * n);
+  
+  // fputs("\nInitial: \n", stderr);
+  // double_array_file_print(stderr, n, data->initial, "--raw");
 
+  // fputs("\nDirichlet: \n", stderr);
+  // jagged1_file_print(stderr, data->boundary_dirichlet, "--raw");
+  // double_array_file_print(stderr,
+  //   data->boundary_dirichlet->a0, data->g_dirichlet, "--raw");
+
+  // fputs("\nNeumann: \n", stderr);
+  // jagged1_file_print(stderr, data->boundary_neumann, "--raw");
+  // double_array_file_print(stderr,
+  //   data->boundary_neumann->a0, data->g_neumann, "--raw");
+
+  // fputs("\n", stderr);
+  // matrix_sparse_file_print(stderr, lhs, "--matrix-form-raw");
+  // fputs("\n\n", stderr);
+  
   /* The following $number_of_steps$ elements of $result$ (each of size $n$)
    * are calculated iteratively with $rhs_final$ updating at each step.
    */
@@ -179,6 +211,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
     free(result);
     goto rhs_final_free;
   }
+  // double_matrix_file_print(stderr, 2, n, result, "--raw");
 
 rhs_final_free:
   free(rhs_final);

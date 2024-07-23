@@ -1607,4 +1607,35 @@
   \end{equation}
 \end{example}
 
+I will summarize the operations relating cochains and embedding.
+\begin{discussion}
+  Let
+    $d \in \N$
+    $K$ be a quasi-cubical flat mesh of dimension $d$,
+    $X$ be the manifold it encompasses.
+  We define the following data:
+  \begin{itemize}
+    \item
+      $n \colon K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
+    \item
+      $\widehat{\phantom{T}} \colon C^1 K \to 
+        \displaystyle \prod_{x_0 \colon K_0} \R^{n(x_0)}$
+      denotes the neighbor representation of a $1$-cochain;
+    \item
+      $L \colon \prod_{x_0 \colon K_0} M_{n(x_0), d}(\R)$
+      denotes the node neighbors matrix;
+    \item
+      $\displaystyle
+        \star \colon \prod_{(m, n) \colon \N^2} M_{m, n}(\R) \to M_{n, m}(\R)$
+      denotes the Moore-Penrose inverse of a rectangular matrix;
+    \item
+      $\overline{\phantom{T}} \colon C^1 K \to C^0(K, \R^d)$
+      denotes the approximation of a $1$-cochain as a Euclidean vector-valued
+      $0$-cochain;
+    \item
+      $\underline{\phantom{T}} \colon \chi X \to C^1 K$
+      denotes the discretization of a continuum vector field as a $1$-cichain.
+  \end{itemize}
+\end{discussion}
+
 \end{document}

@@ -21,7 +21,9 @@ static void diffusion_continuous_boundary_vector(
   {
     j = boundary_nodes_a1[j_loc];
     result[j_loc] = g(m_coord + m_dim_embedded * j);
+    // fprintf(stderr, "j = %d, value = %g\n", j, result[j_loc]);
   }
+  // fputs("\n", stderr);
 }
 
 static void

@@ -129,7 +129,10 @@ int main(int argc, char ** argv)
   a.total_colors = total_colors;
   a.new_coordinates = new_coordinates;
   // double_matrix_file_print(stderr, m->cn[0], 2, new_coordinates, "--raw");
-  a.point_size = 10 * data.point_size;
+  if (data.point_size >= 5)
+    a.point_size = data.point_size;
+  else
+    a.point_size = 5;
   a.min_value = double_array_min(n * m->cn[0], u);
   a.max_value = double_array_max(n * m->cn[0], u);
   fprintf(stderr, "min = %g, max = %g\n", a.min_value, a.max_value);

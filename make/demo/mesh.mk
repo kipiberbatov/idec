@@ -1265,7 +1265,7 @@ DEMO_MESH_2d_10_GRAINS :=\
   demo/mesh/mesh_2d_10_grains_forman_inner.txt\
   demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt\
   demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_temperature.txt\
-  demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p4_flux.txt\
+  demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_flux.txt\
 
 .PHONY: demo_mesh_2d_10_grains
 demo_mesh_2d_10_grains: $(DEMO_MESH_2d_10_GRAINS) | demo/mesh
@@ -1317,7 +1317,7 @@ demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_temperature.txt:\
 	  demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt\
 	  build/diffusion_continuous_p7.o | demo/mesh
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
-	  diffusion_continuous_p7 0.001 1000 > $@
+	  diffusion_continuous_p7 0.0001 1000 > $@
 
 demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_flux.txt:\
 	  bin/diffusion_discrete_calculate_flux$(.EXE)\
