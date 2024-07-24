@@ -111,6 +111,7 @@
 \newcommand{\OR}{\mathop{\rm or}\nolimits}
 \newcommand{\vol}{\mathop{\rm vol}\nolimits}
 \newcommand{\usmile}{\underline{\smile}}
+\newcommand{\uwedge}{\underline{\wedge}}
 
 \title{IDEC documentation}
 \author{Kiprian Berbatov}
@@ -1610,7 +1611,7 @@
 I will summarize the operations relating cochains and embedding.
 \begin{discussion}
   Let
-    $d \in \N$
+    $d \in \N$,
     $K$ be a quasi-cubical flat mesh of dimension $d$,
     $X$ be the manifold it encompasses.
   We define the following data:
@@ -1622,7 +1623,8 @@ I will summarize the operations relating cochains and embedding.
         \displaystyle \prod_{x_0 \colon K_0} \R^{n(x_0)}$
       denotes the neighbor representation of a $1$-cochain;
     \item
-      $L \colon \prod_{x_0 \colon K_0} M_{n(x_0), d}(\R)$
+      $\displaystyle
+        \mathcal{L} \colon \prod_{x_0 \colon K_0} M_{n(x_0), d}(\R)$
       denotes the node neighbors matrix;
     \item
       $\displaystyle
@@ -1631,10 +1633,47 @@ I will summarize the operations relating cochains and embedding.
     \item
       $\overline{\phantom{T}} \colon C^1 K \to C^0(K, \R^d)$
       denotes the approximation of a $1$-cochain as a Euclidean vector-valued
-      $0$-cochain;
+      $0$-cochain,
+      \begin{equation}
+        \overline{\pi^1} c_0 :=
+        (\mathcal{L}_{c_0})^\star \cdot (\widehat{\pi^1})_{c_0};
+      \end{equation}
     \item
       $\underline{\phantom{T}} \colon \chi X \to C^1 K$
-      denotes the discretization of a continuum vector field as a $1$-cichain.
+      denotes the discretization of a continuum vector field as a $1$-cichain;
+    \item
+      $R \colon \Omega^\bullet X \to C^\bullet K$ denotes the de Rham map,
+      \begin{equation}
+        (R_p \omega^p) c_p := \int_{\abs{c_p}} \omega^p;
+      \end{equation}
+    \item
+      $S \colon \Omega^\bullet(X, \chi X) \to C^\bullet(K, C^1 K)$
+      denotes the discretization of vector-valued smooth forms into
+      $1$-cochain valued cochains,
+      \begin{equation}
+        S_p(u \otimes \omega^p) := \underline{u} \otimes R_p \omega^p;
+      \end{equation}
+    \item
+      $\nabla \colon \chi X \to \Omega^1(X, \chi X)$ is the vector gradient
+      (connection on vector fields);
+    \item
+      $D \colon \Omega^\bullet(X, \chi X) \to \Omega^\bullet(X, \chi X)$
+      is the respective covariant exterior derivative on vector-valued forms,
+      \begin{equation}
+        D_p(u \otimes \omega^p) :=
+        \nabla u \uwedge \omega^p + u \otimes d_p \omega^p;
+      \end{equation}
+    \item
+      $\nabla^{(K)} \colon C^1 K \to C^1(K, C^1 K)$
+      is the discrete vector gradient (discrete connection on $1$-cochains);
+    \item
+      $D^{(K)} \colon C^\bullet(K, C^1 K) \to C^\bullet(K, C^1 K)$
+      is the respective discrete covariant exterior derivative on
+      $1$-cochain valued cohains,
+      \begin{equation}
+        D^{(K)}_p(\pi^1 \otimes \rho^p) :=
+        \nabla^{(K)} \pi^1 \usmile \rho^p + \pi^1 \otimes \delta_p \rho^p.
+      \end{equation}
   \end{itemize}
 \end{discussion}
 
