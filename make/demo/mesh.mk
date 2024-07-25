@@ -13,16 +13,16 @@ demo_mesh:\
 demo/mesh: | demo
 	mkdir -p $@
 
-DEMO_MESH_BRICK_REGULAR :=\
+_demo_mesh_brick_regular :=\
   demo_mesh_brick_regular_2d\
   demo_mesh_brick_regular_3d\
   demo_mesh_brick_regular_4d\
 
 .PHONY: demo_mesh_brick_regular
-demo_mesh_brick_regular: $(DEMO_MESH_BRICK_REGULAR) | demo/mesh
+demo_mesh_brick_regular: $(_demo_mesh_brick_regular) | demo/mesh
 
 # d = 2
-DEMO_MESH_BRICK_REGULAR_2D :=\
+_demo_mesh_brick_regular_2d :=\
   demo_mesh_brick_regular_2d_1\
   demo_mesh_brick_regular_2d_2\
   demo_mesh_brick_regular_2d_4\
@@ -30,10 +30,10 @@ DEMO_MESH_BRICK_REGULAR_2D :=\
   demo_mesh_brick_regular_2d_10\
 
 .PHONY: demo_mesh_brick_regular_2d
-demo_mesh_brick_regular_2d: $(DEMO_MESH_BRICK_REGULAR_2D) | demo/mesh
+demo_mesh_brick_regular_2d: $(_demo_mesh_brick_regular_2d) | demo/mesh
 	
 # d = 2, n = 1
-DEMO_MESH_BRICK_REGULAR_2D_1 := \
+_demo_mesh_brick_regular_2d_1 := \
   demo/mesh/mesh_brick_2d_1.txt\
   demo/mesh/mesh_brick_2d_1_vol.txt\
   demo/mesh/mesh_brick_2d_1_forman.txt\
@@ -64,7 +64,7 @@ DEMO_MESH_BRICK_REGULAR_2D_1 := \
   # demo/mesh/mesh_brick_2d_1_forman_elastcity_laplacian_1_1_1.txt\
 
 .PHONY: demo_mesh_brick_regular_2d_1
-demo_mesh_brick_regular_2d_1: $(DEMO_MESH_BRICK_REGULAR_2D_1) | demo/mesh
+demo_mesh_brick_regular_2d_1: $(_demo_mesh_brick_regular_2d_1) | demo/mesh
 
 demo/mesh/mesh_brick_2d_1.txt:\
 	  bin/mesh_brick_regular$(.EXE) | demo/mesh
@@ -226,7 +226,7 @@ demo/mesh/mesh_brick_2d_1_forman_elasticity_cbd_star_2_1_1.txt:\
 # 	$^ > $@
 
 # d = 2, n = 2
-DEMO_MESH_BRICK_REGULAR_2D_2 := \
+_demo_mesh_brick_regular_2d_2 := \
   demo/mesh/mesh_brick_2d_2.txt\
   demo/mesh/mesh_brick_2d_2_vol.txt\
   demo/mesh/mesh_brick_2d_2_forman.txt\
@@ -266,7 +266,7 @@ DEMO_MESH_BRICK_REGULAR_2D_2 := \
   demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected.txt\
 
 .PHONY: demo_mesh_brick_regular_2d_2
-demo_mesh_brick_regular_2d_2: $(DEMO_MESH_BRICK_REGULAR_2D_2) | demo/mesh
+demo_mesh_brick_regular_2d_2: $(_demo_mesh_brick_regular_2d_2) | demo/mesh
 
 demo/mesh/mesh_brick_2d_2.txt:\
 	  bin/mesh_brick_regular$(.EXE) | demo/mesh
@@ -489,7 +489,7 @@ demo/mesh/mesh_brick_2d_2_forman_hodge_laplacian_corrected.txt:\
 	$< 2 --raw $(word 2, $^) --raw $(word 3, $^) --raw > $@
 
 # d = 2, n = 4
-DEMO_MESH_BRICK_REGULAR_2D_4 := \
+_demo_mesh_brick_regular_2d_4 := \
   demo/mesh/mesh_brick_2d_4.txt\
   demo/mesh/mesh_brick_2d_4_bd.txt\
   demo/mesh/mesh_brick_2d_4_cbd.txt\
@@ -516,7 +516,7 @@ DEMO_MESH_BRICK_REGULAR_2D_4 := \
   demo/mesh/mesh_brick_2d_4_laplace_equation_non_grid.txt\
 
 .PHONY: demo_mesh_brick_regular_2d_4
-demo_mesh_brick_regular_2d_4: $(DEMO_MESH_BRICK_REGULAR_2D_4) | demo/mesh
+demo_mesh_brick_regular_2d_4: $(_demo_mesh_brick_regular_2d_4) | demo/mesh
 
 demo/mesh/mesh_brick_2d_4.txt:\
 	  bin/mesh_brick_regular$(.EXE) | demo/mesh
@@ -663,7 +663,7 @@ demo/mesh/mesh_brick_2d_4_heat_conduction_non_grid.txt:\
 	$< $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^) --raw \
 	0.1 10 --raw > $@
 
-DEMO_MESH_BRICK_REGULAR_2D_5 := \
+_demo_mesh_brick_regular_2d_5 := \
   demo/mesh/mesh_brick_2d_5.txt\
   demo/mesh/mesh_brick_2d_5_forman_cbd.txt\
   demo/mesh/mesh_brick_2d_5_vol.txt\
@@ -687,7 +687,7 @@ DEMO_MESH_BRICK_REGULAR_2D_5 := \
   demo/mesh/mesh_brick_2d_5_forman_hodge_corrected.txt\
 
 .PHONY: demo_mesh_brick_regular_2d_5
-demo_mesh_brick_regular_2d_5: $(DEMO_MESH_BRICK_REGULAR_2D_5) | demo/mesh
+demo_mesh_brick_regular_2d_5: $(_demo_mesh_brick_regular_2d_5) | demo/mesh
 
 demo/mesh/mesh_brick_2d_5.txt:\
 	  bin/mesh_brick_regular$(.EXE) | demo/mesh
@@ -819,7 +819,7 @@ demo/mesh/mesh_brick_2d_5_forman_hodge_corrected.txt:\
 	  demo/mesh/mesh_brick_2d_5_forman_hodge_coeff.txt | demo/mesh
 	$^ > $@
 
-DEMO_MESH_BRICK_REGULAR_2D_10 := \
+_demo_mesh_brick_regular_2d_10 := \
   demo/mesh/mesh_brick_2d_10.txt\
   demo/mesh/mesh_brick_2d_10_vol.txt\
   demo/mesh/mesh_brick_2d_10_forman.txt\
@@ -834,7 +834,7 @@ DEMO_MESH_BRICK_REGULAR_2D_10 := \
   demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_flux.txt\
 
 .PHONY: demo_mesh_brick_regular_2d_10
-demo_mesh_brick_regular_2d_10: $(DEMO_MESH_BRICK_REGULAR_2D_10) | demo/mesh
+demo_mesh_brick_regular_2d_10: $(_demo_mesh_brick_regular_2d_10) | demo/mesh
 
 demo/mesh/mesh_brick_2d_10.txt:\
 	  bin/mesh_brick_regular$(.EXE) | demo/mesh
@@ -905,14 +905,14 @@ demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_flux.txt:\
 	  | demo/mesh
 	$< $(word 2, $^) 4000 $(word 3, $^) > $@
 
-DEMO_MESH_BRICK_REGULAR_2 :=\
-  $(DEMO_MESH_BRICK_REGULAR_2D_1)\
-  $(DEMO_MESH_BRICK_REGULAR_2D_2)\
-  $(DEMO_MESH_BRICK_REGULAR_2D_4)\
-  $(DEMO_MESH_BRICK_REGULAR_2D_5)\
-  $(DEMO_MESH_BRICK_REGULAR_2D_10)\
+_demo_mesh_brick_regular_2:=\
+  $(_demo_mesh_brick_regular_2d_1)\
+  $(_demo_mesh_brick_regular_2d_2)\
+  $(_demo_mesh_brick_regular_2d_4)\
+  $(_demo_mesh_brick_regular_2d_5)\
+  $(_demo_mesh_brick_regular_2d_10)\
 
-DEMO_MESH_TWO_TRIANGLES := \
+_demo_mesh_two_triangles := \
   demo/mesh/mesh_two_triangles_vol.txt\
   demo/mesh/mesh_two_triangles_forman.txt\
   demo/mesh/mesh_two_triangles_forman_vol.txt\
@@ -934,7 +934,7 @@ DEMO_MESH_TWO_TRIANGLES := \
   demo/mesh/mesh_two_triangles_forman_laplace_equation_non_grid.txt\
 
 .PHONY: demo_mesh_two_triangles
-demo_mesh_two_triangles: $(DEMO_MESH_TWO_TRIANGLES) | demo/mesh
+demo_mesh_two_triangles: $(_demo_mesh_two_triangles) | demo/mesh
 
 demo/mesh/mesh_two_triangles_vol.txt:\
 	  bin/mesh_measure$(.EXE)\
@@ -1049,7 +1049,7 @@ demo/mesh/mesh_two_triangles_forman_laplace_equation_non_grid.txt:\
 	$< $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^) --raw\
 	> $@ --raw
 
-DEMO_MESH_TRIANGLE_AND_SQUARE := \
+_demo_mesh_triangle_and_square := \
   demo/mesh/mesh_triangle_and_square_vol.txt\
   demo/mesh/mesh_triangle_and_square_forman.txt\
   demo/mesh/mesh_triangle_and_square_forman_vol.txt\
@@ -1067,7 +1067,7 @@ DEMO_MESH_TRIANGLE_AND_SQUARE := \
   demo/mesh/mesh_triangle_and_square_forman_hodge_corrected.txt\
 
 .PHONY: demo_mesh_triangle_and_square
-demo_mesh_triangle_and_square: $(DEMO_MESH_TRIANGLE_AND_SQUARE) | demo/mesh
+demo_mesh_triangle_and_square: $(_demo_mesh_triangle_and_square) | demo/mesh
 
 demo/mesh/mesh_triangle_and_square_vol.txt:\
 	  bin/mesh_measure$(.EXE)\
@@ -1158,7 +1158,7 @@ demo/mesh/mesh_triangle_and_square_forman_hodge_corrected.txt:\
 	  demo/mesh/mesh_triangle_and_square_forman_hodge_coeff.txt | demo/mesh
 	$^ > $@
 
-DEMO_MESH_PENTAGON := \
+_demo_mesh_pentagon := \
   demo/mesh/mesh_pentagon_vol.txt\
   demo/mesh/mesh_pentagon_forman.txt\
   demo/mesh/mesh_pentagon_forman_vol.txt\
@@ -1176,7 +1176,7 @@ DEMO_MESH_PENTAGON := \
   demo/mesh/mesh_pentagon_forman_hodge_corrected.txt\
 
 .PHONY: demo_mesh_pentagon
-demo_mesh_pentagon: $(DEMO_MESH_PENTAGON) | demo/mesh
+demo_mesh_pentagon: $(_demo_mesh_pentagon) | demo/mesh
 
 demo/mesh/mesh_pentagon_vol.txt:\
 	  bin/mesh_measure$(.EXE)\
@@ -1267,7 +1267,7 @@ demo/mesh/mesh_pentagon_forman_hodge_corrected.txt:\
 	  demo/mesh/mesh_pentagon_forman_hodge_coeff.txt | demo/mesh
 	$^ > $@
 
-DEMO_MESH_2d_10_GRAINS :=\
+_demo_mesh_2d_10_grains :=\
   demo/mesh/mesh_2d_10_grains.txt\
   demo/mesh/mesh_2d_10_grains_forman.txt\
   demo/mesh/mesh_2d_10_grains_forman_cbd.txt\
@@ -1279,7 +1279,7 @@ DEMO_MESH_2d_10_GRAINS :=\
   demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.txt\
 
 .PHONY: demo_mesh_2d_10_grains
-demo_mesh_2d_10_grains: $(DEMO_MESH_2d_10_GRAINS) | demo/mesh
+demo_mesh_2d_10_grains: $(_demo_mesh_2d_10_grains) | demo/mesh
 
 demo/mesh/mesh_2d_10_grains.txt:\
 	  bin/mesh_and_boundary_file_scan$(.EXE)\
@@ -1346,7 +1346,7 @@ demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperat
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_steady_state_continuous_p7 > $@
 
-DEMO_MESH_SQUARE := \
+_demo_mesh_square := \
   demo/mesh/mesh_square_2.txt\
   demo/mesh/mesh_square_4.txt\
   demo/mesh/mesh_square_8.txt\
@@ -1357,7 +1357,7 @@ DEMO_MESH_SQUARE := \
   demo/mesh/mesh_square_8_diffusion_continuous_p5_temperature.txt\
 
 .PHONY: demo_mesh_square
-demo_mesh_square: $(DEMO_MESH_SQUARE) | demo/mesh
+demo_mesh_square: $(_demo_mesh_square) | demo/mesh
 
 demo/mesh/mesh_square_2.txt:\
 	  bin/forman_boundary$(.EXE)\
@@ -1415,16 +1415,17 @@ demo/mesh/mesh_square_8_diffusion_continuous_p5_temperature.txt:\
 # 	  diffusion_continuous_p5 0.001 > $@
 
 # d = 3
-DEMO_MESH_BRICK_REGULAR_3D :=\
+_demo_mesh_brick_regular_3d :=\
   demo_mesh_brick_regular_3d_1\
   demo_mesh_brick_regular_3d_2\
   demo_mesh_brick_regular_3d_5\
+  demo_mesh_brick_regular_3d_10\
 
 .PHONY: demo_mesh_brick_regular_3d
-demo_mesh_brick_regular_3d: $(DEMO_MESH_BRICK_REGULAR_3D) | demo/mesh
+demo_mesh_brick_regular_3d: $(_demo_mesh_brick_regular_3d) | demo/mesh
 
 # d = 3, n = 1
-DEMO_MESH_BRICK_REGULAR_3D_1 := \
+_demo_mesh_brick_regular_3d_1 := \
   demo/mesh/mesh_brick_3d_1.txt\
   demo/mesh/mesh_brick_3d_1_vol.txt\
   demo/mesh/mesh_brick_3d_1_forman.txt\
@@ -1443,7 +1444,7 @@ DEMO_MESH_BRICK_REGULAR_3D_1 := \
   demo/mesh/mesh_brick_3d_1_forman_hodge_corrected.txt\
 
 .PHONY: demo_mesh_brick_regular_3d_1
-demo_mesh_brick_regular_3d_1: $(DEMO_MESH_BRICK_REGULAR_3D_1) | demo/mesh
+demo_mesh_brick_regular_3d_1: $(_demo_mesh_brick_regular_3d_1) | demo/mesh
 
 demo/mesh/mesh_brick_3d_1.txt:\
 	  bin/mesh_brick_regular$(.EXE) | demo/mesh
@@ -1539,7 +1540,7 @@ demo/mesh/mesh_brick_3d_1_forman_hodge_corrected.txt:\
 	$^ > $@
 
 # d = 3, n = 2
-DEMO_MESH_BRICK_REGULAR_3D_2 := \
+_demo_mesh_brick_regular_3d_2 := \
   demo/mesh/mesh_brick_3d_2.txt\
   demo/mesh/mesh_brick_3d_2_vol.txt\
   demo/mesh/mesh_brick_3d_2_forman.txt\
@@ -1549,6 +1550,7 @@ DEMO_MESH_BRICK_REGULAR_3D_2 := \
   demo/mesh/mesh_brick_3d_2_forman_cbd.txt\
   demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt\
   demo/mesh/mesh_brick_3d_2_forman_diffusion_continuous_p6_temperature.txt\
+  demo/mesh/mesh_brick_3d_2_forman_diffusion_steady_state_continuous_p6_temperature.txt\
   demo/mesh/mesh_brick_3d_2_forman_laplacian.txt\
   demo/mesh/mesh_brick_3d_2_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_3d_2_forman_hodge.txt\
@@ -1560,7 +1562,7 @@ DEMO_MESH_BRICK_REGULAR_3D_2 := \
   demo/mesh/mesh_brick_3d_2_forman_hodge_corrected.txt\
 
 .PHONY: demo_mesh_brick_regular_3d_2
-demo_mesh_brick_regular_3d_2: $(DEMO_MESH_BRICK_REGULAR_3D_2) | demo/mesh
+demo_mesh_brick_regular_3d_2: $(_demo_mesh_brick_regular_3d_2) | demo/mesh
 
 demo/mesh/mesh_brick_3d_2.txt:\
 	  bin/mesh_brick_regular$(.EXE) | demo/mesh
@@ -1611,7 +1613,16 @@ demo/mesh/mesh_brick_3d_2_forman_diffusion_continuous_p6_temperature.txt:\
 	  demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt\
 	  build/diffusion_continuous_p6.o | demo/mesh
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
-	  diffusion_continuous_p6 0.001 100 > $@
+	  diffusion_continuous_p6 0.001 1000 > $@
+
+demo/mesh/mesh_brick_3d_2_forman_diffusion_steady_state_continuous_p6_temperature.txt:\
+	  bin/diffusion_steady_state_continuous$(.EXE)\
+	  demo/mesh/mesh_brick_3d_2_forman.txt\
+	  demo/mesh/mesh_brick_3d_2_forman_cbd.txt\
+	  demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt\
+	  build/diffusion_steady_state_continuous_p6.o | demo/mesh
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_steady_state_continuous_p6 > $@
 
 demo/mesh/mesh_brick_3d_2_forman_laplacian.txt:\
 	  bin/mesh_qc_laplacian$(.EXE)\
@@ -1670,7 +1681,7 @@ demo/mesh/mesh_brick_3d_2_forman_hodge_corrected.txt:\
 	$^ > $@
 
 # d = 3, n = 5
-DEMO_MESH_BRICK_REGULAR_3D_5 := \
+_demo_mesh_brick_regular_3d_5 := \
   demo/mesh/mesh_brick_3d_5.txt\
   demo/mesh/mesh_brick_3d_5_vol.txt\
   demo/mesh/mesh_brick_3d_5_forman.txt\
@@ -1689,7 +1700,7 @@ DEMO_MESH_BRICK_REGULAR_3D_5 := \
   demo/mesh/mesh_brick_3d_5_forman_hodge_corrected.txt\
 
 .PHONY: demo_mesh_brick_regular_3d_5
-demo_mesh_brick_regular_3d_5: $(DEMO_MESH_BRICK_REGULAR_3D_5) | demo/mesh
+demo_mesh_brick_regular_3d_5: $(_demo_mesh_brick_regular_3d_5) | demo/mesh
 
 demo/mesh/mesh_brick_3d_5.txt:\
 	  bin/mesh_brick_regular$(.EXE) | demo/mesh
@@ -1784,16 +1795,148 @@ demo/mesh/mesh_brick_3d_5_forman_hodge_corrected.txt:\
 	  demo/mesh/mesh_brick_3d_5_forman_hodge_coeff.txt | demo/mesh
 	$^ > $@
 
-DEMO_MESH_BRICK_REGULAR_3 :=\
-  $(DEMO_MESH_BRICK_REGULAR_3D_1)\
-  $(DEMO_MESH_BRICK_REGULAR_3D_2)\
-  $(DEMO_MESH_BRICK_REGULAR_3D_5)\
+# d = 3, n = 10
+_demo_mesh_brick_regular_3d_10 := \
+  demo/mesh/mesh_brick_3d_10.txt\
+  demo/mesh/mesh_brick_3d_10_vol.txt\
+  demo/mesh/mesh_brick_3d_10_forman.txt\
+  demo/mesh/mesh_brick_3d_10_forman_vol.txt\
+  demo/mesh/mesh_brick_3d_10_forman_metric.txt\
+  demo/mesh/mesh_brick_3d_10_forman_inner.txt\
+  demo/mesh/mesh_brick_3d_10_forman_cbd.txt\
+  demo/mesh/mesh_brick_3d_10_forman_cbd_star.txt\
+  demo/mesh/mesh_brick_3d_10_forman_diffusion_steady_state_continuous_p6_temperature.txt\
+  demo/mesh/mesh_brick_3d_10_forman_laplacian.txt\
+  demo/mesh/mesh_brick_3d_10_forman_hodge_coeff.txt\
+  demo/mesh/mesh_brick_3d_10_forman_hodge.txt\
+  demo/mesh/mesh_brick_3d_10_forman_node_curvature.txt\
+  demo/mesh/mesh_brick_3d_10_forman_metric_corrected.txt\
+  demo/mesh/mesh_brick_3d_10_forman_inner_corrected.txt\
+  demo/mesh/mesh_brick_3d_10_forman_cbd_star_corrected.txt\
+  demo/mesh/mesh_brick_3d_10_forman_laplacian_corrected.txt\
+  demo/mesh/mesh_brick_3d_10_forman_hodge_corrected.txt\
 
-DEMO_MESH_SQUARE_PYRAMID := \
+.PHONY: demo_mesh_brick_regular_3d_10
+demo_mesh_brick_regular_3d_10: $(_demo_mesh_brick_regular_3d_10) | demo/mesh
+
+demo/mesh/mesh_brick_3d_10.txt:\
+	  bin/mesh_brick_regular$(.EXE) | demo/mesh
+	$< 3 10 > $@
+
+demo/mesh/mesh_brick_3d_10_vol.txt:\
+	  bin/mesh_qc_vol$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_10_forman.txt:\
+	  bin/forman_boundary$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_10_forman_vol.txt:\
+	  bin/mesh_qc_vol$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_10_forman_metric.txt:\
+	  bin/mesh_qc_metric$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_vol.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_10_forman_inner.txt:\
+	  bin/mesh_qc_inner_direct$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_vol.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_10_forman_cbd_star.txt:\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_inner.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_10_forman_cbd.txt:\
+	  bin/mesh_coboundary$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt | demo/mesh
+	$< --raw < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_10_forman_diffusion_steady_state_continuous_p6_temperature.txt:\
+	  bin/diffusion_steady_state_continuous$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_cbd.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_cbd_star.txt\
+	  build/diffusion_steady_state_continuous_p6.o | demo/mesh
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_steady_state_continuous_p6 > $@
+
+demo/mesh/mesh_brick_3d_10_forman_laplacian.txt:\
+	  bin/mesh_qc_laplacian$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_cbd_star.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_10_forman_hodge_coeff.txt:\
+	  bin/mesh_qc_hodge_coeff$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt | demo/mesh
+	$< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_10_forman_hodge.txt:\
+	  bin/mesh_qc_hodge$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_inner.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_hodge_coeff.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_10_forman_node_curvature.txt:\
+	  bin/mesh_node_curvature$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt | demo/mesh
+	$< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_10_forman_metric_corrected.txt:\
+	  bin/mesh_qc_metric_corrected$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_vol.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_node_curvature.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_10_forman_inner_corrected.txt:\
+	  bin/mesh_qc_inner$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_vol.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_metric_corrected.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_10_forman_cbd_star_corrected.txt:\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_inner_corrected.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_10_forman_laplacian_corrected.txt:\
+	  bin/mesh_qc_laplacian$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_cbd_star_corrected.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_10_forman_hodge_corrected.txt:\
+	  bin/mesh_qc_hodge$(.EXE)\
+	  demo/mesh/mesh_brick_3d_10_forman.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_inner_corrected.txt\
+	  demo/mesh/mesh_brick_3d_10_forman_hodge_coeff.txt | demo/mesh
+	$^ > $@
+
+_demo_mesh_brick_regular_3 :=\
+  $(_demo_mesh_brick_regular_3d_1)\
+  $(_demo_mesh_brick_regular_3d_2)\
+  $(_demo_mesh_brick_regular_3d_5)\
+  $(_demo_mesh_brick_regular_3d_10)\
+
+_demo_mesh_square_pyramid := \
   demo/mesh/mesh_square_pyramid_forman.txt\
 
 .PHONY: demo_mesh_square_pyramid
-demo_mesh_square_pyramid: $(DEMO_MESH_SQUARE_PYRAMID) | demo/mesh
+demo_mesh_square_pyramid: $(_demo_mesh_square_pyramid) | demo/mesh
 
 demo/mesh/mesh_square_pyramid_forman.txt:\
 	  bin/forman$(.EXE)\
@@ -1801,18 +1944,18 @@ demo/mesh/mesh_square_pyramid_forman.txt:\
 	$< --raw < $(word 2, $^) > $@
 
 # d = 4
-DEMO_MESH_BRICK_REGULAR_4D := demo_mesh_brick_regular_4d_2
+_demo_mesh_brick_regular_4d := demo_mesh_brick_regular_4d_2
 
 .PHONY: demo_mesh_brick_regular_4d
-demo_mesh_brick_regular_4d: $(DEMO_MESH_BRICK_REGULAR_4D) | demo/mesh
+demo_mesh_brick_regular_4d: $(_demo_mesh_brick_regular_4d) | demo/mesh
 
 # d = 4, n = 2
-DEMO_MESH_BRICK_REGULAR_4D_2 :=\
+_demo_mesh_brick_regular_4d_2 :=\
   demo/mesh/mesh_brick_4d_2.txt\
   demo/mesh/mesh_brick_4d_2_forman.txt
 
 .PHONY: demo_mesh_brick_regular_4d_2
-demo_mesh_brick_regular_4d_2: $(DEMO_MESH_BRICK_REGULAR_4D_2) | demo/mesh
+demo_mesh_brick_regular_4d_2: $(_demo_mesh_brick_regular_4d_2) | demo/mesh
 
 demo/mesh/mesh_brick_4d_2.txt: bin/mesh_brick_regular$(.EXE) | demo/mesh
 	$< 4 2 > $@
@@ -1823,7 +1966,7 @@ demo/mesh/mesh_brick_4d_2_forman.txt:\
 	$< < $(word 2, $^) > $@
 
 # dimensions 8, 9, 10
-DEMO_MESH_BRICK_REGULAR_HIGH_DIMENSIONS :=\
+_demo_mesh_brick_regular_high_dimensions :=\
   demo/mesh/mesh_brick_8d_1.txt\
   demo/mesh/mesh_brick_8d_2.txt\
   demo/mesh/mesh_brick_9d_1.txt\
@@ -1833,7 +1976,7 @@ DEMO_MESH_BRICK_REGULAR_HIGH_DIMENSIONS :=\
 
 .PHONY: demo_mesh_brick_regular_high_dimensions
 demo_mesh_brick_regular_high_dimensions:\
-  $(DEMO_MESH_BRICK_REGULAR_HIGH_DIMENSIONS) | demo/mesh
+  $(_demo_mesh_brick_regular_high_dimensions) | demo/mesh
 
 demo/mesh/mesh_brick_8d_1.txt: bin/mesh_brick_regular$(.EXE) | demo/mesh
 	$< 8 1 > $@
@@ -1855,21 +1998,21 @@ demo/mesh/mesh_brick_8d_1_forman.txt:\
 	  demo/mesh/mesh_brick_8d_1.txt | demo/mesh
 	$< < $(word 2, $^) > $@
 
-DEMO_MESH_BRICK_REGULAR_4 := $(DEMO_MESH_BRICK_REGULAR_4D_2)
+_demo_mesh_brick_regular_4 := $(_demo_mesh_brick_regular_4d_2)
 
-DEMO_MESH_ALL :=\
-  $(DEMO_MESH_BRICK_REGULAR_2)\
-  $(DEMO_MESH_TWO_TRIANGLES)\
-  $(DEMO_MESH_TRIANGLE_AND_SQUARE)\
-  $(DEMO_MESH_SQUARE)\
-  $(DEMO_MESH_PENTAGON)\
-  $(DEMO_MESH_2d_10_GRAINS)\
-  $(DEMO_MESH_BRICK_REGULAR_3)\
-  $(DEMO_MESH_SQUARE_PYRAMID)\
-  $(DEMO_MESH_BRICK_REGULAR_4)\
-  $(DEMO_MESH_BRICK_REGULAR_HIGH_DIMENSIONS)\
+_demo_mesh_all :=\
+  $(_demo_mesh_brick_regular_2)\
+  $(_demo_mesh_two_triangles)\
+  $(_demo_mesh_triangle_and_square)\
+  $(_demo_mesh_square)\
+  $(_demo_mesh_pentagon)\
+  $(_demo_mesh_2d_10_grains)\
+  $(_demo_mesh_brick_regular_3)\
+  $(_demo_mesh_square_pyramid)\
+  $(_demo_mesh_brick_regular_4)\
+  $(_demo_mesh_Bbrick_regular_high_dimensions)\
 
 .PHONY: demo_mesh_clean
 demo_mesh_clean:
-	-$(RM) $(DEMO_MESH_ALL)
+	-$(RM) $(_demo_mesh_all)
 	-$(RM) -r demo/mesh 

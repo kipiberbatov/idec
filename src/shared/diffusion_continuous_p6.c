@@ -2,14 +2,15 @@
 
 /*
 Given a mesh M for the unit cube, and the discrete Laplacian, solve:
-  . du/dt = -Laplacian(u) + f    in the interior nodes of M
-  . u = g_d                      at the boundary nodes of M
-  . u(0) = initial               at all nodes of M
+  . d(pi_0 u)/dt = -d_0^* pi_1 d_0 u + f   in the interior nodes of M
+  . u = g_d                                at the Dirichlet boundary nodes of M
+  . (L^* u). (hat (d u)) = g_n             at the Neumann boundary nodes of M
+  . u(0) = initial                         at all nodes of M
 In this example:
-  . the initial temperature at the left side (x[0] = 0) is 100 degrees
-  . the initialelsewhere (x[0] = 1) is 0 degrees
-  . we maintain constant temperature at those two sides
-  . on the other 4 sides we maintain constant zero flux
+  . the initial temperature at the left face (x[0] = 0) is 100 degrees
+    the initial temperature at the right face (x[0] = 1) is 0 degrees
+  . we maintain constant temperature at those two face
+  . on the other 4 faces we maintain constant zero flux
 After a finite amount of time the temperature will be distributed linearly.
 */
 

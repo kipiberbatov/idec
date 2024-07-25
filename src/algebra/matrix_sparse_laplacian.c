@@ -10,7 +10,7 @@ matrix_sparse * matrix_sparse_laplacian_0(
   delta_0 = matrix_sparse_product(b_1, a_0);
   if (errno)
   {
-    perror("Cannot product matrices");
+    perror("Cannot multiply matrices");
     matrix_sparse_free(delta_0);
     return NULL;
   }
@@ -27,13 +27,13 @@ matrix_sparse * matrix_sparse_laplacian_p(
   tmp1 = matrix_sparse_product(b_p_plus_1, a_p);
   if (errno)
   {
-    perror("Cannot product matrices");
+    perror("Cannot multiply matrices");
     goto tmp1_free;
   }
   tmp2 = matrix_sparse_product(a_p_minus_1, b_p);
   if (errno)
   {
-    perror("Cannot product matrices");
+    perror("Cannot multiply matrices");
     goto tmp2_free;
   }
   delta_p = matrix_sparse_add(tmp1, tmp2);
@@ -57,7 +57,7 @@ matrix_sparse * matrix_sparse_laplacian_d(
   delta_d = matrix_sparse_product(a_d_minus_1, b_d);
   if (errno)
   {
-    perror("Cannot product matrices");
+    perror("Cannot multiply matrices");
     matrix_sparse_free(delta_d);
     return NULL;
   }
@@ -89,7 +89,7 @@ matrix_sparse ** matrix_sparse_laplacian(
     delta[p] = matrix_sparse_laplacian_p(a[p - 1], a[p], b[p - 1], b[p]);
     if (errno)
     {
-      fprintf(stderr, "Cannot calculate %d-laplacian", p);
+      fprintf(stderr, "Cannot calculate %d-laplacian: ", p);
       perror("");
       matrix_sparse_array_free(delta, p + 1);
       return NULL;
@@ -98,7 +98,7 @@ matrix_sparse ** matrix_sparse_laplacian(
   delta[d] = matrix_sparse_product(a[d - 1], b[d - 1]);
   if (errno)
   {
-    fprintf(stderr, "Cannot calculate %d-laplacian", d);
+    fprintf(stderr, "Cannot calculate %d-laplacian: ", d);
     perror("");
     matrix_sparse_array_free(delta, d + 1);
     return NULL;
@@ -109,7 +109,7 @@ matrix_sparse ** matrix_sparse_laplacian(
 static void matrix_sparse_laplacian_error_handling(
   matrix_sparse * delta_p, int p)
 {
-  fprintf(stderr, "Cannot calculate %d-laplacian", p);
+  fprintf(stderr, "Cannot calculate %d-laplacian: ", p);
   perror("");
   free(delta_p);
 }
