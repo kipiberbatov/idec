@@ -16,4 +16,6 @@ void matrix_sparse_linear_solve_lu(const matrix_sparse * a, double * b)
       "matrix_sparse_linear_solve_lu - cannot solve linear system\n", stderr);
     return;
   }
+  else
+    errno = 0;
 }

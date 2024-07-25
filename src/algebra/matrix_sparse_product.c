@@ -10,19 +10,25 @@ matrix_sparse * matrix_sparse_product(
   
   matrix_sparse_to_cs(&a0, a);
   matrix_sparse_to_cs(&b0, b);
+  
   res0 = cs_multiply(&a0, &b0);
-  if (errno)
+  if (res0 == NULL)
   {
     perror("Cannot find matrix product via cs_multiply");
     goto end;
   }
+  errno = 0;
+  
   res = (matrix_sparse *) malloc(sizeof(matrix_sparse));
-  if (errno)
+  if (res == NULL)
   {
     perror("Cannot allocate memory for a matrix_sparse object");
     goto res0_free;
   }
+  errno = 0;
+  
   matrix_sparse_from_cs(res, res0);
+
 res0_free:
   free(res0);
 end:

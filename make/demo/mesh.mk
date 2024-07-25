@@ -1419,7 +1419,8 @@ _demo_mesh_brick_regular_3d :=\
   demo_mesh_brick_regular_3d_1\
   demo_mesh_brick_regular_3d_2\
   demo_mesh_brick_regular_3d_5\
-  demo_mesh_brick_regular_3d_10\
+#   demo_mesh_brick_regular_3d_10\
+#   demo_mesh_brick_regular_3d_25\
 
 .PHONY: demo_mesh_brick_regular_3d
 demo_mesh_brick_regular_3d: $(_demo_mesh_brick_regular_3d) | demo/mesh
@@ -1926,11 +1927,143 @@ demo/mesh/mesh_brick_3d_10_forman_hodge_corrected.txt:\
 	  demo/mesh/mesh_brick_3d_10_forman_hodge_coeff.txt | demo/mesh
 	$^ > $@
 
+# d = 3, n = 25
+_demo_mesh_brick_regular_3d_25 := \
+  demo/mesh/mesh_brick_3d_25.txt\
+  demo/mesh/mesh_brick_3d_25_vol.txt\
+  demo/mesh/mesh_brick_3d_25_forman.txt\
+  demo/mesh/mesh_brick_3d_25_forman_vol.txt\
+  demo/mesh/mesh_brick_3d_25_forman_metric.txt\
+  demo/mesh/mesh_brick_3d_25_forman_inner.txt\
+  demo/mesh/mesh_brick_3d_25_forman_cbd.txt\
+  demo/mesh/mesh_brick_3d_25_forman_cbd_star.txt\
+  demo/mesh/mesh_brick_3d_25_forman_diffusion_steady_state_continuous_p6_temperature.txt\
+  demo/mesh/mesh_brick_3d_25_forman_laplacian.txt\
+  demo/mesh/mesh_brick_3d_25_forman_hodge_coeff.txt\
+  demo/mesh/mesh_brick_3d_25_forman_hodge.txt\
+  demo/mesh/mesh_brick_3d_25_forman_node_curvature.txt\
+  demo/mesh/mesh_brick_3d_25_forman_metric_corrected.txt\
+  demo/mesh/mesh_brick_3d_25_forman_inner_corrected.txt\
+  demo/mesh/mesh_brick_3d_25_forman_cbd_star_corrected.txt\
+  demo/mesh/mesh_brick_3d_25_forman_laplacian_corrected.txt\
+  demo/mesh/mesh_brick_3d_25_forman_hodge_corrected.txt\
+
+.PHONY: demo_mesh_brick_regular_3d_25
+demo_mesh_brick_regular_3d_25: $(_demo_mesh_brick_regular_3d_25) | demo/mesh
+
+demo/mesh/mesh_brick_3d_25.txt:\
+	  bin/mesh_brick_regular$(.EXE) | demo/mesh
+	$< 3 25 > $@
+
+demo/mesh/mesh_brick_3d_25_vol.txt:\
+	  bin/mesh_qc_vol$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_25_forman.txt:\
+	  bin/forman_boundary$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_25_forman_vol.txt:\
+	  bin/mesh_qc_vol$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt | demo/mesh
+	 $< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_25_forman_metric.txt:\
+	  bin/mesh_qc_metric$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_vol.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_25_forman_inner.txt:\
+	  bin/mesh_qc_inner_direct$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_vol.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_25_forman_cbd_star.txt:\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_inner.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_25_forman_cbd.txt:\
+	  bin/mesh_coboundary$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt | demo/mesh
+	$< --raw < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_25_forman_diffusion_steady_state_continuous_p6_temperature.txt:\
+	  bin/diffusion_steady_state_continuous$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_cbd.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_cbd_star.txt\
+	  build/diffusion_steady_state_continuous_p6.o | demo/mesh
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_steady_state_continuous_p6 > $@
+
+demo/mesh/mesh_brick_3d_25_forman_laplacian.txt:\
+	  bin/mesh_qc_laplacian$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_cbd_star.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_25_forman_hodge_coeff.txt:\
+	  bin/mesh_qc_hodge_coeff$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt | demo/mesh
+	$< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_25_forman_hodge.txt:\
+	  bin/mesh_qc_hodge$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_inner.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_hodge_coeff.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_25_forman_node_curvature.txt:\
+	  bin/mesh_node_curvature$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt | demo/mesh
+	$< < $(word 2, $^) > $@
+
+demo/mesh/mesh_brick_3d_25_forman_metric_corrected.txt:\
+	  bin/mesh_qc_metric_corrected$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_vol.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_node_curvature.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_25_forman_inner_corrected.txt:\
+	  bin/mesh_qc_inner$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_vol.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_metric_corrected.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_25_forman_cbd_star_corrected.txt:\
+	  bin/mesh_qc_coboundary_star$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_inner_corrected.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_25_forman_laplacian_corrected.txt:\
+	  bin/mesh_qc_laplacian$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_cbd_star_corrected.txt | demo/mesh
+	$^ > $@
+
+demo/mesh/mesh_brick_3d_25_forman_hodge_corrected.txt:\
+	  bin/mesh_qc_hodge$(.EXE)\
+	  demo/mesh/mesh_brick_3d_25_forman.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_inner_corrected.txt\
+	  demo/mesh/mesh_brick_3d_25_forman_hodge_coeff.txt | demo/mesh
+	$^ > $@
+
 _demo_mesh_brick_regular_3 :=\
   $(_demo_mesh_brick_regular_3d_1)\
   $(_demo_mesh_brick_regular_3d_2)\
   $(_demo_mesh_brick_regular_3d_5)\
   $(_demo_mesh_brick_regular_3d_10)\
+  $(_demo_mesh_brick_regular_3d_25)\
 
 _demo_mesh_square_pyramid := \
   demo/mesh/mesh_square_pyramid_forman.txt\

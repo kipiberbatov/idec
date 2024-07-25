@@ -16,4 +16,6 @@ void matrix_sparse_linear_solve_cholesky(const matrix_sparse * a, double * b)
           stderr);
     return;
   }
+  else
+    errno = 0;
 }
