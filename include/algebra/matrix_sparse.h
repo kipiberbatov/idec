@@ -223,6 +223,11 @@ double * matrix_sparse_heat_conduction_solve_non_grid(
   double tau,
   int N);
 
+matrix_sparse * matrix_sparse_material_product(
+  const matrix_sparse * m_cbd_0,
+  const double * pi_1,
+  const matrix_sparse * m_cbd_star_1);
+
 void matrix_sparse_neumann_modify(
   matrix_sparse * lhs,
   int i,

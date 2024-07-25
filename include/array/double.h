@@ -46,6 +46,8 @@ double double_array_min(int n, const double * a);
 
 double double_array_max(int n, const double * a);
 
+double double_array_total_sum(int n, const double * a);
+
 double double_array_norm_uniform(int n, const double * a);
 
 double double_array_pair_norm_uniform_relative(

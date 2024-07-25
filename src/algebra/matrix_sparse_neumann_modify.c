@@ -1,15 +1,5 @@
+#include "double.h"
 #include "matrix_sparse.h"
-
-static double double_array_total_sum(int n, const double * a)
-{
-  int i;
-  double result;
-
-  result = 0;
-  for (i = 0; i < n; ++i)
-    result += a[i];
-  return result;
-}
 
 void matrix_sparse_neumann_modify(
   matrix_sparse * lhs,

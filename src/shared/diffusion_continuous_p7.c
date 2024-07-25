@@ -1,5 +1,3 @@
-#include <math.h>
-
 #include "diffusion_continuous.h"
 
 static double pi_0(const double * x)

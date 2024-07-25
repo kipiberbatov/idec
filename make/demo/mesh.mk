@@ -675,6 +675,7 @@ DEMO_MESH_BRICK_REGULAR_2D_5 := \
   demo/mesh/mesh_brick_2d_5_forman_laplacian.txt\
   demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.txt\
   demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt\
+  demo/mesh/mesh_brick_2d_5_forman_diffusion_steady_state_continuous_p4_temperature.txt\
   demo/mesh/mesh_brick_2d_5_forman_boundary_layer_0_1_nodes.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge_coeff.txt\
   demo/mesh/mesh_brick_2d_5_forman_hodge.txt\
@@ -753,6 +754,15 @@ demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt:\
 	  build/diffusion_continuous_p4.o | demo/mesh
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p4 0.0001 10000 > $@
+
+demo/mesh/mesh_brick_2d_5_forman_diffusion_steady_state_continuous_p4_temperature.txt:\
+	  bin/diffusion_steady_state_continuous$(.EXE)\
+	  demo/mesh/mesh_brick_2d_5_forman.txt\
+	  demo/mesh/mesh_brick_2d_5_forman_cbd.txt\
+	  demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
+	  build/diffusion_steady_state_continuous_p4.o | demo/mesh
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_steady_state_continuous_p4 > $@
 
 demo/mesh/mesh_brick_2d_5_forman_boundary_layer_0_1_nodes.txt:\
 	  bin/mesh_qc_boundary_layer$(.EXE)\
@@ -1266,6 +1276,7 @@ DEMO_MESH_2d_10_GRAINS :=\
   demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt\
   demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_temperature.txt\
   demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_flux.txt\
+  demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.txt\
 
 .PHONY: demo_mesh_2d_10_grains
 demo_mesh_2d_10_grains: $(DEMO_MESH_2d_10_GRAINS) | demo/mesh
@@ -1325,6 +1336,15 @@ demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_flux.txt:\
 	  demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_temperature.txt \
 	  | demo/mesh
 	$< $(word 2, $^) 1000 $(word 3, $^) > $@
+
+demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.txt:\
+	  bin/diffusion_steady_state_continuous$(.EXE)\
+	  demo/mesh/mesh_2d_10_grains_forman.txt\
+	  demo/mesh/mesh_2d_10_grains_forman_cbd.txt\
+	  demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt\
+	  build/diffusion_steady_state_continuous_p7.o | demo/mesh
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
+	  diffusion_steady_state_continuous_p7 > $@
 
 DEMO_MESH_SQUARE := \
   demo/mesh/mesh_square_2.txt\

@@ -45,12 +45,12 @@ static double g_neumann(const double * x)
 
 const diffusion_continuous diffusion_continuous_p3 =
 {
-  .pi_0 = pi_0,
-  .pi_1 = pi_1,
-  .initial = initial,
-  .source = source,
-  .boundary_dirichlet = boundary_dirichlet,
-  .g_dirichlet = g_dirichlet,
-  .boundary_neumann = boundary_neumann,
-  .g_neumann = g_neumann
+  pi_0,
+  pi_1,
+  initial,
+  source,
+  boundary_dirichlet,
+  g_dirichlet,
+  boundary_neumann,
+  g_neumann
 };

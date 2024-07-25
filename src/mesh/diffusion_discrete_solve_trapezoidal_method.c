@@ -83,31 +83,18 @@ double * diffusion_discrete_solve_trapezoidal_method(
   double * result = NULL;
   double * a;
   matrix_sparse * b;
-  matrix_sparse * m_cbd_star_1_material;
   matrix_sparse * lhs, * rhs;
 
   n = m->cn[0];
   a = data->pi_0;
 
-  m_cbd_star_1_material = matrix_sparse_copy(m_cbd_star_1);
+  b = matrix_sparse_material_product(m_cbd_0, data->pi_1, m_cbd_star_1);
   if (errno)
   {
     START_ERROR_MESSAGE;
-    fputs("cannot initialize m_cbd_star_1_material\n", stderr);
+    fputs("cannot calculate b\n", stderr);
     goto end;
   }
-  matrix_sparse_multiply_with_diagonal_matrix(
-    m_cbd_star_1_material, data->pi_1);
-
-  b = matrix_sparse_product(m_cbd_star_1_material, m_cbd_0);
-  if (errno)
-  {
-    START_ERROR_MESSAGE;
-    fputs("cannot calculate matrix b\n", stderr);
-    matrix_sparse_free(m_cbd_star_1_material);
-    goto end;
-  }
-  matrix_sparse_free(m_cbd_star_1_material);
 
   /* $lhs =  a + (time_step / 2) * b$ */
   lhs = matrix_sparse_copy(b);
