@@ -1138,6 +1138,123 @@
   respect to the index $i$.
 \end{example}
 
+\begin{discussion}
+  Let me summarize the operations relating cochains and embedding.
+  I will use notation from dependent type theory for functions whose codomain
+  depends on the domain.
+  Namely, if
+    $X$ is a type (set),
+    $\{Y(x)\}_{x \colon X}$ ia a family of sets and
+    $\{f(x) \colon Y(x)\}_{x \colon X}$,
+  we will write
+  \begin{equation}
+    f \colon \prod_{x \colon X} Y(x).
+  \end{equation}
+  Let
+    $d \in \N$,
+    $K$ be a quasi-cubical flat mesh of dimension $d$,
+    $X$ be the manifold it encompasses.
+  We define the following data:
+  \begin{itemize}
+    \item
+      $n \colon K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
+    \item
+      $\widehat{\phantom{T}} \colon C^1 K \to 
+        \displaystyle \prod_{x_0 \colon K_0} \R^{n(x_0)}$
+      denotes the neighbor representation of a $1$-cochain;
+    \item
+      $\displaystyle
+        \mathcal{L} \colon \prod_{x_0 \colon K_0} M_{n(x_0), d}(\R)$
+      denotes the node neighbors matrix;
+    \item
+      $\displaystyle
+        \star \colon \prod_{(m, n) \colon \N^2} M_{m, n}(\R) \to M_{n, m}(\R)$
+      denotes the Moore-Penrose inverse of a rectangular matrix;
+    \item
+      $\overline{\phantom{T}} \colon C^1 K \to C^0(K, \R^d)$
+      denotes the approximation of a $1$-cochain as a Euclidean vector-valued
+      $0$-cochain,
+      \begin{equation}
+        \overline{\pi^1} c_0 :=
+        (\mathcal{L}_{c_0})^\star \cdot (\widehat{\pi^1})_{c_0};
+      \end{equation}
+    \item
+      $\underline{\phantom{T}} \colon \chi X \to C^1 K$
+      denotes the discretization of a continuum vector field as a $1$-cochain;
+    % \item
+    %   $R \colon \Omega^\bullet X \to C^\bullet K$ denotes the de Rham map,
+    %   \begin{equation}
+    %     (R_p \omega^p) c_p := \int_{\abs{c_p}} \omega^p;
+    %   \end{equation}
+    % \item
+    %   $S \colon \Omega^\bullet(X, \chi X) \to C^\bullet(K, C^1 K)$
+    %   denotes the discretization of vector-valued smooth forms into
+    %   $1$-cochain valued cochains,
+    %   \begin{equation}
+    %     S_p(u \otimes \omega^p) := \underline{u} \otimes R_p \omega^p;
+    %   \end{equation}
+    % \item
+    %   $\nabla \colon \chi X \to \Omega^1(X, \chi X)$ is the vector gradient
+    %   (connection on vector fields);
+    % \item
+    %   $D \colon \Omega^\bullet(X, \chi X) \to \Omega^\bullet(X, \chi X)$
+    %   is the respective covariant exterior derivative on vector-valued forms,
+    %   \begin{equation}
+    %     D_p(u \otimes \omega^p) :=
+    %     \nabla u \uwedge \omega^p + u \otimes d_p \omega^p;
+    %   \end{equation}
+    % \item
+    %   $\nabla^{(K)} \colon C^1 K \to C^1(K, C^1 K)$
+    %   is the discrete vector gradient (discrete connection on $1$-cochains);
+    % \item
+    %   $D^{(K)} \colon C^\bullet(K, C^1 K) \to C^\bullet(K, C^1 K)$
+    %   is the respective discrete covariant exterior derivative on
+    %   $1$-cochain valued cohains,
+    %   \begin{equation}
+    %     D^{(K)}_p(\pi^1 \otimes \rho^p) :=
+    %     \nabla^{(K)} \pi^1 \usmile \rho^p + \pi^1 \otimes \delta_p \rho^p.
+    %   \end{equation}
+  \end{itemize}
+\end{discussion}
+
+\section{Discrete heat transport}
+
+\begin{example}
+  Let
+    $d \in \N$,
+    $M$ be a manifold-like flat mesh of dimension $d$,
+    $K$ be its Forman subdivision,
+    $K' := K \setminus \partial K$
+    $t_0 \in \R$,
+    $u_0 \in C^0 K$,
+    $f \in C^0 K' $
+    $\Gamma_D, \Gamma_N$ form a partition of $K_0$,
+    ${\bf n} \colon \Gamma_N \to \R^d$,
+    $g_D \colon \Gamma_D \to \R$,
+    $g_N \colon \Gamma_N \to \R$,
+  We are solving the following problem.
+  \begin{equation}
+    \begin{split}
+      & \text{Find $u \in [t_0, \infty) \times C^0 K$ such that} \\
+      &
+      \begin{cases}
+        \left.(\frac{\partial (\pi_0 u)}{\partial t})\right|_{K'} =
+        \left.((\delta_1^\star \circ \pi_1 \circ \delta_0) u)\right|_{K'} + f
+        & (\text{conservation of heat energy}), \\
+%
+        u(t_0, \cdot) = u_0
+        & (\text{initial condition}), \\
+%
+        \tr_{\Gamma_D} u = g_D
+        & (\text{Dirichlet boundary condition}), \\
+%
+        \tr_{\Gamma_N} \overline{(\pi_1 \circ \delta_0) u} \cdot {\bf n} = g_N
+        & (\text{Neumann boundary condition}).
+      \end{cases}
+    \end{split}
+  \end{equation}
+\end{example}
+
 \section{Discrete elasticity}
 
 \begin{discussion}[Discrete elasticity]
@@ -1608,73 +1725,73 @@
   \end{equation}
 \end{example}
 
-I will summarize the operations relating cochains and embedding.
-\begin{discussion}
-  Let
-    $d \in \N$,
-    $K$ be a quasi-cubical flat mesh of dimension $d$,
-    $X$ be the manifold it encompasses.
-  We define the following data:
-  \begin{itemize}
-    \item
-      $n \colon K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
-    \item
-      $\widehat{\phantom{T}} \colon C^1 K \to 
-        \displaystyle \prod_{x_0 \colon K_0} \R^{n(x_0)}$
-      denotes the neighbor representation of a $1$-cochain;
-    \item
-      $\displaystyle
-        \mathcal{L} \colon \prod_{x_0 \colon K_0} M_{n(x_0), d}(\R)$
-      denotes the node neighbors matrix;
-    \item
-      $\displaystyle
-        \star \colon \prod_{(m, n) \colon \N^2} M_{m, n}(\R) \to M_{n, m}(\R)$
-      denotes the Moore-Penrose inverse of a rectangular matrix;
-    \item
-      $\overline{\phantom{T}} \colon C^1 K \to C^0(K, \R^d)$
-      denotes the approximation of a $1$-cochain as a Euclidean vector-valued
-      $0$-cochain,
-      \begin{equation}
-        \overline{\pi^1} c_0 :=
-        (\mathcal{L}_{c_0})^\star \cdot (\widehat{\pi^1})_{c_0};
-      \end{equation}
-    \item
-      $\underline{\phantom{T}} \colon \chi X \to C^1 K$
-      denotes the discretization of a continuum vector field as a $1$-cichain;
-    \item
-      $R \colon \Omega^\bullet X \to C^\bullet K$ denotes the de Rham map,
-      \begin{equation}
-        (R_p \omega^p) c_p := \int_{\abs{c_p}} \omega^p;
-      \end{equation}
-    \item
-      $S \colon \Omega^\bullet(X, \chi X) \to C^\bullet(K, C^1 K)$
-      denotes the discretization of vector-valued smooth forms into
-      $1$-cochain valued cochains,
-      \begin{equation}
-        S_p(u \otimes \omega^p) := \underline{u} \otimes R_p \omega^p;
-      \end{equation}
-    \item
-      $\nabla \colon \chi X \to \Omega^1(X, \chi X)$ is the vector gradient
-      (connection on vector fields);
-    \item
-      $D \colon \Omega^\bullet(X, \chi X) \to \Omega^\bullet(X, \chi X)$
-      is the respective covariant exterior derivative on vector-valued forms,
-      \begin{equation}
-        D_p(u \otimes \omega^p) :=
-        \nabla u \uwedge \omega^p + u \otimes d_p \omega^p;
-      \end{equation}
-    \item
-      $\nabla^{(K)} \colon C^1 K \to C^1(K, C^1 K)$
-      is the discrete vector gradient (discrete connection on $1$-cochains);
-    \item
-      $D^{(K)} \colon C^\bullet(K, C^1 K) \to C^\bullet(K, C^1 K)$
-      is the respective discrete covariant exterior derivative on
-      $1$-cochain valued cohains,
-      \begin{equation}
-        D^{(K)}_p(\pi^1 \otimes \rho^p) :=
-        \nabla^{(K)} \pi^1 \usmile \rho^p + \pi^1 \otimes \delta_p \rho^p.
-      \end{equation}
-  \end{itemize}
-\end{discussion}
+% I will summarize the operations relating cochains and embedding.
+% \begin{discussion}
+%   Let
+%     $d \in \N$,
+%     $K$ be a quasi-cubical flat mesh of dimension $d$,
+%     $X$ be the manifold it encompasses.
+%   We define the following data:
+%   \begin{itemize}
+%     \item
+%       $n \colon K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
+%     \item
+%       $\widehat{\phantom{T}} \colon C^1 K \to 
+%         \displaystyle \prod_{x_0 \colon K_0} \R^{n(x_0)}$
+%       denotes the neighbor representation of a $1$-cochain;
+%     \item
+%       $\displaystyle
+%         \mathcal{L} \colon \prod_{x_0 \colon K_0} M_{n(x_0), d}(\R)$
+%       denotes the node neighbors matrix;
+%     \item
+%       $\displaystyle
+%         \star \colon \prod_{(m, n) \colon \N^2} M_{m, n}(\R) \to M_{n, m}(\R)$
+%       denotes the Moore-Penrose inverse of a rectangular matrix;
+%     \item
+%       $\overline{\phantom{T}} \colon C^1 K \to C^0(K, \R^d)$
+%       denotes the approximation of a $1$-cochain as a Euclidean vector-valued
+%       $0$-cochain,
+%       \begin{equation}
+%         \overline{\pi^1} c_0 :=
+%         (\mathcal{L}_{c_0})^\star \cdot (\widehat{\pi^1})_{c_0};
+%       \end{equation}
+%     \item
+%       $\underline{\phantom{T}} \colon \chi X \to C^1 K$
+%       denotes the discretization of a continuum vector field as a $1$-cochain;
+%     \item
+%       $R \colon \Omega^\bullet X \to C^\bullet K$ denotes the de Rham map,
+%       \begin{equation}
+%         (R_p \omega^p) c_p := \int_{\abs{c_p}} \omega^p;
+%       \end{equation}
+%     \item
+%       $S \colon \Omega^\bullet(X, \chi X) \to C^\bullet(K, C^1 K)$
+%       denotes the discretization of vector-valued smooth forms into
+%       $1$-cochain valued cochains,
+%       \begin{equation}
+%         S_p(u \otimes \omega^p) := \underline{u} \otimes R_p \omega^p;
+%       \end{equation}
+%     \item
+%       $\nabla \colon \chi X \to \Omega^1(X, \chi X)$ is the vector gradient
+%       (connection on vector fields);
+%     \item
+%       $D \colon \Omega^\bullet(X, \chi X) \to \Omega^\bullet(X, \chi X)$
+%       is the respective covariant exterior derivative on vector-valued forms,
+%       \begin{equation}
+%         D_p(u \otimes \omega^p) :=
+%         \nabla u \uwedge \omega^p + u \otimes d_p \omega^p;
+%       \end{equation}
+%     \item
+%       $\nabla^{(K)} \colon C^1 K \to C^1(K, C^1 K)$
+%       is the discrete vector gradient (discrete connection on $1$-cochains);
+%     \item
+%       $D^{(K)} \colon C^\bullet(K, C^1 K) \to C^\bullet(K, C^1 K)$
+%       is the respective discrete covariant exterior derivative on
+%       $1$-cochain valued cohains,
+%       \begin{equation}
+%         D^{(K)}_p(\pi^1 \otimes \rho^p) :=
+%         \nabla^{(K)} \pi^1 \usmile \rho^p + \pi^1 \otimes \delta_p \rho^p.
+%       \end{equation}
+%   \end{itemize}
+% \end{discussion}
 
 \end{document}
