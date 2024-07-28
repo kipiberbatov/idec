@@ -23,7 +23,7 @@ int main(int argc, char ** argv)
   matrix_sparse * m_cbd_0, * m_cbd_star_1;
   void * lib_handle;
   const diffusion_steady_state_continuous * data;
-  
+
   if (argc != 6)
   {
     errno = EINVAL;
@@ -31,7 +31,7 @@ int main(int argc, char ** argv)
     fputs("  main: the number of command-line arguments must be 8\n", stderr);
     goto end;
   }
-  
+
   m_format = argv[1];
   m_name = argv[2];
   m = mesh_file_scan_by_name(m_name, m_format);
@@ -40,16 +40,16 @@ int main(int argc, char ** argv)
     fputs("  main: cannot scan m\n", stderr);
     goto end;
   }
-  
+
   m->fc = mesh_fc(m);
   if (errno)
   {
     fputs("  main: cannot calculate m->fc\n", stderr);
     goto m_free;
   }
-  
+
   m_cbd_0_name = argv[3];
-  
+
   m_cbd_0 = matrix_sparse_file_scan_by_name(m_cbd_0_name, "--raw");
   if (errno)
   {
@@ -58,7 +58,7 @@ int main(int argc, char ** argv)
   }
 
   m_cbd_star_1_name = argv[4];
-  
+
   m_cbd_star_1_file = fopen(m_cbd_star_1_name, "r");
   if (errno)
   {
@@ -75,7 +75,7 @@ int main(int argc, char ** argv)
   }
   fclose(m_cbd_star_1_file);
 
-  
+
 #ifdef __linux__
   lib_name ="lib/libshared.so";
 #elif __APPLE__
@@ -90,9 +90,9 @@ int main(int argc, char ** argv)
   }
   /* clear any existing errors */
   dlerror();
-  
+
   data_name = argv[5];
-  data = 
+  data =
   (const diffusion_steady_state_continuous *) dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
@@ -101,7 +101,7 @@ int main(int argc, char ** argv)
     fputs("\n", stderr);
     goto lib_close;
   }
-  
+
   result = diffusion_steady_state_continuous_solve(
     m, m_cbd_0, m_cbd_star_1, data);
   if (errno)

@@ -27,10 +27,10 @@ void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
   mesh * m;
   mesh_2d_colored_one_cochain c;
   jagged2 c_cf_1_0;
-  
+
   m = a->m;
   i = a->index;
-  
+
   mesh_cf_part2(&c_cf_1_0, m, 1, 0);
   c.cf_1_0 = &c_cf_1_0;
   c.total_colors = a->total_colors;

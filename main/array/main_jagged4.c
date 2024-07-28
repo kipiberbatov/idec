@@ -4,7 +4,7 @@
 int main()
 {
   jagged4 * arr;
-  
+
   arr = jagged4_file_scan(stdin, "--raw");
   if (errno)
   {
@@ -12,7 +12,7 @@ int main()
     return errno;
   }
   jagged4_file_print(stdout, arr, "--curly");
-  
+
   jagged4_free(arr);
   return 0;
 }

@@ -7,7 +7,7 @@ int * int_array_file_scan_raw(FILE * in, int n)
 {
   int i;
   int * a;
-  
+
   a = (int *) malloc(sizeof(int) * n);
   if (errno)
   {

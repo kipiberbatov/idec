@@ -7,7 +7,7 @@ matrix_sparse * mesh_qc_hodge_codifferential_p(
   matrix_sparse ** m_hodge)
 {
   matrix_sparse * tmp, * m_hodge_codifferential_p;
-  
+
   tmp = matrix_sparse_product(m_cbd_m_dim_minus_p, m_hodge[p]);
   if (errno)
   {
@@ -33,7 +33,7 @@ matrix_sparse ** mesh_qc_hodge_codifferential(
 {
   int p;
   matrix_sparse ** m_hodge_codifferential;
-  
+
   m_hodge_codifferential =
     (matrix_sparse **) malloc(sizeof(matrix_sparse *) * m_dim);
   if (errno)
@@ -43,7 +43,7 @@ matrix_sparse ** mesh_qc_hodge_codifferential(
   }
   for (p = 1; p <= m_dim; ++p)
   {
-    m_hodge_codifferential[p - 1] = 
+    m_hodge_codifferential[p - 1] =
       mesh_qc_hodge_codifferential_p(m_dim, p, m_cbd[m_dim - p], m_hodge);
     if (errno)
     {

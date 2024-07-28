@@ -11,7 +11,7 @@ void mesh_2d_colored_one_cochain_cairo_draw(
   mesh_2d_colored_edge edge;
   jagged1 cf_1_0_i;
   jagged2 * cf_1_0;
-  
+
   c_min = c->min_value;
   c_max = c->max_value;
   c_coordinates = c->coordinates;

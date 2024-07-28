@@ -16,7 +16,7 @@ double ** double_array2_file_scan(
       "double_array2_file_scan - format %s is not supported\n", format);
     return NULL;
   }
-  
+
   if (errno)
     fputs("double_array2_file_scan - cannot scan input\n", stderr);
   return a;

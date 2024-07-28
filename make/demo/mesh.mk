@@ -2148,4 +2148,4 @@ _demo_mesh_all :=\
 .PHONY: demo_mesh_clean
 demo_mesh_clean:
 	-$(RM) $(_demo_mesh_all)
-	-$(RM) -r demo/mesh 
+	-$(RM) -r demo/mesh

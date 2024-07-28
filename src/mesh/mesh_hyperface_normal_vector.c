@@ -133,7 +133,7 @@ static int in_linear_span_3d_2(
   int i;
   double det, norm, ratio;
   double a[9];
-  
+
   for (i = 0; i < 6; ++i)
     a[i] = subspace_basis[i];
   for (i = 0; i < 3; ++i)

@@ -13,7 +13,7 @@ void pdf_surface_draw(
 {
   cairo_t * cr;
   int i, n;
-  
+
   i = get_index(a);
   n = get_total_steps(a);
   while (i < n)

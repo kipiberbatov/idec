@@ -3,7 +3,7 @@
 void string_file_scan(FILE * in, char * s, int n)
 {
   int c, i = 0;
-  
+
   while (i < n - 1)
   {
     c = fgetc(in);

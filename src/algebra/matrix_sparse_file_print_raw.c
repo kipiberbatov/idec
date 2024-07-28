@@ -6,7 +6,7 @@
 void matrix_sparse_file_print_raw(FILE * out, const matrix_sparse * a)
 {
   int n, nonzero_max;
-  
+
   n = a->cols;
   nonzero_max = a->cols_total[n];
   fprintf(out, "%d\n", a->rows);

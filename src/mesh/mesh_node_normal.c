@@ -143,7 +143,7 @@ static void mesh_node_hyperface_normals(
     /* skip interior hyperfaces */
     if (!jagged1_member(boundary_hyperfaces, j))
       continue;
-    
+
     /* loop through hyperface nodes */
     mesh_hyperface_normal_vector(hyperface_normal, d, m_cf_dm1_0, m_coord, j);
     if (!normal_in_list(d, t, hyperface_normals, hyperface_normal))
@@ -177,7 +177,7 @@ static void mesh_node_normal_exterior(
   double free_coefficient, normal_point_value, other_point_value;
   double nearby_point[3];
   double * m_coord, * m_coord_j, * hyperface_normal_t;
-  
+
   m_coord = m->coord;
   m_cn_0 = m->cn[0];
   for (t = 0; t < number_of_non_prallell_hyperfaces; ++t)
@@ -192,7 +192,7 @@ static void mesh_node_normal_exterior(
     normal_point_value = -free_coefficient;
     for (p = 0; p < d; ++p)
       normal_point_value += nearby_point[p] * hyperface_normal_t[p];
-    
+
     for (j = 0; j < m_cn_0; ++j)
     {
       m_coord_j = m_coord + d * j;

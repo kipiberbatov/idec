@@ -6,7 +6,7 @@ void matrix_times_transpose(double * b, int d, int n, const double * a)
   double a_q_i;
   const double * a_i;
   double * b_q;
-  
+
   for (i = 0; i < n; ++i)
   {
     a_i = a + d * i;

@@ -10,7 +10,7 @@ static void quasi_cube_triangulation_simplex_centroid(
 {
   simplex s;
   double s_coord[24];
-  
+
   s.dim_embedded = r->dim_embedded;
   s.dim = r->dim;
   quasi_cube_triangulation_simplex_set(s_coord, r, r_nodes);
@@ -25,7 +25,7 @@ static void quasi_cube_centroid_from_triangulation(
   const int * r_nodes;
   double s_centroid[3];
   double r_measure, s_measure;
-  
+
   r_dim_embedded = r->dim_embedded;
   r_dim = r->dim;
   double_array_assign_constant(r_centroid, r_dim_embedded, 0);
@@ -47,7 +47,7 @@ static void quasi_cube_centroid_from_triangulation(
 void quasi_cube_centroid(double * r_centroid, const quasi_cube * r)
 {
   int r_dim;
-  
+
   r_dim = r->dim;
   switch (r_dim)
   {

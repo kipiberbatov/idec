@@ -42,10 +42,10 @@ int main(int argc, char * argv[])
   }
 
   matrix_sparse_multiply_with_diagonal_matrix(a, d);
-  
+
   out_format = argv[5];
   matrix_sparse_file_print(stdout, a, out_format);
-  
+
   free(d);
 a_free:
   matrix_sparse_free(a);

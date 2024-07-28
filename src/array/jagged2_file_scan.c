@@ -14,7 +14,7 @@ jagged2 * jagged2_file_scan(FILE * in, const char * format)
     fprintf(stderr, "jagged2_file_scan - format %s is not supported\n", format);
     return NULL;
   }
-  
+
   if (errno)
     fputs("jagged2_file_scan - cannot scan input\n", stderr);
   return arr;

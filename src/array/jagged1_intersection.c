@@ -5,7 +5,7 @@ void jagged1_intersection(
 {
   int arr1_a0, i, ind;
   int * arr1_a1, * res_a1;
-  
+
   arr1_a0 = arr1->a0;
   arr1_a1 = arr1->a1;
   res_a1 = res->a1;

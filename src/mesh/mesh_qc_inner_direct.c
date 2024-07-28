@@ -12,9 +12,9 @@ static double * mesh_qc_inner_direct_d(
 {
   int i, m_cn_d;
   double * m_inner_d;
-  
+
   m_cn_d = m->cn[m->dim];
-  
+
   m_inner_d = (double *) malloc(sizeof(double) * m_cn_d);
   if (errno)
   {
@@ -36,11 +36,11 @@ static double * mesh_qc_inner_direct_0(
   double * m_inner_0;
   jagged1 m_fc_0_d_i;
   jagged2 m_fc_0_d;
-  
+
   d_exp = (double) (1 << m->dim);
   m_cn_0 = m->cn[0];
   mesh_fc_part2(&m_fc_0_d, m, 0, m->dim);
-  
+
   m_inner_0 = (double *) calloc(m_cn_0, sizeof(double));
   if (errno)
   {
@@ -73,7 +73,7 @@ static double * mesh_qc_inner_direct_nontrivial(
   jagged1 m_fc_p_d_i;
   jagged2 m_cf_d_q, m_cf_p_0, m_cf_q_0, m_fc_p_d;
   double * m_inner_p;
-  
+
   m_dim = m->dim;
   m_cn_p = m->cn[p];
   p_exp = 1 << p;
@@ -83,14 +83,14 @@ static double * mesh_qc_inner_direct_nontrivial(
   mesh_cf_part2(&m_cf_d_q, m, m_dim, q);
   mesh_cf_part2(&m_cf_p_0, m, p, 0);
   mesh_cf_part2(&m_cf_q_0, m, q, 0);
-  
+
   m_inner_p = (double *) calloc(m_cn_p, sizeof(double));
   if (errno)
   {
     fputs("Cannot allocate memory for m_inner_p\n", stderr);
     return NULL;
   }
-  
+
   for (i = 0; i < m_cn_p; ++i)
   {
     jagged2_part1(&m_fc_p_d_i, &m_fc_p_d, i);
@@ -129,14 +129,14 @@ double ** mesh_qc_inner_direct(const mesh_qc * m)
 {
   int d = m->dim, p;
   double ** m_inner, ** m_vol;
-  
+
   m_vol = mesh_qc_vol(m);
   if (errno)
   {
     fputs("Cannot calculate m_vol\n", stderr);
     return NULL;
   }
-  
+
   m_inner = (double **) malloc(sizeof(double *) * (d + 1));
   if (errno)
   {

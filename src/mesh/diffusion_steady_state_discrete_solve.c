@@ -14,7 +14,7 @@ double * diffusion_steady_state_discrete_solve(
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,
   const diffusion_steady_state_discrete * data)
-{ 
+{
   int n;
   double * result = NULL;
   matrix_sparse * lhs;

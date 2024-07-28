@@ -136,12 +136,12 @@ struct colored_2d_point
 void colored_2d_point_draw(cairo_t * cr, const colored_2d_point * p)
 {
   int ind;
-  
+
   ind = (int) (p->relative_value * ((double) (p->total_colors - 1)));
   p->paint(cr, ind, p->total_colors);
   cairo_set_line_width(cr, 1);
   cairo_arc(cr, p->x, p->y, p->point_size, 0, 2 * M_PI);
-  
+
   cairo_fill(cr);
   cairo_stroke(cr);
 }
@@ -168,7 +168,7 @@ void colored_2d_zero_cochain_cairo_draw(
   double c_max, c_min, denominator;
   double * c_coordinates, * c_values, * x_j;
   colored_2d_point p;
-  
+
   c_min = c->min_value;
   c_max = c->max_value;
   c_size = c->size;
@@ -195,11 +195,11 @@ diffusion_draw(cairo_t * cr, double width, double height, const diffusion * a)
   double * u;
   mesh * m;
   colored_2d_zero_cochain c;
-  
+
   i = diffusion_get_index(a);
   m = diffusion_get_mesh(a);
   u = diffusion_get_values(a);
-  
+
   c.size = m->cn[0];
   c.total_colors = diffusion_get_total_colors(a);
   c.coordinates = diffusion_get_new_coordinates(a);

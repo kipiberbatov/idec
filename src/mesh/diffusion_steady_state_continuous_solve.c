@@ -14,7 +14,7 @@ double * diffusion_steady_state_continuous_solve(
 {
   double * result = NULL;
   diffusion_steady_state_discrete * data_discrete;
-  
+
   data_discrete =
   diffusion_steady_state_continuous_discretize(m, data_continuous);
   if (errno)
@@ -23,7 +23,7 @@ double * diffusion_steady_state_continuous_solve(
     fprintf(stderr, "cannot discretize continuous data\n");
     goto end;
   }
-  
+
   result = diffusion_steady_state_discrete_solve(
     m, m_cbd_0, m_cbd_star_1, data_discrete);
   if (errno)

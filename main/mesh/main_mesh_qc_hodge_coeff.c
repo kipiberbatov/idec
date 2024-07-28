@@ -4,7 +4,7 @@ static void mesh_qc_hodge_coeff_file_print_raw(FILE * out, const mesh * m)
 {
   int i, m_dim, p;
   int * m_cn;
-  
+
   m_dim = m->dim;
   m_cn = m->cn;
   for (p = 0; p <= m_dim; ++p)
@@ -19,7 +19,7 @@ int main()
 {
   mesh_qc * m;
   FILE * in, * out;
-  
+
   out = stdout;
   in = stdin;
   m = mesh_file_scan(in, "--raw");

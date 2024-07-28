@@ -7,7 +7,7 @@ double triangle_2d_measure(const triangle_2d * p)
 {
   double y00, y01, y10, y11;
   double p_x0[2], p_x1[2], p_x2[2];
-  
+
   memcpy(p_x0, p->x0, sizeof(double) * 2);
   memcpy(p_x1, p->x1, sizeof(double) * 2);
   memcpy(p_x2, p->x2, sizeof(double) * 2);

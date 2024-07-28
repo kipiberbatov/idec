@@ -11,7 +11,7 @@ int main(int argc, char * argv[])
   FILE * a_in, * x_in;
   char * a_name, * x_name;
   int m, n;
-  
+
   if (argc != 3)
   {
     fputs("There should be exactly 3 command line arguments!", stderr);
@@ -25,7 +25,7 @@ int main(int argc, char * argv[])
     perror("Cannot open matrix file");
     goto end;
   }
-  
+
   a = matrix_sparse_file_scan(a_in, "--raw");
   if (errno)
   {
@@ -35,7 +35,7 @@ int main(int argc, char * argv[])
 
   m = a->rows;
   n = a->cols;
-  
+
   x_name = argv[2];
   x_in = fopen(x_name, "r");
   if (errno)
@@ -43,24 +43,24 @@ int main(int argc, char * argv[])
     perror("Problem in vector scanning");
     goto a_free;
   }
-  
+
   x = double_array_file_scan(x_in, n, "--raw");
   if (errno)
   {
     perror("Problem in matrix_sparse scanning");
     goto x_in_close;
   }
-  
+
   y = (double *) calloc(m, sizeof(double));
   if (errno)
   {
     perror("Problem in matrix_sparse scanning");
     goto x_free;
   }
-  
+
   matrix_sparse_vector_multiply_add(y, a, x);
   double_array_file_print(stdout, m, y, "--raw");
-  
+
   free(y);
 x_free:
   free(x);

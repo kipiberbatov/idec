@@ -3,7 +3,7 @@
 void double_matrix_file_print_curly(FILE * out, int m, int n, const double * a)
 {
   int i, ind;
-  
+
   fputc('{', out);
   ind = 0;
   for (i = 0; i < m - 1; ++i)

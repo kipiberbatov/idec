@@ -8,14 +8,14 @@ int main(int argc, char * argv[])
   FILE * rows_file;
   matrix_sparse * a, * b;
   jagged1 * rows;
-  
+
   if (argc != 6)
   {
     errno = EINVAL;
     fputs("main - the number of command-line arguments must be 6\n", stderr);
     goto end;
   }
-  
+
   /* a = m_laplacian_0 */
   a_name = argv[1];
   a_format = argv[2];
@@ -25,11 +25,11 @@ int main(int argc, char * argv[])
     fputs("main - cannot scan matrix a\n", stderr);
     goto end;
   }
-  
+
   /* rows = m_bd_nodes */
   rows_name = argv[3];
   rows_format = argv[4];
-  
+
   rows_file = fopen(rows_name, "r");
   rows = jagged1_file_scan(rows_file, rows_format);
   if (errno)
@@ -39,14 +39,14 @@ int main(int argc, char * argv[])
     goto a_free;
   }
   fclose(rows_file);
-  
+
   b = matrix_sparse_remove_symmetric(a, rows);
   if (errno)
   {
     fputs("main - cannot calculate restricted matrix b\n", stderr);
     goto rows_free;
   }
-  
+
   out_format = argv[5];
   matrix_sparse_file_print(stdout, b, out_format);
 

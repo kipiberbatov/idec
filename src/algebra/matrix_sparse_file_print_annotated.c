@@ -6,7 +6,7 @@ void matrix_sparse_file_print_annotated(FILE * out, const matrix_sparse * a)
   int ind, j, m, n;
   int * a_cols_total, * a_row_indices;
   double * a_values;
-  
+
   m = a->rows;
   n = a->cols;
   a_cols_total = a->cols_total;

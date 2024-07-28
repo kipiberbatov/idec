@@ -14,13 +14,13 @@ static void mesh_displacement_values(double ** result,
   double * m_coord;
   jagged1 m_cf_1_0_j, m_fc_0_1_i;
   jagged2 m_cf_1_0, m_fc_0_1;
-  
+
   m_dim_embedded = m->dim_embedded;
   m_cn_0 = m->cn[0];
   m_coord = m->coord;
   mesh_cf_part2(&m_cf_1_0, m, 1, 0);
   mesh_fc_part2(&m_fc_0_1, m, 0, 1);
-  
+
   for (i = 0; i < m_cn_0; ++i)
   {
     jagged2_part1(&m_fc_0_1_i, &m_fc_0_1, i);
@@ -30,7 +30,7 @@ static void mesh_displacement_values(double ** result,
       jagged2_part1(&m_cf_1_0_j, &m_cf_1_0, j);
       sign = matrix_sparse_part(m_bd_0, i, j);
       double_array_difference(
-        tmp, m_dim_embedded, 
+        tmp, m_dim_embedded,
         m_coord + m_dim_embedded * m_cf_1_0_j.a1[0],
         m_coord + m_dim_embedded * m_cf_1_0_j.a1[1]);
       double_array_multiply_with(tmp, m_dim_embedded, - sign * u[j]);
@@ -44,7 +44,7 @@ double ** mesh_displacement(
 {
   int i, m_cn_0, m_dim_embedded;
   double ** result;
-  
+
   m_dim_embedded = m->dim_embedded;
   m_cn_0 = m->cn[0];
 
@@ -68,7 +68,7 @@ double ** mesh_displacement(
   }
 
   mesh_displacement_values(result, m, m_bd_0, u);
-  
+
   return result;
 }
-  
+

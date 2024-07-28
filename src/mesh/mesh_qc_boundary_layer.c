@@ -7,7 +7,7 @@ jagged1 * mesh_qc_boundary_layer_0_hyperfaces(const mesh * m)
   int * m_bd_layer_0_hyperfaces_a1;
   jagged1 m_hyperfaces_to_cells_sizes;
   jagged1 * m_bd_layer_0_hyperfaces;
-  
+
   m_dim = m->dim;
   mesh_fcn_part2(&m_hyperfaces_to_cells_sizes, m, m_dim - 1, m_dim);
   m_bd_layer_0_hyperfaces = (jagged1 *) malloc(sizeof(jagged1));
@@ -17,8 +17,8 @@ jagged1 * mesh_qc_boundary_layer_0_hyperfaces(const mesh * m)
     if (m_hyperfaces_to_cells_sizes.a1[j] == 1)
       ++m_bd_layer_0_hyperfaces_a0;
   m_bd_layer_0_hyperfaces->a0 = m_bd_layer_0_hyperfaces_a0;
-  
-  m_bd_layer_0_hyperfaces_a1 = 
+
+  m_bd_layer_0_hyperfaces_a1 =
     (int *) malloc(m_bd_layer_0_hyperfaces_a0 * sizeof(int));
   /* NULL pointer check */
   ind = 0;
@@ -41,7 +41,7 @@ jagged1 * mesh_qc_boundary_layer_0_cells(
   jagged1 m_hyperface_to_cells;
   jagged1 * m_bd_layer_0_cells, * m_bd_layer_0_cells_duplicated;
   jagged2 m_hyperfaces_to_cells;
-  
+
   m_dim = m->dim;
   m_bd_layer_0_hyperfaces_a0 = m_bd_layer_0_hyperfaces->a0;
   m_bd_layer_0_hyperfaces_a1 = m_bd_layer_0_hyperfaces->a1;
@@ -49,8 +49,8 @@ jagged1 * mesh_qc_boundary_layer_0_cells(
   /* NULL pointer check */
   m_bd_layer_0_cells_duplicated_a0 = m_bd_layer_0_hyperfaces_a0;
   m_bd_layer_0_cells_duplicated->a0 = m_bd_layer_0_cells_duplicated_a0;
-  
-  m_bd_layer_0_cells_duplicated_a1 = 
+
+  m_bd_layer_0_cells_duplicated_a1 =
     (int *) malloc(sizeof(int) * m_bd_layer_0_cells_duplicated_a0);
   /* NULL pointer check */
   mesh_fc_part2(&m_hyperfaces_to_cells, m, m_dim - 1, m_dim);
@@ -76,7 +76,7 @@ jagged1 * mesh_qc_boundary_layer_0_1_nodes(
   jagged1 face;
   jagged1 * m_bd_layer_0_1_nodes, * m_bd_layer_0_1_nodes_original;
   jagged2 faces;
-  
+
   m_dim = m->dim;
   m_bd_layer_0_cells_a0 = m_bd_layer_0_cells->a0;
   m_bd_layer_0_cells_a1 = m_bd_layer_0_cells->a1;
@@ -91,7 +91,7 @@ jagged1 * mesh_qc_boundary_layer_0_1_nodes(
     m_bd_layer_0_1_nodes_original_a0 += face.a0;
   }
   m_bd_layer_0_1_nodes_original->a0 = m_bd_layer_0_1_nodes_original_a0;
-  
+
   m_bd_layer_0_1_nodes_original_a1 =
     (int *) malloc(m_bd_layer_0_1_nodes_original_a0 * sizeof(int));
   /* NULL pointer check */
@@ -107,8 +107,8 @@ jagged1 * mesh_qc_boundary_layer_0_1_nodes(
     }
   }
   m_bd_layer_0_1_nodes_original->a1 = m_bd_layer_0_1_nodes_original_a1;
-  
-  m_bd_layer_0_1_nodes = 
+
+  m_bd_layer_0_1_nodes =
     jagged1_delete_duplicates(m_bd_layer_0_1_nodes_original);
   /* NULL pointer check */
   jagged1_free(m_bd_layer_0_1_nodes_original);

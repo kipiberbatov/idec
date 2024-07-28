@@ -6,7 +6,7 @@
 int mesh_file_scan_tess_get_number_of_nodes(FILE * in, int * error)
 {
   int cn_0;
-  
+
   cn_0 = int_file_scan(in);
   *error = errno;
   if (*error)

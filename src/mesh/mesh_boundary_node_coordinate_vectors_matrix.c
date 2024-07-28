@@ -14,7 +14,7 @@ void mesh_boundary_node_coordinate_vectors_matrix(
   m_coord = m->coord;
   m_coord_i = m->coord + m_dim_embedded * i;
   size_i = node_i_edges->a0;
-  
+
   for (j_local = 0; j_local < size_i; ++ j_local)
   {
     i0 = node_i_neighbors[j_local];

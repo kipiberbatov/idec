@@ -4,7 +4,7 @@
 static mesh * forman_mesh_file_scan(FILE * in, const char * format)
 {
   mesh * m, * m_forman = NULL;
-  
+
   m = mesh_file_scan(in, format);
   if (errno)
   {
@@ -17,7 +17,7 @@ static mesh * forman_mesh_file_scan(FILE * in, const char * format)
     fputs("forman_mesh_file_scan - cannot calculate m->fc\n", stderr);
     goto m_free;
   }
-  
+
 m_free:
   mesh_free(m);
 end:
@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
     fputs("main - number of command line arguments should be 1\n", stderr);
     return errno;
   }
-  
+
   m_forman = forman_mesh_file_scan(stdin, argv[1]);
   if (errno)
   {

@@ -8,11 +8,11 @@ void vector_sparse_file_print_mathematica_sparse(
   int * a_positions;
   double x;
   double * a_values;
-  
+
   a_nonzero_max = a->nonzero_max;
   a_positions = a->positions;
   a_values = a->values;
-  
+
   fputs("SparseArray[{", out);
   for (i_loc = 0; i_loc < a_nonzero_max; ++i_loc)
   {

@@ -16,7 +16,7 @@ matrix_sparse * matrix_sparse_file_scan_by_name(
             name, strerror(errno));
     goto end;
   }
-  
+
   a = matrix_sparse_file_scan(in, format);
   if (errno)
   {

@@ -51,7 +51,7 @@ static void jagged1_intersection_indices(
   int * res, const jagged1 * arr1, const jagged1 * arr2)
 {
   int i, ind, j;
-  
+
   ind = 0;
   for (i = 0; i < arr1->a0; ++i)
   {
@@ -70,7 +70,7 @@ static void matrix_sparse_remove_cols_total(
 {
   int j, j_loc, col_nonzero;
   jagged1 col;
-  
+
   b_cols_total[0] = 0;
   for (j_loc = 0; j_loc < cols_complement->a0; ++j_loc)
   {
@@ -88,7 +88,7 @@ static void matrix_sparse_remove_row_indices(
 {
   int j, j_loc;
   jagged1 col;
-  
+
   for (j_loc = 0; j_loc < cols_complement->a0; ++j_loc)
   {
     j = cols_complement->a1[j_loc];
@@ -107,7 +107,7 @@ static void matrix_sparse_remove_values(
   int i, i_loc, j, j_loc;
   double * a_values_j;
   jagged1 col;
-  
+
   for (j_loc = 0; j_loc < cols_complement->a0; ++j_loc)
   {
     j = cols_complement->a1[j_loc];
@@ -128,17 +128,17 @@ matrix_sparse * matrix_sparse_restrict(
 {
   int b_nonzero_max;
   matrix_sparse * b;
-  
+
   b = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   if (errno)
   {
     fputs("matrix_sparse_restrict - cannot allocate memory for b\n", stderr);
     goto end;
   }
-  
+
   b->rows = rows_complement->a0;
   b->cols = cols_complement->a0;
-  
+
   b->cols_total = (int *) malloc(sizeof(int) * (b->cols + 1));
   if (errno)
   {
@@ -148,9 +148,9 @@ matrix_sparse * matrix_sparse_restrict(
   }
   matrix_sparse_remove_cols_total(
     b->cols_total, a, rows_complement, cols_complement);
-  
+
   b_nonzero_max = b->cols_total[b->cols];
-  
+
   b->row_indices = (int *) malloc(sizeof(int) * b_nonzero_max);
   if (errno)
   {
@@ -160,7 +160,7 @@ matrix_sparse * matrix_sparse_restrict(
   }
   matrix_sparse_remove_row_indices(
     b->row_indices, a, rows_complement, cols_complement, b->cols_total);
- 
+
   b->values = (double *) malloc(sizeof(double) * b_nonzero_max);
   if (errno)
   {
@@ -170,9 +170,9 @@ matrix_sparse * matrix_sparse_restrict(
   }
   matrix_sparse_remove_values(b->values, a, rows_complement, cols_complement,
                               b->cols_total, b->row_indices);
-  
+
   return b;
-  
+
   /* cleaning if an error occurs */
 b_row_indices_free:
   free(b->row_indices);
@@ -195,21 +195,21 @@ matrix_sparse * matrix_sparse_remove(
 {
   matrix_sparse * b = NULL;
   jagged1 * rows_complement, * cols_complement;
-  
+
   rows_complement = jagged1_complement(a->rows, rows);
   if (errno)
   {
     fputs("matrix_sparse_remove - cannot calculate rows_complement\n", stderr);
     goto end;
   }
-  
+
   cols_complement = jagged1_complement(a->cols, cols);
   if (errno)
   {
     fputs("matrix_sparse_remove - cannot calculate cols_complement\n", stderr);
     goto rows_complement_free;
   }
-  
+
   b = matrix_sparse_restrict(a, rows_complement, cols_complement);
   if (errno)
   {
@@ -230,7 +230,7 @@ matrix_sparse * matrix_sparse_remove_symmetric(
 {
   matrix_sparse * b = NULL;
   jagged1 * rows_complement;
-  
+
   rows_complement = jagged1_complement(a->rows, rows);
   if (errno)
   {
@@ -244,7 +244,7 @@ matrix_sparse * matrix_sparse_remove_symmetric(
     fputs("matrix_sparse_remove_symmetric - cannot calculate b\n", stderr);
     goto rows_complement_free;
   }
-  
+
 rows_complement_free:
   jagged1_free(rows_complement);
 end:

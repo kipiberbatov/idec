@@ -10,7 +10,7 @@ void matrix_sparse_neumann_modify(
 {
   int i0, j_local;
   double * position;
-  
+
   /* off-diagonal elements */
   for (j_local = 0; j_local < size_i; ++j_local)
   {

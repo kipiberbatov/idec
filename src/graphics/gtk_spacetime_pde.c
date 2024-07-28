@@ -16,18 +16,18 @@ static void unit_square_point_draw_in_window(
   double x_new, y_new;
   double relative_value;
   int ind;
-  
+
   x_new = (0.1 + 0.8 * x) * width;
   y_new = (0.1 + 0.8 * y) * height;
-  
-  relative_value = (value - min_value) / 
+
+  relative_value = (value - min_value) /
                          (max_value - min_value);
   ind = (int) (relative_value * ((double) (total_colors - 1)));
   rgb_color(color, ind, total_colors);
   cairo_set_source_rgb(cr, color->red, color->green, color->blue);
   cairo_set_line_width(cr, 1);
   cairo_arc(cr, x_new, y_new, (width + height) / 100, 0, 2 * M_PI);
-  
+
   cairo_fill(cr);
   cairo_stroke(cr);
 }

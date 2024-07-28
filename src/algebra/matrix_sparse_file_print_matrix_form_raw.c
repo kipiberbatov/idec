@@ -4,7 +4,7 @@
 void matrix_sparse_file_print_matrix_form_raw(FILE * out, const matrix_sparse * a)
 {
   int i, j, m, n;
-  
+
   m = a->rows;
   n = a->cols;
   for (i = 0; i < m; ++i)

@@ -38,7 +38,7 @@ int main(int argc, char ** argv)
     fclose(m_file);
     goto m_free;
   }
-  
+
   m_bd = mesh_file_scan_boundary(m_file, m);
   if (errno)
   {
@@ -46,16 +46,16 @@ int main(int argc, char ** argv)
     fclose(m_file);
     goto m_free;
   }
-  
+
   fclose(m_file);
-  
+
   m_cbd = mesh_coboundary(m->dim, m_bd);
   if (errno)
   {
     fprintf(stderr, "main - cannot scan m_cbd\n");
     goto m_bd_free;
   }
-  
+
   m_cbd_star_file = fopen(argv[2], "r");
   if (errno)
   {
@@ -71,7 +71,7 @@ int main(int argc, char ** argv)
     goto m_cbd_free;
   }
   fclose(m_cbd_star_file);
-  
+
   matrix_sparse_laplacian_file_print(stdout, m->dim, m_cbd, m_cbd_star, "--raw");
   if (errno)
   {

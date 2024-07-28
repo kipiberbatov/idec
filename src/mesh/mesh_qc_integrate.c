@@ -9,7 +9,7 @@ double mesh_qc_integrate(const mesh_qc * m, const double * m_vol_d,
   double * a_values;
   jagged1 m_cf_0_d_j;
   jagged2 m_cf_0_d;
-  
+
   a_nonzero_max = a->nonzero_max;
   a_positions = a->positions;
   a_values = a->values;

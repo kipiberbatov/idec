@@ -8,13 +8,13 @@ void matrix_sparse_file_print_mathematica_sparse(
   int * a_cols_total, * a_row_indices;
   double x;
   double * a_values;
-  
+
   m = a->rows;
   n = a->cols;
   a_cols_total = a->cols_total;
   a_row_indices = a->row_indices;
   a_values = a->values;
-  
+
   fputs("SparseArray[{", out);
   for (j = 0; j < n; ++j)
   {

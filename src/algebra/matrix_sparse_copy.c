@@ -18,7 +18,7 @@ matrix_sparse * matrix_sparse_copy(const matrix_sparse * a)
 
   b->rows = a->rows;
   b->cols = a->cols;
-  
+
   b->cols_total = (int *) malloc(sizeof(int) * (b->cols + 1));
   if (errno)
   {
@@ -26,9 +26,9 @@ matrix_sparse * matrix_sparse_copy(const matrix_sparse * a)
   	goto b_free;
   }
   memcpy(b->cols_total, a->cols_total, sizeof(int) * (b->cols + 1));
-  
+
   nonzero_max = b->cols_total[b->cols];
-  
+
   b->row_indices = (int *) malloc(sizeof(int) * nonzero_max);
   if (errno)
   {

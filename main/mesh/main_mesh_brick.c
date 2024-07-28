@@ -10,7 +10,7 @@ static void mesh_brick_file_print_raw(
   int m_bd_sizes[MAX_DIM];
   mesh * m;
   int ** m_bd;
-  
+
   m = mesh_brick(d, brick_lengths, n);
   if (errno)
   {
@@ -18,20 +18,20 @@ static void mesh_brick_file_print_raw(
     goto end;
   }
   mesh_file_print(out, m, "--raw");
-  
+
   for (p = 1; p <= d; ++p)
     m_bd_sizes[p - 1] = mesh_boundary_nonzero_max(m, p);
-  
+
   m_bd = mesh_brick_boundary(m->dim, n, m_bd_sizes);
   if (errno)
   {
     fputs("mesh_brick_file_print - cannot calculate m->bd\n", stderr);
     goto m_free;
   }
-  
+
   for (p = 0; p < d; ++p)
     int_array_file_print(out, m_bd_sizes[p], m_bd[p], "--raw");
-  
+
   int_array2_free(m_bd, d);
 m_free:
   mesh_free(m);
@@ -44,17 +44,17 @@ int main(int argc, char * argv[])
   int d, p;
   int n[MAX_DIM];
   double brick_lengths[MAX_DIM];
-  
+
   d = atoi(argv[1]);
-  
+
   for (p = 0; p < d; ++p)
     brick_lengths[p] = atoi(argv[2 + p]);
-  
+
   for (p = 0; p < d; ++p)
     n[p] = atoi(argv[2 + d + p]);
-  
+
   mesh_brick_file_print_raw(stdout, d, brick_lengths, n);
-  
+
   if (errno)
   {
     fputs("mesh_brick_file_print - find and print m->bd\n", stderr);

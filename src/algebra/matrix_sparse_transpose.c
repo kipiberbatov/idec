@@ -6,7 +6,7 @@ matrix_sparse * matrix_sparse_transpose(const matrix_sparse * a)
   cs a0;
   cs * b0;
   matrix_sparse * b = NULL;
-  
+
   matrix_sparse_to_cs(&a0, a);
   b0 = cs_transpose(&a0, 1);
   if (errno)

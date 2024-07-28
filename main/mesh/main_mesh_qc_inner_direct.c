@@ -15,7 +15,7 @@ static void mesh_qc_inner_direct_file_print_raw(
   int m_dim, p;
   int * m_cn;
   double * m_inner_p;
-  
+
   m_dim = m->dim;
   m_cn = m->cn;
   for (p = 0; p <= m_dim; ++p)
@@ -27,11 +27,11 @@ static void mesh_qc_inner_direct_file_print_raw(
               "mesh_qc_inner_direct_file_print - cannot calculate m_inner[%d]\n", p);
       return;
     }
-    
+
     double_array_file_print(out, m_cn[p], m_inner_p, "--raw");
     if (p != m_dim)
       fputc('\n', out);
-    
+
     free(m_inner_p);
   }
 }
@@ -49,7 +49,7 @@ int main(int argc, char ** argv)
     fprintf(stderr, "Number of command line arguments must be 3\n");
     goto end;
   }
-  
+
   m_file = fopen(argv[1], "r");
   if (errno)
   {
@@ -72,7 +72,7 @@ int main(int argc, char ** argv)
     fclose(m_file);
     goto m_free;
   }
-  
+
   m_bd = mesh_file_scan_boundary(m_file, m);
   if (errno)
   {
@@ -80,16 +80,16 @@ int main(int argc, char ** argv)
     fclose(m_file);
     goto m_free;
   }
-  
+
   fclose(m_file);
-  
+
   m_vol = double_array2_file_scan_by_name(argv[2], m->dim + 1, m->cn, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_vol\n", stderr);
     goto m_bd_free;
   }
-  
+
   mesh_qc_inner_direct_file_print_raw(stdout, m, m_vol);
   if (errno)
   {

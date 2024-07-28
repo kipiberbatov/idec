@@ -163,7 +163,7 @@
   $n - 1$ pointers $a_1, ..., a_{n - 1}$ to integer
   (any of them points to the  $0$-th element of an array of integers),
   a pointer $a_n$ to the $0$-th element of an array of type $T$.
-  
+
   The fields $a_0, ..., a_{n - 1}$ represent the internal structure,
   while $a_n$ holds the values.
   More precisely, let $x$ be a jagged array of order $n$.
@@ -221,7 +221,7 @@
     \item
       integer \emph{dim} ($d$) storing mesh's dimension;
     \item
-      array \emph{cn} storing the number of $p$-cells for $p = 0, ..., d$; 
+      array \emph{cn} storing the number of $p$-cells for $p = 0, ..., d$;
     \item
       a jagged array \emph{cf} of order $4$ storing its topology.
       More precisely, if $0 < p \leq d$, $0 \leq q < p$,
@@ -311,7 +311,7 @@
       cells between $a_p$ and $c_{p - 2}$.
       Then
       \begin{equation}
-          \varepsilon(a_p, b_{p - 1}) \varepsilon(b_{p - 1}, c_{p - 2}) 
+          \varepsilon(a_p, b_{p - 1}) \varepsilon(b_{p - 1}, c_{p - 2})
         + \varepsilon(a_p, b_{p - 1}') \varepsilon(b_{p - 1}', c_{p - 2}) = 0.
       \end{equation}
   \end{enumerate}
@@ -416,7 +416,7 @@
 \begin{proof}
   It is enough to prove that for any $p \in \{0, ..., d\}$, $c_p \in M_d$,
   \begin{equation}
-    \partial^2 c_p = 0. 
+    \partial^2 c_p = 0.
   \end{equation}
   The proposition is trivially true for $p = 0$ and $p = 1$
   becuase $\partial_0 = 0$.
@@ -617,7 +617,7 @@
         - (-1)^p \partial \circ \omega \circ \partial
         - (-1)^p (-1)^{p + 1} \partial \circ \partial \circ \omega \\
       & =
-      0 
+      0
       - (-1)^{p + 1}\partial \circ \omega \circ \partial
       + (-1)^{p + 1}\partial \circ \omega \circ \partial
       + 0 \\
@@ -662,7 +662,7 @@
     $K$ be the Forman subdivision of $M$,
     $\varepsilon_M$ be the relative orientation on $M$.
   We construct the relative orientation $\varepsilon_K$ as follows.
-  Let 
+  Let
     $p_f \in [1, d]$,
     $p \in [p_f, d]$,
     $s = p - p_f$,
@@ -757,7 +757,7 @@
 
 \begin{definition}
   We say that a mesh $M$ is \textbf{interval-simplicial} if for any two cells
-  $a, b \in M$ with $a \preceq b$, the interval $[a, b]$ is an abstract simplex. 
+  $a, b \in M$ with $a \preceq b$, the interval $[a, b]$ is an abstract simplex.
 \end{definition}
 
 \begin{proposition}
@@ -950,7 +950,7 @@
         B := (A^T A)^{-1} A^T
       \end{equation}
       is the Moore-Penrose inverse of $A$.
-      Indeed, obviously $B$ is a left inverse of $A$, and 
+      Indeed, obviously $B$ is a left inverse of $A$, and
       \begin{subequations}
         \begin{alignat}{2}
           & A B A && = A (B A) = A I_n = A, \\
@@ -1162,7 +1162,7 @@
     \item
       $n \in K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
     \item
-      $\widehat{\phantom{T}} \colon C^1 K \to 
+      $\widehat{\phantom{T}} \colon C^1 K \to
         \displaystyle \prod_{x_0 \in K_0} \R^{n(x_0)}$
       denotes the neighbor representation of a $1$-cochain;
     \item
@@ -1285,7 +1285,7 @@
 \begin{discussion}[Discrete elasticity]
   Let $M$ be a mesh of dimension $3$, $K$ be the Forman decomposition of $M$.
   Let $L$ and $F$ denote length and force measures respectively.
-  
+
   Discrete displacement is represented by
   \begin{equation}
     \eta^1 [L^2] \in C^1 K.
@@ -1308,7 +1308,7 @@
     \begin{align}
       & \epsilon^0 = \delta_1^\star \eta^1
       & (\text{volumetric displacement gradient}), \\
-      & \omega^2 = \delta_1 \eta^1 
+      & \omega^2 = \delta_1 \eta^1
       & (\text{deviatoric displacement gradient}), \\
       & \tau^0 = \lambda \epsilon^0
       & (\text{hydrostatic force}), \\
@@ -1376,7 +1376,7 @@
     {\bf x}_{(i, j, k)} := (i h, j h, k h).
   \end{equation}
   Nodes in $K$ will be denoted by $\mathcal{N}_{(i, j, k)}$.
-  
+
   There are three type of edges in $K$ (parallel to the $3$ axes)
   constructed as follows.
   Let $p \in \{1, 2, 3\}$ and $e_p$ be the $p$-th unit vector.
@@ -1406,7 +1406,7 @@
     - \mathcal{E}^{(2)}_{(i, j, k)}.
   \end{equation}
   We will work with the approximation $\eta^1 := \underline{u}$.
-  
+
   Let $p \in \{1, 2, 3\}$.
   Then for $\epsilon^0 := \delta_1^\star \eta^1$, using the fact that
   \begin{equation}
@@ -1427,21 +1427,21 @@
   Hence,
   \begin{equation}
     \tau^0 = \lambda \epsilon^0 = 0.
-  \end{equation} 
+  \end{equation}
   Using the computation from
   \Cref{idec/vector_field_to_1_cochain/1d_example:exact_value}
   in each direction, we get
   \begin{subequations}
     \begin{alignat}{2}
-      & \eta^1 \mathcal{E}^{(1)}_{(i, j, k)} && 
+      & \eta^1 \mathcal{E}^{(1)}_{(i, j, k)} &&
         = \frac{h}{2} \theta (-x_2 x_3 - x_2 x_3)
         = - \theta h x_2 x_3
         = - \theta j k h^3, \\
-      & \eta^1 \mathcal{E}^{(2)}_{(i, j, k)} && 
+      & \eta^1 \mathcal{E}^{(2)}_{(i, j, k)} &&
         = \frac{h}{2} \theta (x_1 x_3 + x_1 x_3)
         = \theta h x_1 x_3
         = \theta i k h^3, \\
-      & \eta^1 \mathcal{E}^{(3)}_{(i, j, k)} && 
+      & \eta^1 \mathcal{E}^{(3)}_{(i, j, k)} &&
         = \frac{h}{2} \theta (0 + 0)
         = 0.
     \end{alignat}
@@ -1462,7 +1462,7 @@
       && = - \theta i h^3, \\
 %
       & \omega^2 \mathcal{F}^{(3, 1)}_{(i, j, k)}
-      && = 
+      && =
         ( - \eta^1 \mathcal{E}^{(3)}_{(i + 1, j, k)}
           + \eta^1 \mathcal{E}^{(3)}_{(i, j, k)}
         )
@@ -1473,7 +1473,7 @@
       && = - \theta j h^3, \\
 %
       & \omega^2 \mathcal{F}^{(1, 2)}_{(i, j, k)}
-      && = 
+      && =
         ( - \eta^1 \mathcal{E}^{(1)}_{(i, j + 1, k)}
           + \eta^1 \mathcal{E}^{(1)}_{(i, j, k)}
         )
@@ -1486,8 +1486,8 @@
   \end{subequations}
   We see the clear correspondence (by a factor of $2 h^2$) to the ``flattened''
   version of $\boldsymbol{\omega}$,
-  \Cref{idec/discrete_elasticity/example_9_1:equation:rotation_vector}. 
-  
+  \Cref{idec/discrete_elasticity/example_9_1:equation:rotation_vector}.
+
   We have $\tau^2 = \mu \omega^2$ and hence
   $\delta_2^\star \tau^2 = \mu \delta_2^\star \omega^2$.
   Then
@@ -1609,7 +1609,7 @@
     $K$ be a quasi-cubical mesh,
     $V$ be a vector space, $v \in V$,
     $p, q \in \N$,
-    $\sigma^p \in C^p K$, 
+    $\sigma^p \in C^p K$,
     $\tau^q \in C^q K$.
   Then
   \begin{equation}
@@ -1679,7 +1679,7 @@
     $\nabla \colon C^\bullet(K, V) \to C^\bullet(K, V)$ be
       a discrete exterior covariant derivative.
   Then $\nabla$ satisfies the graded Leibnitz rule:
-  for any $p, q \in \N$, $\sigma_V^p \in C^p(K, V)$, $\tau^q \in C^q K$, 
+  for any $p, q \in \N$, $\sigma_V^p \in C^p(K, V)$, $\tau^q \in C^q K$,
   \begin{equation}
     \nabla_{p + q}(\sigma_V^p \usmile \tau^q)
     = \nabla_p \sigma_V^p \usmile \tau^q

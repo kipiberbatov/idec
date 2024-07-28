@@ -6,7 +6,7 @@
 static void mesh_fc_a1(int * m_fc_a1, int m_dim)
 {
   int q;
-  
+
   for (q = 0; q <= m_dim; ++q)
     m_fc_a1[q] = m_dim - q;
 }
@@ -14,7 +14,7 @@ static void mesh_fc_a1(int * m_fc_a1, int m_dim)
 static void mesh_fc_a2(int * m_fc_a2, int m_dim, const int * m_cn)
 {
   int ind, m_cn_q, p, q;
-  
+
   ind = 0;
   for (q = 0; q < m_dim; ++q)
   {
@@ -34,7 +34,7 @@ static void mesh_fc_a3(int * m_fc_a3, const mesh * m)
   int * m_cn;
   jagged1 m_cf_p_q_i;
   jagged2 m_cf_p_q;
-  
+
   m_dim = m->dim;
   m_cn = m->cn;
   ind = 0;
@@ -64,7 +64,7 @@ static void mesh_fc_a4(int * m_fc_a4, const mesh * m, int * m_fc_a3)
   int * ind_current, * m_cn;
   jagged1 m_cf_p_q_i;
   jagged2 m_cf_p_q;
-  
+
   m_dim = m->dim;
   m_cn = m->cn;
   ind_loc = 0;
@@ -105,14 +105,14 @@ jagged4 * mesh_fc(const mesh * m)
 {
   int m_fc_a2_size, m_fc_a3_size, m_fc_a4_size;
   jagged4 * m_fc;
-  
+
   m_fc = (jagged4 *) malloc(sizeof(jagged4));
   if (errno)
   {
     fputs("mesh_fc - cannot allocate memory for m->fc\n", stderr);
     goto end;
   }
-  
+
   m_fc->a0 = m->dim;
   m_fc->a1 = (int *) malloc(sizeof(int) * m->dim);
   if (errno)
@@ -121,7 +121,7 @@ jagged4 * mesh_fc(const mesh * m)
     goto m_fc_free;
   }
   mesh_fc_a1(m_fc->a1, m->dim);
-  
+
   m_fc_a2_size = int_array_total_sum(m->dim, m_fc->a1);
   m_fc->a2 = (int *) malloc(sizeof(int) * m_fc_a2_size);
   if (errno)
@@ -130,7 +130,7 @@ jagged4 * mesh_fc(const mesh * m)
     goto m_fc_a1_free;
   }
   mesh_fc_a2(m_fc->a2, m->dim, m->cn);
-  
+
   m_fc_a3_size = int_array_total_sum(m_fc_a2_size, m_fc->a2);
   m_fc->a3 = (int *) calloc(m_fc_a3_size, sizeof(int));
   if (errno)
@@ -139,7 +139,7 @@ jagged4 * mesh_fc(const mesh * m)
     goto m_fc_a2_free;
   }
   mesh_fc_a3(m_fc->a3, m);
-  
+
   m_fc_a4_size = int_array_total_sum(m_fc_a3_size, m_fc->a3);
   m_fc->a4 = (int *) malloc(sizeof(int) * m_fc_a4_size);
   if (errno)
@@ -153,9 +153,9 @@ jagged4 * mesh_fc(const mesh * m)
     fputs("mesh_fc - cannot calculate for m->fc->a4\n", stderr);
     goto m_fc_a4_free;
   }
-  
+
   return m_fc;
-  
+
   /* cleaning if an error occurs */
 m_fc_a4_free:
   free(m_fc->a4);

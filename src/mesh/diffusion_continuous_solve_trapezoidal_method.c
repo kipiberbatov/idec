@@ -16,7 +16,7 @@ double * diffusion_continuous_solve_trapezoidal_method(
 {
   double * result = NULL;
   diffusion_discrete * data_discrete;
-  
+
   data_discrete = diffusion_continuous_discretize(m, data_continuous);
   if (errno)
   {
@@ -24,7 +24,7 @@ double * diffusion_continuous_solve_trapezoidal_method(
     fprintf(stderr, "cannot discretize continuous data\n");
     goto end;
   }
-  
+
   result = diffusion_discrete_solve_trapezoidal_method(
     m,
     m_cbd_0,

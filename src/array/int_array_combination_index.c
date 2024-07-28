@@ -3,7 +3,7 @@
 int int_array_combination_index(int * comb, int m, int n)
 {
   int i, j, prev, res, a0;
-  
+
   if (n != 0)
   {
     a0 = comb[0];

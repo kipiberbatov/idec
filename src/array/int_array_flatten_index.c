@@ -3,7 +3,7 @@
 int int_array_flatten_index(int d, const int * dimensions, const int * indices)
 {
   int flattened_index, prod, r;
-  
+
   flattened_index = 0;
   for (r = 0; r < d; ++r)
   {

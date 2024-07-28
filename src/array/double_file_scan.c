@@ -6,7 +6,7 @@ double double_file_scan(FILE * in)
 {
   int correct;
   double a;
-  
+
   correct = fscanf(in, "%lf", &a);
   if (correct <= 0)
   {

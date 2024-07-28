@@ -24,7 +24,7 @@ static void loop(
   int number_of_steps)
 {
   int i, n;
-  
+
   n = rhs->rows;
   // fprintf(stderr, "result[%d]:\n", 0);
   // double_array_file_print(stderr, n, result, "--raw");
@@ -77,7 +77,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
   const diffusion_discrete * data,
   double time_step,
   int number_of_steps)
-{ 
+{
   int n;
   double * free_part, * rhs_final;
   double * result = NULL;
@@ -165,7 +165,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
 
   /* the initial $n$ elements of $result$ are the initial condition */
   memcpy(result, data->initial, sizeof(double) * n);
-  
+
   // fputs("\nInitial: \n", stderr);
   // double_array_file_print(stderr, n, data->initial, "--raw");
 
@@ -182,7 +182,7 @@ double * diffusion_discrete_solve_trapezoidal_method(
   // fputs("\n", stderr);
   // matrix_sparse_file_print(stderr, lhs, "--matrix-form-raw");
   // fputs("\n\n", stderr);
-  
+
   /* The following $number_of_steps$ elements of $result$ (each of size $n$)
    * are calculated iteratively with $rhs_final$ updating at each step.
    */

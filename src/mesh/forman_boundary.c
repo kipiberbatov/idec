@@ -12,7 +12,7 @@ static void forman_boundary_values_on_edges(double * m_boundary_values,
   matrix_sparse * m_bd_p;
   jagged1 m_cf_p_pm1_i;
   jagged2 m_cf_p_pm1;
-  
+
   d = m->dim;
   m_cn = m->cn;
   index = 0;
@@ -109,7 +109,7 @@ static void forman_boundary_values_general(double * m_boundary_values,
   m_cn = m->cn;
   sign = (p_f % 2 ? -1. : 1.); /* sign = (-1)^{p_f} */
   index = 0;
-  
+
   for (p = p_f; p <= d; ++p)
   {
     m_bd_p = m_bd[p - 1];
@@ -134,7 +134,7 @@ static void forman_boundary_values_general(double * m_boundary_values,
           m, m_bd_p, &m_cf_pm1_s, &m_cf_p_pm1_i, i, l);
         forman_boundary_values_general_l3_end(m_boundary_values, &index,
           m, m_bd_sp1, &m_cf_sp1_s, &m_cf_p_sp1_i, l, sign);
-        
+
       }
     }
   }
@@ -146,7 +146,7 @@ static matrix_sparse * forman_boundary_single(
   int m_forman_boundary_p_f_nonzero_max;
   int * m_forman_cn;
   matrix_sparse * m_forman_boundary_p_f;
-  
+
   m_forman_cn = m_forman->cn;
   m_forman_boundary_p_f = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   if (errno)
@@ -159,7 +159,7 @@ static matrix_sparse * forman_boundary_single(
   m_forman_boundary_p_f_nonzero_max = mesh_boundary_nonzero_max(m_forman, p_f);
   m_forman_boundary_p_f->rows = m_forman_cn[p_f - 1];
   m_forman_boundary_p_f->cols = m_forman_cn[p_f];
-  
+
   m_forman_boundary_p_f->cols_total
   = (int *) malloc((m_forman_boundary_p_f->cols + 1) * sizeof(int));
   if (errno)
@@ -171,7 +171,7 @@ static matrix_sparse * forman_boundary_single(
     goto m_forman_boundary_p_f_free;
   }
   mesh_boundary_cols_total(m_forman_boundary_p_f->cols_total, m_forman, p_f);
-  
+
   m_forman_boundary_p_f->row_indices
   = (int *) malloc(sizeof(int) * m_forman_boundary_p_f_nonzero_max);
   if (errno)
@@ -183,7 +183,7 @@ static matrix_sparse * forman_boundary_single(
     goto m_forman_boundary_p_f_p_free;
   }
   mesh_boundary_row_indices(m_forman_boundary_p_f->row_indices, m_forman, p_f);
-  
+
   m_forman_boundary_p_f->values
   = (double *) malloc(sizeof(double) * m_forman_boundary_p_f_nonzero_max);
   if (errno)
@@ -198,9 +198,9 @@ static matrix_sparse * forman_boundary_single(
     forman_boundary_values_on_edges(m_forman_boundary_p_f->values, m, m_bd);
   else
     forman_boundary_values_general(m_forman_boundary_p_f->values, m, m_bd, p_f);
-  
+
   return m_forman_boundary_p_f;
-  
+
   /* cleaning if an error occurs */
 m_forman_boundary_p_f_i_free:
   free(m_forman_boundary_p_f->row_indices);
@@ -212,12 +212,12 @@ end:
   return NULL;
 }
 
-matrix_sparse ** 
+matrix_sparse **
 forman_boundary(const mesh * m, const mesh * m_forman, matrix_sparse ** m_bd)
 {
   int d, p_f;
   matrix_sparse ** m_forman_boundary;
-  
+
   d = m->dim;
 
   m_forman_boundary = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * d);
@@ -238,7 +238,7 @@ forman_boundary(const mesh * m, const mesh * m_forman, matrix_sparse ** m_bd)
     }
   }
   return m_forman_boundary;
-  
+
   /* cleaning if an error occurs */
 m_forman_boundary_p_f_free:
   matrix_sparse_array_free(m_forman_boundary, p_f - 1);

@@ -12,7 +12,7 @@ void double_array_sequence_dynamic_free(double_array_sequence_dynamic * a)
 
   length = a->length;
   values = a->values;
-  
+
   for (i = length - 1; i >= 0; --i)
     free(values[i]);
   free(values);
@@ -52,7 +52,7 @@ double_array_sequence_dynamic_file_scan(FILE * in)
     fputs("Cannot allocate memory for final result\n", stderr);
     goto end;
   }
-  
+
   length = int_file_scan(in);
   if (errno)
   {
@@ -73,7 +73,7 @@ double_array_sequence_dynamic_file_scan(FILE * in)
     fputs("Cannot allocate memory for values\n", stderr);
     goto a_free;
   }
-  
+
   for (i = 0; i < length; ++i)
   {
     values[i] = double_array_file_scan(in, dimension, "--raw");

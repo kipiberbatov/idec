@@ -3,7 +3,7 @@
 void int_array_combination_next(int * a, int m, int n)
 {
   int i, j;
-  
+
   if (a[n - 1] != m - 1)
     ++a[n - 1];
   else

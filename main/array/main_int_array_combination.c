@@ -7,7 +7,7 @@ static void int_array_combination_file_print(FILE * out, int m, int n)
 {
   int prod, i;
   int * a;
-  
+
   prod = int_binomial(m, n);
   a = (int *) malloc(n * sizeof(int));
   if (errno)
@@ -30,7 +30,7 @@ static void int_array_combination_file_print(FILE * out, int m, int n)
 int main(int argc, char * argv[])
 {
   int m, n;
-  
+
   m = atoi(argv[1]);
   n = atoi(argv[2]);
   int_array_combination_file_print(stdout, m, n);

@@ -4,7 +4,7 @@ int jagged1_intersection_count(const jagged1 * arr1, const jagged1 * arr2)
 {
   int arr1_a0, i, res;
   int * arr1_a1;
-  
+
   arr1_a0 = arr1->a0;
   arr1_a1 = arr1->a1;
   res = 0;

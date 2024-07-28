@@ -7,7 +7,7 @@ void mesh_file_scan_tess_check_text_for_ori(FILE * in, int * error)
 {
   const char str[] = "\n  *ori\n   quaternion:active\n";
   char buffer[sizeof(str)];
-  
+
   string_file_scan(in, buffer, sizeof(buffer));
   if (strcmp(buffer, str))
   {

@@ -12,7 +12,7 @@ void jagged2_node_neighbors(
 
   size_i = node_i_edges->a0;
   values_i = node_i_edges->a1;
-  
+
   for (j_local = 0; j_local < size_i; ++ j_local)
   {
     j = values_i[j_local];

@@ -14,7 +14,7 @@ static vector_sparse * mesh_qc_metric_corrected_p_i(
   double denominator_p_i, node_curvature;
   vector_sparse * m_metric_p_i;
   jagged1 m_volumes_j;
-  
+
   m_metric_p_i = (vector_sparse *) malloc(sizeof(vector_sparse));
   if (errno)
   {
@@ -22,11 +22,11 @@ static vector_sparse * mesh_qc_metric_corrected_p_i(
             "m_metric[%d][%d]\n", p, i);
     goto end;
   }
-  
+
   m_metric_p_i->length = m_cn_0;
   m_metric_p_i->nonzero_max = m_c_p_i_nodes->a0;
-  
-  m_metric_p_i->positions = 
+
+  m_metric_p_i->positions =
     (int *) malloc(sizeof(int) * m_metric_p_i->nonzero_max);
   if (errno)
   {
@@ -34,10 +34,10 @@ static vector_sparse * mesh_qc_metric_corrected_p_i(
             "m_metric[%d][%d]->positions\n", p, i);
     goto m_metric_p_i_free;
   }
-  memcpy(m_metric_p_i->positions, m_c_p_i_nodes->a1, 
+  memcpy(m_metric_p_i->positions, m_c_p_i_nodes->a1,
          sizeof(int) * m_metric_p_i->nonzero_max);
-  
-  m_metric_p_i->values = 
+
+  m_metric_p_i->values =
     (double *) malloc(sizeof(double) * m_metric_p_i->nonzero_max);
   if (errno)
   {
@@ -53,7 +53,7 @@ static vector_sparse * mesh_qc_metric_corrected_p_i(
     node_curvature = node_curvatures[j];
     m_metric_p_i->values[j_loc] = node_curvature / denominator_p_i;
   }
-  
+
   vector_sparse_rearrange(m_metric_p_i);
   if (errno)
   {
@@ -61,9 +61,9 @@ static vector_sparse * mesh_qc_metric_corrected_p_i(
             "m_metric[%d][%d]\n", p, i);
     goto m_metric_p_i_values_free;
   }
-  
+
   return m_metric_p_i;
-  
+
   /* cleaning if an error occurs */
 m_metric_p_i_values_free:
   free(m_metric_p_i->values);
@@ -87,7 +87,7 @@ vector_sparse ** mesh_qc_metric_corrected_p(
 
   m_cn = m->cn;
   m_cn_p = m_cn[p];
-  
+
   m_metric_p = (vector_sparse **) malloc(m_cn_p * sizeof(vector_sparse *));
   if (errno)
   {
@@ -95,7 +95,7 @@ vector_sparse ** mesh_qc_metric_corrected_p(
             "m_metric[%d]\n", p);
     return NULL;
   }
-  
+
   mesh_fc_part2(&m_volumes, m, 0, m->dim);
   for (i = 0; i < m_cn_p; ++i)
   {
@@ -111,7 +111,7 @@ vector_sparse ** mesh_qc_metric_corrected_p(
       return NULL;
     }
   }
-  
+
   return m_metric_p;
 }
 
@@ -120,9 +120,9 @@ vector_sparse *** mesh_qc_metric_corrected(
 {
   int m_dim, p;
   vector_sparse *** m_metric;
-  
+
   m_dim = m->dim;
-  
+
   m_metric = (vector_sparse ***) malloc(sizeof(vector_sparse **) * (m_dim + 1));
   if (errno)
   {
@@ -130,7 +130,7 @@ vector_sparse *** mesh_qc_metric_corrected(
           stderr);
     return NULL;
   }
-  
+
   for (p = 0; p <= m_dim; ++p)
   {
     m_metric[p] = mesh_qc_metric_corrected_p(m, p, m_vol[p], node_curvatures);
@@ -142,6 +142,6 @@ vector_sparse *** mesh_qc_metric_corrected(
       return NULL;
     }
   }
-  
+
   return m_metric;
 }

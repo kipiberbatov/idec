@@ -9,7 +9,7 @@ void mesh_brick_cf_a4(int * m_cf_a4, int d, const int * n)
   int a[MAX_DIM], b[MAX_DIM], b_bar[MAX_DIM], b_copy[MAX_DIM], choices[MAX_DIM],
       l[MAX_DIM], n_bar_p[MAX_DIM], n_bar_u_v[MAX_DIM], positions[MAX_DIM],
       y[MAX_DIM], y_plus_z[MAX_DIM], w[MAX_DIM], z[MAX_DIM];
-    
+
   ind = 0;
   for (p = 1; p <= d; ++p)
   {
@@ -50,7 +50,7 @@ void mesh_brick_cf_a4(int * m_cf_a4, int d, const int * n)
               int_array_assign_constant(z, d, 0);
               int_array_substitute_inverse(z, p - q, w, b_bar);
               int_array_sum(y_plus_z, d, y, z);
-              m_cf_a4[ind] = 
+              m_cf_a4[ind] =
                 ind_b + int_array_flatten_index(d, n_bar_u_v, y_plus_z);
               ++ind;
               if (w_ind < w_size - 1)

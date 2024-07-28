@@ -9,7 +9,7 @@ static void mesh_brick_regular_file_print_raw(FILE * out, int d, int n)
   int m_bd_sizes[MAX_DIM], n_list[MAX_DIM];
   mesh * m;
   int ** m_bd;
-  
+
   m = mesh_brick_regular(d, n);
   if (errno)
   {
@@ -17,11 +17,11 @@ static void mesh_brick_regular_file_print_raw(FILE * out, int d, int n)
     goto end;
   }
   mesh_file_print(out, m, "--raw");
-  
+
   int_array_assign_constant(n_list, d, n);
   for (p = 1; p <= d; ++p)
     m_bd_sizes[p - 1] = mesh_boundary_nonzero_max(m, p);
-  
+
   m_bd = mesh_brick_boundary(m->dim, n_list, m_bd_sizes);
   if (errno)
   {
@@ -30,7 +30,7 @@ static void mesh_brick_regular_file_print_raw(FILE * out, int d, int n)
   }
   for (p = 0; p < d; ++p)
     int_array_file_print(out, m_bd_sizes[p], m_bd[p], "--raw");
-  
+
   int_array2_free(m_bd, d);
 m_free:
   mesh_free(m);
@@ -41,28 +41,28 @@ end:
 int main(int argc, char * argv[])
 {
   int d, n;
-  
+
   if (argc != 3)
   {
     errno = EIO;
     fputs("main - the number of command-line arguments must be 3.\n", stderr);
     goto end;
   }
-  
+
   sscanf(argv[1], "%d", &d);
   if (errno)
   {
     fputs("main - cannot scan dimension d\n", stderr);
     goto end;
   }
-  
+
   sscanf(argv[2], "%d", &n);
   if (errno)
   {
     fputs("main - cannot scan number of divisions n\n", stderr);
     goto end;
   }
-  
+
   mesh_brick_regular_file_print_raw(stdout, d, n);
   if (errno)
   {

@@ -8,7 +8,7 @@ void quasi_cube_triangulation_node_set(
 {
   int r_dim_embedded, r_ind, s_ind, t;
   double * r_coord;
-  
+
   r_dim_embedded = r->dim_embedded;
   r_coord = r->coord;
   r_ind = r_node * r_dim_embedded;
@@ -22,7 +22,7 @@ void quasi_cube_triangulation_simplex_set(
 
 {
   int p;
-  
+
   for (p = 0; p <= r->dim; ++p)
     quasi_cube_triangulation_node_set(s_coord, r, p, r_nodes[p]);
 }
@@ -32,7 +32,7 @@ double quasi_cube_triangulation_simplex_measure(
 {
   simplex s;
   double s_coord[100];
-  
+
   s.dim_embedded = r->dim_embedded;
   s.dim = r->dim;
   quasi_cube_triangulation_simplex_set(s_coord, r, r_nodes);
@@ -46,7 +46,7 @@ double quasi_cube_measure_from_triangulation(
   int i, r_dim, r_dim_factorial;
   const int * r_nodes;
   double res;
-  
+
   r_dim = r->dim;
   r_dim_factorial = int_factorial(r_dim);
   res = 0;

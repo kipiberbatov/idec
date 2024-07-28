@@ -4,7 +4,7 @@
 void matrix_sparse_file_print_matrix_form_curly(FILE * out, const matrix_sparse * a)
 {
   int i, j, m, n;
-  
+
   m = a->rows;
   n = a->cols;
   fputc('{', out);

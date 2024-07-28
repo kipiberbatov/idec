@@ -24,7 +24,7 @@ int main()
 {
   simplex * r;
   FILE * in, * out;
-  
+
   out = stdout;
   in = stdin;
   r = simplex_file_scan(in);

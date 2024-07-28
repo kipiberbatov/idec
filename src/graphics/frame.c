@@ -61,9 +61,9 @@ static double points_array_minimal_distance(int n, const double * p)
   int i, j;
   double p_i_x, p_i_y, p_j_x, p_j_y;
   double result_squared, tmp_squared;
-  
+
   result_squared = double_square(p[0] - p[2]) + double_square(p[1] - p[3]);
-  
+
   for (i = 0; i < n; ++i)
   {
     p_i_x = p[2 * i];
@@ -96,20 +96,20 @@ void frame_internal_info_for_set_of_points(
   double a_x, a_y, b_x, b_y, c_x, d_x, d_y, r_x, r_y, u;
   double reduction = 4;
   double * data_coordinates;
-  
+
   tau = points_array_minimal_distance(n, points);
-  
+
   rectangle_intrinsic_for_set_of_points(&a, n, points);
   a_x = a.east - a.west;
   a_y = a.north - a.south;
-  
+
   r.left = window_margin->left;
   r.right = width - window_margin->left;
   r.top = window_margin->top;
   r.bottom = height - window_margin->bottom;
   r_x = r.right - r.left;
   r_y = r.bottom - r.top;
-  
+
   u = a_x * r_y - a_y * r_x;
   if (u > 0)
   {
@@ -131,9 +131,9 @@ void frame_internal_info_for_set_of_points(
   }
   b_x = b.right - b.left;
   b_y = b.bottom - b.top;
-  
+
   rho = tau * lambda;
-  
+
   data->point_size = rho / reduction;
   data->line_width = rho / reduction;
   if (b_x < b_y)
@@ -151,11 +151,11 @@ void frame_internal_info_for_set_of_points(
   c.top = b.top + sigma_y;
   c.bottom = b.bottom - sigma_y;
   c_x = c.right - c.left;
-  
+
   mu = c_x / a_x;
   d_x = c.left - a.west * mu;
   d_y = c.bottom + a.south * mu;
-  
+
   data_coordinates = data->coordinates;
   for (i = 0; i < n; ++i)
   {

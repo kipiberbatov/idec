@@ -14,7 +14,7 @@ jagged3 * jagged3_file_scan(FILE * in, const char * format)
     fprintf(stderr, "jagged3_file_scan - format %s is not supported\n", format);
     return NULL;
   }
-  
+
   if (errno)
     fputs("jagged3_file_scan - cannot scan input\n", stderr);
   return arr;

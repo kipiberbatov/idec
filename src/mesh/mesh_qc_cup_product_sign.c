@@ -8,7 +8,7 @@ double mesh_qc_cup_product_sign(
   matrix_sparse ** m_bd, int node, int p, int i, int q, int j, int r, int k)
 {
   if (p == 1)
-    return matrix_sparse_part(m_bd[0], node, i) * 
+    return matrix_sparse_part(m_bd[0], node, i) *
            matrix_sparse_part(m_bd[r - 1], j, k);
   if (q == 1)
     return matrix_sparse_part(m_bd[0], node, j) *

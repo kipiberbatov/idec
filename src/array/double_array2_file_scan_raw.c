@@ -7,8 +7,8 @@ double ** double_array2_file_scan_raw(FILE * in, int a0, const int * a1)
 {
   int i;
   double ** a;
-  
-  a = (double **) malloc(sizeof(double *) * a0); 
+
+  a = (double **) malloc(sizeof(double *) * a0);
   if (errno)
   {
     perror("double_array2_file_scan_raw - cannot allocate memory for a");

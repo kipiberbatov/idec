@@ -11,7 +11,7 @@ static void mesh_qc_hodge_file_print_raw(
 {
   int m_dim, p, q;
   matrix_sparse * m_hodge_p;
-  
+
   m_dim = m->dim;
   for (p = 0; p <= m_dim; ++p)
   {
@@ -43,7 +43,7 @@ int main(int argc, char ** argv)
     fprintf(stderr, "Number of command line arguments must be 4\n");
     return errno;
   }
-  
+
   m_file = fopen(argv[1], "r");
   if (errno)
   {
@@ -66,7 +66,7 @@ int main(int argc, char ** argv)
     fclose(m_file);
     goto m_free;
   }
-  
+
   m_bd = mesh_file_scan_boundary(m_file, m);
   if (errno)
   {
@@ -74,23 +74,23 @@ int main(int argc, char ** argv)
     fclose(m_file);
     goto m_free;
   }
-  
+
   fclose(m_file);
-  
+
   m_inner = double_array2_file_scan_by_name(argv[2], m->dim + 1, m->cn, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_vol\n", stderr);
     goto m_bd_free;
   }
-  
+
   m_coeff = double_array2_file_scan_by_name(argv[3], m->dim + 1, m->cn, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_coeff\n", stderr);
     goto m_inner_free;
   }
-  
+
   mesh_qc_hodge_file_print_raw(stdout, m, m_bd, m_inner, m_coeff);
   if (errno)
   {

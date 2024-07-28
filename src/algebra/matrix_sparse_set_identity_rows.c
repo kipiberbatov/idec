@@ -6,7 +6,7 @@ void matrix_sparse_set_identity_rows(
   int column_j_nonzero_total, i, i_local, j;
   int * column_j_row_indices;
   double * column_j_values;
-  
+
   for (j = 0; j < lhs->cols; ++j)
   {
     column_j_nonzero_total = lhs->cols_total[j + 1] - lhs->cols_total[j];

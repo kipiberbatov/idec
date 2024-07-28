@@ -78,7 +78,7 @@ static matrix_sparse * mesh_qc_coboundary_star_physical_constant_single(
   double c_p_minus_1)
 {
   matrix_sparse * m_cbd_star_p;
-  
+
   m_cbd_star_p = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   /* NULL pointer check */
   //m_cbd_star_p->nzmax = m_bd_p->nzmax;
@@ -99,7 +99,7 @@ matrix_sparse * mesh_qc_elasticity_coboundary_star_1(
   const double * m_inner_0, double lambda, double mu)
 {
   matrix_sparse * res;
-  
+
   res = mesh_qc_coboundary_star_physical_constant_single(m, 1, m_bd_1, m_inner_1,
                                                   m_inner_0, lambda + 2 * mu);
   /* NULL pointer check */

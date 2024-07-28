@@ -8,7 +8,7 @@ vector_sparse *** vector_sparse_array2_file_scan(
 {
   int i;
   vector_sparse *** arr;
-  
+
   arr = (vector_sparse ***) malloc(sizeof(vector_sparse **) * a0);
   if (errno)
   {

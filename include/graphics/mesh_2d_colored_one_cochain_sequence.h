@@ -10,7 +10,7 @@ typedef struct mesh_2d_colored_one_cochain_sequence
   int total_steps;
   mesh * m;
   double * values;
-  
+
   int total_colors;
   double * new_coordinates;
   double line_width;

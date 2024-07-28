@@ -7,7 +7,7 @@ static void mesh_qc_elasticity_laplacian_file_print_raw(
   matrix_sparse * m_cbd_star_elasticity_2)
 {
   matrix_sparse * m_laplacian_elasticity_1;
-  
+
   m_laplacian_elasticity_1 = matrix_sparse_laplacian_p(
     m_cbd_0, m_cbd_1, m_cbd_star_elasticity_1, m_cbd_star_elasticity_2);
   /* NULL pointer check */
@@ -18,10 +18,10 @@ static void mesh_qc_elasticity_laplacian_file_print_raw(
 int main()
 {
   mesh * m;
-  matrix_sparse * m_cbd_0, * m_cbd_1, * m_cbd_star_elasticity_1, 
+  matrix_sparse * m_cbd_0, * m_cbd_1, * m_cbd_star_elasticity_1,
                 * m_cbd_star_elasticity_2;
   matrix_sparse ** m_bd;
-  
+
   m = mesh_file_scan(stdin, "--raw");
   /* NULL pointer check */
   m_bd = mesh_file_scan_boundary(stdin, m);

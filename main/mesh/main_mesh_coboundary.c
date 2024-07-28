@@ -7,7 +7,7 @@ static void mesh_coboundary_file_print(
 {
   int p;
   matrix_sparse * m_bd_p_plus_1, * m_cbd_p;
-  
+
   for (p = 0; p < m_dim; ++p)
   {
     m_bd_p_plus_1 = m_bd[p];
@@ -38,7 +38,7 @@ int main(int argc, char * argv[])
   matrix_sparse ** m_bd;
   char * format;
   FILE * in, * out;
-  
+
   out = stdout;
   in = stdin;
   m = mesh_file_scan(in, "--raw");

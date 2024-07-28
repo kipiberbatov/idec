@@ -29,7 +29,7 @@ static double angle_2d_general(int d, const double a0[3], const double a1[3])
 {
   double dot;
   double v0[3], v1[3];
-  
+
   double_array_normalize(v0, d, a0);
   double_array_normalize(v1, d, a1);
   dot = double_array_dot_product(d, v0, v1);
@@ -84,8 +84,8 @@ static double angle_3d(const double a[3][3])
   theta02 = angle_2d_general(3, a[0], a[2]);
   theta12 = angle_2d_general(3, a[1], a[2]);
   theta_s = (theta01 + theta02 + theta12) / 2;
-  fourth_tan_square = 
-      tan(theta_s / 2) 
+  fourth_tan_square =
+      tan(theta_s / 2)
     * tan((theta_s - theta01) / 2)
     * tan((theta_s - theta02) / 2)
     * tan((theta_s - theta12) / 2);
@@ -108,7 +108,7 @@ static void edge_vector(int * ind, double a[3][3], int d, const double * coord,
   }
 }
 
-/* finds the angle at a node with respect to one if its surrounding volumes 
+/* finds the angle at a node with respect to one if its surrounding volumes
  * in dimension 2 or 3
  */
 static double mesh_angle_nd(
@@ -118,7 +118,7 @@ static double mesh_angle_nd(
   int ind, j, j_loc;
   double m_cf_d_1_k_coord[3][3];
   jagged1 m_cf_1_0_j;
-  
+
   ind = 0;
   for (j_loc = 0; j_loc < m_cf_d_1_k->a0; ++j_loc)
   {
@@ -129,7 +129,7 @@ static double mesh_angle_nd(
   return (d == 2) ? angle_2d(m_cf_d_1_k_coord) : angle_3d(m_cf_d_1_k_coord);
 }
 
-/* finds the angle at a node with respect to one if its surrounding volumes 
+/* finds the angle at a node with respect to one if its surrounding volumes
  * in any dimension; it is better to use another function for d = 1
  */
 static double mesh_angle(
@@ -158,7 +158,7 @@ static double mesh_node_curvature_i(
   int k, k_loc;
   double node_total_angle;
   jagged1 m_cf_d_1_k, m_fc_0_d_i;
-  
+
   jagged2_part1(&m_fc_0_d_i, m_fc_0_d, i);
   node_total_angle = 0;
   for (k_loc = 0; k_loc < m_fc_0_d_i.a0; ++k_loc)
@@ -176,13 +176,13 @@ double * mesh_node_curvature(const mesh * m)
   int d, i, m_cn_0;
   double * m_node_curvatures;
   jagged2 m_cf_1_0, m_cf_d_1, m_fc_0_d;
-  
+
   m_cn_0 = m->cn[0];
   d = m->dim;
   mesh_cf_part2(&m_cf_1_0, m, 1, 0);
   mesh_cf_part2(&m_cf_d_1, m, d, 1);
   mesh_fc_part2(&m_fc_0_d, m, 0, d);
-  
+
   m_node_curvatures = (double *) malloc(sizeof(double) * m_cn_0);
   if (errno)
   {
@@ -191,8 +191,8 @@ double * mesh_node_curvature(const mesh * m)
     return NULL;
   }
   for (i = 0; i < m_cn_0; ++i)
-    m_node_curvatures[i] = 
+    m_node_curvatures[i] =
       mesh_node_curvature_i(d, m->coord, &m_cf_1_0, &m_cf_d_1, &m_fc_0_d, i);
-  
+
   return m_node_curvatures;
 }

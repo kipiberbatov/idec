@@ -47,15 +47,15 @@ static void forman_cf_a4_level_3_zero(int * m_forman_cf_a4, int * index,
     for (l_local = 0; l_local < m_cf_p_s_i.a0; ++l_local)
     {
       l = m_cf_p_s_i.a1[l_local];
-      
+
       /* c(p, i) > c(q, j) = c(r, k) = c(s, l) */
       m_forman_cf_a4[*index] = int_array_total_sum(s, m->cn) + l;
       ++*index;
-      
+
       /* c(p, i) > c(q, j) = c(r, k) > c(s, l) */
       forman_cf_a4_level_5_zero_middle(m_forman_cf_a4, index,
         m, p, s, m_cn, i, l);
-      
+
       /* c(p, i) = c(q, j) = c(r, k) > c(s, l) */
       m_forman_cf_a4[*index] = int_array_total_sum(p, m_cn) + i;
       ++*index;
@@ -89,7 +89,7 @@ forman_cf_a4_level_5_nonzero_begin(int * m_forman_cf_a4, int * index,
   mesh_cfn_part2(&m_cfn_q_r, m, q, s);
   so_far_global = add_so_far_nonzero(m, q_f, s);
   mesh_cf_part3(&m_cf_p_q_i, m, p, q, i);
-  
+
   mesh_cf_part2(&m_cf_q_s, m, q, s);
   for (j_local = 0; j_local < m_cf_p_q_i.a0; ++j_local)
   {
@@ -193,7 +193,7 @@ static void forman_cf_a4_level_3_nonzero(int * m_forman_cf_a4, int * index,
     for (l_local = 0; l_local < m_cf_p_s_i.a0; ++l_local)
     {
       l = m_cf_p_s_i.a1[l_local];
-      
+
       /* c(p, i) > c(q, j) > c(r, k) = c(s, l) */
       forman_cf_a4_level_5_nonzero_begin(m_forman_cf_a4, index,
         m, p, s, q_f, i, l);
@@ -218,7 +218,7 @@ void forman_cf_a4(int * m_forman_cf_a4, const mesh * m)
   d = m->dim;
   m_cn = m->cn;
   index = 0;
-  
+
   for (p_f = 1; p_f <= d; ++p_f)
   {
     /* q_f = 0 */

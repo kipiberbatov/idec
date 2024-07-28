@@ -91,7 +91,7 @@ void mesh_file_scan_tess_get_faces_number_of_sides(
         return;
       }
     }
-    
+
     for (j = 0; j < 9; ++j)
     {
       double_file_scan(in);

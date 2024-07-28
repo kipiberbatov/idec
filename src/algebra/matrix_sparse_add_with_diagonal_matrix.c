@@ -7,7 +7,7 @@ void matrix_sparse_add_with_diagonal_matrix(
   int i_loc, j, n;
   int * a_cols_total, * a_row_indices;
   double * a_values;
-  
+
   n = a->cols;
   a_cols_total = a->cols_total;
   a_row_indices = a->row_indices;

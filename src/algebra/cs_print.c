@@ -15,7 +15,7 @@ csi cs_print (const cs *A, csi brief)
             (double) n, (double) nzmax, (double) (Ap [n]), cs_norm (A)) ;
         for (j = 0 ; j < n ; j++)
         {
-            printf ("    col %g : locations %g to %g\n", (double) j, 
+            printf ("    col %g : locations %g to %g\n", (double) j,
                 (double) (Ap [j]), (double) (Ap [j+1]-1)) ;
             for (p = Ap [j] ; p < Ap [j+1] ; p++)
             {

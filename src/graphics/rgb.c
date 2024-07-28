@@ -46,7 +46,7 @@ void rgb_color(rgb * color, int i, int n)
     rgb_cyan_to_blue,
     rgb_blue_to_magenta
   };
-  
+
   int k_n = n / (sizeof(rgb_nuances) / sizeof(rgb_nuance_t));
   int k_i = i % k_n;
   int k = i / k_n;

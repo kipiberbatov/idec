@@ -43,21 +43,21 @@ int main(int argc, char ** argv)
   margin window_margin;
   frame_mesh_data data;
   frame window_frame;
-  
+
   errno = 0;
-  
+
   if (argc != 4)
   {
-    fprintf(stderr, 
+    fprintf(stderr,
       "Error during execution of function %s in file %s on line %d: "
       "number of command-line arguments must be 6\n",
       __func__, __FILE__,__LINE__);
     errno = EINVAL;
     goto end;
   }
-  
+
   i = 0;
-  
+
   m_format = argv[1];
   m_filename = argv[2];
   m = mesh_file_scan_by_name(m_filename, m_format);
@@ -69,22 +69,22 @@ int main(int argc, char ** argv)
       __func__, __FILE__,__LINE__);
     goto end;
   }
-  
+
   u_filename = argv[3];
-  
+
   in = fopen(u_filename, "r");
   if (errno)
   {
     goto m_free;
   }
-  
+
   n = int_file_scan(in);
   if (errno)
   {
     fclose(in);
     goto m_free;
   }
-  
+
   length = int_file_scan(in);
   if (errno)
   {
@@ -97,7 +97,7 @@ int main(int argc, char ** argv)
     fputs("Not the right mesh\n", stderr);
     goto m_free;
   }
-  
+
   u = double_matrix_file_scan(in, n, m->cn[0], "--raw");
   if (errno)
   {
@@ -114,7 +114,7 @@ int main(int argc, char ** argv)
        __func__, __FILE__,__LINE__);
     goto m_free;
   }
-  
+
   new_coordinates = (double *) malloc(sizeof(double) * 2 * m->cn[0]);
   if (errno)
   {
@@ -124,7 +124,7 @@ int main(int argc, char ** argv)
        __func__, __FILE__,__LINE__);
     goto u_free;
   }
-  
+
   width = 500;
   height = 500;
   window_margin.left = 50;
@@ -140,23 +140,23 @@ int main(int argc, char ** argv)
     width,
     height,
     &window_margin);
-  
+
   total_colors = 10000;
-  
+
   a = (diffusion *) alloca(diffusion_size());
   diffusion_set(a,
     i, n, m, new_coordinates, data.point_size, u, total_colors, paint_rgb);
-  
+
   speed = 100;
-  
+
   gtk_init(&argc, &argv);
-  
+
   gtk_run(gtk_draw_diffusion, (void *) a, width, height, speed, title);
-  
+
   gtk_main();
-  
+
   errno = 0;
-  
+
   free(new_coordinates);
 u_free:
   free(u);

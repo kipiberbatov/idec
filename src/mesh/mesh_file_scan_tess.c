@@ -78,7 +78,7 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   mesh_file_scan_tess_check_preamble(in, error);
   if (*error)
     goto clean_on_failure;
-  
+
   d = mesh_file_scan_tess_get_dimension(in, error);
   if (*error)
     goto clean_on_failure;
@@ -94,9 +94,9 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
     fputs("Cannot allocate memory for mesh m\n", stderr);
     goto clean_on_failure;
   }
-  
+
   m->dim = d;
-  
+
   cn = (int *) malloc(sizeof(int) * (d + 1));
   if (!cn)
   {
@@ -104,12 +104,12 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
     fputs("Cannot allocate memory for m->cn\n", stderr);
     goto clean_on_failure;
   }
-  
+
   /* calculate the number of maximal cells */
   cn[d] = mesh_file_scan_tess_get_number_of_maximal_cells(in, error);
   if (*error)
     goto clean_on_failure;
-  
+
   /* check for "\n  *id\n   " */
   mesh_file_scan_tess_check_text_for_id(in, error);
   if (*error)
@@ -123,37 +123,37 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
     fputs("Cannot allocate memory for c\n", stderr);
     goto clean_on_failure;
   }
-  
+
   /* check for cells' IDs correctness */
   mesh_file_scan_tess_get_id(c, in, error, cn[d]);
   if (*error)
     goto clean_on_failure;
-  
+
   /* check for "\n  *crysym\n   triclinic\n  *seed\n" */
   mesh_file_scan_tess_check_text_for_crysym(in, error);
   if (*error)
     goto clean_on_failure;
-  
+
   mesh_file_scan_tess_skip_seed(in, error, cn[d], c);
   if (*error)
     goto clean_on_failure;
-  
+
   /* check for "\n  *ori\n   " */
   mesh_file_scan_tess_check_text_for_ori(in, error);
   if (*error)
     goto clean_on_failure;
-  
+
   /* ignore orientation values */
   mesh_file_scan_tess_skip_ori(in, error, cn[d]);
   if (*error)
     goto clean_on_failure;
-  
-  
+
+
   /* check for "\n **vertex\n " */
   mesh_file_scan_tess_check_text_for_vertex(in, error);
   if (*error)
     goto clean_on_failure;
-  
+
   /* scan cn[0] */
   cn[0] = mesh_file_scan_tess_get_number_of_nodes(in, error);
   if (*error)
@@ -167,22 +167,22 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
     fputs("Unable to allocate memory for coordinates\n", stderr);
     goto clean_on_failure;
   }
-  
+
   /* scan coordinates */
   mesh_file_scan_tess_get_coordinates(coordinates, in, error, d, cn[0]);
   if (*error)
     goto clean_on_failure;
-  
+
   /* check for "\n **edge\n " */
   mesh_file_scan_tess_check_text_for_edge(in, error);
   if (*error)
     goto clean_on_failure;
-  
+
   /* scan cn[1] */
   cn[1] = mesh_file_scan_tess_get_number_of_edges(in, error);
   if (*error)
     goto clean_on_failure;
-  
+
   /* allocate memory for edges_to_nodes */
   edges_to_nodes = (int *) malloc(sizeof(int) * 2 * cn[1]);
   if (!edges_to_nodes)
@@ -195,14 +195,14 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   mesh_file_scan_tess_get_edges_to_nodes(edges_to_nodes, in, error, cn[1]);
   if (*error)
     goto clean_on_failure;
-  
+
   /* todo: if (d == 1) */
-  
+
   /* check for "\n **face\n " */
   mesh_file_scan_tess_check_text_for_face(in, error);
   if (*error)
     goto clean_on_failure;
-  
+
   /* scan cn[2] */
   cn[2] = mesh_file_scan_tess_get_number_of_faces(in, error);
   if (*error)
@@ -222,7 +222,7 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   if (*error)
     goto clean_on_failure;
   fseek(in, position, SEEK_SET);
-  
+
   faces_total_edges = int_array_total_sum(cn[2], faces_number_of_sides);
   /* allocate memory for faces_to_subfaces */
   faces_to_subfaces = (int * ) malloc(sizeof(int) * 2 * faces_total_edges);
@@ -242,7 +242,7 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
     fprintf(stderr, "%s:%d: cannot allocate memory\n", __FILE__, __LINE__);
     goto clean_on_failure;
   }
-  
+
   cf->a0 = d;
   cf->a1 = (int *) malloc(sizeof(int) * cf->a0);
   if (errno)
@@ -260,7 +260,7 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
     goto clean_on_failure;
   }
   mesh_cf_a2(cf->a2, d, cn);
-  
+
   cf_a3_size = int_array_total_sum(cf_a2_size, cf->a2);
   cf->a3 = (int *) malloc(sizeof(int) * cf_a3_size);
   if (errno)
@@ -269,7 +269,7 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
     goto clean_on_failure;
   }
   mesh_file_scan_tess_set_cf_a3(cf->a3, cn[1], cn[2], faces_number_of_sides);
-  
+
   cf_a4_size = int_array_total_sum(cf_a3_size, cf->a3);
   cf->a4 = (int *) malloc(sizeof(int) * cf_a4_size);
   if (errno)
@@ -298,9 +298,9 @@ mesh * mesh_file_scan_tess_private(int * error, FILE * in)
   mesh_c(m->c, d, cn);
   m->cf = cf;
   m->fc = NULL;
-  
+
   return m;
-  
+
   /* cleaning if an error occurs */
 clean_on_failure:
   free(m->c);

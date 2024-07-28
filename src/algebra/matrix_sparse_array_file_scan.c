@@ -8,7 +8,7 @@ matrix_sparse ** matrix_sparse_array_file_scan(
 {
   int i;
   matrix_sparse ** a;
-  
+
   a = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * n);
   if (errno)
   {

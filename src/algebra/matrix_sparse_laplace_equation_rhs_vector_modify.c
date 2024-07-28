@@ -25,17 +25,17 @@ void matrix_sparse_laplace_equation_rhs_vector_modify(
       * m_laplacian_row_indices_col_j, * m_nodes_bd_a1;
   double m_laplacian_values_i_j;
   double * m_laplacian_values, * m_laplacian_values_col_j;
-  
+
   m_nodes_bd_a0 = m_nodes_bd->a0;
   m_nodes_bd_a1 = m_nodes_bd->a1;
   m_laplacian_cols_total = m_laplacian->cols_total;
   m_laplacian_row_indices = m_laplacian->row_indices;
   m_laplacian_values = m_laplacian->values;
-  
+
   for (j_loc = 0; j_loc < m_nodes_bd_a0; ++j_loc)
   {
     j = m_nodes_bd_a1[j_loc];
-    m_laplacian_row_indices_col_j = 
+    m_laplacian_row_indices_col_j =
       m_laplacian_row_indices + m_laplacian_cols_total[j];
     m_laplacian_values_col_j = m_laplacian_values + m_laplacian_cols_total[j];
     nonzeroes_j = m_laplacian_cols_total[j + 1] - m_laplacian_cols_total[j];

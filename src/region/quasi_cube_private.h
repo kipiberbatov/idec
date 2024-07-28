@@ -10,7 +10,7 @@ extern const int quasi_cube_triangulation_nodes_1[];
 extern const int quasi_cube_triangulation_nodes_2[];
 
 extern const int quasi_cube_triangulation_nodes_3[];
-   
+
 void quasi_cube_triangulation_node_set(
   double * s_coord, const quasi_cube * r, int s_node, int r_node);
 

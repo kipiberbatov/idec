@@ -8,12 +8,12 @@ void unsigned_approximation_of_scalar_field_on_1_cells(
   double * m_coord;
   jagged1 m_cf_1_0_i;
   jagged2 m_cf_1_0;
-  
+
   m_cn_1 = m->cn[1];
   m_dim_embedded = m->dim_embedded;
   m_coord = m->coord;
   mesh_cf_part2(&m_cf_1_0, m, 1, 0);
-  
+
   for (i = 0; i < m_cn_1; ++i)
   {
     jagged2_part1(&m_cf_1_0_i, &m_cf_1_0, i);

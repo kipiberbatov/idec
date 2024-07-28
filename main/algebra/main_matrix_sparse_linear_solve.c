@@ -17,14 +17,14 @@ static void matrix_sparse_linear_solve_file_print(
     perror("Cannot scan the first matrix");
     goto end;
   }
-  
+
   b_in = fopen(b_name, "r");
   if (errno)
   {
     perror("Cannot open file for reading vector");
     goto end;
   }
-  
+
   b = double_array_file_scan(b_in, a->rows, "--raw");
   if (errno)
   {
@@ -33,17 +33,17 @@ static void matrix_sparse_linear_solve_file_print(
     goto a_free;
   }
   fclose(b_in);
-  
+
   matrix_sparse_linear_solve(a, b, method);
   if (errno)
   {
     perror("Cannot solve linear equation");
     goto b_free;
   }
-  
+
   double_array_file_print(out, a->rows, b, "--raw");
   fputs("\n", out);
-  
+
 b_free:
   free(b);
 a_free:
@@ -55,7 +55,7 @@ end:
 int main(int argc, char * argv[])
 {
   char * a_format, * a_name, * b_name, * method;
-  
+
   if (argc != 5)
   {
     errno = EIO;

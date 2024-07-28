@@ -7,7 +7,7 @@ void vector_sparse_file_print_annotated(FILE * out, const vector_sparse * a)
   int a_nonzero_max, i;
   int * a_positions;
   double * a_values;
-  
+
   a_nonzero_max = a->nonzero_max;
   a_positions = a->positions;
   a_values = a->values;

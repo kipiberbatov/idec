@@ -38,10 +38,10 @@ static void mesh_qc_hodge_codifferential_file_print_raw(
 {
   int p;
   matrix_sparse * m_hodge_codifferential_p;
-  
+
   for (p = 1; p <= m_dim; ++p)
   {
-    m_hodge_codifferential_p = 
+    m_hodge_codifferential_p =
       mesh_qc_hodge_codifferential_p(m_dim, p, m_cbd[m_dim - p], m_hodge);
     if (errno)
     {
@@ -76,7 +76,7 @@ int main(int argc, char ** argv)
     fprintf(stderr, "Number of command line arguments must be 3\n");
     goto end;
   }
-  
+
   m_file = fopen(argv[1], "r");
   if (errno)
   {
@@ -102,7 +102,7 @@ int main(int argc, char ** argv)
     fclose(m_file);
     goto end;
   }
-  
+
   m_bd = mesh_file_scan_boundary(m_file, m);
   if (errno)
   {
@@ -114,7 +114,7 @@ int main(int argc, char ** argv)
 
   mesh_free(m);
   fclose(m_file);
-  
+
   m_cbd = mesh_coboundary(m_dim, m_bd);
   if (errno)
   {
@@ -123,14 +123,14 @@ int main(int argc, char ** argv)
     goto end;
   }
   matrix_sparse_array_free(m_bd, m_dim);
-  
+
   m_hodge = matrix_sparse_array_file_scan_by_name(argv[2], m_dim + 1, "--raw");
   if (errno)
   {
     fputs("main - cannot scan m_hodge\n", stderr);
     goto m_cbd_free;
   }
-  
+
   mesh_qc_hodge_codifferential_file_print_raw(stdout, m_dim, m_cbd, m_hodge);
   if (errno)
   {

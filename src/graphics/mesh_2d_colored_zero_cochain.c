@@ -9,7 +9,7 @@ void mesh_2d_colored_zero_cochain_cairo_draw(
   double c_max, c_min, denominator;
   double * c_coordinates, * c_values;
   mesh_2d_colored_node node;
-  
+
   c_min = c->min_value;
   c_max = c->max_value;
   c_number_of_nodes = c->number_of_nodes;

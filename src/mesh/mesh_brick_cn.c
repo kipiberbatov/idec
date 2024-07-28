@@ -19,7 +19,7 @@ void mesh_brick_cn(int * m_cn, int m_dim, const int * n)
 {
   int bin_d_p, p, u;
   int a[MAX_DIM], n_bar_p[MAX_DIM];
-  
+
   for (p = 0; p <= m_dim; ++p)
   {
     bin_d_p = int_binomial(m_dim, p);

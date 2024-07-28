@@ -16,7 +16,7 @@ double * double_array_file_scan_by_name(
             name, strerror(errno));
     goto end;
   }
-  
+
   a = double_array_file_scan(in, n, format);
   if (errno)
   {

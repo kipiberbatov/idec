@@ -6,7 +6,7 @@
 static void matrix_sparse_file_print_file_scan(FILE * out, FILE * in, char * format)
 {
   matrix_sparse * a;
-  
+
   a = matrix_sparse_file_scan(in, "--raw");
   if (errno)
   {
@@ -27,7 +27,7 @@ static void matrix_sparse_array_file_print_file_scan(
   FILE * out, FILE * in, char * format, int d)
 {
   int p;
-  
+
   for (p = 0; p < d; ++p)
   {
     matrix_sparse_file_print_file_scan(out, in, format);
@@ -45,7 +45,7 @@ int main(int argc, char * argv[])
 {
   char * format, * list;
   int d;
-  
+
   format = argv[1];
   if (argc == 4)
   {

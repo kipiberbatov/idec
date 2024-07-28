@@ -16,7 +16,7 @@ void matrix_sparse_linear_solve(
       "matrix_sparse_linear_solve - method %s is not supported\n", method);
     return;
   }
-  
+
   if (errno)
     fputs("matrix_sparse_linear_solve - cannot solve linear system\n", stderr);
 }

@@ -10,12 +10,12 @@ jagged1 * mesh_boundary_cells(const mesh * m, const jagged1 * m_bd_hyperfaces)
   jagged1 m_hyperface_to_cells;
   jagged1 * m_bd_cells = NULL, * m_bd_cells_duplicated;
   jagged2 m_hyperfaces_to_cells;
-  
+
   m_dim = m->dim;
   m_bd_hyperfaces_a0 = m_bd_hyperfaces->a0;
   m_bd_hyperfaces_a1 = m_bd_hyperfaces->a1;
   mesh_fc_part2(&m_hyperfaces_to_cells, m, m_dim - 1, m_dim);
-  
+
   m_bd_cells_duplicated = (jagged1 *) malloc(sizeof(jagged1));
   if (errno)
   {
@@ -24,11 +24,11 @@ jagged1 * mesh_boundary_cells(const mesh * m, const jagged1 * m_bd_hyperfaces)
       "cannot allocate memory for m_bd_cells_duplicated\n");
     goto end;
   }
-  
+
   m_bd_cells_duplicated_a0 = m_bd_hyperfaces_a0;
   m_bd_cells_duplicated->a0 = m_bd_cells_duplicated_a0;
-  
-  m_bd_cells_duplicated_a1 = 
+
+  m_bd_cells_duplicated_a1 =
     (int *) malloc(sizeof(int) * m_bd_cells_duplicated_a0);
   if (errno)
   {
@@ -44,7 +44,7 @@ jagged1 * mesh_boundary_cells(const mesh * m, const jagged1 * m_bd_hyperfaces)
     m_bd_cells_duplicated_a1[ind] = m_hyperface_to_cells.a1[0];
   }
   m_bd_cells_duplicated->a1 = m_bd_cells_duplicated_a1;
-  
+
   m_bd_cells = jagged1_delete_duplicates(m_bd_cells_duplicated);
   if (errno)
   {

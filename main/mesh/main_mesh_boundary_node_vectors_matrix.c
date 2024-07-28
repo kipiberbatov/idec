@@ -17,7 +17,7 @@ int main(void)
   jagged1 m_fc_0_1_i;
   jagged2 m_fc_0_1;
   double * result;
-  
+
   m = mesh_file_scan(stdin, "--raw");
   if (errno)
   {
@@ -25,7 +25,7 @@ int main(void)
     goto end;
   }
   m_dim_embedded = m->dim_embedded;
-  
+
   m->fc = mesh_fc(m);
   if (errno)
   {
@@ -33,14 +33,14 @@ int main(void)
     goto m_free;
   }
   mesh_fc_part2(&m_fc_0_1, m, 0, 1);
-  
+
   m_boundary_nodes = mesh_boundary_nodes_from_constraint(m, x1_axis_constant);
   if (errno)
   {
     fputs("Error: cannot calculate m_boundary_nodes\n", stderr);
     goto m_free;
   }
-  
+
   for (i_local = 0; i_local < m_boundary_nodes->a0; ++i_local)
   {
     i = m_boundary_nodes->a1[i_local];

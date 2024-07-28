@@ -20,7 +20,7 @@ cs *cs_multiply (const cs *A, const cs *B)
         if (nz + m > C->nzmax && !cs_sprealloc (C, 2*(C->nzmax)+m))
         {
             return (cs_done (C, w, x, 0)) ;             /* out of memory */
-        } 
+        }
         Ci = C->i ; Cx = C->x ;         /* C->i and C->x may be reallocated */
         Cp [j] = nz ;                   /* column j of C starts here */
         for (p = Bp [j] ; p < Bp [j+1] ; p++)

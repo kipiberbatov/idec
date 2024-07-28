@@ -41,7 +41,7 @@ matrix_sparse * mesh_qc_coboundary_star_p(
   const double * m_inner_p, const double * m_inner_q)
 {
   matrix_sparse * m_cbd_star_p;
-  
+
   m_cbd_star_p = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   /* NULL pointer check */
   //m_cbd_star_p->nzmax = m_bd_p->nzmax;
@@ -49,7 +49,7 @@ matrix_sparse * mesh_qc_coboundary_star_p(
   m_cbd_star_p->cols = m_bd_p->cols;
   m_cbd_star_p->cols_total = m_bd_p->cols_total;
   m_cbd_star_p->row_indices = m_bd_p->row_indices;
-  m_cbd_star_p->values = 
+  m_cbd_star_p->values =
     mesh_qc_coboundary_star_p_x(m, p, m_bd_p, m_inner_p, m_inner_q);
   /* NULL pointer check */
   //m_cbd_star_p->nz = m_bd_p->nz;
@@ -61,7 +61,7 @@ matrix_sparse ** mesh_qc_coboundary_star(
 {
   int m_dim, p;
   matrix_sparse ** m_cbd_star;
-  
+
   m_dim = m->dim;
   m_cbd_star = (matrix_sparse **) malloc(sizeof(matrix_sparse *) * m_dim);
   /* NULL pointer check */

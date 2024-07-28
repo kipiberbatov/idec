@@ -8,35 +8,35 @@ mesh * mesh_file_scan_raw(FILE * in)
 {
   int m_c_size;
   mesh * m;
-  
+
   m = (mesh *) malloc(sizeof(mesh));
   if (errno)
   {
     perror("mesh_file_scan_raw - cannot allocate memory for m");
     goto end;
   }
-  
+
   m->dim_embedded = int_file_scan(in);
   if (errno)
   {
     perror("mesh_file_scan_raw - cannot scan m->dim_embedded");
     goto m_free;
   }
-  
+
   m->dim = int_file_scan(in);
   if (errno)
   {
     perror("mesh_file_scan_raw - cannot scan m->dim");
     goto m_free;
   }
-  
+
   m->cn = int_array_file_scan(in, m->dim + 1, "--raw");
   if (errno)
   {
     perror("mesh_file_scan_raw - cannot scan m->cn");
     goto m_free;
   }
-  
+
   m_c_size = int_array_total_sum(m->dim + 1, m->cn);
   m->c = (int * ) malloc(sizeof(int) * m_c_size);
   if (errno)
@@ -53,18 +53,18 @@ mesh * mesh_file_scan_raw(FILE * in)
     perror("mesh_file_scan_raw - cannot scan m->cf");
     goto m_c_free;
   }
-  
+
   m->fc = NULL;
-  
+
   m->coord = double_matrix_file_scan(in, m->cn[0], m->dim_embedded, "--raw");
   if (errno)
   {
     perror("mesh_file_scan_raw - cannot scan m->coord");
     goto m_cf_free;
   }
-  
+
   return m;
-  
+
   /* cleaning if an error occurs */
 m_cf_free:
   free(m->cf);

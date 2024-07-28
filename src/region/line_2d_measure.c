@@ -7,7 +7,7 @@ double line_2d_measure(const line_2d * p)
 {
   double y0, y1;
   double p_x0[2], p_x1[2];
-  
+
   memcpy(p_x0, p->x0, sizeof(double) * 2);
   memcpy(p_x1, p->x1, sizeof(double) * 2);
   y0 = p_x1[0] - p_x0[0];

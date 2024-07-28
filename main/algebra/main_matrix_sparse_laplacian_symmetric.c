@@ -14,20 +14,20 @@ int main(int argc, char * argv[])
   double ** m_inner;
   matrix_sparse ** m_laplacian;
   FILE * m_laplacian_file, * m_inner_file;
-  
+
   if (argc != 7)
   {
     fputs("main - the number of command-line arguments must be 7\n", stderr);
     goto end;
   }
-  
+
   d = int_string_scan(argv[1]);
   if (errno)
   {
     fputs("main - cannot scan d\n", stderr);
     goto end;
   }
-  
+
   m_laplacian_name = argv[2];
   m_laplacian_format = argv[3];
   m_laplacian_file = fopen(m_laplacian_name, "r");
@@ -46,7 +46,7 @@ int main(int argc, char * argv[])
     fputs("main - cannot scan for m_laplacian\n", stderr);
     goto m_laplacian_file_close;
   }
-  
+
   m_cn = (int *) malloc(sizeof(int) * (d + 1));
   if (errno)
   {
@@ -55,7 +55,7 @@ int main(int argc, char * argv[])
   }
   for (p = 0; p <= d; ++p)
     m_cn[p] = m_laplacian[p]->cols;
-  
+
   m_inner_name = argv[4];
   m_inner_format = argv[5];
   m_inner_file = fopen(m_inner_name, "r");
@@ -75,9 +75,9 @@ int main(int argc, char * argv[])
     fputs("main - cannot  scan m_inner\n", stderr);
     goto m_inner_file_close;
   }
-  
+
   matrix_sparse_laplacian_symmetric(m_laplacian, d, m_inner);
-  
+
   out_format = argv[6];
   matrix_sparse_array_file_print(stdout, d + 1, m_laplacian, out_format);
 

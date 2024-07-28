@@ -4,7 +4,7 @@ int main()
 {
   mesh * m;
   FILE * out, * in;
-  
+
   out = stdout;
   in = stdin;
   m = mesh_file_scan(in, "--raw");

@@ -4,7 +4,7 @@
 void jagged4_part1(jagged3 * res, const jagged4 * arr, int i1)
 {
   int p2, p3, p4;
-  
+
   /* if (i1 < 0 || i1 >= arr->a0) error_handle(); */
   res->a0 = arr->a1[i1];
   p2 = int_array_total_sum(i1, arr->a1);
@@ -18,7 +18,7 @@ void jagged4_part1(jagged3 * res, const jagged4 * arr, int i1)
 void jagged4_part2(jagged2 * res, const jagged4 * arr, int i1, int i2)
 {
   int p2, p3, p4;
-  
+
   /* if (i1 < 0 || i1 >= arr->a0) error_handle(); */
   /* if (i2 < 0 || i2 >= arr->a1[i1]) error_handle(); */
   p2 = int_array_total_sum(i1, arr->a1);
@@ -32,7 +32,7 @@ void jagged4_part2(jagged2 * res, const jagged4 * arr, int i1, int i2)
 void jagged4_part3(jagged1 * res, const jagged4 * arr, int i1, int i2, int i3)
 {
   int p2, p3, p4;
-  
+
   /* if (i1 < 0 || i1 >= arr->a0) error_handle(); */
   /* if (i2 < 0 || i2 >= arr->a1[i1])  error_handle(); */
   p2 = int_array_total_sum(i1, arr->a1);

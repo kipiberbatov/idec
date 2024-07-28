@@ -9,10 +9,10 @@ void boundary_scalar_field_discretize(
 {
   int j, j_loc, boundary_nodes_a0;
   int * boundary_nodes_a1;
-  
+
   boundary_nodes_a0 = boundary_nodes->a0;
   boundary_nodes_a1 = boundary_nodes->a1;
-  
+
   for (j_loc = 0; j_loc < boundary_nodes_a0; ++j_loc)
   {
     j = boundary_nodes_a1[j_loc];

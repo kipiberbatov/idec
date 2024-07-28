@@ -10,7 +10,7 @@ void image_new_coordinates(
   int i;
   int n = m->cn[0];
   double * x = m->coord;
-  
+
   for (i = 0; i < n; ++i)
   {
     new[2 * i] = (0.1 + 0.8 * x[2 * i]) * width;

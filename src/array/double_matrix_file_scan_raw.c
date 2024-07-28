@@ -5,7 +5,7 @@
 double * double_matrix_file_scan_raw(FILE * in, int m, int n)
 {
   double * a;
-  
+
   a =  double_array_file_scan(in, m * n, "--raw");
   if (errno)
   {

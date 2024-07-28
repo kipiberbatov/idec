@@ -7,7 +7,7 @@ static void mesh_qc_vol_file_print_raw(FILE * out, const mesh_qc * m)
   int m_dim, p;
   int * m_cn;
   double * m_vol_p;
-  
+
   m_dim = m->dim;
   m_cn = m->cn;
   for(p = 0; p <= m_dim; ++p)
@@ -23,7 +23,7 @@ int main()
 {
   mesh_qc * m;
   FILE * in, * out;
-  
+
   out = stdout;
   in = stdin;
   m = mesh_file_scan(in, "--raw");

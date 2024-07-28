@@ -6,7 +6,7 @@ matrix_sparse * matrix_sparse_add(
   const matrix_sparse * a, const matrix_sparse * b)
 {
   matrix_sparse * c;
-  
+
   c = matrix_sparse_linear_combination(a, b, 1., 1.);
   if (errno)
   {

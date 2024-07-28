@@ -10,7 +10,7 @@ void matrix_moore_penrose_inverse(double * b, int d, int n, const double * a)
   const double * a_i;
   double * tmp1_q;
   double tmp[max_dim * max_dim] = {0}, tmp1[max_dim * max_dim];
-  
+
   memset(b, 0, sizeof(double) * d * n);
   matrix_times_transpose(tmp, d, n, a);
   matrix_inverse(tmp1, d, tmp);

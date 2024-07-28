@@ -15,7 +15,7 @@ matrix_sparse * matrix_sparse_file_scan(FILE * in, const char * format)
       "matrix_sparse_file_scan - format %s is not supported\n", format);
     return NULL;
   }
-  
+
   if (errno)
     fputs("matrix_sparse_file_scan - cannot scan input\n", stderr);
   return a;

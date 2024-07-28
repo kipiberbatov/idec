@@ -5,7 +5,7 @@ double matrix_sparse_part(const matrix_sparse * a, int i, int j)
   int i_loc;
   int * a_cols_total, * a_row_indices;
   double * a_values;
-  
+
   a_cols_total = a->cols_total;
   a_row_indices = a->row_indices;
   a_values = a->values;

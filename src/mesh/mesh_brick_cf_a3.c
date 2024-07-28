@@ -4,7 +4,7 @@
 void mesh_brick_cf_a3(int * m_cf_a3, int m_dim, const int * m_cn)
 {
   int i, ind, m_cn_p, m_cfn_p_q, p, q, r;
-  
+
   ind = 0;
   for (p = 1; p <= m_dim; ++p)
   {

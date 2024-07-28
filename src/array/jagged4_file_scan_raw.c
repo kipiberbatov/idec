@@ -7,7 +7,7 @@ jagged4 * jagged4_file_scan_raw(FILE * in)
 {
   int arr_a2_size, arr_a3_size, arr_a4_size;
   jagged4 * arr;
-  
+
   arr = (jagged4 *) malloc(sizeof(jagged4));
   if (errno)
   {
@@ -72,7 +72,7 @@ jagged4 * jagged4_file_scan_raw(FILE * in)
     goto arr_a3_free;
   }
   return arr;
-  
+
   /* cleaning if an error occurs */
 arr_a3_free:
   free(arr->a3);

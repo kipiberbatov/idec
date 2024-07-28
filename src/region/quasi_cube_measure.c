@@ -3,7 +3,7 @@
 double quasi_cube_measure(const quasi_cube * r)
 {
   int r_dim;
-  
+
   r_dim = r->dim;
   switch (r_dim)
   {

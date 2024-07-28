@@ -8,7 +8,7 @@ static void mesh_displacement_file_print_raw(
   int i, m_dim_embedded;
   double * m_displacement_i;
   double ** m_displacement;
-  
+
   m_dim_embedded = m->dim_embedded;
   m_displacement = mesh_displacement(m, m_bd_0, u);
   /* NULL pointer check */
@@ -25,7 +25,7 @@ static void mesh_displacement_unit_cochain_file_print_file_scan(FILE * out, FILE
   mesh * m;
   matrix_sparse ** m_bd;
   double * u;
-  
+
   m = mesh_file_scan(in, "--raw");
   /* NULL pointer check */
   m->fc = mesh_fc(m);

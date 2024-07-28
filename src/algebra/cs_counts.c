@@ -58,4 +58,4 @@ csi *cs_counts (const cs *A, const csi *parent, const csi *post, csi ata)
         if (parent [j] != -1) colcount [parent [j]] += colcount [j] ;
     }
     return (cs_idone (colcount, AT, w, 1)) ;    /* success: free workspace */
-} 
+}

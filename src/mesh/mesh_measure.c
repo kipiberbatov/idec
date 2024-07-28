@@ -17,17 +17,17 @@ double * mesh_measure(const mesh * m)
   quasi_cube s2;
   jagged1 m_cf_p_0_i;
   jagged2 m_cf_p_0;
-  
+
   m_dim_embedded = m->dim_embedded;
   m_dim = m->dim;
   m_cn = m->cn;
   m_coord = m->coord;
-  
+
   s.dim_embedded = m_dim_embedded;
   s2.dim_embedded = m_dim_embedded;
   s.coord = s_coord;
   s2.coord = s_coord;
-  
+
   m_vol_size = int_array_total_sum(m_dim + 1, m_cn);
   m_vol = (double *) malloc(sizeof(double) * m_vol_size);
   if (errno)
@@ -35,9 +35,9 @@ double * mesh_measure(const mesh * m)
     perror("vol - cannot allocate memory for m_vol");
     return NULL;
   }
-  
+
   double_array_assign_constant(m_vol, m_cn[0], 1.);
-  
+
   ind = m_cn[0];
   for (p = 1; p <= m_dim; ++p)
   {

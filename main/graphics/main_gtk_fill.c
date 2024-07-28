@@ -32,11 +32,11 @@ int main(int argc, char ** argv)
   double height, width;
   fill * a;
   char * title;
-  
+
   errno = 0;
   if (argc != 2)
   {
-    fprintf(stderr, 
+    fprintf(stderr,
       "Error during execution of function %s in file %s on line %d: "
       "number of command-line arguments must be 2\n",
       __func__, __FILE__,__LINE__);
@@ -54,17 +54,17 @@ int main(int argc, char ** argv)
        __func__, __FILE__,__LINE__);
     return errno;
   }
-  
+
   a = (fill *) alloca(fill_size());
   fill_set(a, i, n, paint_rgb);
-  
+
   width = 500;
   height = 500;
   speed = 100;
   title = "Changing colors";
 
   gtk_init(&argc, &argv);
-  
+
   gtk_run(gtk_draw_fill, (void *) a, width, height, speed, title);
 
   gtk_main();

@@ -17,12 +17,12 @@ static void array_indexed_merge_sort_ordered(
 {
   int i, j, k, length;
   int * a_values;
-  
+
   a_values = a->values;
   i = begin;
   j = middle + 1;
   k = begin;
-  
+
   while (i <= middle && j <= end)
   {
     if (a_values[i] <= a_values[j])
@@ -30,14 +30,14 @@ static void array_indexed_merge_sort_ordered(
     else
       update(b, &j, &k, a);
   }
-  
+
   if (i == middle + 1)
     while (j <= end)
       update(b, &j, &k, a);
   else
     while (i <= middle)
       update(b, &i, &k, a);
-  
+
   length = end - begin + 1;
   memcpy(a->positions + begin, b->positions + begin, sizeof(int) * length);
   memcpy(a_values + begin, b->values + begin, sizeof(int) * length);
@@ -57,7 +57,7 @@ static void array_indexed_merge_sort_loc(
 void array_indexed_merge_sort(array_indexed * a, int n)
 {
   array_indexed b;
-  
+
   b.positions = (int *) malloc(sizeof(int) * n);
   if (errno)
   {
@@ -65,7 +65,7 @@ void array_indexed_merge_sort(array_indexed * a, int n)
           stderr);
     goto end;
   }
-  
+
   b.values = (int *) malloc(sizeof(int) * n);
   if (errno)
   {
@@ -73,9 +73,9 @@ void array_indexed_merge_sort(array_indexed * a, int n)
           stderr);
     goto b_positions_free;
   }
-  
+
   array_indexed_merge_sort_loc(a, &b, 0, n - 1);
-  
+
   free(b.values);
 b_positions_free:
   free(b.positions);

@@ -7,12 +7,12 @@ static void mesh_qc_hodge_p_values_d(
   int d, d_exp, i, ind, j, j_loc, m_cn_d;
   jagged1 m_cf_d_0_i;
   jagged2 m_cf_d_0;
-  
+
   d = m->dim;
   d_exp = 1 << d;
   m_cn_d = m->cn[d];
   mesh_cf_part2(&m_cf_d_0, m, d, 0);
-  
+
   ind = 0;
   for (i = 0; i < m_cn_d; ++i)
   {
@@ -33,12 +33,12 @@ static void mesh_qc_hodge_p_values_0(
   int d, d_exp, i, ind, k, k_loc, m_cn_0;
   jagged1 m_fc_0_d_i;
   jagged2 m_fc_0_d;
-  
+
   d = m->dim;
   d_exp = 1 << d;
   m_cn_0 = m->cn[0];
   mesh_fc_part2(&m_fc_0_d, m, 0, d);
-  
+
   ind = 0;
   for (i = 0; i < m_cn_0; ++i)
   {
@@ -61,7 +61,7 @@ static void mesh_qc_hodge_p_values_nontrivial(
   double sign;
   jagged1 m_fc_p_d_i;
   jagged2 m_cf_d_q, m_cf_p_0, m_cf_q_0, m_fc_p_d;
-  
+
   d = m->dim;
   d_exp = 1 << d;
   m_cn_p = m->cn[p];
@@ -71,7 +71,7 @@ static void mesh_qc_hodge_p_values_nontrivial(
   mesh_cf_part2(&m_cf_d_q, m, d, q);
   mesh_cf_part2(&m_cf_p_0, m, p, 0);
   mesh_cf_part2(&m_cf_q_0, m, q, 0);
-  
+
   ind = 0;
   for (i = 0; i < m_cn_p; ++i)
   {

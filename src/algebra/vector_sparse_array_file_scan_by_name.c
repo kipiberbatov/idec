@@ -18,7 +18,7 @@ vector_sparse ** vector_sparse_array_file_scan_by_name(
       name, strerror(errno));
     goto end;
   }
-  
+
   a = vector_sparse_array_file_scan(in, a0, format);
   if (errno)
   {

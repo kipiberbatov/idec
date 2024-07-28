@@ -12,7 +12,7 @@ void matrix_times_vector(
   int p, i;
   double x_p;
   const double * a_p;
-  
+
   for (p = 0; p < d; ++p)
   {
     a_p = a + n * p;

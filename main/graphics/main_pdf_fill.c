@@ -19,21 +19,21 @@ int main(int argc, char ** argv)
   double height, width;
   fill * a;
   char * out_filename;
-  
+
   errno = 0;
-  
+
   if (argc != 3)
   {
-    fprintf(stderr, 
+    fprintf(stderr,
       "Error during execution of function %s in file %s on line %d: "
       "number of command-line arguments must be 3\n",
       __func__, __FILE__,__LINE__);
     errno = EINVAL;
     return errno;
   }
-  
+
   i = 0;
-  
+
   n = int_string_scan(argv[1]);
   if (errno)
   {
@@ -43,13 +43,13 @@ int main(int argc, char ** argv)
        __func__, __FILE__,__LINE__);
     return errno;
   }
-  
+
   width = 500;
   height = 500;
-  
+
   a = (fill *) alloca(fill_size());
   fill_set(a, i, n, paint_rgb);
-  
+
   out_filename = argv[2];
   pdf_write_to_file(
     out_filename,
@@ -60,6 +60,6 @@ int main(int argc, char ** argv)
     fill_get_index_void,
     fill_get_total_steps_void,
     fill_increment_index_void);
-  
+
   return 0;
 }

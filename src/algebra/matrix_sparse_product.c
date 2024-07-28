@@ -7,10 +7,10 @@ matrix_sparse * matrix_sparse_product(
   cs a0, b0;
   cs * res0;
   matrix_sparse * res = NULL;
-  
+
   matrix_sparse_to_cs(&a0, a);
   matrix_sparse_to_cs(&b0, b);
-  
+
   res0 = cs_multiply(&a0, &b0);
   if (res0 == NULL)
   {
@@ -18,7 +18,7 @@ matrix_sparse * matrix_sparse_product(
     goto end;
   }
   errno = 0;
-  
+
   res = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   if (res == NULL)
   {
@@ -26,7 +26,7 @@ matrix_sparse * matrix_sparse_product(
     goto res0_free;
   }
   errno = 0;
-  
+
   matrix_sparse_from_cs(res, res0);
 
 res0_free:

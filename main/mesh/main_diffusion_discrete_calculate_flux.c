@@ -31,7 +31,7 @@ int main(int argc, char ** argv)
   	fprintf(stderr, "Cannot scan number_of_steps\n");
   	goto m_free;
   }
-  
+
   temperature = double_array_file_scan_by_name(
   	argv[3],
   	m->cn[0] * (number_of_steps + 1),

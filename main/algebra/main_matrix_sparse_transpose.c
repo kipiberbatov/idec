@@ -37,7 +37,7 @@ end:
 int main(int argc, char * argv[])
 {
   char * a_format, * a_name, * out_format;
-  
+
   if (argc != 4)
   {
     errno = EIO;

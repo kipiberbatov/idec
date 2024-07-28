@@ -13,11 +13,11 @@ double mesh_size(const mesh * m)
   d = m->dim_embedded;
   m_coord = m->coord;
   m_cn_0 = m->cn[0];
-  
+
   result_squared = 0;
   for (p = 0; p < d; ++p)
     result_squared += double_square(m_coord[p] - m_coord[d + p]);
-  
+
   for (i = 0; i < m_cn_0; ++i)
   {
     m_coord_i = m_coord + d * i;

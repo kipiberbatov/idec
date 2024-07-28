@@ -150,7 +150,7 @@ matrix_sparse * matrix_sparse_laplacian_0(
 /* return a_p_minus_1 . b_p + a_p . b_p_plus_1 */
 matrix_sparse * matrix_sparse_laplacian_p(
   const matrix_sparse * a_p_minus_1,
-  const matrix_sparse * a_p, 
+  const matrix_sparse * a_p,
   const matrix_sparse * b_p,
   const matrix_sparse * b_p_plus_1);
 

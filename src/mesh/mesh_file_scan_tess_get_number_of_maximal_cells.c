@@ -6,7 +6,7 @@
 int mesh_file_scan_tess_get_number_of_maximal_cells(FILE * in, int * error)
 {
   int cn_d;
-  
+
   cn_d = int_file_scan(in);
   *error = errno;
   if (*error)

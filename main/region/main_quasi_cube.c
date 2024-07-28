@@ -24,7 +24,7 @@ int main()
 {
   quasi_cube * r;
   FILE * in, * out;
-  
+
   out = stdout;
   in = stdin;
   r = quasi_cube_file_scan(in);

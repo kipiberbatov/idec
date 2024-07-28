@@ -11,12 +11,12 @@ jagged1 * mesh_almost_boundary_cells(
   jagged1 face;
   jagged1 * node_list = NULL, * node_list_original;
   jagged2 faces;
-  
+
   m_dim = m->dim;
   m_bd_cells_a0 = m_bd_cells->a0;
   m_bd_cells_a1 = m_bd_cells->a1;
   mesh_cf_part2(&faces, m, m_dim, p);
-  
+
   node_list_original = (jagged1 *) malloc(sizeof(jagged1));
   if (errno)
   {
@@ -25,7 +25,7 @@ jagged1 * mesh_almost_boundary_cells(
       "cannot allocate memory for node_list_original\n");
     goto end;
   }
-  
+
   node_list_original_a0 = 0;
   for (i_loc = 0; i_loc < m_bd_cells_a0; ++i_loc)
   {
@@ -34,7 +34,7 @@ jagged1 * mesh_almost_boundary_cells(
     node_list_original_a0 += face.a0;
   }
   node_list_original->a0 = node_list_original_a0;
-  
+
   node_list_original_a1 = (int *) malloc(node_list_original_a0 * sizeof(int));
   if (errno)
   {

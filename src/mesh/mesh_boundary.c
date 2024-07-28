@@ -10,11 +10,11 @@ int mesh_boundary_nonzero_max(const mesh * m, int p)
   int * m_cfn_p_pm1_a1;
   int m_bd_nonzero_max;
   jagged1 m_cfn_p_pm1;
-  
+
   m_cn_p = m->cn[p];
   mesh_cfn_part2(&m_cfn_p_pm1, m, p, p - 1);
   m_cfn_p_pm1_a1 = m_cfn_p_pm1.a1;
-  
+
   m_bd_nonzero_max = 0;
   for (i = 0; i < m_cn_p; ++i)
     m_bd_nonzero_max += m_cfn_p_pm1_a1[i];
@@ -26,11 +26,11 @@ void mesh_boundary_cols_total(int * m_bd_cols_total, const mesh * m, int p)
   int i, m_cn_p;
   jagged1 m_cf_p_pm1_i;
   jagged2 m_cf_p_pm1;
-  
+
   m_cn_p = m->cn[p];
   mesh_cf_part2(&m_cf_p_pm1, m, p, p - 1);
-  
-  m_bd_cols_total[0] = 0; 
+
+  m_bd_cols_total[0] = 0;
   for (i = 0; i < m_cn_p; ++i)
   {
     jagged2_part1(&m_cf_p_pm1_i, &m_cf_p_pm1, i);
@@ -43,10 +43,10 @@ void mesh_boundary_row_indices(int * m_bd_row_indices, const mesh * m, int p)
   int i, ind, j_loc, m_cn_p;
   jagged1 m_cf_p_pm1_i;
   jagged2 m_cf_p_pm1;
-  
+
   m_cn_p = m->cn[p];
   mesh_cf_part2(&m_cf_p_pm1, m, p, p - 1);
-  
+
   ind = 0;
   for (i = 0; i < m_cn_p; ++i)
   {
@@ -63,12 +63,12 @@ static void mesh_boundary_values(double * m_bd_values, const mesh * m, int p)
   int * m_cf_p_pm1_i_a1, * m_cf_pm1_0_j_a1;
   jagged1 m_cf_p_pm1_i, m_cf_p_0_i, m_cf_pm1_0_j;
   jagged2 m_cf_p_pm1, m_cf_p_0, m_cf_pm1_0;
-  
+
   m_cn_p = m->cn[p];
-  
+
   mesh_cf_part2(&m_cf_p_pm1, m, p, p - 1);
   mesh_cf_part2(&m_cf_p_0, m, p, 0);
-  
+
   ind = 0;
   if (p == 1)
   {
@@ -80,7 +80,7 @@ static void mesh_boundary_values(double * m_bd_values, const mesh * m, int p)
     }
     return;
   }
-  
+
   mesh_cf_part2(&m_cf_pm1_0, m, p - 1, 0);
   for (i = 0; i < m_cn_p; ++i)
   {
@@ -126,7 +126,7 @@ matrix_sparse * mesh_boundary_single(const mesh * m, int p)
   if (errno)
   {
     fputs("Begin stack trace\n", stderr);
-    fputs("  mesh_boundary_single: " 
+    fputs("  mesh_boundary_single: "
       "cannot allocate memory for m_bd->cols_total\n", stderr);
     goto m_bd_free;
   }
@@ -137,7 +137,7 @@ matrix_sparse * mesh_boundary_single(const mesh * m, int p)
   if (errno)
   {
     fputs("Begin stack trace\n", stderr);
-    fputs("  mesh_boundary_single: " 
+    fputs("  mesh_boundary_single: "
       "cannot allocate memory for m_bd->row_indices\n", stderr);
     goto m_bd_cols_total_free;
   }
@@ -198,7 +198,7 @@ void mesh_boundary_check(
 {
   int p;
   matrix_sparse * m_bd_check;
-  
+
   for (p = 0; p < m_dim - 1; ++p)
   {
     m_bd_check = matrix_sparse_product(m_bd[p], m_bd[p + 1]);

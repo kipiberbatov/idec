@@ -29,7 +29,7 @@ void mesh_file_scan_tess_get_faces_to_subfaces(int * faces_to_subfaces,
       faces_to_subfaces[index] = abs(int_file_scan(in)) - 1;
       ++index;
     }
-    
+
     for (j = 0; j < 9; ++j)
       double_file_scan(in); /* garbage values */
   }

@@ -7,7 +7,7 @@ matrix_sparse * matrix_sparse_linear_combination(
   cs a0, b0;
   cs * res0;
   matrix_sparse * res = NULL;
-  
+
   matrix_sparse_to_cs(&a0, a);
   matrix_sparse_to_cs(&b0, b);
   res0 = cs_add(&a0, &b0, alpha, beta);

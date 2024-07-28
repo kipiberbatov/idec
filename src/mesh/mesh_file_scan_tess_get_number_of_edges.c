@@ -6,7 +6,7 @@
 int mesh_file_scan_tess_get_number_of_edges(FILE * in, int * error)
 {
   int cn_1;
-  
+
   cn_1 = int_file_scan(in);
   *error = errno;
   if (*error)

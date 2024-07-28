@@ -3,7 +3,7 @@
 int int_power(int a, int n)
 {
   int flag, result, tmp;
-  
+
   if (n == 0)
     return 1;
   result = 1;

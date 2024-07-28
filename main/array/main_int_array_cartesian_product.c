@@ -7,7 +7,7 @@ static void int_array_cartesian_product_file_print(FILE * out, int d, const int 
 {
   int prod, i;
   int * a;
-  
+
   prod = int_array_total_product(d, n);
   a = (int *) calloc(d, sizeof(int));
   if (errno)
@@ -30,7 +30,7 @@ int main(int argc, char * argv[])
 {
   int d, p;
   int * n;
-  
+
   d = argc - 1;
   n = (int *) malloc(sizeof(int) * d);
   if (errno)

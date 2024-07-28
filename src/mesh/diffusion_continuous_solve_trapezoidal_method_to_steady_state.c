@@ -14,14 +14,14 @@ diffusion_continuous_solve_trapezoidal_method_to_steady_state(
 {
   diffusion_discrete * data_discrete;
   double_array_sequence_dynamic * result = NULL;
-  
+
   data_discrete = diffusion_continuous_discretize(m, data_continuous);
   if (errno)
   {
     fprintf(stderr, "Error - cannot do discrete calculations\n");
     goto end;
   }
-  
+
   result = diffusion_discrete_solve_trapezoidal_method_to_steady_state(
     m,
     m_cbd_0,

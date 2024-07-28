@@ -4,7 +4,7 @@
 void vector_sparse_file_print_curly(FILE * out, const vector_sparse * a)
 {
   int a_length, i;
-  
+
   a_length = a->length;
   fputc('{', out);
   for (i = 0; i < a_length - 1; ++i)

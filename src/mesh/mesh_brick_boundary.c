@@ -7,7 +7,7 @@ static void mesh_brick_boundary_p(int * m_bd_p, int d, const int * n, int p)
 {
   int bin_d_p, ind, sign_p, sign_v, u, v, y_ind, y_size;
   int a[MAX_DIM], n_bar_p[MAX_DIM];
-  
+
   bin_d_p = int_binomial(d, p);
   sign_p = (p % 2 == 1) ? 1 : -1;
   ind = 0;
@@ -36,14 +36,14 @@ int ** mesh_brick_boundary(int d, const int * n, const int * m_bd_sizes)
 {
   int p;
   int ** m_bd;
-  
+
   m_bd = (int **) malloc(sizeof(int *) * d);
   if (errno)
   {
     fputs("mesh_brick_boundary - cannot allocate memory for m->bd\n", stderr);
     return NULL;
   }
-  
+
   for (p = 1; p <= d; ++p)
   {
     m_bd[p - 1] = (int *) malloc(sizeof(int) * m_bd_sizes[p - 1]);
@@ -54,7 +54,7 @@ int ** mesh_brick_boundary(int d, const int * n, const int * m_bd_sizes)
       int_array2_free(m_bd, p - 1);
       return NULL;
     }
-    
+
     mesh_brick_boundary_p(m_bd[p - 1], d, n, p);
   }
   return m_bd;

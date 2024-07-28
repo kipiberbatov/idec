@@ -10,7 +10,7 @@ void mesh_qc_perpendicular(
 {
   int ind, j, j_loc;
   jagged1 m_cf_d_q_k, m_cf_p_0_i, m_cf_q_0_j;
-  
+
   jagged2_part1(&m_cf_d_q_k, m_cf_d_q, k);
   jagged2_part1(&m_cf_p_0_i, m_cf_p_0, i);
   ind = 0;

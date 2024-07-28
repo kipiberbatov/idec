@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
       __FILE__, __LINE__, format);
     return errno;
   }
-  
+
   m = m_and_bd->_mesh;
   bd = m_and_bd->boundary;
   d = m->dim;

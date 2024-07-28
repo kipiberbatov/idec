@@ -13,18 +13,18 @@ matrix_sparse_heat_conduction_trapezoid_rule_private(
   double sign)
 {
   matrix_sparse * id, * l;
-  
+
   id = matrix_sparse_identity(laplacian_0->cols);
   if (errno)
   {
     fputs("matrix_sparse_laplacian_dynamic - cannot calculate id\n", stderr);
     return NULL;
   }
-  
+
   l = matrix_sparse_linear_combination(laplacian_0, id, sign * tau / 2, 1);
   if (errno)
     fputs("matrix_sparse_laplacian_dynamic - cannot calculate l\n", stderr);
-  
+
   matrix_sparse_free(id);
   return l;
 }
@@ -72,7 +72,7 @@ double * matrix_sparse_diffusion(
   double * u; /* 2d rectangular array */
   double * tmp, * system_rhs;
   matrix_sparse * l, * r;
-  
+
   l = matrix_sparse_heat_conduction_trapezoid_rule_lhs(laplacian_0, tau);
   r = matrix_sparse_heat_conduction_trapezoid_rule_rhs(laplacian_0, tau);
   if (errno)
@@ -80,7 +80,7 @@ double * matrix_sparse_diffusion(
     fputs("matrix_sparse_diffusion - cannot calculate l\n", stderr);
     goto end;
   }
-  
+
   u = (double *) malloc(sizeof(double) * l->cols * (N + 1));
   if (errno)
   {
@@ -106,7 +106,7 @@ double * matrix_sparse_diffusion(
     system_rhs = matrix_sparse_multiply_with_vector(r, u + l->cols * i);
     for (j = 0; j < l->cols; ++j)
       system_rhs[j] += tmp[j];
-    
+
     // matrix_sparse_linear_solve(l, u_next + l->cols * i, "--cholesky");
     memcpy(u + l->cols * (i + 1), u + l->cols * i, sizeof(double) * l->cols);
     matrix_sparse_linear_solve(l, u + l->cols * (i + 1), "--lu");
@@ -116,12 +116,12 @@ double * matrix_sparse_diffusion(
       goto u_free;
     }
   }
-  
+
   matrix_sparse_free(r);
   matrix_sparse_free(l);
-  
+
   return u;
-  
+
   /* cleaning if an error occurs */
 u_free:
   free(u);
@@ -144,7 +144,7 @@ end:
 //   double * u; /* 2d rectangular array */
 //   double * tmp;
 //   matrix_sparse * l, * r;
-  
+
 //   l = matrix_sparse_heat_conduction_trapezoid_rule_lhs(laplacian_0, tau);
 //   r = matrix_sparse_heat_conduction_trapezoid_rule_rhs(laplacian_0, tau);
 //   if (errno)
@@ -152,7 +152,7 @@ end:
 //     fputs("matrix_sparse_diffusion - cannot calculate l\n", stderr);
 //     goto end;
 //   }
-  
+
 //   u_next = (double *) malloc(sizeof(double) * l->cols * (N + 1));
 //   if (errno)
 //   {
@@ -160,7 +160,7 @@ end:
 //           stderr);
 //     goto l_free;
 //   }
-  
+
 //   memcpy(u_next, u_current, sizeof(double) * l->cols);
 //   for (i = 1; i <= N; ++i)
 //   {
@@ -168,7 +168,7 @@ end:
 //       u_next + l->cols * i,
 //       u_next + l->cols * (i - 1),
 //       sizeof(double) * l->cols);
-    
+
 //     for (int j = 0; j < l->cols; ++j)
 //     {
 //       tmp *= tau;
@@ -185,12 +185,12 @@ end:
 //       goto u_next_free;
 //     }
 //   }
-  
+
 //   matrix_sparse_free(r);
 //   matrix_sparse_free(l);
-  
+
 //   return u_next;
-  
+
 //   /* cleaning if an error occurs */
 // u_next_free:
 //   free(u_next);

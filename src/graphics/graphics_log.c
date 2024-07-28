@@ -11,7 +11,7 @@ void graphics_log(FILE * out, int argc, char ** argv)
 
   time(&rawtime);
   p = gmtime(&rawtime);
-  
+
   fputs("The following command was run:\n", out);
   for (i = 0; i < argc; ++i)
     fprintf(out, "%s ", argv[i]);

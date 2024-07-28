@@ -6,7 +6,7 @@ matrix_sparse * matrix_sparse_laplacian_0(
   const matrix_sparse * a_0, const matrix_sparse * b_1)
 {
   matrix_sparse * delta_0;
-  
+
   delta_0 = matrix_sparse_product(b_1, a_0);
   if (errno)
   {
@@ -18,11 +18,11 @@ matrix_sparse * matrix_sparse_laplacian_0(
 }
 
 matrix_sparse * matrix_sparse_laplacian_p(
-  const matrix_sparse * a_p_minus_1, const matrix_sparse * a_p, 
+  const matrix_sparse * a_p_minus_1, const matrix_sparse * a_p,
   const matrix_sparse * b_p, const matrix_sparse * b_p_plus_1)
 {
   matrix_sparse * delta_p, * tmp1, * tmp2;
-  
+
   delta_p = NULL;
   tmp1 = matrix_sparse_product(b_p_plus_1, a_p);
   if (errno)
@@ -53,7 +53,7 @@ matrix_sparse * matrix_sparse_laplacian_d(
   const matrix_sparse * a_d_minus_1, const matrix_sparse * b_d)
 {
   matrix_sparse * delta_d;
-  
+
   delta_d = matrix_sparse_product(a_d_minus_1, b_d);
   if (errno)
   {
@@ -69,7 +69,7 @@ matrix_sparse ** matrix_sparse_laplacian(
 {
   int p;
   matrix_sparse ** delta;
-  
+
   delta = (matrix_sparse **) malloc((d + 1) * sizeof(matrix_sparse *));
   if (errno)
   {
@@ -120,7 +120,7 @@ void matrix_sparse_laplacian_file_print(
 {
   int p;
   matrix_sparse * delta_p;
-  
+
   p = 0;
   delta_p = matrix_sparse_product(b[p], a[p]);
   if (errno)

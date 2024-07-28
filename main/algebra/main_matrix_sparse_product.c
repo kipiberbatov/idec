@@ -5,14 +5,14 @@ int main(int argc, char * argv[])
 {
   char * a_format, * a_name, * b_format, * b_name, * out_format;
   matrix_sparse * a, * b, * c;
-  
+
   if (argc != 6)
   {
     errno = EIO;
     fputs("main - command-line arguments should be 6 in total", stderr);
     goto end;
   }
-  
+
   a_name = argv[1];
   a_format = argv[2];
   a = matrix_sparse_file_scan_by_name(a_name, a_format);
@@ -22,7 +22,7 @@ int main(int argc, char * argv[])
             a_format);
     goto end;
   }
-  
+
   b_name = argv[3];
   b_format = argv[4];
   b = matrix_sparse_file_scan_by_name(b_name, b_format);
@@ -32,14 +32,14 @@ int main(int argc, char * argv[])
             b_format);
     goto a_free;
   }
-  
+
   c = matrix_sparse_product(a, b);
   if (errno)
   {
     fputs("main - cannot find the matrix product c = a . b\n", stderr);
     goto b_free;
   }
-  
+
   out_format = argv[5];
   matrix_sparse_file_print(stdout, c, out_format);
   if (errno)

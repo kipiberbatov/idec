@@ -1,13 +1,13 @@
 #include "forman_private.h"
 #include "int.h"
 
-static void forman_cf_a3_level_5_zero_middle(int * m_forman_cf_a3_index, 
+static void forman_cf_a3_level_5_zero_middle(int * m_forman_cf_a3_index,
   const mesh * m, int p, int s, int i, int l)
 {
   int j, j_local, q;
   jagged1 m_cf_p_q_i, m_cf_q_s_j;
   jagged2 m_cf_q_s;
-  
+
   for (q = s + 1; q < p; ++q)
   {
     mesh_cf_part3(&m_cf_p_q_i, m, p, q, i);
@@ -36,16 +36,16 @@ static void forman_cf_a3_level_3_zero(int * m_forman_cf_a3, int * index,
     for (l_local = 0; l_local < m_cf_p_s_i.a0; ++l_local)
     {
       l = m_cf_p_s_i.a1[l_local];
-      
+
       /* c(p, i) > c(q, j) = c(r, k) = c(s, l) -- begin
        * c(p, i) = c(q, j) = c(r, k) > c(s, l) -- end
        * total -> 2 subfaces (minimal and maximal)
        */
       m_forman_cf_a3[*index] = 2;
-      
+
       /* c(p, i) > c(q, j) = c(r, k) > c(s, l) -> add middle subfaces */
       forman_cf_a3_level_5_zero_middle(m_forman_cf_a3 + *index, m, p, s, i, l);
-      
+
       ++*index;
     }
   }
@@ -146,7 +146,7 @@ static void forman_cf_a3_level_3_nonzero(int * m_forman_cf_a3, int * index,
 
       /* initialize */
       *m_forman_cf_a3_index = 0;
-      
+
       /* c(p, i) > c(q, j) > c(r, k) = c(s, l) */
       forman_cf_a3_level_5_nonzero_begin(m_forman_cf_a3_index,
         m, p, s, q_f, i, l);
@@ -158,7 +158,7 @@ static void forman_cf_a3_level_3_nonzero(int * m_forman_cf_a3, int * index,
       /* c(p, i) = c(q, j) > c(r, k) > c(s, l) */
       forman_cf_a3_level_5_nonzero_end(m_forman_cf_a3_index,
         m, p, s, q_f, i, l);
-      
+
       ++*index;
     }
   }
@@ -193,7 +193,7 @@ static void forman_cf_a3_dimension_at_least_3(
 
   d = m->dim;
   m_cn = m->cn;
-  
+
   /* in general, higher-order cells may not be quasi-cubes */
   for (p_f = 3; p_f <= d; ++p_f)
   {
@@ -228,7 +228,7 @@ forman_cf_a3(int * m_forman_cf_a3, const mesh * m, const int * m_forman_cn)
 
   /* all 1-cells are edges, all 2-cells are quadrilaterals */
   forman_cf_a3_dimension_at_most_2(m_forman_cf_a3, &index, m_forman_cn);
-  
+
   /* in general, higher-order cells may not be quasi-cubes */
   forman_cf_a3_dimension_at_least_3(m_forman_cf_a3, &index, m);
 }

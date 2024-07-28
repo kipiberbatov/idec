@@ -21,7 +21,7 @@ static void forman_boundary_file_print_raw(
 {
   mesh * m_forman;
   matrix_sparse ** m_forman_boundary;
-  
+
   m_forman = forman(m);
   if (errno)
   {
@@ -29,7 +29,7 @@ static void forman_boundary_file_print_raw(
     goto end;
   }
   mesh_file_print(out, m_forman, "--raw");
-  
+
   m_forman_boundary = forman_boundary(m, m_forman, m_bd);
   if (errno)
   {
@@ -37,9 +37,9 @@ static void forman_boundary_file_print_raw(
       stderr);
     goto m_forman_free;
   }
-  
+
   mesh_boundary_file_print_raw(out, m->dim, m_forman_boundary);
-  
+
   matrix_sparse_array_free(m_forman_boundary, m->dim);
 m_forman_free:
   mesh_free(m_forman);
@@ -52,7 +52,7 @@ int main(void)
   mesh * m;
   matrix_sparse ** m_bd;
   FILE * in, * out;
-  
+
   out = stdout;
   in = stdin;
   m = mesh_file_scan(in, "--raw");
@@ -61,28 +61,28 @@ int main(void)
     fputs("main - cannot scan m\n", stderr);
     goto end;
   }
-  
+
   m->fc = mesh_fc(m);
   if (errno)
   {
     fputs("main - cannot calculate m->fc\n", stderr);
     goto m_free;
   }
-  
+
   m_bd = mesh_file_scan_boundary(in, m);
   if (errno)
   {
     fputs("main - cannot calculate m->bd\n", stderr);
     goto m_free;
   }
-  
+
   forman_boundary_file_print_raw(out, m, m_bd);
   if (errno)
   {
     fputs("main - cannot calculate and print m_forman->bd\n", stderr);
     goto m_bd_free;
   }
-  
+
 m_bd_free:
   matrix_sparse_array_free(m_bd, m->dim);
 m_free:

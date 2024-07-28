@@ -7,7 +7,7 @@ double * double_array_file_scan_raw(FILE * in, int n)
 {
   int i;
   double * a;
-  
+
   a = (double *) malloc(sizeof(double) * n);
   if (errno)
   {

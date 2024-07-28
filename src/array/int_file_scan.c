@@ -5,7 +5,7 @@
 int int_file_scan(FILE * in)
 {
   int a, correct;
-  
+
   correct = fscanf(in, "%d", &a);
   if (correct <= 0)
   {

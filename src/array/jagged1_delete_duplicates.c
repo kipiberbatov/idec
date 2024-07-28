@@ -30,7 +30,7 @@ jagged1 * jagged1_delete_duplicates(jagged1 * arr)
     if (arr_a1[i] < arr_a1[i + 1])
       ++result_a0;
   result->a0 = result_a0;
-  
+
   result_a1 = (int *) malloc(result_a0 * sizeof(int));
   /* NULL pointer check */
   result_a1[0] = arr_a1[0];
@@ -44,6 +44,6 @@ jagged1 * jagged1_delete_duplicates(jagged1 * arr)
     }
   }
   result->a1 = result_a1;
-  
+
   return result;
 }

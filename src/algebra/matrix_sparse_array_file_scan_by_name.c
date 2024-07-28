@@ -18,7 +18,7 @@ matrix_sparse ** matrix_sparse_array_file_scan_by_name(
       name, strerror(errno));
     goto end;
   }
-  
+
   a = matrix_sparse_array_file_scan(in, a0, format);
   if (errno)
   {

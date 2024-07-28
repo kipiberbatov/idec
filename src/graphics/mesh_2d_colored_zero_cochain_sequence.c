@@ -25,7 +25,7 @@ void mesh_2d_colored_zero_cochain_sequence_snapshot_cairo_draw(
 {
   int i;
   mesh_2d_colored_zero_cochain c;
-  
+
   i = a->index;
   c.number_of_nodes = a->m->cn[0];
   c.total_colors = a->total_colors;

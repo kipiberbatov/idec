@@ -62,7 +62,7 @@ matrix_sparse * mesh_qc_hodge_p(
   const mesh_qc * m, matrix_sparse ** m_bd, int p,
   const double * m_inner_q, const double * m_coeff_q);
 
-matrix_sparse ** mesh_qc_hodge(const mesh_qc * m, matrix_sparse ** m_bd, 
+matrix_sparse ** mesh_qc_hodge(const mesh_qc * m, matrix_sparse ** m_bd,
                                double ** m_inner, double ** m_coeff);
 
 /******************************************************************************/
@@ -71,7 +71,7 @@ matrix_sparse ** mesh_qc_hodge(const mesh_qc * m, matrix_sparse ** m_bd,
 
 /************************ mesh_qc_hodge_codifferential ************************/
 matrix_sparse * mesh_qc_hodge_codifferential_p(
-  int m_dim, int p, const matrix_sparse * m_cbd_m_dim_minus_p, 
+  int m_dim, int p, const matrix_sparse * m_cbd_m_dim_minus_p,
   matrix_sparse ** m_hodge);
 
 matrix_sparse ** mesh_qc_hodge_codifferential(
@@ -94,5 +94,5 @@ jagged1 * mesh_qc_boundary_layer_0_cells(
 
 jagged1 * mesh_qc_boundary_layer_0_1_nodes(
   const mesh * m, const jagged1 * m_bd_layer_0_cells);
-  
+
 #endif /* _mesh_qc_h */
