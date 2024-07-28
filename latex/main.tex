@@ -64,6 +64,9 @@
 \newtheorem{definition}[theorem]{Definition}
 \coloredcomponent{definition}{green}
 
+\newtheorem{formulation}[theorem]{Formulation}
+\coloredcomponent{formulation}{brown}
+
 \newtheorem{discussion}[theorem]{}
 \coloredcomponent{discussion}{yellow}
 
@@ -1140,15 +1143,15 @@
 
 \begin{discussion}
   Let me summarize the operations relating cochains and embedding.
-  I will use notation from dependent type theory for functions whose codomain
-  depends on the domain.
+  I will use notation coming from dependent type theory for functions whose
+  codomain depends on the domain.
   Namely, if
     $X$ is a type (set),
-    $\{Y(x)\}_{x \colon X}$ ia a family of sets and
-    $\{f(x) \colon Y(x)\}_{x \colon X}$,
+    $\{Y(x)\}_{x \in X}$ ia a family of sets and
+    $\{f(x) \in Y(x)\}_{x \in X}$,
   we will write
   \begin{equation}
-    f \colon \prod_{x \colon X} Y(x).
+    f \colon \prod_{x \in X} Y(x).
   \end{equation}
   Let
     $d \in \N$,
@@ -1157,21 +1160,21 @@
   We define the following data:
   \begin{itemize}
     \item
-      $n \colon K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
+      $n \in K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
     \item
       $\widehat{\phantom{T}} \colon C^1 K \to 
-        \displaystyle \prod_{x_0 \colon K_0} \R^{n(x_0)}$
+        \displaystyle \prod_{x_0 \in K_0} \R^{n(x_0)}$
       denotes the neighbor representation of a $1$-cochain;
     \item
       $\displaystyle
-        \mathcal{L} \colon \prod_{x_0 \colon K_0} M_{n(x_0), d}(\R)$
+        \mathcal{L} \colon \prod_{x_0 \in K_0} M_{n(x_0), d}(\R)$
       denotes the node neighbors matrix;
     \item
       $\displaystyle
-        \star \colon \prod_{(m, n) \colon \N^2} M_{m, n}(\R) \to M_{n, m}(\R)$
+        \star \colon \prod_{(m, n) \in \N^2} M_{m, n}(\R) \to M_{n, m}(\R)$
       denotes the Moore-Penrose inverse of a rectangular matrix;
     \item
-      $\overline{\phantom{T}} \colon C^1 K \to C^0(K, \R^d)$
+      $\overline{\phantom{T}} \colon C^1 K \to \Hom_\R(C^0 K, \R^d)$
       denotes the approximation of a $1$-cochain as a Euclidean vector-valued
       $0$-cochain,
       \begin{equation}
@@ -1181,79 +1184,101 @@
     \item
       $\underline{\phantom{T}} \colon \chi X \to C^1 K$
       denotes the discretization of a continuum vector field as a $1$-cochain;
-    % \item
-    %   $R \colon \Omega^\bullet X \to C^\bullet K$ denotes the de Rham map,
-    %   \begin{equation}
-    %     (R_p \omega^p) c_p := \int_{\abs{c_p}} \omega^p;
-    %   \end{equation}
-    % \item
-    %   $S \colon \Omega^\bullet(X, \chi X) \to C^\bullet(K, C^1 K)$
-    %   denotes the discretization of vector-valued smooth forms into
-    %   $1$-cochain valued cochains,
-    %   \begin{equation}
-    %     S_p(u \otimes \omega^p) := \underline{u} \otimes R_p \omega^p;
-    %   \end{equation}
-    % \item
-    %   $\nabla \colon \chi X \to \Omega^1(X, \chi X)$ is the vector gradient
-    %   (connection on vector fields);
-    % \item
-    %   $D \colon \Omega^\bullet(X, \chi X) \to \Omega^\bullet(X, \chi X)$
-    %   is the respective covariant exterior derivative on vector-valued forms,
-    %   \begin{equation}
-    %     D_p(u \otimes \omega^p) :=
-    %     \nabla u \uwedge \omega^p + u \otimes d_p \omega^p;
-    %   \end{equation}
-    % \item
-    %   $\nabla^{(K)} \colon C^1 K \to C^1(K, C^1 K)$
-    %   is the discrete vector gradient (discrete connection on $1$-cochains);
-    % \item
-    %   $D^{(K)} \colon C^\bullet(K, C^1 K) \to C^\bullet(K, C^1 K)$
-    %   is the respective discrete covariant exterior derivative on
-    %   $1$-cochain valued cohains,
-    %   \begin{equation}
-    %     D^{(K)}_p(\pi^1 \otimes \rho^p) :=
-    %     \nabla^{(K)} \pi^1 \usmile \rho^p + \pi^1 \otimes \delta_p \rho^p.
-    %   \end{equation}
   \end{itemize}
 \end{discussion}
 
 \section{Discrete heat transport}
 
-\begin{example}
+\begin{notation}
+  Let
+    $S$ be a set,
+    $T$ be a subset of $S$,
+    $V$ be a real vector space,
+    $u \in \Hom_\R({\rm Free}_\R(S), V)$.
+  We will denote by
+  \begin{equation}
+    \left.u\right|_T \in \Hom_\R({\rm Free}_\R(T), V)
+  \end{equation}
+  the map defined in the same way of $u$ but acting on formal linear
+  combinations of the elements in $T$.
+\end{notation}
+
+\begin{definition}
   Let
     $d \in \N$,
-    $M$ be a manifold-like flat mesh of dimension $d$,
-    $K$ be its Forman subdivision,
-    $K' := K \setminus \partial K$
-    $t_0 \in \R$,
-    $u_0 \in C^0 K$,
-    $f \in C^0 K' $
-    $\Gamma_D, \Gamma_N$ form a partition of $K_0$,
-    ${\bf n} \colon \Gamma_N \to \R^d$,
-    $g_D \colon \Gamma_D \to \R$,
-    $g_N \colon \Gamma_N \to \R$,
+    $K$ be a flat mesh of dimension $d$,
+    $c_0 \in C_0(\partial K)$ with corresponding point $x \in \R^d$.
+  By ${\bf n}_{c_0}$ we will denote the exterior unit normal at $x$ to $K$.
+  When $c_{0}$ has more than one non-parallel adjacent hyperfaces
+  (for instance, in $3$D, it can lie on an edge or at a corner) , we will take
+  some average of the normals to those faces.
+  The easiest one is to sum all exterior normals and divide by the length of the
+  sum.
+  This is the approach taken in the software implementation.
+
+  When $\Gamma \subseteq (\partial K)_0$, we will understand ${\bf n}$ as
+  a function from $\Gamma$ to $\R^d$ or as a linear map in
+  $\Hom({\rm Free}_\R(\Gamma), \R^d)$.
+\end{definition}
+
+\begin{formulation}
+  Let:
+  \begin{itemize}
+    \item
+      $d \in \N$;
+    \item
+      $M$ be a manifold-like flat mesh of dimension $d$;
+    \item
+      $K$ be the Forman subdivision of $M$;
+    \item
+      $K' := K \setminus \partial K$ be the interior of $K$;
+    \item
+      $t_0 \in \R$ be the initial time;
+    \item
+      $u_0 \in C^0 K$ be the initial temperature;
+    \item
+      $f \in C^0 K'$ be the external heat source;
+    \item
+      $\Gamma_D, \Gamma_N$ form a partition of $(\partial K)_0$;
+    \item
+      ${\bf n} \colon \Gamma_N \to \R^d$ be the generalized exterior normal;
+    \item
+      $g_D \colon [t_0, \infty) \to ({\rm Free}_\R(\Gamma_D))^*$
+      be the Dirichlet boundary condition;
+    \item
+      $g_N \colon [t_0, \infty) \to ({\rm Free}_\R(\Gamma_N))^*$
+      be the Neumann boundary condition;
+    \item
+      $\pi_0 \colon C^0 K \to C^0 K$ be a material property of the nodes of $K$
+      (its matrix in the standard basis is diagonal);
+    \item
+      $\pi_1 \colon C^1 K \to C^1 K$ be a material property of the edges of $K$
+      (its matrix in the standard basis is diagonal).
+  \end{itemize}
   We are solving the following problem.
   \begin{equation}
     \begin{split}
       & \text{Find $u \in [t_0, \infty) \times C^0 K$ such that} \\
       &
       \begin{cases}
-        \left.(\frac{\partial (\pi_0 u)}{\partial t})\right|_{K'} =
-        \left.((\delta_1^\star \circ \pi_1 \circ \delta_0) u)\right|_{K'} + f
+        \left.(\frac{\partial (\pi_0 u)}{\partial t})\right|_{K_0'} =
+        \left.((\delta_1^\star \circ \pi_1 \circ \delta_0) u)\right|_{K_0'} + f
         & (\text{conservation of heat energy}), \\
 %
         u(t_0, \cdot) = u_0
         & (\text{initial condition}), \\
 %
-        \tr_{\Gamma_D} u = g_D
+        \left.u\right|_{\Gamma_D} = g_D
         & (\text{Dirichlet boundary condition}), \\
 %
-        \tr_{\Gamma_N} \overline{(\pi_1 \circ \delta_0) u} \cdot {\bf n} = g_N
+        \left.
+          \left(\overline{(\pi_1 \circ \delta_0) u}\right)
+        \right|_{\Gamma_N} \cdot {\bf n} = g_N
         & (\text{Neumann boundary condition}).
       \end{cases}
     \end{split}
   \end{equation}
-\end{example}
+\end{formulation}
 
 \section{Discrete elasticity}
 
@@ -1681,49 +1706,49 @@
   \end{equation}
 \end{proof}
 
-\begin{example}
-  Let
-    $d \in \N$,
-    $K$ be a cubical grid of dimension $d$ with the standard grid orientation,
-    $V = C_1 K$.
-  Define $\nabla \colon C^\bullet(K, C_1 K) \to C^\bullet(K, C_1 K)$ as follows.
-  Let $p \in \{0, ..., d - 1\}$ and $e_p$ be the sum of all basis $1$-chains
-  whose cells are parallel to the $p$-th basis vector in the standard basis of
-  the embedding of $K$.
-  Then we require that for each $\sigma^\bullet \in C^\bullet K$,
-  \begin{equation}
-    \nabla_p(e_p \usmile \sigma^\bullet) = e_p \usmile \delta \sigma^\bullet.
-  \end{equation}
-  Denote by
-  \begin{equation}
-    \Omega^\bullet(\abs{K}, \R^d)
-  \end{equation}
-  the space of $\R^d$-valued smooth differential forms on $\abs{K}$.
-  Let
-  \begin{equation}
-    S \colon \chi \abs{K} \to C^1 K
-  \end{equation}
-  be the discretization of vector fields into $1$-forms.
-  We define the discretization of vector-valued smooth $0$-forms,
-  \begin{equation}
-    {\bf S} \colon \Omega^0(\abs{K}, \R^d) \to C^0(K, C_1 K),
-  \end{equation}
-  as follows: if for $p = 0, ..., d - 1$,
-  $u_p \colon \abs{K} \to \R$ is smooth with discretization
-  $\eta_{(p)}^0 \in C^1 K = \widetilde{u_p}$, then
-  \begin{equation}
-    {\bf S}\left(\sum_{p = 0}^{d - 1} u_p \frac{\partial}{\partial x_p}\right)
-    := \sum_{p = 0}^{d - 1} e_p \smile \eta_{(p)}^0.
-  \end{equation}
-  Then if we take the vector gradient ${\boldsymbol \nabla}$
-  (which comes from the Levi-Civitta connection on the flat metric on
-  $\abs{K}$), then for any smooth function $f \colon \abs{K} \to \R$,
-  \begin{equation}
-    {\bf S}({\boldsymbol \nabla} f)
-    = \sum_{p = 0}^{d - 1}
-      e_p \usmile S\left(\frac{\partial}{\partial x_p} f\right).
-  \end{equation}
-\end{example}
+% \begin{example}
+%   Let
+%     $d \in \N$,
+%     $K$ be a cubical grid of dimension $d$ with the standard grid orientation,
+%     $V = C_1 K$.
+%   Define $\nabla \colon C^\bullet(K, C_1 K) \to C^\bullet(K, C_1 K)$ as follows.
+%   Let $p \in \{0, ..., d - 1\}$ and $e_p$ be the sum of all basis $1$-chains
+%   whose cells are parallel to the $p$-th basis vector in the standard basis of
+%   the embedding of $K$.
+%   Then we require that for each $\sigma^\bullet \in C^\bullet K$,
+%   \begin{equation}
+%     \nabla_p(e_p \usmile \sigma^\bullet) = e_p \usmile \delta \sigma^\bullet.
+%   \end{equation}
+%   Denote by
+%   \begin{equation}
+%     \Omega^\bullet(\abs{K}, \R^d)
+%   \end{equation}
+%   the space of $\R^d$-valued smooth differential forms on $\abs{K}$.
+%   Let
+%   \begin{equation}
+%     S \colon \chi \abs{K} \to C^1 K
+%   \end{equation}
+%   be the discretization of vector fields into $1$-forms.
+%   We define the discretization of vector-valued smooth $0$-forms,
+%   \begin{equation}
+%     {\bf S} \colon \Omega^0(\abs{K}, \R^d) \to C^0(K, C_1 K),
+%   \end{equation}
+%   as follows: if for $p = 0, ..., d - 1$,
+%   $u_p \colon \abs{K} \to \R$ is smooth with discretization
+%   $\eta_{(p)}^0 \in C^1 K = \widetilde{u_p}$, then
+%   \begin{equation}
+%     {\bf S}\left(\sum_{p = 0}^{d - 1} u_p \frac{\partial}{\partial x_p}\right)
+%     := \sum_{p = 0}^{d - 1} e_p \smile \eta_{(p)}^0.
+%   \end{equation}
+%   Then if we take the vector gradient ${\boldsymbol \nabla}$
+%   (which comes from the Levi-Civitta connection on the flat metric on
+%   $\abs{K}$), then for any smooth function $f \colon \abs{K} \to \R$,
+%   \begin{equation}
+%     {\bf S}({\boldsymbol \nabla} f)
+%     = \sum_{p = 0}^{d - 1}
+%       e_p \usmile S\left(\frac{\partial}{\partial x_p} f\right).
+%   \end{equation}
+% \end{example}
 
 % I will summarize the operations relating cochains and embedding.
 % \begin{discussion}
@@ -1733,64 +1758,39 @@
 %     $X$ be the manifold it encompasses.
 %   We define the following data:
 %   \begin{itemize}
-%     \item
-%       $n \colon K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
-%     \item
-%       $\widehat{\phantom{T}} \colon C^1 K \to 
-%         \displaystyle \prod_{x_0 \colon K_0} \R^{n(x_0)}$
-%       denotes the neighbor representation of a $1$-cochain;
-%     \item
-%       $\displaystyle
-%         \mathcal{L} \colon \prod_{x_0 \colon K_0} M_{n(x_0), d}(\R)$
-%       denotes the node neighbors matrix;
-%     \item
-%       $\displaystyle
-%         \star \colon \prod_{(m, n) \colon \N^2} M_{m, n}(\R) \to M_{n, m}(\R)$
-%       denotes the Moore-Penrose inverse of a rectangular matrix;
-%     \item
-%       $\overline{\phantom{T}} \colon C^1 K \to C^0(K, \R^d)$
-%       denotes the approximation of a $1$-cochain as a Euclidean vector-valued
-%       $0$-cochain,
-%       \begin{equation}
-%         \overline{\pi^1} c_0 :=
-%         (\mathcal{L}_{c_0})^\star \cdot (\widehat{\pi^1})_{c_0};
-%       \end{equation}
-%     \item
-%       $\underline{\phantom{T}} \colon \chi X \to C^1 K$
-%       denotes the discretization of a continuum vector field as a $1$-cochain;
-%     \item
-%       $R \colon \Omega^\bullet X \to C^\bullet K$ denotes the de Rham map,
-%       \begin{equation}
-%         (R_p \omega^p) c_p := \int_{\abs{c_p}} \omega^p;
-%       \end{equation}
-%     \item
-%       $S \colon \Omega^\bullet(X, \chi X) \to C^\bullet(K, C^1 K)$
-%       denotes the discretization of vector-valued smooth forms into
-%       $1$-cochain valued cochains,
-%       \begin{equation}
-%         S_p(u \otimes \omega^p) := \underline{u} \otimes R_p \omega^p;
-%       \end{equation}
-%     \item
-%       $\nabla \colon \chi X \to \Omega^1(X, \chi X)$ is the vector gradient
-%       (connection on vector fields);
-%     \item
-%       $D \colon \Omega^\bullet(X, \chi X) \to \Omega^\bullet(X, \chi X)$
-%       is the respective covariant exterior derivative on vector-valued forms,
-%       \begin{equation}
-%         D_p(u \otimes \omega^p) :=
-%         \nabla u \uwedge \omega^p + u \otimes d_p \omega^p;
-%       \end{equation}
-%     \item
-%       $\nabla^{(K)} \colon C^1 K \to C^1(K, C^1 K)$
-%       is the discrete vector gradient (discrete connection on $1$-cochains);
-%     \item
-%       $D^{(K)} \colon C^\bullet(K, C^1 K) \to C^\bullet(K, C^1 K)$
-%       is the respective discrete covariant exterior derivative on
-%       $1$-cochain valued cohains,
-%       \begin{equation}
-%         D^{(K)}_p(\pi^1 \otimes \rho^p) :=
-%         \nabla^{(K)} \pi^1 \usmile \rho^p + \pi^1 \otimes \delta_p \rho^p.
-%       \end{equation}
+    % \item
+    %   $R \colon \Omega^\bullet X \to C^\bullet K$ denotes the de Rham map,
+    %   \begin{equation}
+    %     (R_p \omega^p) c_p := \int_{\abs{c_p}} \omega^p;
+    %   \end{equation}
+    % \item
+    %   $S \colon \Omega^\bullet(X, \chi X) \to C^\bullet(K, C^1 K)$
+    %   denotes the discretization of vector-valued smooth forms into
+    %   $1$-cochain valued cochains,
+    %   \begin{equation}
+    %     S_p(u \otimes \omega^p) := \underline{u} \otimes R_p \omega^p;
+    %   \end{equation}
+    % \item
+    %   $\nabla \colon \chi X \to \Omega^1(X, \chi X)$ is the vector gradient
+    %   (connection on vector fields);
+    % \item
+    %   $D \colon \Omega^\bullet(X, \chi X) \to \Omega^\bullet(X, \chi X)$
+    %   is the respective covariant exterior derivative on vector-valued forms,
+    %   \begin{equation}
+    %     D_p(u \otimes \omega^p) :=
+    %     \nabla u \uwedge \omega^p + u \otimes d_p \omega^p;
+    %   \end{equation}
+    % \item
+    %   $\nabla^{(K)} \colon C^1 K \to C^1(K, C^1 K)$
+    %   is the discrete vector gradient (discrete connection on $1$-cochains);
+    % \item
+    %   $D^{(K)} \colon C^\bullet(K, C^1 K) \to C^\bullet(K, C^1 K)$
+    %   is the respective discrete covariant exterior derivative on
+    %   $1$-cochain valued cohains,
+    %   \begin{equation}
+    %     D^{(K)}_p(\pi^1 \otimes \rho^p) :=
+    %     \nabla^{(K)} \pi^1 \usmile \rho^p + \pi^1 \otimes \delta_p \rho^p.
+    %   \end{equation}
 %   \end{itemize}
 % \end{discussion}
 
