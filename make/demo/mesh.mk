@@ -372,7 +372,7 @@ demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature.txt:\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
-	  build/diffusion_continuous_p0.o | demo/mesh
+	  build/diffusion_continuous_p0.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p0 0.05 100 > $@
 
@@ -380,7 +380,7 @@ demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.txt:\
 	  bin/diffusion_discrete_calculate_flux$(.EXE)\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature.txt\
-	  | demo/mesh
+	  | demo/mesh lib/libshared$(.DLL)
 	$< $(word 2, $^) 100 $(word 3, $^) > $@
 
 demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p1_temperature.txt:\
@@ -388,7 +388,7 @@ demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p1_temperature.txt:\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
-	  build/diffusion_continuous_p1.o | demo/mesh
+	  build/diffusion_continuous_p1.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p1 0.05 20 > $@
 
@@ -397,7 +397,7 @@ demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature.txt:\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
-	  build/diffusion_continuous_p2.o | demo/mesh
+	  build/diffusion_continuous_p2.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p2 0.001 100 > $@
 
@@ -406,7 +406,7 @@ demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p4_temperature.txt:\
 	  demo/mesh/mesh_brick_2d_2_forman.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
 	  demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
-	  build/diffusion_continuous_p4.o | demo/mesh
+	  build/diffusion_continuous_p4.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p4 0.001 > $@
 
@@ -742,7 +742,7 @@ demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.txt:\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_cbd.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
-	  build/diffusion_continuous_p2.o | demo/mesh
+	  build/diffusion_continuous_p2.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p2 0.0001 10000 > $@
 
@@ -751,7 +751,7 @@ demo/mesh/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.txt:\
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_cbd.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
-	  build/diffusion_continuous_p4.o | demo/mesh
+	  build/diffusion_continuous_p4.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p4 0.0001 10000 > $@
 
@@ -760,7 +760,7 @@ demo/mesh/mesh_brick_2d_5_forman_diffusion_steady_state_continuous_p4_temperatur
 	  demo/mesh/mesh_brick_2d_5_forman.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_cbd.txt\
 	  demo/mesh/mesh_brick_2d_5_forman_cbd_star.txt\
-	  build/diffusion_steady_state_continuous_p4.o | demo/mesh
+	  build/diffusion_steady_state_continuous_p4.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_steady_state_continuous_p4 > $@
 
@@ -894,7 +894,7 @@ demo/mesh/mesh_brick_2d_10_forman_diffusion_continuous_p4_temperature.txt:\
 	  demo/mesh/mesh_brick_2d_10_forman.txt\
 	  demo/mesh/mesh_brick_2d_10_forman_cbd.txt\
 	  demo/mesh/mesh_brick_2d_10_forman_cbd_star.txt\
-	  build/diffusion_continuous_p4.o | demo/mesh
+	  build/diffusion_continuous_p4.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p4 0.0001 4000 > $@
 
@@ -1326,7 +1326,7 @@ demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_temperature.txt:\
 	  demo/mesh/mesh_2d_10_grains_forman.txt\
 	  demo/mesh/mesh_2d_10_grains_forman_cbd.txt\
 	  demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt\
-	  build/diffusion_continuous_p7.o | demo/mesh
+	  build/diffusion_continuous_p7.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p7 0.0001 1000 > $@
 
@@ -1342,7 +1342,7 @@ demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperat
 	  demo/mesh/mesh_2d_10_grains_forman.txt\
 	  demo/mesh/mesh_2d_10_grains_forman_cbd.txt\
 	  demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt\
-	  build/diffusion_steady_state_continuous_p7.o | demo/mesh
+	  build/diffusion_steady_state_continuous_p7.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_steady_state_continuous_p7 > $@
 
@@ -1401,7 +1401,7 @@ demo/mesh/mesh_square_8_diffusion_continuous_p5_temperature.txt:\
 	  demo/mesh/mesh_square_8.txt\
 	  demo/mesh/mesh_square_8_cbd.txt\
 	  demo/mesh/mesh_square_8_cbd_star.txt\
-	  build/diffusion_continuous_p5.o | demo/mesh
+	  build/diffusion_continuous_p5.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p5 0.001 4000 > $@
 
@@ -1410,7 +1410,7 @@ demo/mesh/mesh_square_8_diffusion_continuous_p5_temperature.txt:\
 # 	  demo/mesh/mesh_square_8.txt\
 # 	  demo/mesh/mesh_square_8_cbd.txt\
 # 	  demo/mesh/mesh_square_8_cbd_star.txt\
-# 	  build/diffusion_continuous_p5.o | demo/mesh
+# 	  build/diffusion_continuous_p5.o | demo/mesh lib/libshared$(.DLL)
 # 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 # 	  diffusion_continuous_p5 0.001 > $@
 
@@ -1612,7 +1612,7 @@ demo/mesh/mesh_brick_3d_2_forman_diffusion_continuous_p6_temperature.txt:\
 	  demo/mesh/mesh_brick_3d_2_forman.txt\
 	  demo/mesh/mesh_brick_3d_2_forman_cbd.txt\
 	  demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt\
-	  build/diffusion_continuous_p6.o | demo/mesh
+	  build/diffusion_continuous_p6.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_continuous_p6 0.001 1000 > $@
 
@@ -1621,14 +1621,14 @@ demo/mesh/mesh_brick_3d_2_forman_diffusion_steady_state_continuous_p6_temperatur
 	  demo/mesh/mesh_brick_3d_2_forman.txt\
 	  demo/mesh/mesh_brick_3d_2_forman_cbd.txt\
 	  demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt\
-	  build/diffusion_steady_state_continuous_p6.o | demo/mesh
+	  build/diffusion_steady_state_continuous_p6.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_steady_state_continuous_p6 > $@
 
 demo/mesh/mesh_brick_3d_2_forman_laplacian.txt:\
 	  bin/mesh_qc_laplacian$(.EXE)\
 	  demo/mesh/mesh_brick_3d_2_forman.txt\
-	  demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt | demo/mesh
+	  demo/mesh/mesh_brick_3d_2_forman_cbd_star.txt | demo/mesh lib/libshared$(.DLL)
 	$^ > $@
 
 demo/mesh/mesh_brick_3d_2_forman_hodge_coeff.txt:\
@@ -1867,7 +1867,7 @@ demo/mesh/mesh_brick_3d_10_forman_diffusion_steady_state_continuous_p6_temperatu
 	  demo/mesh/mesh_brick_3d_10_forman.txt\
 	  demo/mesh/mesh_brick_3d_10_forman_cbd.txt\
 	  demo/mesh/mesh_brick_3d_10_forman_cbd_star.txt\
-	  build/diffusion_steady_state_continuous_p6.o | demo/mesh
+	  build/diffusion_steady_state_continuous_p6.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_steady_state_continuous_p6 > $@
 
@@ -1998,7 +1998,7 @@ demo/mesh/mesh_brick_3d_25_forman_diffusion_steady_state_continuous_p6_temperatu
 	  demo/mesh/mesh_brick_3d_25_forman.txt\
 	  demo/mesh/mesh_brick_3d_25_forman_cbd.txt\
 	  demo/mesh/mesh_brick_3d_25_forman_cbd_star.txt\
-	  build/diffusion_steady_state_continuous_p6.o | demo/mesh
+	  build/diffusion_steady_state_continuous_p6.o | demo/mesh lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^)\
 	  diffusion_steady_state_continuous_p6 > $@
 

@@ -111,9 +111,9 @@ ARRAY_OBJ :=\
   $(patsubst src/array/%$(.SRC), build/%$(.OBJ), $(ARRAY_OBJ_NAMES))
 
 .PHONY: build_array
-build_array: build $(ARRAY_OBJ)
+build_array: $(ARRAY_OBJ)
 
-$(ARRAY_OBJ): build/%$(.OBJ): src/array/%$(.SRC)
+$(ARRAY_OBJ): build/%$(.OBJ): src/array/%$(.SRC) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(ARRAY_INC) -c $< -o $@
 
 # algebra
@@ -122,9 +122,9 @@ ALGEBRA_OBJ :=\
   $(patsubst src/algebra/%$(.SRC), build/%$(.OBJ), $(ALGEBRA_OBJ_NAMES))
 
 .PHONY: build_algebra
-build_algebra: build $(ALGEBRA_OBJ)
+build_algebra: $(ALGEBRA_OBJ)
 
-$(ALGEBRA_OBJ): build/%$(.OBJ): src/algebra/%$(.SRC)
+$(ALGEBRA_OBJ): build/%$(.OBJ): src/algebra/%$(.SRC) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(ALGEBRA_INC) -c $< -o $@
 
 # region
@@ -133,9 +133,9 @@ REGION_OBJ :=\
   $(patsubst src/region/%$(.SRC), build/%$(.OBJ), $(REGION_OBJ_NAMES))
 
 .PHONY: build_region
-build_region: build $(REGION_OBJ)
+build_region: $(REGION_OBJ)
 
-$(REGION_OBJ): build/%$(.OBJ): src/region/%$(.SRC)
+$(REGION_OBJ): build/%$(.OBJ): src/region/%$(.SRC) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(REGION_INC) -c $< -o $@
 
 # mesh
@@ -144,9 +144,9 @@ MESH_OBJ :=\
   $(patsubst src/mesh/%$(.SRC), build/%$(.OBJ), $(MESH_OBJ_NAMES))
 
 .PHONY: build_mesh
-build_mesh: build $(MESH_OBJ)
+build_mesh: $(MESH_OBJ)
 
-$(MESH_OBJ): build/%$(.OBJ): src/mesh/%$(.SRC)
+$(MESH_OBJ): build/%$(.OBJ): src/mesh/%$(.SRC) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(MESH_INC) -c $< -o $@
 
 # graphics
@@ -155,9 +155,9 @@ GRAPHICS_OBJ :=\
   $(patsubst src/graphics/%$(.SRC), build/%$(.OBJ), $(GRAPHICS_OBJ_NAMES))
 
 .PHONY: build_graphics
-build_graphics: build $(GRAPHICS_OBJ)
+build_graphics: $(GRAPHICS_OBJ)
 
-$(GRAPHICS_OBJ): build/%$(.OBJ): src/graphics/%$(.SRC)
+$(GRAPHICS_OBJ): build/%$(.OBJ): src/graphics/%$(.SRC) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(GRAPHICS_INC) \
 	  $(shell pkg-config --cflags gtk+-3.0) -c $< -o $@
 
@@ -167,9 +167,9 @@ SHARED_OBJ :=\
   $(patsubst src/shared/%$(.SRC), build/%$(.OBJ), $(SHARED_OBJ_NAMES))
 
 .PHONY: build_shared
-build_shared: build $(SHARED_OBJ)
+build_shared: $(SHARED_OBJ)
 
-$(SHARED_OBJ): build/%$(.OBJ): src/shared/%$(.SRC)
+$(SHARED_OBJ): build/%$(.OBJ): src/shared/%$(.SRC) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(SHARED_INC) -c $< -o $@
 
 # all
@@ -216,23 +216,23 @@ lib/libarray$(.LIB): $(ARRAY_OBJ) | lib
 
 # algebra
 .PHONY: lib_algebra
-lib_algebra: lib/libalgebra$(.LIB) | lib
+lib_algebra: lib/libalgebra$(.LIB)
 
-lib/libalgebra$(.LIB): $(ALGEBRA_OBJ)
+lib/libalgebra$(.LIB): $(ALGEBRA_OBJ) | lib
 	$(AR) $(ARFLAGS) $@ $^
 
 # region
 .PHONY: lib_region
-lib_region: lib/libregion$(.LIB) | lib
+lib_region: lib/libregion$(.LIB)
 
-lib/libregion$(.LIB): $(REGION_OBJ)
+lib/libregion$(.LIB): $(REGION_OBJ) | lib
 	$(AR) $(ARFLAGS) $@ $^
 
 # mesh
 .PHONY: lib_mesh
-lib_mesh: lib/libmesh$(.LIB) | lib
+lib_mesh: lib/libmesh$(.LIB)
 
-lib/libmesh$(.LIB): $(MESH_OBJ)
+lib/libmesh$(.LIB): $(MESH_OBJ) | lib
 	$(AR) $(ARFLAGS) $@ $^
 
 # graphics
@@ -244,9 +244,9 @@ lib/libgraphics$(.LIB): $(GRAPHICS_OBJ)
 
 #shared
 .PHONY: lib_shared
-lib_shared: lib/libshared$(.DLL) | lib
+lib_shared: lib/libshared$(.DLL)
 
-lib/libshared$(.DLL): $(SHARED_OBJ) $(ALGEBRA_OBJ) $(ARRAY_OBJ)
+lib/libshared$(.DLL): $(SHARED_OBJ) $(ALGEBRA_OBJ) $(ARRAY_OBJ) | lib
 	$(CC) -o $@ -fPIC -shared $^
 
 # all
@@ -263,9 +263,9 @@ ARRAY_EXE :=\
   $(patsubst main/array/main_%$(.SRC), bin/%$(.EXE), $(ARRAY_EXE_NAMES))
 
 .PHONY: bin_array
-bin_array: bin $(ARRAY_EXE)
+bin_array: $(ARRAY_EXE)
 
-$(ARRAY_EXE): bin/%$(.EXE): main/array/main_%$(.SRC) $(ARRAY_LDLIBS)
+$(ARRAY_EXE): bin/%$(.EXE): main/array/main_%$(.SRC) $(ARRAY_LDLIBS) | bin
 	$(CC) $(CFLAGS) $(ARRAY_INC_EXE) $(CCFLAGS) $< $(ARRAY_LDLIBS) $(LDFLAGS) -o $@
 
 # algebra
@@ -274,9 +274,9 @@ ALGEBRA_EXE :=\
   $(patsubst main/algebra/main_%$(.SRC), bin/%$(.EXE), $(ALGEBRA_EXE_NAMES))
 
 .PHONY: bin_algebra
-bin_algebra: bin $(ALGEBRA_EXE)
+bin_algebra: $(ALGEBRA_EXE)
 
-$(ALGEBRA_EXE): bin/%$(.EXE): main/algebra/main_%$(.SRC) $(ALGEBRA_LDLIBS)
+$(ALGEBRA_EXE): bin/%$(.EXE): main/algebra/main_%$(.SRC) $(ALGEBRA_LDLIBS) | bin
 	$(CC) $(CFLAGS) $(ALGEBRA_INC_EXE) $(CCFLAGS) $< $(ALGEBRA_LDLIBS) $(LDFLAGS) -o $@
 
 # region
@@ -285,9 +285,9 @@ REGION_EXE :=\
   $(patsubst main/region/main_%$(.SRC), bin/%$(.EXE), $(REGION_EXE_NAMES))
 
 .PHONY: bin_region
-bin_region: bin $(REGION_EXE)
+bin_region: $(REGION_EXE)
 
-$(REGION_EXE): bin/%$(.EXE): main/region/main_%$(.SRC) $(REGION_LDLIBS)
+$(REGION_EXE): bin/%$(.EXE): main/region/main_%$(.SRC) $(REGION_LDLIBS) | bin
 	$(CC) $(CFLAGS) $(REGION_INC_EXE) $(CCFLAGS) $< $(REGION_LDLIBS) $(LDFLAGS) -o $@
 
 # mesh
@@ -296,9 +296,9 @@ MESH_EXE :=\
   $(patsubst main/mesh/main_%$(.SRC), bin/%$(.EXE), $(MESH_EXE_NAMES))
 
 .PHONY: bin_mesh
-bin_mesh: bin $(MESH_EXE)
+bin_mesh: $(MESH_EXE)
 
-$(MESH_EXE): bin/%$(.EXE): main/mesh/main_%$(.SRC) $(MESH_LDLIBS)
+$(MESH_EXE): bin/%$(.EXE): main/mesh/main_%$(.SRC) $(MESH_LDLIBS) | bin
 	$(CC) $(CFLAGS) $(MESH_INC_EXE) $(CCFLAGS) $< $(MESH_LDLIBS) $(LDFLAGS) -o $@
 
 # graphics
@@ -307,9 +307,9 @@ GRAPHICS_EXE :=\
   $(patsubst main/graphics/main_%$(.SRC), bin/%$(.EXE), $(GRAPHICS_EXE_NAMES))
 
 .PHONY: bin_graphics
-bin_graphics: bin $(GRAPHICS_EXE)
+bin_graphics: $(GRAPHICS_EXE)
 
-$(GRAPHICS_EXE): bin/%$(.EXE): main/graphics/main_%$(.SRC) $(GRAPHICS_LDLIBS)
+$(GRAPHICS_EXE): bin/%$(.EXE): main/graphics/main_%$(.SRC) $(GRAPHICS_LDLIBS) | bin
 	$(CC) $(CFLAGS) $(GRAPHICS_INC_EXE) $(shell pkg-config --cflags gtk+-3.0)\
 	  $(CCFLAGS) $< \
 	  $(shell pkg-config --libs gtk+-3.0) $(GRAPHICS_LDLIBS) $(LDFLAGS) -o $@
