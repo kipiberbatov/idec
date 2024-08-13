@@ -118,7 +118,7 @@
 
 \title{IDEC documentation}
 \author{Kiprian Berbatov}
-\date{August 12, 2024}
+\date{13 August 2024}
 
 \begin{document}
 
@@ -320,7 +320,7 @@
 \begin{remark}
   Note that the last condition in the above definition can be written as
   \begin{equation}
-    \sum _{b_{p - 1} \in (c_{p - 2}, a_p)}
+    \sum_{b_{p - 1} \in (c_{p - 2}, a_p)}
     \varepsilon(a_p, b_{p - 1}) \varepsilon(b_{p - 1}, c_{p - 2}) = 0.
   \end{equation}
 \end{remark}
@@ -1143,7 +1143,7 @@
 
 \begin{discussion}
   Let me summarize the operations relating cochains and embedding.
-  I will use notation coming from dependent type theory for functions whose
+  We will use notation coming from dependent type theory for functions whose
   codomain depends on the domain.
   Namely, if
     $X$ is a type (set),
@@ -1197,7 +1197,7 @@
     $u \in \Hom_\R({\rm Free}_\R(S), V)$.
   We will denote by
   \begin{equation}
-    \left.u\right|_T \in \Hom_\R({\rm Free}_\R(T), V)
+    \restrict{u}{T} \in \Hom_\R({\rm Free}_\R(T), V)
   \end{equation}
   the map defined in the same way of $u$ but acting on formal linear
   combinations of the elements in $T$.
@@ -1227,47 +1227,58 @@ phenomenon.
 \begin{discussion}
   Let:
   \begin{itemize}
-    \item $d \in \N$;
-    \item $M$ be a manifold-like flat mesh of dimension $d$;
+    \item $M$ be a manifold-like flat mesh of dimension $3$;
     \item $K$ be the Forman subdivision of $M$;
     \item $t_0 \in \R$ be the initial time.
   \end{itemize}
   Physical quantities in our model are:
   \begin{itemize}
-    \item temperature $u \in [t_0, \infty) \times C^0 K$;
-    \item heat flux $q \in [t_0, \infty) \times C^1 K$;
-    \item heat energy $Q \in [t_0, \infty) \times C^0 K$.
+    \item
+      temperature $u \in [t_0, \infty) \to C^0 K$ of physical dimension
+      $[\Theta]$;
+    \item
+      heat energy density $Q \in [t_0, \infty) \to C^0 K$ of physical dimension
+      $[E L^{-3}]$;
+    \item
+      heat flux $q \in [t_0, \infty) \to C^1 K$ of physical dimension
+      $[E L^{-1} T^{-1}]$.
   \end{itemize}
   The governing laws are the following.
   \begin{itemize}
     \item
       Let
         $K' := K \setminus \partial K$ be the interior of $K$,
-        $f \in C^0 K'$ be the external heat source.
+        $f \in C^0 K'$ be the external heat source of physical dimension
+          $[E L^{-1} T^{-1}]$.
       \textbf{Conservation of heat energy} is modeled by the equation
       \begin{equation}
-        \left.\left(\frac{\partial A}{\partial t}\right)\right|_{K_0'} =
-        \left.(\delta_1^\star q)\right|_{K_0'} + f.
+        \restrict{\frac{\partial Q}{\partial t}}{K'_0} =
+        \restrict{(\delta_1^\star q)}{K'_0} + f.
       \end{equation}
     \item
       Let
         $t_0 \in \R$ be the initial time,
-        $u_0 \in C^0 K$ be the initial temperature.
+        $u_0 \in C^0 K$ be the initial temperature of physical dimension
+          $[\Theta]$.
       The \textbf{initial condition} is
       \begin{equation}
         u(t_0, \cdot) = u_0.
       \end{equation}
     \item
-      Let $\pi_0 \colon C^0 K \to C^0 K$ be a material property of the nodes of
-      $K$, playing the role of specific heat capacity
+      Let $\pi_0 \colon C^0 K \to C^0 K$
+      of physical dimension $[E L^{-3} \Theta^{-1}]$
+      be a material property of the nodes of $K$,
+      playing the role of volumetric heat capacity
       (its matrix in the standard basis is diagonal).
       The \textbf{relation between temperature and heat energy} is given by
       \begin{equation}
-        A = \pi_0 u.
+        Q = \pi_0 u.
       \end{equation}
     \item
-      Let $\pi_1 \colon C^0 1 \to C^0 1$ be a material property of the edges of
-      $K$, playing the role of thermal conductivity
+      Let $\pi_1 \colon C^1 K \to C^1 K$
+      of physical dimension $[E L^{-1} T^{-1} \Theta^{-1}]$
+      be a material property of the edges of $K$,
+      playing the role of thermal conductivity
       (its matrix in the standard basis is diagonal).
       The \textbf{Fourier's constitutive relation} is given by
       \begin{equation}
@@ -1280,27 +1291,31 @@ phenomenon.
   \begin{itemize}
     \item
       Let $g_D \colon [t_0, \infty) \to ({\rm Free}_\R(\Gamma_D))^*$
-      be the prescribed temperature.
+      of physical dimension $[\Theta]$
+      be the prescribed temperature on the Dirichlet boundary $\Gamma_D$.
       The \textbf{Dirichlet boundary condition} is given by
       \begin{equation}
-        \left.u\right|_{\Gamma_D} = g_D.
+        \restrict{u}{\Gamma_D} = g_D.
       \end{equation}
     \item
       Let
-        ${\bf n} \colon \Gamma_N \to \R^d$ be the generalized exterior normal,
+        ${\bf n} \colon \Gamma_N \to \R^d$
+          be the generalized exterior normal,
         $g_N \colon [t_0, \infty) \to ({\rm Free}_\R(\Gamma_N))^*$
-      be the prescribed flux on the Neumann boundary.
+          of physical dimension $[E L^{-1} T^{-1}]$
+          be the prescribed flux on the Neumann boundary $\Gamma_N$.
       The \textbf{Neumann boundary condition} is given by
       \begin{equation}
-        \left.\overline{q}\right|_{\Gamma_N} \cdot {\bf n} = g_N.
+        \restrict{\overline{q}}{\Gamma_N} \cdot {\bf n} = g_N.
       \end{equation}
   \end{itemize} 
 \end{discussion}
 
-By substituting $q$ with $\delta_0 u$ and $A$ with $\pi_0 u$ we arrive at the
-following formulation with only one unknown (the temperature $u$).
+By substituting $q$ with $\pi_1 \delta_0 u$ and $Q$ with $\pi_0 u$ we arrive at
+the following formulation with only one unknown (the temperature $u$).
 
 \begin{formulation}
+  \label{idec/discrete_heat_transport/phenomenon-formulation}
   Let:
   \begin{itemize}
     \item
@@ -1337,20 +1352,20 @@ following formulation with only one unknown (the temperature $u$).
   We are solving the following problem.
   \begin{equation}
     \begin{split}
-      & \text{Find $u \in [t_0, \infty) \times C^0 K$ such that} \\
+      & \text{Find $u \in [t_0, \infty) \to C^0 K$ such that} \\
       &
       \begin{cases}
-        \left.\left(\frac{\partial (\pi_0 u)}{\partial t}\right)\right|_{K_0'} =
-        \left.((\delta_1^\star \circ \pi_1 \circ \delta_0) u)\right|_{K_0'} + f
+        \restrict{\frac{\partial (\pi_0 u)}{\partial t}}{K'_0} =
+        \restrict{((\delta_1^\star \circ \pi_1 \circ \delta_0) u)}{K'_0} + f
         & (\text{conservation of heat energy}), \\
 %
         u(t_0, \cdot) = u_0
         & (\text{initial condition}), \\
 %
-        \left.u\right|_{\Gamma_D} = g_D
+        \restrict{u}{\Gamma_D} = g_D
         & (\text{Dirichlet boundary condition}), \\
 %
-        \left.\overline{(\pi_1 \circ \delta_0) u}\right|_{\Gamma_N}
+        \restrict{\overline{(\pi_1 \circ \delta_0) u}}{\Gamma_N}
         \cdot {\bf n} = g_N
         & (\text{Neumann boundary condition}).
       \end{cases}
@@ -1358,8 +1373,64 @@ following formulation with only one unknown (the temperature $u$).
   \end{equation}
 \end{formulation}
 
+\begin{discussion}
+  Consider \Cref{idec/discrete_heat_transport/phenomenon-formulation}.
+  This formulation is discrete in space but continuous in time.
+  In order to numerically solve it we need to discretize the time variable.
+  We will use the trapezoidal (Crank-Nicolson) method.
+
+  Let
+    $\tau \in \R^+$ of physical dimension $[T]$ be the time step,
+    $i \in \N$,
+    $t_i := t_0 + i \tau$,
+    $y_i := u(t_i, \cdot) \in C^0 K$ of physical dimension $[\Theta]$.
+    $\rho_0 := \delta_1^\star \circ \pi_1 \circ \delta_0$
+      of physical dimension $[E L^{-3} T^{-1} \Theta^{-1}]$.
+  Integrating the conservation of heat energy in $[t_i, t_{i + 1}]$, we get
+  \begin{equation}
+    \restrict{(\pi_0 y_{i + 1} - \pi_0 y_i)}{K'_0}
+    =   \int_{t_i}^{t_{i + 1}} \restrict{(\rho_0 u(t, \cdot))}{K'_0}\, d t
+      + \int_{t_i}^{t_{i + 1}} f\, d t
+    \approx
+    \frac{\tau}{2} \restrict{(\rho_0 y_i + \rho_0 y_{i + 1})}{K'_0} + \tau f.
+  \end{equation}
+  Rearranging, we get the discretized equation
+  \begin{equation}
+    \restrict{((\pi_0 - \frac{\tau}{2} \rho_0) y_{i + 1})}{K'_0}
+    = \restrict{((\pi_0 + \frac{\tau}{2} \rho_0) y_i)}{K'_0} + \tau f.
+  \end{equation}
+  Define the $\dim C^0 K \times \dim C^0 K$ matrices of physical dimension
+  $[E L^{-3} \Theta^{-1}]$
+  \begin{equation}
+    A := \pi_0 - \frac{\tau}{2} \rho_0,\ B := \pi_0 + \frac{\tau}{2} \rho_0.
+  \end{equation}
+  The discretized in time (space is already discrete) formulation reads as
+  follows.
+  \begin{equation}
+    \begin{split}
+      & \text{Find $y \colon \N \to C^0 K$ such that} \\
+      &
+      \begin{cases}
+        y_0 = u_0 \\
+        \text{for any $i \in \N^+$, $y_i$ solves the system} \\
+        \begin{cases}
+          \restrict{(A y_i)}{K'_0} = \restrict{(B y_{i - 1})}{K'_0} = \tau f, \\
+          \restrict{y_i}{\Gamma_D} = g_D, \\
+          \restrict{\overline{(\pi_1 \circ \delta_0) y_i}}{\Gamma_N}
+            \cdot {\bf n} = g_N.
+        \end{cases}
+      \end{cases}
+    \end{split}
+  \end{equation}
+  Of course, in practice we solve it for a finite number of time steps.
+  Usually, we compare tho adjacent solutions $y_i$ and $y_{i + 1}$ and stop when
+  the relative error is sufficiently small (we have reached a steady state).
+  Moreover, if $\pi_0$ and $\pi_1$ are constants, and $K$ has mesh size $h$,
+  then $h^2 / \tau$ should be close to the thermal diffusivity $\pi_1 / \pi_0$
+  (both of physical dimension $[L^2 T^{-1}])$.
+\end{discussion}
+
 \section{Discrete elasticity}
-\phantom{D}
 
 \begin{discussion}[Discrete elasticity]
   Let $M$ be a mesh of dimension $3$, $K$ be the Forman decomposition of $M$.
@@ -1829,7 +1900,7 @@ following formulation with only one unknown (the temperature $u$).
 %   \end{equation}
 % \end{example}
 
-% I will summarize the operations relating cochains and embedding.
+% We will summarize the operations relating cochains and embedding.
 % \begin{discussion}
 %   Let
 %     $d \in \N$,
