@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build website
-        run: make site
+        run: make website
 
       - name: Set up Github Pages
         uses: actions/configure-pages@v5
@@ -39,7 +39,7 @@ jobs:
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:
-          path: website
+          path: build/website
           retention-days: 7
 
   deploy:

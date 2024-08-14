@@ -24,7 +24,7 @@ int main(int argc, char ** argv)
   const diffusion_continuous * data;
   double time_step;
 
-  if (argc != 7)
+  if (argc != 8)
   {
     errno = EINVAL;
     fputs("main - the number of command-line arguments must be 8\n", stderr);
@@ -74,11 +74,7 @@ int main(int argc, char ** argv)
   fclose(m_cbd_star_1_file);
 
 
-#ifdef __linux__
-  lib_name ="lib/libshared.so";
-#elif __APPLE__
-  lib_name ="lib/libshared.dylib";
-#endif
+  lib_name = argv[5];
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
   {
@@ -88,7 +84,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  data_name = argv[5];
+  data_name = argv[6];
   data = (const diffusion_continuous *) dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
@@ -98,7 +94,7 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  time_step = double_string_scan(argv[6]);
+  time_step = double_string_scan(argv[7]);
   if (errno)
   {
     fprintf(stderr, "Error in %s: cannot scan time_step\n", __func__);

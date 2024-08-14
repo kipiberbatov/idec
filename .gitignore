@@ -1,10 +1,5 @@
 # MacOS related
 .DS_Store
 
-# Ignore generated directories
-bin/**
+# Ignore build directory
 build/**
-demo/**
-docs/**
-lib/**
-website/**
