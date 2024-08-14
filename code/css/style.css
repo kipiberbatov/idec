@@ -14,3 +14,10 @@ p
 {
   margin: 2em 0;
 }
+
+br
+{
+  display: block;
+  content: "";
+  margin-top: 0;
+}
