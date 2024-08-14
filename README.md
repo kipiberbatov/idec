@@ -75,7 +75,7 @@ make -j
 
 (`make -j` will speed the build process by executing in parallel)
 After running `make -j` the result is a directory **build/release**
-(if you want a debug build, type `make -j BUILD_TYPE=debug CFLAGS='-g -O0'`).
+(if you want a debug build, type `make -j BUILD_MODE=debug CFLAGS='-g -O0'`).
 Inside **build/release** (substitute **release** with **debug** in debug mode)
 the following directories are created:
 - **build/release/obj** where source files from **code/c/src**
