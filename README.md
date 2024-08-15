@@ -2,10 +2,9 @@
 Intrinsic Discrete Exterior Calculus
 
 Software library implementing the operations in
-[https://arxiv.org/abs/2201.03704](https://arxiv.org/abs/2201.03704)
+<https://arxiv.org/abs/2201.03704>.
 
-The project is hosted at GitHub at
-[https://github.com/kipiberbatov/idec](https://github.com/kipiberbatov/idec).
+The project is hosted on GitHub at <https://github.com/kipiberbatov/idec>.
 
 ## Modules
 - array: functions working on integers and floating point numbers and
@@ -13,7 +12,7 @@ arrays structures of those types;
 importantly the **jagged1**, ..., **jagged4** structures of jagged integral
 arrays (of levels 1-4) are implemented;
 - algebra: using the structure **cs** from
-[CSparse library](https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/master/CSparse)
+[CSparse library](https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/stable/CSparse)
 as a backend, a wrapper structure **matrix\_sparse** is created;
 a simpler structure **vector\_sparse** is also created;
 - region: structures **simplex** and **quasi\_cube**
@@ -26,7 +25,7 @@ for quasi-cubical meshes resulting from applying **forman**;
 - shared: inputs that are dynamically loaded during execution:
 they contain input data for numerical examples.
 
-## Prerequisites
+## Dependencies
 
 You need the following programs and libraries installed on your system:
 - git
@@ -65,7 +64,9 @@ and the required dependencies.
 
 ## Building on Unix-like platforms
 
-Navigate to your preferred location on the command line. Type the following:
+Make sure you have all the dependencies installed.
+Via the command line vavigate to your preferred location on your computer.
+Type the following:
 
 ```
 git clone https://github.com/kipiberbatov/idec
@@ -75,18 +76,21 @@ make -j
 
 (`make -j` will speed the build process by executing in parallel)
 After running `make -j` the result is a directory **build/release**
-(if you want a debug build, type `make -j BUILD_MODE=debug CFLAGS='-g -O0'`).
+(if you want a debug build, type `make -j MODE=debug CFLAGS='-g -O0'`).
 Inside **build/release** (substitute **release** with **debug** in debug mode)
 the following directories are created:
-- **build/release/obj** where source files from **code/c/src**
+- **build/release/obj** where source files from
+[code/c/src](https://github.com/kipiberbatov/idec/tree/main/code/c/src)
 are compiled into object files;
 - **build/release/lib** where object files from **build/release/obj**
 are archived;
-- **build/release/bin** where source files from **code/c/main** are compiled
-and linked against libraries in **build/release/lib**;
+- **build/release/bin** where source files from
+[code/c/main](https://github.com/kipiberbatov/idec/tree/main/code/c/main)
+are compiled and linked against libraries in **build/release/lib**;
 - **build/release/demo** where demos are run using
 executables from **build/release/bin**,
-manually written input data from **data**,
+manually written input data from
+[data](https://github.com/kipiberbatov/idec/tree/main/data),
 and already generated files from **build/release/demo**.
 
 This will not run graphics demos (produced by Cairo and GTK+).
@@ -95,6 +99,8 @@ To run them, after running `make`, type
 ```
 make demo_graphics
 ```
+
+(it is not a good idea to run it in parallel since lots of GTK windows pop-up).
 
 Note that GTK+ windows will appear
 and they have to be manually closed one by one
@@ -114,7 +120,7 @@ You can run GTK+ animations and PDF animations separately, by typing
 
 ```
 make demo_graphics_gtk
-make demo_graphics_pdf
+make -j demo_graphics_pdf
 ```
 
 You can build the latex documentation by typing
@@ -130,8 +136,9 @@ make website
 ```
 This will create a **build/website** directory with all the web assets.
 In fact this is the way the website
-[https://kipiberbatov.github.io/idec](https://kipiberbatov.github.io/idec)
-is deployed as is evident by the **.github/workflows/github-pages.yaml** file.
+<https://kipiberbatov.github.io/idec>
+is deployed as is evident by the file
+[.github/workflows/github-pages.yaml](https://github.com/kipiberbatov/idec/blob/main/.github/workflows/github-pages.yaml).
 
 You can clean the generated files (the build directory) using
 ```
@@ -140,5 +147,8 @@ make distclean
 
 There are various smaller cleans that will delete certain types of files.
 For instance `make clean` will clean the object files.
-You can look in **Makefile** or the files in **code/make**
+You can look at
+[Makefile](https://github.com/kipiberbatov/idec/blob/main/Makefile)
+or the files in
+[code/make](https://github.com/kipiberbatov/idec/tree/main/code/make)
 to see all the cleaning options (they all end with **_clean**).

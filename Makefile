@@ -1,20 +1,12 @@
-################################################################################
-################################# main makefile ################################
-################################################################################
+##################################### mode #####################################
+MODE := release
 
-#################################### paths #####################################
-BUILD_MODE := release
+############### general preprocessor, compiler and linker flags ################
+CPPFLAGS := -MMD -MP
+CFLAGS := -O2 -Wall -Wfatal-errors
+LDFLAGS := -lm
 
-################################### commands ###################################
-# AR := ar
-# CC := cc
-# RM := rm -f
-MKDIR := mkdir
-
-############################### file extensions ################################
-.DEP := .d
-.INCLUDE := .h
-.SRC := .c
+######################### OS-dependent file extensions #########################
 ifeq ($(OS), Windows_NT)
   .EXE := .exe
   .DLL := .dll
@@ -33,361 +25,304 @@ else
   endif
 endif
 
-########################### high-level dependencies ############################
+########################### modules and dependencies ###########################
+MODULES := array algebra region mesh shared graphics
 # array:
 # algebra: array
 # region: array
 # mesh: region algebra
-# graphics: mesh
+# shared:
+# graphics: mesh shared
 
-################################# $(CC) flags ##################################
-MODULES := array algebra region mesh graphics shared
+############################ names of source files #############################
+_src_array := $(wildcard code/c/src/array/*.c)
+_src_algebra := $(wildcard code/c/src/algebra/*.c)
+_src_region := $(wildcard code/c/src/region/*.c)
+_src_mesh := $(wildcard code/c/src/mesh/*.c)
+_src_shared := $(wildcard code/c/src/shared/*.c)
+_src_graphics := $(wildcard code/c/src/graphics/*.c)
 
-CPPFLAGS := -MMD -MP
-CFLAGS := -O2 -Wall -Wfatal-errors
-CFLAGS_DEBUG := -g -O0 -Wall -Wfatal-errors
-LDFLAGS := -lm
+############################ names of object files #############################
+_obj_array := $(patsubst code/c/src/array/%.c,\
+  build/$(MODE)/obj/%$(.OBJ), $(_src_array))
 
-ARRAY_INC_EXE := -iquote code/c/include/array
-ARRAY_INC := $(ARRAY_INC_EXE) -iquote code/c/src/array
+_obj_algebra := $(patsubst code/c/src/algebra/%.c,\
+  build/$(MODE)/obj/%$(.OBJ), $(_src_algebra))
 
-ALGEBRA_INC_EXE := $(ARRAY_INC_EXE) -iquote code/c/include/algebra
-ALGEBRA_INC := $(ALGEBRA_INC_EXE) -iquote code/c/src/algebra
+_obj_region := $(patsubst code/c/src/region/%.c,\
+  build/$(MODE)/obj/%$(.OBJ), $(_src_region))
 
-REGION_INC_EXE := $(ARRAY_INC_EXE) -iquote code/c/include/region
-REGION_INC := $(REGION_INC_EXE) -iquote code/c/src/region
+_obj_mesh := $(patsubst code/c/src/mesh/%.c,\
+  build/$(MODE)/obj/%$(.OBJ), $(_src_mesh))
 
-MESH_INC_EXE := $(ALGEBRA_INC_EXE) -iquote code/c/include/region\
-                                   -iquote code/c/include/mesh
-MESH_INC := $(MESH_INC_EXE) -iquote code/c/src/mesh
+_obj_shared := $(patsubst code/c/src/shared/%.c,\
+  build/$(MODE)/obj/%$(.OBJ), $(_src_shared))
 
-# GRAPHICS_INC_EXE := $(MESH_INC_EXE) -iquote code/c/include/graphics\
-#    $(shell pkg-config --cflags gtk+-3.0)
-# GRAPHICS_INC := $(GRAPHICS_INC_EXE) -iquote code/c/src/graphics
+_obj_graphics := $(patsubst code/c/src/graphics/%.c,\
+  build/$(MODE)/obj/%$(.OBJ), $(_src_graphics))
 
-GRAPHICS_INC_EXE := $(MESH_INC_EXE) -iquote code/c/include/graphics
-GRAPHICS_INC := $(GRAPHICS_INC_EXE) -iquote code/c/src/graphics
+######################### names of header dependencies #########################
+_dep_array := $(patsubst code/c/src/array/%.c,\
+  build/$(MODE)/obj/%.d, $(_src_array))
 
-SHARED_INC_EXE := $(MESH_INC_EXE) -iquote code/c/include/shared
-SHARED_INC := $(SHARED_INC_EXE) -iquote code/c/src/shared
+_dep_algebra := $(patsubst code/c/src/algebra/%.c,\
+  build/$(MODE)/obj/%.d, $(_src_algebra))
 
-ARRAY_LDLIBS := build/$(BUILD_MODE)/lib/libarray$(.LIB)
-ALGEBRA_LDLIBS := build/$(BUILD_MODE)/lib/libalgebra$(.LIB) $(ARRAY_LDLIBS)
-REGION_LDLIBS := build/$(BUILD_MODE)/lib/libregion$(.LIB) $(ARRAY_LDLIBS)
-MESH_LDLIBS := build/$(BUILD_MODE)/lib/libmesh$(.LIB)\
-  build/$(BUILD_MODE)/lib/libregion$(.LIB) $(ALGEBRA_LDLIBS)
-GRAPHICS_LDLIBS := build/$(BUILD_MODE)/lib/libgraphics$(.LIB) $(MESH_LDLIBS)
-SHARED_LDLIBS := build/$(BUILD_MODE)/lib/libshared$(.DLL) $(MESH_LDLIBS)
+_dep_region := $(patsubst code/c/src/region/%.c,\
+  build/$(MODE)/obj/%.d, $(_src_region))
+
+_dep_mesh := $(patsubst code/c/src/mesh/%.c,\
+  build/$(MODE)/obj/%.d, $(_src_mesh))
+
+_dep_shared := $(patsubst code/c/src/shared/%.c,\
+  build/$(MODE)/obj/%.d, $(_src_shared))
+
+_dep_graphics := $(patsubst code/c/src/graphics/%.c,\
+  build/$(MODE)/obj/%.d, $(_src_graphics))
+
+# _dep_array := $(patsubst code/c/src/array/%.c,\
+#   build/$(MODE)/dep/%.d, $(_src_array))
+
+# _dep_algebra := $(patsubst code/c/src/algebra/%.c,\
+#   build/$(MODE)/dep/%.d, $(_src_algebra))
+
+# _dep_region := $(patsubst code/c/src/region/%.c,\
+#   build/$(MODE)/dep/%.d, $(_src_region))
+
+# _dep_mesh := $(patsubst code/c/src/mesh/%.c,\
+#   build/$(MODE)/dep/%.d, $(_src_mesh))
+
+# _dep_shared := $(patsubst code/c/src/shared/%.c,\
+#   build/$(MODE)/dep/%.d, $(_src_shared))
+
+# _dep_graphics := $(patsubst code/c/src/graphics/%.c,\
+#   build/$(MODE)/dep/%.d, $(_src_graphics))
+
+############################# names of main files ##############################
+_main_array := $(wildcard code/c/main/array/*.c)
+_main_algebra := $(wildcard code/c/main/algebra/*.c)
+_main_region := $(wildcard code/c/main/region/*.c)
+_main_mesh := $(wildcard code/c/main/mesh/*.c)
+_main_graphics := $(wildcard code/c/main/graphics/*.c)
+
+########################## names of executable files ###########################
+_bin_array := $(patsubst code/c/main/array/main_%.c,\
+  build/$(MODE)/bin/%$(.EXE), $(_main_array))
+
+_bin_algebra := $(patsubst code/c/main/algebra/main_%.c,\
+  build/$(MODE)/bin/%$(.EXE), $(_main_algebra))
+
+_bin_region := $(patsubst code/c/main/region/main_%.c,\
+  build/$(MODE)/bin/%$(.EXE), $(_main_region))
+
+_bin_mesh := $(patsubst code/c/main/mesh/main_%.c,\
+  build/$(MODE)/bin/%$(.EXE), $(_main_mesh))
+
+_bin_graphics := $(patsubst code/c/main/graphics/main_%.c,\
+  build/$(MODE)/bin/%$(.EXE), $(_main_graphics))
+
+#################### (public) include files for executables ####################
+_include_array := -iquote code/c/include/array
+_include_algebra := $(_include_array) -iquote code/c/include/algebra
+_include_region := $(_include_array) -iquote code/c/include/region
+_include_mesh := $(_include_algebra)\
+  -iquote code/c/include/region -iquote code/c/include/mesh
+_include_shared := $(_include_mesh) -iquote code/c/include/shared
+_include_graphics := $(_include_mesh) -iquote code/c/include/graphics
+# $(shell pkg-config --cflags gtk+-3.0) is included when calling the compiler
+
+
+############# (public and private) include files for object files ##############
+_include_src_array := $(_include_array) -iquote code/c/src/array
+_include_src_algebra := $(_include_algebra) -iquote code/c/src/algebra
+_include_src_region := $(_include_region) -iquote code/c/src/region
+_include_src_mesh := $(_include_mesh) -iquote code/c/src/mesh
+_include_src_shared := $(_include_shared) -iquote code/c/src/shared
+_include_src_graphics := $(_include_graphics) -iquote code/c/src/graphics
+
+############################# library dependencies ############################# 
+_libs_array := build/$(MODE)/lib/libarray$(.LIB)
+_libs_algebra := build/$(MODE)/lib/libalgebra$(.LIB) $(_libs_array)
+_libs_region := build/$(MODE)/lib/libregion$(.LIB) $(_libs_array)
+_libs_mesh := build/$(MODE)/lib/libmesh$(.LIB)\
+  build/$(MODE)/lib/libregion$(.LIB) $(_libs_algebra)
+_libs_graphics := build/$(MODE)/lib/libgraphics$(.LIB) $(_libs_mesh)
 
 ############################### all-type targets ###############################
 .PHONY: all
 all: obj lib bin demo
 
-# array
-.PHONY: array
+############################# object file targets ##############################
+.PHONY: obj obj_array obj_algebra obj_region obj_mesh obj_shared obj_graphics
+obj: $(patsubst %, obj_%, $(MODULES))
+obj_array: $(_obj_array)
+obj_algebra: $(_obj_algebra)
+obj_region: $(_obj_region)
+obj_mesh: $(_obj_mesh)
+obj_shared: $(_obj_shared)
+obj_graphics: $(_obj_graphics)
+
+######################### header dependencies targets ##########################
+# .PHONY: dep dep_array dep_algebra dep_region dep_mesh dep_shared dep_graphics
+# dep: obj $(patsubst %, dep_%, $(MODULES))
+# dep_array: $(_dep_array)
+# dep_algebra: $(_dep_algebra)
+# dep_region: $(_dep_region)
+# dep_mesh: $(_dep_mesh)
+# dep_shared: $(_dep_shared)
+# dep_graphics: $(_dep_graphics)
+
+############################### library targets ################################
+.PHONY: lib lib_array lib_algebra lib_region lib_mesh lib_shared lib_graphics
+lib: obj $(patsubst %, lib_%, $(MODULES))
+lib_array: build/$(MODE)/lib/libarray$(.LIB)
+lib_algebra: build/$(MODE)/lib/libalgebra$(.LIB)
+lib_region: build/$(MODE)/lib/libregion$(.LIB)
+lib_mesh: build/$(MODE)/lib/libmesh$(.LIB)
+lib_shared: build/$(MODE)/lib/libshared$(.DLL)
+lib_graphics: build/$(MODE)/lib/libgraphics$(.LIB)
+
+############################## executable targets ##############################
+.PHONY: bin bin_array bin_algebra bin_region bin_mesh bin_shared bin_graphics
+bin: lib $(patsubst %, bin_%, array algebra region mesh graphics)
+bin_array: $(_bin_array)
+bin_algebra: $(_bin_algebra)
+bin_region: $(_bin_region)
+bin_mesh: $(_bin_mesh)
+bin_shared: $(_bin_shared)
+bin_graphics: $(_bin_graphics)
+
+#################### targets by modules -- called on demand ####################
+.PHONY: array algebra region mesh shared graphics
 array: obj_array lib_array bin_array demo_array
-
-# algebra
-.PHONY: algebra
 algebra: obj_algebra lib_algebra bin_algebra demo_algebra
-
-# region
-.PHONY: region
 region: obj_region lib_region bin_region demo_region
-
-# mesh
-.PHONY: mesh
 mesh: obj_mesh lib_mesh bin_mesh demo_mesh
-
-# graphics
-.PHONY: graphics
 graphics: obj_graphics lib_graphics bin_graphics demo_graphics
-
-# shared
-.PHONY: shared
 shared: obj_shared lib_shared
 
 ########################## preparing build directory ###########################
 build:
-	$(MKDIR) -p $@
+	mkdir -p $@
 
-build/$(BUILD_MODE): | build
-	$(MKDIR) -p $@
+build/$(MODE): | build
+	mkdir -p $@
 
 ######################### preprocessing and compiling ##########################
-build/$(BUILD_MODE)/obj: | build/$(BUILD_MODE)
-	$(MKDIR) -p $@
+build/$(MODE)/obj: | build/$(MODE)
+	mkdir -p $@
 
-# array
-ARRAY_OBJ_NAMES := $(wildcard code/c/src/array/*$(.SRC))
-ARRAY_OBJ := $(patsubst code/c/src/array/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.OBJ), $(ARRAY_OBJ_NAMES))
+$(_obj_array): build/$(MODE)/obj/%$(.OBJ): code/c/src/array/%.c\
+  | build/$(MODE)/obj
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_array) -c $<
 
-.PHONY: obj_array
-obj_array: $(ARRAY_OBJ)
+$(_obj_algebra): build/$(MODE)/obj/%$(.OBJ): code/c/src/algebra/%.c\
+    | build/$(MODE)/obj
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_algebra) -c $<
 
-$(ARRAY_OBJ): build/$(BUILD_MODE)/obj/%$(.OBJ): code/c/src/array/%$(.SRC)\
-  | build/$(BUILD_MODE)/obj
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(ARRAY_INC) -c $< -o $@
+$(_obj_region): build/$(MODE)/obj/%$(.OBJ): code/c/src/region/%.c\
+    | build/$(MODE)/obj
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_region) -c $<
 
-# algebra
-ALGEBRA_OBJ_NAMES := $(wildcard code/c/src/algebra/*$(.SRC))
-ALGEBRA_OBJ := $(patsubst code/c/src/algebra/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.OBJ), $(ALGEBRA_OBJ_NAMES))
+$(_obj_mesh): build/$(MODE)/obj/%$(.OBJ): code/c/src/mesh/%.c\
+    | build/$(MODE)/obj
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_mesh) -c $<
 
-.PHONY: obj_algebra
-obj_algebra: $(ALGEBRA_OBJ)
+$(_obj_shared): build/$(MODE)/obj/%$(.OBJ): code/c/src/shared/%.c\
+    | build/$(MODE)/obj
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_shared) -c $<
 
-$(ALGEBRA_OBJ): build/$(BUILD_MODE)/obj/%$(.OBJ): code/c/src/algebra/%$(.SRC)\
-    | build/$(BUILD_MODE)/obj
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(ALGEBRA_INC) -c $< -o $@
-
-# region
-REGION_OBJ_NAMES := $(wildcard code/c/src/region/*$(.SRC))
-REGION_OBJ := $(patsubst code/c/src/region/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.OBJ), $(REGION_OBJ_NAMES))
-
-.PHONY: obj_region
-obj_region: $(REGION_OBJ)
-
-$(REGION_OBJ): build/$(BUILD_MODE)/obj/%$(.OBJ): code/c/src/region/%$(.SRC)\
-    | build/$(BUILD_MODE)/obj
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(REGION_INC) -c $< -o $@
-
-# mesh
-MESH_OBJ_NAMES := $(wildcard code/c/src/mesh/*$(.SRC))
-MESH_OBJ := $(patsubst code/c/src/mesh/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.OBJ), $(MESH_OBJ_NAMES))
-
-.PHONY: obj_mesh
-obj_mesh: $(MESH_OBJ)
-
-$(MESH_OBJ): build/$(BUILD_MODE)/obj/%$(.OBJ): code/c/src/mesh/%$(.SRC)\
-    | build/$(BUILD_MODE)/obj
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(MESH_INC) -c $< -o $@
-
-# graphics
-GRAPHICS_OBJ_NAMES := $(wildcard code/c/src/graphics/*$(.SRC))
-GRAPHICS_OBJ := $(patsubst code/c/src/graphics/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.OBJ), $(GRAPHICS_OBJ_NAMES))
-
-.PHONY: obj_graphics
-obj_graphics: $(GRAPHICS_OBJ)
-
-$(GRAPHICS_OBJ): build/$(BUILD_MODE)/obj/%$(.OBJ): code/c/src/graphics/%$(.SRC)\
-    | build/$(BUILD_MODE)/obj
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(GRAPHICS_INC)\
-	  $(shell pkg-config --cflags gtk+-3.0) -c $< -o $@
-
-# shared
-SHARED_OBJ_NAMES := $(wildcard code/c/src/shared/*$(.SRC))
-SHARED_OBJ := $(patsubst code/c/src/shared/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.OBJ), $(SHARED_OBJ_NAMES))
-
-.PHONY: obj_shared
-obj_shared: $(SHARED_OBJ)
-
-$(SHARED_OBJ): build/$(BUILD_MODE)/obj/%$(.OBJ): code/c/src/shared/%$(.SRC)\
-    | build/$(BUILD_MODE)/obj
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(SHARED_INC) -c $< -o $@
-
-# all
-.PHONY: obj
-obj: $(patsubst %, obj_%, $(MODULES))
+$(_obj_graphics): build/$(MODE)/obj/%$(.OBJ): code/c/src/graphics/%.c\
+    | build/$(MODE)/obj
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_graphics)\
+	  $(shell pkg-config --cflags gtk+-3.0) -c $<
 
 ############################# header dependencies ##############################
--include build/$(BUILD_MODE)/obj/*$(.DEP)
+# build/$(MODE)/dep: | build/$(MODE)
+# 	mkdir -p $@
 
-# array
-ARRAY_HEADER_DEP := $(patsubst code/c/src/array/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.DEP), $(ARRAY_OBJ_NAMES))
+# $(_dep_array): build/$(MODE)/dep/%.d: build/$(MODE)/obj/%.o | build/$(MODE)/dep
+# 	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep
 
-# algebra
-ALGEBRA_HEADER_DEP := $(patsubst code/c/src/algebra/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.DEP), $(ALGEBRA_OBJ_NAMES))
+# $(_dep_algebra): build/$(MODE)/dep/%.d: build/$(MODE)/obj/%.o\
+#   | build/$(MODE)/dep
+# 	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep
 
-# region
-REGION_HEADER_DEP :=\
-  $(patsubst code/c/src/region/%$(.SRC), build/$(BUILD_MODE)/obj/%$(.DEP),\
-    $(REGION_OBJ_NAMES))
+# $(_dep_region): build/$(MODE)/dep/%.d: build/$(MODE)/obj/%.o | build/$(MODE)/dep
+# 	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep
 
-# mesh
-MESH_HEADER_DEP := $(patsubst code/c/src/mesh/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.DEP), $(MESH_OBJ_NAMES))
+# $(_dep_mesh): build/$(MODE)/dep/%.d: build/$(MODE)/obj/%.o | build/$(MODE)/dep
+# 	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep
 
-# graphics
-GRAPHICS_HEADER_DEP := $(patsubst code/c/src/graphics/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.DEP), $(GRAPHICS_OBJ_NAMES))
+# $(_dep_shared): build/$(MODE)/dep/%.d: build/$(MODE)/obj/%.o | build/$(MODE)/dep
+# 	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep
 
-# shared
-SHARED_HEADER_DEP := $(patsubst code/c/src/shared/%$(.SRC),\
-  build/$(BUILD_MODE)/obj/%$(.DEP), $(SHARED_OBJ_NAMES))
+# $(_dep_graphics): build/$(MODE)/dep/%.d: build/$(MODE)/obj/%.o\
+#   | build/$(MODE)/dep
+# 	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep
+
+# -include build/$(MODE)/dep/*.d
+
+-include build/$(MODE)/obj/*.d
 
 ################################## archiving ###################################
-build/$(BUILD_MODE)/lib: | build/$(BUILD_MODE)
-	$(MKDIR) -p $@
+build/$(MODE)/lib: | build/$(MODE)
+	mkdir -p $@
 
-# array
-.PHONY: lib_array
-lib_array: build/$(BUILD_MODE)/lib/libarray$(.LIB)
-
-build/$(BUILD_MODE)/lib/libarray$(.LIB): $(ARRAY_OBJ)\
-  | build/$(BUILD_MODE)/lib
+build/$(MODE)/lib/libarray$(.LIB): $(_obj_array) | build/$(MODE)/lib
 	$(AR) $(ARFLAGS) $@ $^
 
-# algebra
-.PHONY: lib_algebra
-lib_algebra: build/$(BUILD_MODE)/lib/libalgebra$(.LIB)
-
-build/$(BUILD_MODE)/lib/libalgebra$(.LIB): $(ALGEBRA_OBJ)\
-  | build/$(BUILD_MODE)/lib
+build/$(MODE)/lib/libalgebra$(.LIB): $(_obj_algebra) | build/$(MODE)/lib
 	$(AR) $(ARFLAGS) $@ $^
 
-# region
-.PHONY: lib_region
-lib_region: build/$(BUILD_MODE)/lib/libregion$(.LIB)
-
-build/$(BUILD_MODE)/lib/libregion$(.LIB):\
- $(REGION_OBJ) | build/$(BUILD_MODE)/lib
+build/$(MODE)/lib/libregion$(.LIB): $(_obj_region) | build/$(MODE)/lib
 	$(AR) $(ARFLAGS) $@ $^
 
-# mesh
-.PHONY: lib_mesh
-lib_mesh: build/$(BUILD_MODE)/lib/libmesh$(.LIB)
-
-build/$(BUILD_MODE)/lib/libmesh$(.LIB): $(MESH_OBJ) | build/$(BUILD_MODE)/lib
+build/$(MODE)/lib/libmesh$(.LIB): $(_obj_mesh) | build/$(MODE)/lib
 	$(AR) $(ARFLAGS) $@ $^
 
-# graphics
-.PHONY: lib_graphics
-lib_graphics: build/$(BUILD_MODE)/lib/libgraphics$(.LIB)\
-  | build/$(BUILD_MODE)/lib
-
-build/$(BUILD_MODE)/lib/libgraphics$(.LIB): $(GRAPHICS_OBJ)\
-  | build/$(BUILD_MODE)/lib
+build/$(MODE)/lib/libgraphics$(.LIB): $(_obj_graphics) | build/$(MODE)/lib
 	$(AR) $(ARFLAGS) $@ $^
 
-#shared
-.PHONY: lib_shared
-lib_shared: build/$(BUILD_MODE)/lib/libshared$(.DLL)
-
-build/$(BUILD_MODE)/lib/libshared$(.DLL):\
-  $(SHARED_OBJ) $(ALGEBRA_OBJ) $(ARRAY_OBJ) | build/$(BUILD_MODE)/lib
+build/$(MODE)/lib/libshared$(.DLL):\
+  $(_obj_shared) $(_obj_algebra) $(_obj_array) | build/$(MODE)/lib
 	$(CC) -o $@ -fPIC -shared $^
 
-# all
-.PHONY: lib
-lib: $(patsubst %, lib_%, $(MODULES))
+################################### linking ####################################
+build/$(MODE)/bin: | build/$(MODE)
+	-mkdir -p $@
 
-################################### bining ####################################
-build/$(BUILD_MODE)/bin: | build/$(BUILD_MODE)
-	-$(MKDIR) -p $@
-
-# array
-ARRAY_EXE_NAMES := $(wildcard code/c/main/array/*$(.SRC))
-ARRAY_EXE := $(patsubst code/c/main/array/main_%$(.SRC),\
-  build/$(BUILD_MODE)/bin/%$(.EXE), $(ARRAY_EXE_NAMES))
-
-.PHONY: bin_array
-bin_array: $(ARRAY_EXE)
-
-$(ARRAY_EXE): build/$(BUILD_MODE)/bin/%$(.EXE):\
- code/c/main/array/main_%$(.SRC) $(ARRAY_LDLIBS) | build/$(BUILD_MODE)/bin
-	$(CC) -o $@ $(CFLAGS) $(ARRAY_INC_EXE) $(CCFLAGS) $< $(ARRAY_LDLIBS)\
+$(_bin_array): build/$(MODE)/bin/%$(.EXE):\
+ code/c/main/array/main_%.c $(_libs_array) | build/$(MODE)/bin
+	$(CC) -o $@ $(CPPFLAGS) $(_include_array) $(CFLAGS) $< $(_libs_array)\
 	  $(LDFLAGS)
 
-# algebra
-ALGEBRA_EXE_NAMES := $(wildcard code/c/main/algebra/*$(.SRC))
-ALGEBRA_EXE := $(patsubst code/c/main/algebra/main_%$(.SRC),\
-  build/$(BUILD_MODE)/bin/%$(.EXE), $(ALGEBRA_EXE_NAMES))
+$(_bin_algebra): build/$(MODE)/bin/%$(.EXE):\
+  code/c/main/algebra/main_%.c $(_libs_algebra) | build/$(MODE)/bin
+	$(CC) -o $@ $(CPPFLAGS) $(_include_algebra) $(CFLAGS) $<\
+	  $(_libs_algebra) $(LDFLAGS)
 
-.PHONY: bin_algebra
-bin_algebra: $(ALGEBRA_EXE)
-
-$(ALGEBRA_EXE): build/$(BUILD_MODE)/bin/%$(.EXE):\
-  code/c/main/algebra/main_%$(.SRC) $(ALGEBRA_LDLIBS) | build/$(BUILD_MODE)/bin
-	$(CC) -o $@ $(CFLAGS) $(ALGEBRA_INC_EXE) $(CCFLAGS) $<\
-	  $(ALGEBRA_LDLIBS) $(LDFLAGS)
-
-# region
-REGION_EXE_NAMES := $(wildcard code/c/main/region/*$(.SRC))
-REGION_EXE := $(patsubst code/c/main/region/main_%$(.SRC),\
-  build/$(BUILD_MODE)/bin/%$(.EXE), $(REGION_EXE_NAMES))
-
-.PHONY: bin_region
-bin_region: $(REGION_EXE)
-
-$(REGION_EXE): build/$(BUILD_MODE)/bin/%$(.EXE):\
-  code/c/main/region/main_%$(.SRC) $(REGION_LDLIBS) | build/$(BUILD_MODE)/bin
-	$(CC) -o $@ $(CFLAGS) $(REGION_INC_EXE) $(CCFLAGS) $< $(REGION_LDLIBS)\
+$(_bin_region): build/$(MODE)/bin/%$(.EXE):\
+  code/c/main/region/main_%.c $(_libs_region) | build/$(MODE)/bin
+	$(CC) -o $@ $(CPPFLAGS) $(_include_region) $(CFLAGS) $< $(_libs_region)\
 	  $(LDFLAGS)
 
-# mesh
-MESH_EXE_NAMES := $(wildcard code/c/main/mesh/*$(.SRC))
-MESH_EXE := $(patsubst code/c/main/mesh/main_%$(.SRC),\
-  build/$(BUILD_MODE)/bin/%$(.EXE), $(MESH_EXE_NAMES))
-
-.PHONY: bin_mesh
-bin_mesh: $(MESH_EXE)
-
-$(MESH_EXE): build/$(BUILD_MODE)/bin/%$(.EXE):\
-  code/c/main/mesh/main_%$(.SRC) $(MESH_LDLIBS) | build/$(BUILD_MODE)/bin
-	$(CC) -o $@ $(CFLAGS) $(MESH_INC_EXE) $(CCFLAGS) $< $(MESH_LDLIBS)\
+$(_bin_mesh): build/$(MODE)/bin/%$(.EXE):\
+  code/c/main/mesh/main_%.c $(_libs_mesh) | build/$(MODE)/bin
+	$(CC) -o $@ $(CPPFLAGS) $(_include_mesh) $(CFLAGS) $< $(_libs_mesh)\
 	  $(LDFLAGS)
 
-# graphics
-GRAPHICS_EXE_NAMES := $(wildcard code/c/main/graphics/*$(.SRC))
-GRAPHICS_EXE := $(patsubst code/c/main/graphics/main_%$(.SRC),\
-  build/$(BUILD_MODE)/bin/%$(.EXE), $(GRAPHICS_EXE_NAMES))
+$(_bin_graphics): build/$(MODE)/bin/%$(.EXE):\
+  code/c/main/graphics/main_%.c $(_libs_graphics)\
+  | build/$(MODE)/bin
+	$(CC) -o $@ $(CPPFLAGS) $(_include_graphics)\
+	  $(shell pkg-config --cflags gtk+-3.0) $(CFLAGS) $<\
+	  $(shell pkg-config --libs gtk+-3.0) $(_libs_graphics) $(LDFLAGS)
 
-.PHONY: bin_graphics
-bin_graphics: $(GRAPHICS_EXE)
-
-$(GRAPHICS_EXE): build/$(BUILD_MODE)/bin/%$(.EXE):\
-  code/c/main/graphics/main_%$(.SRC) $(GRAPHICS_LDLIBS)\
-  | build/$(BUILD_MODE)/bin
-	$(CC) -o $@ $(CFLAGS) $(GRAPHICS_INC_EXE)\
-	  $(shell pkg-config --cflags gtk+-3.0) $(CCFLAGS) $<\
-	  $(shell pkg-config --libs gtk+-3.0) $(GRAPHICS_LDLIBS) $(LDFLAGS)
-
-# all
-.PHONY: bin
-bin: $(patsubst %, bin_%, array algebra region mesh graphics)
-# bin: $(patsubst %, bin_%, $(MODULES))
-
-############################## object dependencies #############################
-# at the moment executables depend on libraries and a change in one object file
-# could lead to a massive rebining of executables and redemoing of demos
-
-# at the moment this list is empty
--include build/$(BUILD_MODE)/bin/*$(.DEP)
-
-# array
-ARRAY_OBJ_DEP := $(patsubst build/$(BUILD_MODE)/bin/%$(.EXE),\
-  build/$(BUILD_MODE)/bin/%$(.DEP), $(ARRAY_EXE_NAMES))
-
-# algebra
-ALGEBRA_OBJ_DEP := $(patsubst build/$(BUILD_MODE)/bin/%$(.EXE),\
-  build/$(BUILD_MODE)/bin/%$(.DEP), $(ALGEBRA_EXE_NAMES))
-
-# region
-REGION_OBJ_DEP := $(patsubst build/$(BUILD_MODE)/bin/%$(.EXE),\
-  build/$(BUILD_MODE)/bin/%$(.DEP), $(REGION_EXE_NAMES))
-
-# mesh
-MESH_OBJ_DEP := $(patsubst build/$(BUILD_MODE)/bin/%$(.EXE),\
-  build/$(BUILD_MODE)/bin/%$(.DEP), $(MESH_EXE_NAMES))
-
-# graphics
-GRAPHICS_OBJ_DEP := $(patsubst build/$(BUILD_MODE)/bin/%$(.EXE),\
-  build/$(BUILD_MODE)/bin/%$(.DEP), $(GRAPHICS_EXE_NAMES))
-
-# graphics
-SHARED_OBJ_DEP := $(patsubst build/$(BUILD_MODE)/bin/%$(.EXE),\
-  build/$(BUILD_MODE)/bin/%$(.DEP), $(SHARED_EXE_NAMES))
+-include build/$(MODE)/bin/*.d
 
 ################################ running demos #################################
-build/$(BUILD_MODE)/demo: | build/$(BUILD_MODE)
+build/$(MODE)/demo: | build/$(MODE)
 	mkdir -p $@
 
 -include code/make/demo/array.mk
@@ -407,15 +342,15 @@ demo: $(patsubst %, demo_%, array algebra mesh region)
 # array
 .PHONY: obj_array_clean
 obj_array_clean:
-	-$(RM) $(ARRAY_OBJ) $(ARRAY_HEADER_DEP)
+	-$(RM) $(_obj_array) $(_dep_array)
 
 .PHONY: lib_array_clean
 lib_array_clean:
-	-$(RM) build/$(BUILD_MODE)/lib/libarray$(.LIB)
+	-$(RM) build/$(MODE)/lib/libarray$(.LIB)
 
 .PHONY: bin_array_clean
 bin_array_clean:
-	-$(RM) $(ARRAY_EXE) $(ARRAY_OBJ_DEP)
+	-$(RM) $(_bin_array)
 
 .PHONY: array_clean
 array_clean: obj_array_clean
@@ -426,15 +361,15 @@ array_distclean: lib_array_clean bin_array_clean demo_array_clean
 # algebra
 .PHONY: obj_algebra_clean
 obj_algebra_clean:
-	-$(RM) $(ALGEBRA_OBJ) $(ALGEBRA_HEADER_DEP)
+	-$(RM) $(_obj_algebra) $(_dep_algebra)
 
 .PHONY: lib_algebra_clean
 lib_algebra_clean:
-	-$(RM) build/$(BUILD_MODE)/lib/libalgebra$(.LIB)
+	-$(RM) build/$(MODE)/lib/libalgebra$(.LIB)
 
 .PHONY: bin_algebra_clean
 bin_algebra_clean:
-	-$(RM) $(ALGEBRA_EXE) $(ALGEBRA_OBJ_DEP)
+	-$(RM) $(_bin_algebra)
 
 .PHONY: algebra_clean
 algebra_clean: obj_algebra_clean
@@ -445,15 +380,15 @@ algebra_distclean: lib_algebra_clean bin_algebra_clean demo_algebra_clean
 # region
 .PHONY: obj_region_clean
 obj_region_clean:
-	-$(RM) $(REGION_OBJ) $(REGION_HEADER_DEP)
+	-$(RM) $(_obj_region) $(_dep_region)
 
 .PHONY: lib_region_clean
 lib_region_clean:
-	-$(RM) build/$(BUILD_MODE)/lib/libregion$(.LIB)
+	-$(RM) build/$(MODE)/lib/libregion$(.LIB)
 
 .PHONY: bin_region_clean
 bin_region_clean:
-	-$(RM) $(REGION_EXE) $(REGION_OBJ_DEP)
+	-$(RM) $(_bin_region)
 
 .PHONY: region_clean
 region_clean: obj_region_clean
@@ -464,15 +399,15 @@ region_distclean: lib_region_clean bin_region_clean demo_region_clean
 # mesh
 .PHONY: obj_mesh_clean
 obj_mesh_clean:
-	-$(RM) $(MESH_OBJ) $(MESH_HEADER_DEP)
+	-$(RM) $(_obj_mesh)
 
 .PHONY: lib_mesh_clean
 lib_mesh_clean:
-	-$(RM) build/$(BUILD_MODE)/lib/libmesh$(.LIB)
+	-$(RM) build/$(MODE)/lib/libmesh$(.LIB)
 
 .PHONY: bin_mesh_clean
 bin_mesh_clean:
-	-$(RM) $(MESH_EXE) $(MESH_OBJ_DEP)
+	-$(RM) $(_bin_mesh)
 
 .PHONY: mesh_clean
 mesh_clean: obj_mesh_clean
@@ -483,15 +418,15 @@ mesh_distclean: lib_mesh_clean bin_mesh_clean demo_mesh_clean
 # graphics
 .PHONY: obj_graphics_clean
 obj_graphics_clean:
-	-$(RM) $(GRAPHICS_OBJ) $(GRAPHICS_HEADER_DEP)
+	-$(RM) $(_obj_graphics) $(_dep_graphics)
 
 .PHONY: lib_graphics_clean
 lib_graphics_clean:
-	-$(RM) build/$(BUILD_MODE)/lib/libgraphics$(.LIB)
+	-$(RM) build/$(MODE)/lib/libgraphics$(.LIB)
 
 .PHONY: bin_graphics_clean
 bin_graphics_clean:
-	-$(RM) $(GRAPHICS_EXE) $(GRAPHICS_OBJ_DEP)
+	-$(RM) $(_bin_graphics)
 
 .PHONY: graphics_clean
 graphics_clean: obj_graphics_clean
@@ -502,44 +437,39 @@ graphics_distclean: lib_graphics_clean bin_graphics_clean demo_graphics_clean
 # shared
 .PHONY: obj_shared_clean
 obj_shared_clean:
-	-$(RM) $(SHARED_OBJ) $(SHARED_HEADER_DEP)
+	-$(RM) $(_obj_shared) $(_dep_shared)
 
 .PHONY: lib_shared_clean
 lib_shared_clean:
-	-$(RM) build/$(BUILD_MODE)/lib/libshared$(.LIB)
-
-# .PHONY: bin_shared_clean
-# bin_shared_clean:
-# 	-$(RM) $(SHARED_EXE) $(SHARED_OBJ_DEP)
+	-$(RM) build/$(MODE)/lib/libshared$(.LIB)
 
 .PHONY: shared_clean
 shared_clean: obj_shared_clean
 
 .PHONY: shared_distclean
-shared_distclean: lib_shared_clean #bin_shared_clean demo_shared_clean
+shared_distclean: lib_shared_clean
 
 # all
 .PHONY: obj_clean
 obj_clean:
-	-$(RM) -r build/$(BUILD_MODE)/obj
+	-$(RM) -r build/$(MODE)/obj
 
 .PHONY: lib_clean
 lib_clean:
-	-$(RM) -r build/$(BUILD_MODE)/lib
+	-$(RM) -r build/$(MODE)/lib
 
 .PHONY: bin_clean
 bin_clean:
-	-$(RM) -r build/$(BUILD_MODE)/bin
+	-$(RM) -r build/$(MODE)/bin
 
 # demo_<module>_clean is found in -include demo/<module>/demo_<module>.mk
 .PHONY: demo_clean
-demo_clean: $(patsubst %, demo_%_clean, array algebra region mesh graphics)
-	-$(RM) -r demo
-# demo_clean: $(patsubst %, demo_%_clean, $(MODULES))
+demo_clean: 
+	-$(RM) -r build/$(MODE)/demo
 
 .PHONY: clean
 clean: obj_clean
 
 .PHONY: distclean
-distclean: # clean lib_clean bin_clean demo_clean
+distclean:
 	-$(RM) -r build
