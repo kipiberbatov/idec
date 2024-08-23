@@ -824,13 +824,25 @@
   \end{equation}
 \end{definition}
 
+\begin{notation}
+  Let $d \in \N$,
+  $P$ be a polytope of dimension $d$.
+  The \textbf{(Euclidean) measure} of $P$ is denoted by
+  \begin{equation}
+    \mu_d(P) (= \mu(P)).
+  \end{equation}
+  If $P$ is with standard physical dimensions
+  (e.g., it has not been non-dimensionalised),
+  then $\mu_d(P)$ is of physical dimension $[L^d]$.
+\end{notation}
+
 \begin{definition}
   Let
     $d \in \N$,
     $K$ be a quasi-cubical mesh of dimension $d$,
     $p \in \{0, ..., d\}$.
   The \textbf{inner product of $p$-cochains}
-  $\inner \colon C^p K \times C^p K \to C^p K$
+  $\inner{\cdot}{\cdot}_p \colon C^p K \times C^p K \to C^p K$
   is defined as follows.
   If $b_p \in K_p$, then
   \begin{equation}
@@ -843,6 +855,8 @@
   inner product).
   Extending by bilinearity, we define the inner product of arbitrary
   $p$-cochains (since we already have it for pairs of basis $p$-cochains).
+
+  The operator $\inner{\cdot}{\cdot}_p$ has physical dimension $[L^{d - 2 p}]$.
 \end{definition}
 
 \begin{example}
@@ -873,7 +887,9 @@
     \inner{\delta_p^\star \pi^p}{\rho^{p - 1}}_{p - 1}
     = \inner{\pi^p}{\delta_{p - 1} \rho^{p - 1}}_p.
   \end{equation}
+  The operator $\delta^\star_p$ has physical dimension $[L^{-2}]$.
 \end{definition}
+
 \begin{proposition}
   Let
     $d \in \N$,
@@ -928,6 +944,12 @@
     \end{align}
   \end{subequations}
 \end{definition}
+
+\begin{remark}
+  Let $A$ be a matrix that has a physical dimension [X],
+    $B$ be a Moore-Penrose inverse of $A$.
+  Then $B\ [X^{-1}]$.
+\end{remark}
 
 \begin{theorem}
   Let $m, n \in \N$, $A$ be a real $m \times n$ matrix.
@@ -1013,6 +1035,7 @@
     \end{pmatrix}
     \in \R^{n \times d}.
   \end{equation}
+  The physical dimension of $\mathcal{L}_{\mathcal{N}_i}$ is $[L]$.
 \end{definition}
 
 \begin{definition}
@@ -1028,6 +1051,8 @@
         \pi^1(\mathcal{E}_{j_{k - 1}})
     ) \in \R^n.
   \end{equation}
+  The neighbor is a dimensionless operator.
+
   Define the \textbf{1-cochain embedding} $\overline{\pi^1}(x_i)$
   of $\pi^1$ at $\mathcal{N}_i$ by
   \begin{equation}
@@ -1035,6 +1060,7 @@
     \left(\mathcal{L}_{\mathcal{N}_i}\right)^* \widehat{\pi^1}_{\mathcal{N}_i}
     \in \R^d.
   \end{equation}
+  The $1$-cochain embedding operator has physical dimension $[L^{-1}]$.
 \end{definition}
 
 \begin{example}
@@ -1087,7 +1113,7 @@
 \begin{definition}
   \label{idec/vector_field_to_1_cochain/definition}
   Let $K$ be an embedded flat mesh and $u$ be a vector field on $|K|$.
-  Define the approximation $\underline{u} \in C^1 K$ as follows.
+  Define the \textbf{approximation} $\underline{u} \in C^1 K$ as follows.
   Let $\mathcal{E}_i$ be an edge with endpoints $\mathcal{N}_{i_0}$ and
   $\mathcal{N}_{i_1}$, oriented from $\mathcal{N}_{i_0}$ to $\mathcal{N}_{i_1}$.
   Then
@@ -1098,6 +1124,7 @@
         + (\mathcal{L}_{\mathcal{N}_{i_1}} u(x_{i_1}))_1
       ).
   \end{equation}
+  The approximation operator is of physical dimension $[L]$.
 \end{definition}
 
 \begin{example}
@@ -1160,30 +1187,35 @@
   We define the following data:
   \begin{itemize}
     \item
-      $n \in K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
+      $n \colon K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
     \item
       $\widehat{\phantom{T}} \colon C^1 K \to
         \displaystyle \prod_{x_0 \in K_0} \R^{n(x_0)}$
-      denotes the neighbor representation of a $1$-cochain;
+      denotes the neighbor representation of a $1$-cochain,
+      $\widehat{\phantom{T}}\ [1]$;
     \item
       $\displaystyle
         \mathcal{L} \colon \prod_{x_0 \in K_0} M_{n(x_0), d}(\R)$
-      denotes the node neighbors matrix;
+      denotes the node neighbors matrix,
+      $\mathcal{L}\ [L]$;
     \item
       $\displaystyle
         \star \colon \prod_{(m, n) \in \N^2} M_{m, n}(\R) \to M_{n, m}(\R)$
-      denotes the Moore-Penrose inverse of a rectangular matrix;
+      denotes the Moore-Penrose inverse of a rectangular matrix,
+      ($\star$ reverses physical dimensions);
     \item
       $\overline{\phantom{T}} \colon C^1 K \to \Hom_\R(C^0 K, \R^d)$
       denotes the approximation of a $1$-cochain as a Euclidean vector-valued
       $0$-cochain,
       \begin{equation}
         \overline{\pi^1} c_0 :=
-        (\mathcal{L}_{c_0})^\star \cdot (\widehat{\pi^1})_{c_0};
+        (\mathcal{L}_{c_0})^\star \cdot (\widehat{\pi^1})_{c_0},
       \end{equation}
+      $\overline{\phantom{T}}\ [L^{-1}]$;
     \item
       $\underline{\phantom{T}} \colon \chi X \to C^1 K$
-      denotes the discretization of a continuum vector field as a $1$-cochain;
+      denotes the discretization of a continuum vector field as a $1$-cochain,
+      $\underline{\phantom{T}}\ [L]$;
   \end{itemize}
 \end{discussion}
 
@@ -1203,7 +1235,7 @@
   combinations of the elements in $T$.
 \end{notation}
 
-\begin{definition}
+\begin{notation}
   Let
     $d \in \N$,
     $K$ be a flat mesh of dimension $d$,
@@ -1212,14 +1244,14 @@
   When $c_{0}$ has more than one non-parallel adjacent hyperfaces
   (for instance, in $3$D, it can lie on an edge or at a corner) , we will take
   some average of the normals to those faces.
-  The easiest one is to sum all exterior normals and divide by the length of the
-  sum.
+  The easiest one is to sum all exterior unit normals and divide by the length
+  of the sum.
   This is the approach taken in the software implementation.
 
   When $\Gamma \subseteq (\partial K)_0$, we will understand ${\bf n}$ as
   a function from $\Gamma$ to $\R^d$ or as a linear map in
   $\Hom({\rm Free}_\R(\Gamma), \R^d)$.
-\end{definition}
+\end{notation}
 
 We are going to state the governing laws for the discrete heat transport
 phenomenon.
@@ -1249,7 +1281,7 @@ phenomenon.
       Let
         $K' := K \setminus \partial K$ be the interior of $K$,
         $f \in C^0 K'$ be the external heat source of physical dimension
-          $[E L^{-1} T^{-1}]$.
+          $[E L^{-3} T^{-1}]$.
       \textbf{Conservation of heat energy} is modeled by the equation
       \begin{equation}
         \restrict{\frac{\partial Q}{\partial t}}{K'_0} =
@@ -1300,7 +1332,7 @@ phenomenon.
     \item
       Let
         ${\bf n} \colon \Gamma_N \to \R^d$
-          be the generalized exterior normal,
+          be the dimensionless generalized exterior unit normal,
         $g_N \colon [t_0, \infty) \to ({\rm Free}_\R(\Gamma_N))^*$
           of physical dimension $[E L^{-1} T^{-1}]$
           be the prescribed flux on the Neumann boundary $\Gamma_N$.
@@ -1327,47 +1359,50 @@ the following formulation with only one unknown (the temperature $u$).
     \item
       $K' := K \setminus \partial K$ be the interior of $K$;
     \item
-      $t_0 \in \R$ be the initial time;
+      $t_0 \in \R$ be the initial time, $t_0\ [T]$;
     \item
-      $u_0 \in C^0 K$ be the initial temperature;
+      $u_0 \in C^0 K$ be the initial temperature, $u_0\ [\Theta]$;
     \item
-      $f \in C^0 K'$ be the external heat source;
+      $f \in C^0 K'$ be the external heat source, $f\ [E L^{-3} T^{-1}]$;
     \item
       $\Gamma_D, \Gamma_N$ form a partition of $(\partial K)_0$;
     \item
-      ${\bf n} \colon \Gamma_N \to \R^d$ be the generalized exterior normal;
+      ${\bf n} \colon \Gamma_N \to \R^d$
+      be the generalized exterior unit normal, ${\bf n}\ [1]$;
     \item
       $g_D \colon [t_0, \infty) \to ({\rm Free}_\R(\Gamma_D))^*$
-      be the Dirichlet boundary condition;
+      be the Dirichlet boundary condition, $g_D\ [\Theta]$;
     \item
       $g_N \colon [t_0, \infty) \to ({\rm Free}_\R(\Gamma_N))^*$
-      be the Neumann boundary condition;
+      be the Neumann boundary condition, $g_N\ [E L^{-1} T^{-1}]$;
     \item
       $\pi_0 \colon C^0 K \to C^0 K$ be a material property of the nodes of $K$
-      (its matrix in the standard basis is diagonal);
+      (its matrix in the standard basis is diagonal),
+      $\pi_0\ [E L^{-3} \Theta^{-1}]$;
     \item
       $\pi_1 \colon C^1 K \to C^1 K$ be a material property of the edges of $K$
-      (its matrix in the standard basis is diagonal).
+      (its matrix in the standard basis is diagonal),
+      $\pi_1\ [E L^{-1} T^{-1} \Theta^{-1}]$.
   \end{itemize}
   We are solving the following problem.
   \begin{equation}
     \begin{split}
-      & \text{Find $u \in [t_0, \infty) \to C^0 K$ such that} \\
+      & \text{Find $u \in [t_0, \infty) \to C^0 K$, $u\ [\Theta]$, such that} \\
       &
       \begin{cases}
         \restrict{\frac{\partial (\pi_0 u)}{\partial t}}{K'_0} =
         \restrict{((\delta_1^\star \circ \pi_1 \circ \delta_0) u)}{K'_0} + f
-        & (\text{conservation of heat energy}), \\
+        & (\text{conservation of heat energy},\ [E L^{-3} T^{-1}]), \\
 %
         u(t_0, \cdot) = u_0
-        & (\text{initial condition}), \\
+        & (\text{initial condition},\ [\Theta]), \\
 %
         \restrict{u}{\Gamma_D} = g_D
-        & (\text{Dirichlet boundary condition}), \\
+        & (\text{Dirichlet boundary condition},\ [\Theta]), \\
 %
         \restrict{\overline{(\pi_1 \circ \delta_0) u}}{\Gamma_N}
         \cdot {\bf n} = g_N
-        & (\text{Neumann boundary condition}).
+        & (\text{Neumann boundary condition},\ [E L^{-1} T^{-1}]).
       \end{cases}
     \end{split}
   \end{equation}
