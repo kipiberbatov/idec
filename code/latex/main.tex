@@ -118,7 +118,7 @@
 
 \title{IDEC documentation}
 \author{Kiprian Berbatov}
-\date{13 August 2024}
+\date{27 August 2024}
 
 \begin{document}
 
@@ -1219,6 +1219,275 @@
   \end{itemize}
 \end{discussion}
 
+\section{Continuous heat transport}
+
+\begin{discussion}
+  In this section we will consider the heat transport phenomenon in both
+  transient and steady-state form.
+  Our formulation will be represented in the language of differential forms
+  because they better represent the meaning of physical quantities.
+  Various (weak) reformulations will be presented -- those reformulations will
+  give us hints on how to construct purely discrete formulations.
+\end{discussion}
+
+\begin{discussion}
+  Let:
+  \begin{itemize}
+    \item $X$ be an open region in $3$D (the space region);
+    \item $t_0 \in \R$ be the initial time, $I = [t_0, \infty)$.
+  \end{itemize}
+  The main physical quantities in our model are:
+  \begin{itemize}
+    \item
+      temperature $u \colon I \to \Omega^0 X$ of physical dimension $[\Theta]$:
+      for any moment $t \in I$ and any point $x \in X$,
+      \begin{equation}
+        \text{``temperature $[\Theta]$ on $x$ at time $t$''}
+        = u(t)(x) := u(t, x);
+      \end{equation}
+    \item
+      heat energy $Q \colon I \to \Omega^3 K$ of physical dimension $[E]$:
+      for any moment $t \in I$ and any volume $V \subseteq X$,
+      \begin{equation}
+        \text{``total heat energy $[E]$ of the system on $V$ at time $t$''}
+        = \int_V Q(t);
+      \end{equation}
+    \item
+      heat flow $q \colon I \to \Omega^2 X$ of physical dimension $[E T^{-1}]$:
+      for any time interval $[t_1, t_2] \subset I$
+      and any ($2$D) surface $S \subset X$,
+      \begin{equation}
+        \text{``total inflow $[E]$ through $S$ between $t_1$ and $t_2$''}
+        = \int_{t_1}^{t_2} \left(\int_S q(\cdot) \right)\, d t.
+      \end{equation}
+  \end{itemize}
+  The governing laws are formulated as follows.
+  \begin{itemize}
+    \item
+      Let $f \colon I \to \Omega^3 X$ be an external heat source
+      of physical dimension $[E T^{-1}]$ (power):
+      for any time interval $[t_1, t_2] \subset I$
+      and any volume $V \subseteq X$,
+      \begin{equation}
+        \text{``total net heat production $[E]$
+          in $V$ between $t_1$ and $t_2$''}
+        = \int_{t_1}^{t_2} \left(\int_V f(\cdot) \right)\, d t.
+      \end{equation}
+      \textbf{Conservation of heat energy} is given by the following relation:
+      for any time interval $[t_1, t_2] \subset I$
+      and any volume $V \subseteq X$,
+      \begin{equation}
+        \begin{split}
+        \text{``heat difference on $V$ between moments $t_2$ and $t_1$''}
+        & =
+          \text{``heat inflow through the boundary of $V$ in $[t_1, t_2]$''} \\
+        & +
+          \text{``heat production inside $V$ in $[t_1, t_2]$''}.
+        \end{split}
+      \end{equation}
+      In symbolic terms, the last equation is written as
+      \begin{equation}
+        \int_V (Q(t_2) - Q(t_1)) =
+          \int_{t_1}^{t_2} \left(\int_{\partial V} q(\cdot) \right)\, d t
+        + \int_{t_1}^{t_2} \left(\int_V f(\cdot) \right)\, d t.
+      \end{equation}
+      Using Stokes' theorem twice, we get the equation
+      \begin{equation}
+        \int_{t_1}^{t_2}
+          \left(\int_V \frac{\partial Q}{\partial t}\right)\, d t =
+          \int_{t_1}^{t_2} \left(\int_V d_X q \right)\, d t
+        + \int_{t_1}^{t_2} \left(\int_V f \right)\, d t.
+      \end{equation}
+      Since the time interval $[t_1, t_2]$ and the volume $V$ are arbitrary,
+      we can drop integrals and arrive at the differential form
+      \begin{equation}
+        \frac{\partial Q}{\partial t} = d_X q + f.
+      \end{equation}
+    \item
+      Let
+        $u_0 \in \Omega^0 X$ be the initial temperature, $u_0\ [\Theta]$.
+      The \textbf{initial condition} is the prescribed initial temperature:
+      \begin{equation}
+        u(t_0) = u_0.
+      \end{equation}
+    \item
+      Let $\pi_0 \colon C^0 K \to C^0 K$
+      of physical dimension $[E L^{-3} \Theta^{-1}]$
+      be a material property of the nodes of $K$,
+      playing the role of volumetric heat capacity
+      (its matrix in the standard basis is diagonal).
+      The \textbf{relation between temperature and heat energy} is given by
+      \begin{equation}
+        \tilde{Q}^0 := \star_3 Q = \pi_0 u.
+      \end{equation}
+    \item
+      Let $\pi_1 \colon C^1 K \to C^1 K$
+      of physical dimension $[E L^{-1} T^{-1} \Theta^{-1}]$
+      be a material property of the edges of $K$,
+      playing the role of thermal conductivity
+      (its matrix in the standard basis is diagonal).
+      The \textbf{Fourier's constitutive relation} is given by
+      \begin{equation}
+        \tilde{q} := \star_2 q = \pi_1 (d_0 u).
+      \end{equation}
+  \end{itemize}
+  We complete our model with boundary conditions.
+  Let $\Gamma_D, \Gamma_N$ form a partition of $\partial X$
+  into Dirichlet and Neumann boundary.
+  \begin{itemize}
+    \item
+      Let $g_D \colon I \to \Omega^0 \Gamma_D$
+      of physical dimension $[\Theta]$
+      be the prescribed temperature on the Dirichlet boundary $\Gamma_D$.
+      The \textbf{Dirichlet boundary condition} is given by
+      \begin{equation}
+        \tr_{\Gamma_D} u := \restrict{u}{\Gamma_D} = g_D.
+      \end{equation}
+    \item
+      Let
+        $g_N \colon I \to \Omega^2 \Gamma_N$
+          of physical dimension $[E T^{-1}]$
+          be the prescribed flow on the Neumann boundary $\Gamma_N$.
+      The \textbf{Neumann boundary condition} is given by
+      \begin{equation}
+        \tr_{\Gamma_N} q = g_N.
+      \end{equation}
+      The prescribed flow is usually calculated using its density form
+      \begin{equation}
+        \widetilde{g_N} := \star^{(\Gamma_N)}_2 g_N.
+      \end{equation}
+  \end{itemize}
+\end{discussion}
+
+\begin{remark}
+  The strong differential formulation is obtained by representing heat energy
+  and heat flow in terms of temperature.
+\end{remark}
+
+\begin{formulation}
+  \label{idec/continuous_heat_transport/strong-formulation}
+  Let:
+  \begin{itemize}
+    \item
+      $X$ be a bounded open region in $3$-dimensional Euclidean space;
+    \item
+      $t_0 \in \R$ be the initial time, $t_0\ [T]$;
+    \item
+      $I := [t_0, \infty)$;
+    \item
+      $u_0 \in \Omega^0 X$ be the initial temperature, $u_0\ [\Theta]$;
+    \item
+      $f \in \Omega^0 X$ be the external heat source, $f\ [E L^{-3} T^{-1}]$;
+    \item
+      $\Gamma_D, \Gamma_N$ form a partition of $(\partial K)_0$;
+    \item
+      $g_D \colon I \to \Omega^0 \Gamma_D$
+      be the Dirichlet boundary condition, $g_D\ [\Theta]$;
+    \item
+      $g_N \colon I \to \Omega^0 \Gamma_N$
+      be the Neumann boundary condition, $g_N\ [E L^{-2} T^{-1}]$;
+    \item
+      $\pi_0 \colon \Omega^0 M \to \Omega^0 M$ be the volumetric heat capacity,
+      $\pi_0\ [E L^{-3} \Theta^{-1}]$;
+    \item
+      $\pi_1 \colon \Omega^1 X \to \Omega^1 X$ be the thermal conductivity,
+      $\pi_1\ [E L^{-1} T^{-1} \Theta^{-1}]$.
+  \end{itemize}
+  We are solving the following problem.
+  \begin{equation}
+    \begin{split}
+      & \text{Find $u \colon I \to \Omega^0 X$, $u\ [\Theta]$, such that} \\
+      &
+      \begin{cases}
+        \frac{\partial (\pi_0 u)}{\partial t} =
+        (d_1^\star \circ \pi_1 \circ d_0) u + f
+        & (\text{point-wise conservation of heat energy},
+          \ [E L^{-3} T^{-1}]), \\
+%
+        u(t_0, \cdot) = u_0
+        & (\text{initial condition},\ [\Theta]), \\
+%
+        \restrict{u}{\Gamma_D} = g_D
+        & (\text{Dirichlet boundary condition},\ [\Theta]), \\
+%
+        (\tr_{\Gamma_N} \circ \star_1\circ \pi_1 \circ d_0) u
+        = \star^{\Gamma_N}_0 g_N
+        & (\text{Neumann boundary condition},\ [E T^{-1}]).
+      \end{cases}
+    \end{split}
+  \end{equation}
+\end{formulation}
+
+\begin{discussion}
+  Using the variables from
+  \Cref{idec/continuous_heat_transport/strong-formulation}
+  we are going to introduce an alternative (weak) formulation.
+  Let $v \in \Ker \tr_{\Gamma_D}$ be a test function
+  (later on the differentiablity assumptions on $v$ can be weakened).
+  Multiply the conservation of energy with $v$ and integrate over $X$:
+  \begin{equation}
+    \begin{split}
+      \int_X v \wedge \frac{\partial Q}{\partial t}
+      & = \int_X (v \wedge d q) + \int_X (v \wedge f) \\
+      & = \int_{\partial X} \tr_{\partial X} (v \wedge q)
+        - \int_X (d v \wedge q)
+        + \int_X (v \wedge f) \\
+      & = \int_{\Gamma_D} (\tr_{\Gamma_D} v \wedge \tr_{\Gamma_D} q)
+        + \int_{\Gamma_N} (\tr_{\Gamma_N} v \wedge \tr_{\Gamma_N} q)
+        - \int_X (d v \wedge \star_1 \pi_1 d_0 u)
+        + \int_X (v \wedge \star_0 \tilde{f}) \\
+      & = 0
+        + \int_{\Gamma_N}
+          (\tr_{\Gamma_N} v \wedge \star^{(\Gamma_N)}_0 \widetilde{g_N})
+        - \int_X (d v \wedge \star_1 \pi_1 d_0 u)
+        + \int_X (v \wedge \star_0 \tilde{f}) \\
+      & = \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{(\Gamma_N)}
+        - \inner{d v}{\pi_1 d_0 u}_{(X)}
+        + \inner{v}{\tilde{f}}_{(X)}.
+    \end{split}
+  \end{equation}
+  We also have:
+  \begin{equation}
+    \begin{split}
+      \int_X v \wedge \frac{\partial Q}{\partial t}
+      & = \frac{\partial}{\partial t} \left(\int_X v \wedge Q\right) \\
+      & = \frac{\partial}{\partial t}
+          \left(\int_X v \wedge \star_3 (\pi_0 u)\right) \\
+      & = \frac{\partial}{\partial t} \inner{v}{\pi_0 u}_X.
+    \end{split}
+  \end{equation}
+  Hence, we get the following (primal weak) formulation.
+  \begin{equation}
+    \begin{split}
+      & \text{Find $u \colon I \to \Omega^0 X$, $u\ [\Theta]$, such that} \\
+      &
+      \begin{cases}
+        \forall v \in \Ker \tr_{\Gamma_D},\
+          \frac{\partial}{\partial t} \inner{v}{\pi_0 u}_X =
+            \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{(\Gamma_N)}
+          - \inner{d_0 v}{\pi_1 d_0 u}_{(X)}
+          + \inner{v}{\tilde{f}}_{(X)} \\
+        u(t_0, \cdot) = u_0 \\
+        \tr_{\Gamma_D} u = g_D.
+      \end{cases}
+    \end{split}
+  \end{equation}
+  The steady-state model reads as follows:
+  \begin{equation}
+    \begin{split}
+      & \text{Find $u \in H^0(X)$, $u\ [\Theta]$, such that} \\
+      &
+      \begin{cases}
+        \forall v \in \Ker \tr_{\Gamma_D},\
+          \inner{d_0 v}{\pi_1 d_0 u}_{(X)}
+          = \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{(\Gamma_N)}
+          + \inner{v}{\tilde{f}}_{(X)} \\
+        \tr_{\Gamma_D} u = g_D.
+      \end{cases}
+    \end{split}
+  \end{equation}
+\end{discussion}
+
 \section{Discrete heat transport}
 
 \begin{notation}
@@ -1261,19 +1530,17 @@ phenomenon.
   \begin{itemize}
     \item $M$ be a manifold-like flat mesh of dimension $3$;
     \item $K$ be the Forman subdivision of $M$;
-    \item $t_0 \in \R$ be the initial time.
+    \item $t_0 \in \R$ be the initial time, $I = [t_0, \infty)$.
   \end{itemize}
   Physical quantities in our model are:
   \begin{itemize}
     \item
-      temperature $u \in [t_0, \infty) \to C^0 K$ of physical dimension
-      $[\Theta]$;
+      temperature $u \colon I \to C^0 K$ of physical dimension $[\Theta]$;
     \item
-      heat energy density $Q \in [t_0, \infty) \to C^0 K$ of physical dimension
+      heat energy density $Q \colon I \to C^0 K$ of physical dimension
       $[E L^{-3}]$;
     \item
-      heat flux $q \in [t_0, \infty) \to C^1 K$ of physical dimension
-      $[E L^{-1} T^{-1}]$.
+      heat flux $q \colon I \to C^1 K$ of physical dimension $[E L^{-1} T^{-1}]$.
   \end{itemize}
   The governing laws are the following.
   \begin{itemize}
@@ -1289,10 +1556,8 @@ phenomenon.
       \end{equation}
     \item
       Let
-        $t_0 \in \R$ be the initial time,
-        $u_0 \in C^0 K$ be the initial temperature of physical dimension
-          $[\Theta]$.
-      The \textbf{initial condition} is
+        $u_0 \in C^0 K$ be the initial temperature, $u_0\ [\Theta]$.
+      The \textbf{initial condition} is prescribed initial temperature:
       \begin{equation}
         u(t_0, \cdot) = u_0.
       \end{equation}
@@ -1340,7 +1605,7 @@ phenomenon.
       \begin{equation}
         \restrict{\overline{q}}{\Gamma_N} \cdot {\bf n} = g_N.
       \end{equation}
-  \end{itemize} 
+  \end{itemize}
 \end{discussion}
 
 By substituting $q$ with $\pi_1 \delta_0 u$ and $Q$ with $\pi_0 u$ we arrive at
@@ -1464,6 +1729,92 @@ the following formulation with only one unknown (the temperature $u$).
   % then $h^2 / \tau$ should be close to the thermal diffusivity $\pi_1 / \pi_0$
   % (both of physical dimension $[L^2 T^{-1}]$).
 \end{discussion}
+
+\begin{formulation}
+  Let
+  \begin{itemize}
+    \item
+      $M$ be a manifold-like flat mesh of dimension $3$;
+    \item
+      $K$ be the Forman subdivision of $M$;
+    \item
+      $K' := K \setminus \partial K$ be the interior of $K$;
+    \item
+      $t_0 \in \R$ be the initial time, $t_0\ [T]$;
+    \item
+      $I := [t_0, \infty)$
+    \item
+      $u_0 \in C^0 K$ be the initial temperature, $u_0\ [\Theta]$;
+    \item
+      $\tilde{f} \in C^0 K'$ be the density form of the heat source,
+      $\tilde{f}\ [E L^{-3} T^{-1}]$;
+    \item
+      $\Gamma_D, \Gamma_N$ form a partition of $(\partial K)$;
+    \item
+      $g_D \colon I \to C^0 \Gamma_D$
+      be the Dirichlet boundary condition, $g_D\ [\Theta]$;
+    \item
+      $\widetilde{g_N} \colon I \to C^0 \Gamma_N$
+      be the density form of the Neumann boundary condition,
+      $\widetilde{g_N}\ [E L^{-2} T^{-1}]$;
+    \item
+      $\pi_0 \colon C^0 K \to C^0 K$ be the volumetric heat capacity
+      (its matrix in the standard basis is diagonal),
+      $\pi_0\ [E L^{-3} \Theta^{-1}]$;
+    \item
+      $\pi_1 \colon C^1 K \to C^1 K$ be the thermal conductivity
+      (its matrix in the standard basis is diagonal),
+      $\pi_1\ [E L^{-1} T^{-1} \Theta^{-1}]$.
+  \end{itemize}
+  We are solving the following problem:
+  \begin{equation}
+    \begin{split}
+      & \text{Find $u \colon I \to C^0 K$, $u\ [\Theta]$, such that} \\
+      &
+      \begin{cases}
+        \forall v \in \Ker \tr_{\Gamma_D},\
+          \frac{\partial}{\partial t} \inner{v}{\pi_0 u}_{X, 0} =
+            \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{\Gamma_N, 0}
+          - \inner{\delta_0 v}{\pi_1 \delta_0 u}_{X, 1}
+          + \inner{v}{\tilde{f}}_{X, 0} 
+        & [E T^{-1} \Theta], \\
+        u(t_0, \cdot) = u_0 & [\Theta], \\
+        \tr_{\Gamma_D} u = g_D & [\Theta].
+      \end{cases}
+    \end{split}
+  \end{equation}
+  The steady-state model reads as follows:
+  \begin{equation}
+    \begin{split}
+      & \text{Find $u \in C^0 K$, $u\ [\Theta]$, such that} \\
+      &
+      \begin{cases}
+        \forall v \in \Ker \tr_{\Gamma_D},\
+          \inner{\delta_0 v}{\pi_1 \delta_0 u}_{X, 1}
+          = \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{\Gamma_N, 0}
+          + \inner{v}{\tilde{f}}_{X, 0}
+      & [E T^{-1} \Theta], \\
+        \tr_{\Gamma_D} u = g_D & [\Theta].
+      \end{cases}
+    \end{split}
+  \end{equation}
+  In both cases in the post-processing phase we have:
+  \begin{subequations}
+    \begin{alignat}{2}
+      & \tilde{q} && := \pi_1 \delta_0 u, \\
+      & q && \approx \star_1 \tilde{q}, \\
+      & \tilde{Q} && := \pi_0 u, \\
+      & Q && \approx \star_0 \tilde{Q}.
+    \end{alignat}
+  \end{subequations}
+  If we are given $g_N$ or $f$, then we define
+  \begin{subequations}
+    \begin{alignat}{2}
+      & \tilde{f} && := \star_3 f, \\
+      & \tilde{g_N} && := \star_2^{(\Gamma_N)} g_N.
+    \end{alignat}
+  \end{subequations}
+\end{formulation}
 
 \section{Discrete elasticity}
 

@@ -16,7 +16,7 @@ build/website: | build
 .PHONY: website_fast
 website_fast: code/latex/main.tex build/website/index.html\
   build/website/style.css | build/docs build/website
-	pdflatex -output-directory=$(word 1, $|) $<
+	pdflatex -halt-on-error -output-directory=$(word 1, $|) $<
 	cp $(word 1, $|)/main.pdf $(word 2, $|)
 
 .PHONY: site_clean

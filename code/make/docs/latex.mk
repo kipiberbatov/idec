@@ -10,7 +10,7 @@ build/docs/main.pdf: code/latex/main.tex | build/docs
 
 .PHONY: docs_fast
 docs_fast: code/latex/main.tex | build/docs
-	pdflatex -output-directory=$| $<
+	pdflatex -halt-on-error -output-directory=$| $<
 
 .PHONY: docs_clean
 docs_clean:
