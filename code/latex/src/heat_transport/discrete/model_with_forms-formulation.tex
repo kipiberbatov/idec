@@ -1,0 +1,85 @@
+\begin{formulation}
+  Let
+  \begin{itemize}
+    \item
+      $M$ be a manifold-like flat mesh of dimension $3$;
+    \item
+      $K$ be the Forman subdivision of $M$;
+    \item
+      $K' := K \setminus \partial K$ be the interior of $K$;
+    \item
+      $t_0 \in \R$ be the initial time, $t_0\ [T]$;
+    \item
+      $I := [t_0, \infty)$
+    \item
+      $u_0 \in C^0 K$ be the initial temperature, $u_0\ [\Theta]$;
+    \item
+      $\tilde{f} \in C^0 K'$ be the density form of the heat source,
+      $\tilde{f}\ [E L^{-3} T^{-1}]$;
+    \item
+      $\Gamma_D, \Gamma_N$ form a partition of $(\partial K)$;
+    \item
+      $g_D \colon I \to C^0 \Gamma_D$
+      be the Dirichlet boundary condition, $g_D\ [\Theta]$;
+    \item
+      $\widetilde{g_N} \colon I \to C^0 \Gamma_N$
+      be the density form of the Neumann boundary condition,
+      $\widetilde{g_N}\ [E L^{-2} T^{-1}]$;
+    \item
+      $\pi_0 \colon C^0 K \to C^0 K$ be the volumetric heat capacity
+      (its matrix in the standard basis is diagonal),
+      $\pi_0\ [E L^{-3} \Theta^{-1}]$;
+    \item
+      $\pi_1 \colon C^1 K \to C^1 K$ be the thermal conductivity
+      (its matrix in the standard basis is diagonal),
+      $\pi_1\ [E L^{-1} T^{-1} \Theta^{-1}]$.
+  \end{itemize}
+  We are solving the following problem:
+  \begin{equation}
+    \begin{split}
+      & \text{Find $u \colon I \to C^0 K$, $u\ [\Theta]$, such that} \\
+      &
+      \begin{cases}
+        \forall v \in \Ker \tr_{\Gamma_D},\
+          \frac{\partial}{\partial t} \inner{v}{\pi_0 u}_{X, 0} =
+            \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{\Gamma_N, 0}
+          - \inner{\delta_0 v}{\pi_1 \delta_0 u}_{X, 1}
+          + \inner{v}{\tilde{f}}_{X, 0} 
+        & [E T^{-1} \Theta], \\
+        u(t_0, \cdot) = u_0 & [\Theta], \\
+        \tr_{\Gamma_D} u = g_D & [\Theta].
+      \end{cases}
+    \end{split}
+  \end{equation}
+  The steady-state model reads as follows:
+  \begin{equation}
+    \begin{split}
+      & \text{Find $u \in C^0 K$, $u\ [\Theta]$, such that} \\
+      &
+      \begin{cases}
+        \forall v \in \Ker \tr_{\Gamma_D},\
+          \inner{\delta_0 v}{\pi_1 \delta_0 u}_{X, 1}
+          = \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{\Gamma_N, 0}
+          + \inner{v}{\tilde{f}}_{X, 0}
+      & [E T^{-1} \Theta], \\
+        \tr_{\Gamma_D} u = g_D & [\Theta].
+      \end{cases}
+    \end{split}
+  \end{equation}
+  In both cases in the post-processing phase we have:
+  \begin{subequations}
+    \begin{alignat}{2}
+      & \tilde{q} && := \pi_1 \delta_0 u, \\
+      & q && \approx \star_1 \tilde{q}, \\
+      & \tilde{Q} && := \pi_0 u, \\
+      & Q && \approx \star_0 \tilde{Q}.
+    \end{alignat}
+  \end{subequations}
+  If we are given $g_N$ or $f$, then we define
+  \begin{subequations}
+    \begin{alignat}{2}
+      & \tilde{f} && := \star_3 f, \\
+      & \tilde{g_N} && := \star_2^{(\Gamma_N)} g_N.
+    \end{alignat}
+  \end{subequations}
+\end{formulation}

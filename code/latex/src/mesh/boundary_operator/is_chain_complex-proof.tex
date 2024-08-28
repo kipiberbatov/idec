@@ -1,0 +1,36 @@
+\begin{proof}
+  It is enough to prove that for any $p \in \{0, ..., d\}$, $c_p \in M_d$,
+  \begin{equation}
+    \partial^2 c_p = 0.
+  \end{equation}
+  The proposition is trivially true for $p = 0$ and $p = 1$
+  because $\partial_0 = 0$.
+  Assume that $p \geq 2$.
+  Then
+  \begin{equation}
+    \begin{split}
+      \partial^2 a_p
+      & = \partial_{p - 1} (\partial_p a_p) \\
+      & = \partial_{p - 1}
+      \left(
+        \sum_{b_{p - 1} \prec a_p} \varepsilon(a_p, b_{p - 1}) b_{p - 1}
+      \right) \\
+      & =
+      \sum_{b_{p - 1} \prec a_p}
+        \sum_{c_{p - 2} \prec b_{p - 1}}
+            \varepsilon(a_p, b_{p - 1})
+            \varepsilon(b_{p - 1}, c_{p - 2})
+            c_{p - 2} \\
+      & =
+      \sum_{c_{p - 2} \prec a_p}
+        \left(
+          \sum _{b_{p - 1} \in (c_{p - 2}, a_p)}
+            \varepsilon(a_p, b_{p - 1}) \varepsilon(b_{p - 1}, c_{p - 2})
+        \right)
+        c_{p - 2} \\
+      & = 0
+    \end{split}
+  \end{equation}
+  (the last equation follows from the last condition in the definition of
+  \hyperref[idec:relative_orientation:definition]{relative orientation}).
+\end{proof}

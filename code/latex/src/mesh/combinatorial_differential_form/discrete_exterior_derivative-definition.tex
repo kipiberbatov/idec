@@ -1,0 +1,14 @@
+\begin{definition}
+  Let
+    $d \in \N$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$
+    $\partial$ be a boundary operator on $M$.
+  The \textbf{discrete differential} on $M$ is the linear map
+  \begin{equation}
+    D \colon \Omega^\bullet \to \Omega^\bullet
+  \end{equation}
+  which maps a $p$-form $\omega$ to a $(p + 1)$-form by the formula
+  \begin{equation}
+    D \omega := \omega \circ \partial - (-1)^p \partial \circ \omega.
+  \end{equation}
+\end{definition}

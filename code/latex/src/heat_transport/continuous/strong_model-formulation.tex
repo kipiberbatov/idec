@@ -1,0 +1,56 @@
+\begin{formulation}
+  \label{idec/continuous_heat_transport/strong-formulation}
+  The strong differential formulation is obtained by representing heat energy
+  and heat flow in terms of temperature.
+  
+  Let:
+  \begin{itemize}
+    \item
+      $X$ be a bounded open region in $3$-dimensional Euclidean space;
+    \item
+      $t_0 \in \R$ be the initial time, $t_0\ [T]$;
+    \item
+      $I := [t_0, \infty)$;
+    \item
+      $u_0 \in \Omega^0 X$ be the initial temperature, $u_0\ [\Theta]$;
+    \item
+      $f \in \Omega^0 X$ be the external heat source, $f\ [E L^{-3} T^{-1}]$;
+    \item
+      $\Gamma_D, \Gamma_N$ form a partition of $(\partial K)_0$;
+    \item
+      $g_D \colon I \to \Omega^0 \Gamma_D$
+      be the Dirichlet boundary condition, $g_D\ [\Theta]$;
+    \item
+      $g_N \colon I \to \Omega^0 \Gamma_N$
+      be the Neumann boundary condition, $g_N\ [E L^{-2} T^{-1}]$;
+    \item
+      $\pi_0 \colon \Omega^0 M \to \Omega^0 M$ be the volumetric heat capacity,
+      $\pi_0\ [E L^{-3} \Theta^{-1}]$;
+    \item
+      $\pi_1 \colon \Omega^1 X \to \Omega^1 X$ be the thermal conductivity,
+      $\pi_1\ [E L^{-1} T^{-1} \Theta^{-1}]$.
+  \end{itemize}
+  We are solving the following problem.
+  \begin{equation}
+    \begin{split}
+      & \text{Find $u \colon I \to \Omega^0 X$, $u\ [\Theta]$, such that} \\
+      &
+      \begin{cases}
+        \frac{\partial (\pi_0 u)}{\partial t} =
+        (d_1^\star \circ \pi_1 \circ d_0) u + f
+        & (\text{point-wise conservation of heat energy},
+          \ [E L^{-3} T^{-1}]), \\
+%
+        u(t_0, \cdot) = u_0
+        & (\text{initial condition},\ [\Theta]), \\
+%
+        \restrict{u}{\Gamma_D} = g_D
+        & (\text{Dirichlet boundary condition},\ [\Theta]), \\
+%
+        (\tr_{\Gamma_N} \circ \star_1\circ \pi_1 \circ d_0) u
+        = \star^{\Gamma_N}_0 g_N
+        & (\text{Neumann boundary condition},\ [E T^{-1}]).
+      \end{cases}
+    \end{split}
+  \end{equation}
+\end{formulation}

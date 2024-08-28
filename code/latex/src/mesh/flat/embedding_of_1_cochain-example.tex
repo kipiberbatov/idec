@@ -1,0 +1,46 @@
+\begin{example}
+  Let $h \in \R^+$ and $K$ be a regular subdivision with size $h$
+  of some interval,
+  all the edges in $K$ are oriented from left to right,
+  $\pi^1 \in C^1 K$.
+  \begin{enumerate}
+    \item
+      Consider an interior point $\mathcal{N}_i$ with neighboring edges
+      $\mathcal{E}_{i - 1}$ and $\mathcal{E}_i$ and corresponding neighboring
+      nodes $\mathcal{N}_{i - 1}$ and $\mathcal{N}_{i + 1}$.
+      Then
+      \begin{equation}
+        \mathcal{L}_{\mathcal{N}_i} =
+        \begin{pmatrix}
+          -h \\
+          h
+        \end{pmatrix}
+        \Rightarrow
+        (\mathcal{L}_{\mathcal{N}_i})^* =
+          \frac{1}{2 h}
+          \begin{pmatrix}
+            -1 & 1
+          \end{pmatrix}
+      \end{equation}
+      and
+      \begin{equation}
+        \widehat{\pi^1}_{\mathcal{N}_i} =
+        \begin{pmatrix}
+          - \pi^1 \mathcal{E}_{i - 1} \\
+          \pi^1 \mathcal{E}_i
+        \end{pmatrix}
+        \Rightarrow
+        \overline{\pi^1}(x_i) =
+          \frac{1}{2 h}
+          \begin{pmatrix}
+            -1 & 1
+          \end{pmatrix}
+          \begin{pmatrix}
+            - \pi^1 \mathcal{E}_{i - 1} \\
+            \pi^1 \mathcal{E}_i
+          \end{pmatrix}
+        = \frac{1}{2 h}
+          \left(\pi^1 \mathcal{E}_{i - 1} + \pi^1 \mathcal{E}_i\right).
+      \end{equation}
+  \end{enumerate}
+\end{example}

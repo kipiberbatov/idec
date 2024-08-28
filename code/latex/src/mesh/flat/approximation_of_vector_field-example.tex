@@ -1,0 +1,40 @@
+\begin{example}
+  With the mesh of the previous example, we have
+  \begin{equation}
+    \label{idec/vector_field_to_1_cochain/1d_example:exact_value}
+    \underline{u}(\mathcal{E}_i)
+    = \frac{1}{2} (h u(x_i) + h u(x_{i + 1}))
+    = h \frac{u(x_i) + u(x_{i + 1})}{2}.
+  \end{equation}
+  Let's calculate the consecutive application of approximation and embedding
+  (and vice versa).
+  \begin{equation}
+    \underline{\left(\overline{\pi^1}\right)}(\mathcal{E}_i)
+    = h
+      \left(
+        \frac{\overline{\pi^1}(x_i) + \overline{\pi^1}(x_{i + 1})}{2}
+      \right)
+    = \frac{h}{2}
+      \frac{1}{2 h}
+      ((\pi^1 \mathcal{E}_{i - 1} + \pi^1 \mathcal{E}_i)
+       + (\pi^1 \mathcal{E}_i + \pi^1 \mathcal{E}_{i + 1}))
+    = \frac
+    {\pi^1 \mathcal{E}_{i - 1} + 2 \pi^1 \mathcal{E}_i
+      + \pi^1 \mathcal{E}_{i + 1}}
+    {4}.
+  \end{equation}
+  \begin{equation}
+    \overline{\left(\underline{u}\right)}(x_i)
+    = \frac{1}{2 h}
+      \left(
+        \underline{u} \mathcal{E}_{i - 1} + \underline{u} \mathcal{E}_i
+      \right)
+    = \frac{1}{2 h}
+      \frac{h}{2}
+      ((u(x_{i - 1}) + u(x_i)) + (u(x_i) + u(x_{i + 1})))
+    = \frac{u(x_{i - 1}) + 2 u(x_i) + u(x_{i + 1})}{4}.
+  \end{equation}
+  In both cases of composition of embedding and approximation the final result
+  is the identity operator when $\pi^1$ (respectively $u$) is linear with
+  respect to the index $i$.
+\end{example}

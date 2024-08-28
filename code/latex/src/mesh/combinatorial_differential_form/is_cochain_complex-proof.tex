@@ -1,0 +1,23 @@
+\begin{proof}
+  A straightforward computation using the fact that $\partial^2 = 0$.
+  Indeed, let $\omega \in \Omega^p M$.
+  Then
+  \begin{equation}
+    \begin{split}
+      D^2(\omega)
+      & = D(D \omega) \\
+      & = D(\omega \circ \partial - (-1)^p \partial \circ \omega) \\
+      & =
+      \omega \circ \partial \circ \partial
+        - (-1)^{p + 1} \partial \circ \omega \circ \partial
+        - (-1)^p \partial \circ \omega \circ \partial
+        - (-1)^p (-1)^{p + 1} \partial \circ \partial \circ \omega \\
+      & =
+      0
+      - (-1)^{p + 1}\partial \circ \omega \circ \partial
+      + (-1)^{p + 1}\partial \circ \omega \circ \partial
+      + 0 \\
+      & = 0.
+    \end{split}
+  \end{equation}
+\end{proof}

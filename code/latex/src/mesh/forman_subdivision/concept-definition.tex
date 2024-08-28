@@ -1,0 +1,28 @@
+\begin{definition}
+  Let
+    $d \in \N$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$.
+  Consider a mesh $K$ constructed as follows.
+  The nodes of $K$ are the centroids of the cells of $M$.
+  (In general, the topology of $K$ can always be constructed while the geometry
+  is tricky.
+  For simplicity we may assume that all the cells of $M$ are convex,
+  although for non-simplicial or non-brick meshes in dimensions $3$ and above
+  the resulting mesh may contain non-flat polytopes.)
+
+  For $p_f \in [0, d]$, a $p_f$-cell of $K$ is constructed as follows.
+  Let $p \in [p_f, d]$, $s = p - p_f$ consider two cells
+  \begin{equation}
+    c(p, i) \succeq c(s, l)
+  \end{equation}
+  Then a $p_f$-cell is such a pair $(c(p, i), c(s, l))$.
+  If $q_f \in [0, p_f]$, $q \in [q_f, d]$, $r = q - q_f$,
+  \begin{equation}
+    c(q, j) \succeq c(r, k),
+  \end{equation}
+  then $(c(q, j), c(r, k))$ is a subface of $(c(p, i), c(s, l))$ if
+  \begin{equation}
+    c(p, i) \succeq c(q, j) \succeq c(r, k) \succeq c(s, l).
+  \end{equation}
+  The constructed space is a mesh which we call the \textbf{Forman subdivision}.
+\end{definition}

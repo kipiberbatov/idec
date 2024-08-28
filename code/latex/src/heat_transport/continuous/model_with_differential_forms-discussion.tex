@@ -1,0 +1,128 @@
+\begin{discussion}
+  Let:
+  \begin{itemize}
+    \item $X$ be an open region in $3$D (the space region);
+    \item $t_0 \in \R$ be the initial time, $I = [t_0, \infty)$.
+  \end{itemize}
+  The main physical quantities in our model are:
+  \begin{itemize}
+    \item
+      temperature $u \colon I \to \Omega^0 X$ of physical dimension $[\Theta]$:
+      for any moment $t \in I$ and any point $x \in X$,
+      \begin{equation}
+        \text{``temperature $[\Theta]$ on $x$ at time $t$''}
+        = u(t)(x) := u(t, x);
+      \end{equation}
+    \item
+      heat energy $Q \colon I \to \Omega^3 K$ of physical dimension $[E]$:
+      for any moment $t \in I$ and any volume $V \subseteq X$,
+      \begin{equation}
+        \text{``total heat energy $[E]$ of the system on $V$ at time $t$''}
+        = \int_V Q(t);
+      \end{equation}
+    \item
+      heat flow $q \colon I \to \Omega^2 X$ of physical dimension $[E T^{-1}]$:
+      for any time interval $[t_1, t_2] \subset I$
+      and any ($2$D) surface $S \subset X$,
+      \begin{equation}
+        \text{``total inflow $[E]$ through $S$ between $t_1$ and $t_2$''}
+        = \int_{t_1}^{t_2} \left(\int_S q(\cdot) \right)\, d t.
+      \end{equation}
+  \end{itemize}
+  The governing laws are formulated as follows.
+  \begin{itemize}
+    \item
+      Let $f \colon I \to \Omega^3 X$ be an external heat source
+      of physical dimension $[E T^{-1}]$ (power):
+      for any time interval $[t_1, t_2] \subset I$
+      and any volume $V \subseteq X$,
+      \begin{equation}
+        \text{``total net heat production $[E]$
+          in $V$ between $t_1$ and $t_2$''}
+        = \int_{t_1}^{t_2} \left(\int_V f(\cdot) \right)\, d t.
+      \end{equation}
+      \textbf{Conservation of heat energy} is given by the following relation:
+      for any time interval $[t_1, t_2] \subset I$
+      and any volume $V \subseteq X$,
+      \begin{equation}
+        \begin{split}
+        \text{``heat difference on $V$ between moments $t_2$ and $t_1$''}
+        & =
+          \text{``heat inflow through the boundary of $V$ in $[t_1, t_2]$''} \\
+        & +
+          \text{``heat production inside $V$ in $[t_1, t_2]$''}.
+        \end{split}
+      \end{equation}
+      In symbolic terms, the last equation is written as
+      \begin{equation}
+        \int_V (Q(t_2) - Q(t_1)) =
+          \int_{t_1}^{t_2} \left(\int_{\partial V} q(\cdot) \right)\, d t
+        + \int_{t_1}^{t_2} \left(\int_V f(\cdot) \right)\, d t.
+      \end{equation}
+      Using Stokes' theorem twice, we get the equation
+      \begin{equation}
+        \int_{t_1}^{t_2}
+          \left(\int_V \frac{\partial Q}{\partial t}\right)\, d t =
+          \int_{t_1}^{t_2} \left(\int_V d_X q \right)\, d t
+        + \int_{t_1}^{t_2} \left(\int_V f \right)\, d t.
+      \end{equation}
+      Since the time interval $[t_1, t_2]$ and the volume $V$ are arbitrary,
+      we can drop integrals and arrive at the differential form
+      \begin{equation}
+        \frac{\partial Q}{\partial t} = d_X q + f.
+      \end{equation}
+    \item
+      Let
+        $u_0 \in \Omega^0 X$ be the initial temperature, $u_0\ [\Theta]$.
+      The \textbf{initial condition} is the prescribed initial temperature:
+      \begin{equation}
+        u(t_0) = u_0.
+      \end{equation}
+    \item
+      Let $\pi_0 \colon C^0 K \to C^0 K$
+      of physical dimension $[E L^{-3} \Theta^{-1}]$
+      be a material property of the nodes of $K$,
+      playing the role of volumetric heat capacity
+      (its matrix in the standard basis is diagonal).
+      The \textbf{relation between temperature and heat energy} is given by
+      \begin{equation}
+        \tilde{Q}^0 := \star_3 Q = \pi_0 u.
+      \end{equation}
+    \item
+      Let $\pi_1 \colon C^1 K \to C^1 K$
+      of physical dimension $[E L^{-1} T^{-1} \Theta^{-1}]$
+      be a material property of the edges of $K$,
+      playing the role of thermal conductivity
+      (its matrix in the standard basis is diagonal).
+      The \textbf{Fourier's constitutive relation} is given by
+      \begin{equation}
+        \tilde{q} := \star_2 q = \pi_1 (d_0 u).
+      \end{equation}
+  \end{itemize}
+  We complete our model with boundary conditions.
+  Let $\Gamma_D, \Gamma_N$ form a partition of $\partial X$
+  into Dirichlet and Neumann boundary.
+  \begin{itemize}
+    \item
+      Let $g_D \colon I \to \Omega^0 \Gamma_D$
+      of physical dimension $[\Theta]$
+      be the prescribed temperature on the Dirichlet boundary $\Gamma_D$.
+      The \textbf{Dirichlet boundary condition} is given by
+      \begin{equation}
+        \tr_{\Gamma_D} u := \restrict{u}{\Gamma_D} = g_D.
+      \end{equation}
+    \item
+      Let
+        $g_N \colon I \to \Omega^2 \Gamma_N$
+          of physical dimension $[E T^{-1}]$
+          be the prescribed flow on the Neumann boundary $\Gamma_N$.
+      The \textbf{Neumann boundary condition} is given by
+      \begin{equation}
+        \tr_{\Gamma_N} q = g_N.
+      \end{equation}
+      The prescribed flow is usually calculated using its density form
+      \begin{equation}
+        \widetilde{g_N} := \star^{(\Gamma_N)}_2 g_N.
+      \end{equation}
+  \end{itemize}
+\end{discussion}

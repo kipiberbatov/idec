@@ -1,0 +1,50 @@
+\begin{discussion}
+  Let me summarize the operations relating cochains and embedding.
+  We will use notation coming from dependent type theory for functions whose
+  codomain depends on the domain.
+  Namely, if
+    $X$ is a type (set),
+    $\{Y(x)\}_{x \in X}$ is a family of sets and
+    $\{f(x) \in Y(x)\}_{x \in X}$,
+  we will write
+  \begin{equation}
+    f \colon \prod_{x \in X} Y(x).
+  \end{equation}
+  Let
+    $d \in \N$,
+    $K$ be a quasi-cubical flat mesh of dimension $d$,
+    $X$ be the manifold it encompasses.
+  We define the following data:
+  \begin{itemize}
+    \item
+      $n \colon K_0 \to \N$ denotes the number of node neighbors of a $0$-cell;
+    \item
+      $\widehat{\phantom{T}} \colon C^1 K \to
+        \displaystyle \prod_{x_0 \in K_0} \R^{n(x_0)}$
+      denotes the neighbor representation of a $1$-cochain,
+      $\widehat{\phantom{T}}\ [1]$;
+    \item
+      $\displaystyle
+        \mathcal{L} \colon \prod_{x_0 \in K_0} M_{n(x_0), d}(\R)$
+      denotes the node neighbors matrix,
+      $\mathcal{L}\ [L]$;
+    \item
+      $\displaystyle
+        \star \colon \prod_{(m, n) \in \N^2} M_{m, n}(\R) \to M_{n, m}(\R)$
+      denotes the Moore-Penrose inverse of a rectangular matrix,
+      ($\star$ reverses physical dimensions);
+    \item
+      $\overline{\phantom{T}} \colon C^1 K \to \Hom_\R(C^0 K, \R^d)$
+      denotes the approximation of a $1$-cochain as a Euclidean vector-valued
+      $0$-cochain,
+      \begin{equation}
+        \overline{\pi^1} c_0 :=
+        (\mathcal{L}_{c_0})^\star \cdot (\widehat{\pi^1})_{c_0},
+      \end{equation}
+      $\overline{\phantom{T}}\ [L^{-1}]$;
+    \item
+      $\underline{\phantom{T}} \colon \chi X \to C^1 K$
+      denotes the discretization of a continuum vector field as a $1$-cochain,
+      $\underline{\phantom{T}}\ [L]$;
+  \end{itemize}
+\end{discussion}

@@ -1,0 +1,27 @@
+\begin{definition}
+  Let
+    $d \in \N$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
+    $R$ be a commutative ring with unity,
+    $\partial$ be a boundary operator on $M$.
+  Then the corresponding \textbf{coboundary operator} on $M$ $\delta$ is the
+  dual of $\partial$, i.e.,
+  \begin{equation}
+    \delta = \partial^* \colon C^\bullet(M; R) \to C^\bullet(M; R).
+  \end{equation}
+  In other words, for any cochain $\pi^\bullet \in C^\bullet(M; R)$ and any
+  chain $\rho_\bullet \in C_\bullet(M; R)$,
+  \begin{equation}
+    (\delta \pi^\bullet) \rho_\bullet := \pi^\bullet(\partial \rho_\bullet).
+  \end{equation}
+  If $p \in \{0, ..., d - 1\}$, the \textbf{coboundary operator on $p$-cochains}
+  $\delta_p$ is defined as the dual of $\partial_{p + 1}$.
+  In other words,
+  \begin{equation}
+    \delta_p = \partial_{p + 1}^* \colon C^p(M; R) \to C^{p + 1}(M; R).
+  \end{equation}
+  If $\pi^p \in C^p(M; R)$, $\rho_{p + 1} \in C_{p + 1}(M; R)$, then
+  \begin{equation}
+    (\delta_p \pi^p) \rho_{p + 1} = \pi^p(\partial_{p + 1} \rho_{p + 1}).
+  \end{equation}
+\end{definition}

@@ -1,0 +1,13 @@
+\begin{definition}
+  \label{idec:jagged:definition}
+  Let $n$ be a positive integer and $T$ be a type (e.g., integers)
+  A \textbf{jagged array}
+  of order $n$ is defined recursively as follows:
+  \begin{enumerate}
+    \item
+      jagged array of order $0$ is an object of type $T$;
+    \item
+      for $n > 0$, jagged array of order $n$ is a finite (possibly empty)
+      sequence of jagged arrays of order $n - 1$.
+  \end{enumerate}
+\end{definition}

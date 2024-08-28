@@ -1,0 +1,37 @@
+\begin{definition}
+  \label{idec:relative_orientation:definition}
+  Let
+    $d \in \N$,
+    $M$ be a \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
+    $R$ be a commutative ring with unity.
+  A family of maps
+  \begin{equation}
+    \{\varepsilon_p \colon M_p \times M_{p - 1} \to \{-1, 0, 1\}\}_{p = 1}^d
+  \end{equation}
+  is called a \textbf{relative orientation}
+  on $M$ if the following conditions are satisfied:
+  \begin{enumerate}
+    \item
+      for any $p \in \{1, ..., d\}$, $a_p \in M_p$, $b_{p - 1} \in M_{p - 1}$,
+      \begin{equation}
+        a_p \succ b_{p - 1} \Leftrightarrow \varepsilon(a_p, b_{p - 1}) \neq 0;
+      \end{equation}
+    \item
+      for any edge $a_1$ with endpoints the nodes $b_0$ and $c_0$,
+      \begin{equation}
+        \varepsilon(a_1, b_0) + \varepsilon(a_1, c_0) = 0;
+      \end{equation}
+    \item
+      for any
+        $p \in \{2, ..., d\}$,
+        $a_p \in M_p$,
+        $c_{p - 2} \in M_{p - 2}$ with $a_p \succ c_{p - 2}$,
+      let $b_{p - 1}$ and $b_{p - 1}'$ be the two
+      cells between $a_p$ and $c_{p - 2}$.
+      Then
+      \begin{equation}
+          \varepsilon(a_p, b_{p - 1}) \varepsilon(b_{p - 1}, c_{p - 2})
+        + \varepsilon(a_p, b_{p - 1}') \varepsilon(b_{p - 1}', c_{p - 2}) = 0.
+      \end{equation}
+  \end{enumerate}
+\end{definition}

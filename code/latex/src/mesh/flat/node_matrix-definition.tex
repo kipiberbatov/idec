@@ -1,0 +1,33 @@
+\begin{definition}
+  Let:
+  \begin{enumerate}
+    \item
+      $d \in \N,\ d \geq 1$;
+    \item
+      $K$ be a flat mesh of dimension $d$
+      (with a chosen embedding in $\R^d$);
+    \item
+      $\epsilon$ be a relative orientation on $K$;
+    \item
+      $\mathcal{N}_i$ be a node in $K$ connected to $n > 0$ edges;
+    \item
+      $\mathcal{E}_{j_0}, ..., \mathcal{E}_{j_{n - 1}}$ be all the edges
+      containing $\mathcal{N}_i$ as a node;
+    \item
+      $\mathcal{N}_{i_0}, ..., \mathcal{N}_{i_{n - 1}}$ be the other than
+      other $\mathcal{N}_i$ of
+      $\mathcal{E}_{j_0}, ..., \mathcal{E}_{j_{n - 1}}$ respectively.
+  \end{enumerate}
+  We define the \textbf{node matrix} $\mathcal{L}_{\mathcal{N}_i}$ of
+  $\mathcal{N}_i$ by
+  \begin{equation}
+    \mathcal{L}_{\mathcal{N}_i} :=
+    \begin{pmatrix}
+      x_{i_0, 0} - x_{i, 0} & \cdots & x_{i_0, d - 1} - x_{i, d - 1} \\
+      \vdots & \ddots & \vdots \\
+      x_{i_{n - 1}, 0} - x_{i, 0} & \cdots & x_{i_{n - 1}, d - 1} - x_{i, d - 1}
+    \end{pmatrix}
+    \in \R^{n \times d}.
+  \end{equation}
+  The physical dimension of $\mathcal{L}_{\mathcal{N}_i}$ is $[L]$.
+\end{definition}

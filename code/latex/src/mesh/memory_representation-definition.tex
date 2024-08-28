@@ -1,0 +1,25 @@
+\begin{definition}
+  A \hyperref[idec:mesh:definition]{mesh}
+  is represented in memory by its topology and geometry.
+  The topology is represented using:
+  \begin{itemize}
+    \item
+      integer \emph{dim} ($d$) storing mesh's dimension;
+    \item
+      array \emph{cn} storing the number of $p$-cells for $p = 0, ..., d$;
+    \item
+      a jagged array \emph{cf} of order $4$ storing its topology.
+      More precisely, if $0 < p \leq d$, $0 \leq q < p$,
+      $0 \leq i < {\rm cn}[p]$, then ${\rm cf}[p][q][i]$ stores the indices of
+      all $q$-dimensional subfaces of the $i$-th $p$-cell.
+  \end{itemize}
+  For a mesh of flat polytopes, the topology is represented by:
+  \begin{itemize}
+    \item
+      integer \emph{dim\_embedded} ($d$) storing mesh's embedding dimension;
+    \item
+      array of floating point numbers \emph{coord} of length
+      ${\rm cn}[0] * {\rm dim\_embedded}$ storing coordinates of the nodes
+      (${\rm cn}[0]$ nodes of dimension $\R^{{\rm cn}[0]}$).
+  \end{itemize}
+\end{definition}

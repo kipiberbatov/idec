@@ -1,0 +1,23 @@
+\begin{definition}
+  Let $n > 0$.
+  A \hyperref[idec:jagged:definition]{jagged array}
+  of order $n$ is represented in memory by a structure of $n + 1$
+  fields as follows:
+  an integer $a_0$,
+  $n - 1$ pointers $a_1, ..., a_{n - 1}$ to integer
+  (any of them points to the  $0$-th element of an array of integers),
+  a pointer $a_n$ to the $0$-th element of an array of type $T$.
+
+  The fields $a_0, ..., a_{n - 1}$ represent the internal structure,
+  while $a_n$ holds the values.
+  More precisely, let $x$ be a jagged array of order $n$.
+  $a_0$ is the number of its elements of order $n - 1$.
+  For $i = 0, ..., a_0 - 1$,
+  $a_1[i]$ represents the number of elements of order $n - 2$ in $x[i]$.
+  There are totally $b_2 = a_1[0] + ... a_1[a_0 - 1]$ elements of order $n - 2$.
+  For $i = 0, ..., a_0 - 1$, $j  = 0, ..., a_1[i] - 1$,
+  $a_2[a_1[0] + ... + a_1[i - 1] + j]$
+  is the number of its elements of order $n - 3$ in $x[i][j]$.
+  Continue in the same manner for higher orders.
+  Finally, $a_n$ represents the flattened version of $x$.
+\end{definition}
