@@ -1,7 +1,7 @@
 #include "matrix_sparse_private.h"
 
 void matrix_sparse_vector_multiply_add(
-	double * y,
+  double * y,
   const matrix_sparse * a,
   const double * x)
 {

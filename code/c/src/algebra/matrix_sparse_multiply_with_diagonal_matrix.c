@@ -15,8 +15,8 @@ void matrix_sparse_multiply_with_diagonal_matrix(
 
   for (j = 0; j < n; ++j)
   {
-  	index = a_cols_total[j];
-  	for (i_loc = 0; i_loc < a_cols_total[j + 1] - a_cols_total[j]; ++i_loc)
-  	  a_values[index + i_loc] *= d[j];
+    index = a_cols_total[j];
+    for (i_loc = 0; i_loc < a_cols_total[j + 1] - a_cols_total[j]; ++i_loc)
+      a_values[index + i_loc] *= d[j];
   }
 }
