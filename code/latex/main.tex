@@ -118,7 +118,7 @@
 
 \title{IDEC documentation}
 \author{Kiprian Berbatov}
-\date{28 August 2024}
+\date{4 September 2024}
 
 \begin{document}
 
@@ -126,9 +126,16 @@
 
 \tableofcontents
 
+\section{Exterior algebra}
+\label{section:exterior_algebra}
+\input{exterior_algerba/all.tex}
+
+\section{Inner products and Hodge star}
+\label{section:inner_products_and_hodge_star}
+\input{hodge_star/all.tex}
+
 \section{Jagged arrays}
 \label{section:jagged_arrays}
-
 \input{jagged_array/concept-definition.tex}
 \input{jagged_array/concept-example.tex}
 \input{jagged_array/memory_representation-definition.tex}
@@ -136,14 +143,12 @@
 
 \section{Meshes}
 \label{section:meshes}
-
 \input{mesh/concept-definition.tex}
 \input{mesh/memory_representation-definition.tex}
 \input{mesh/memory_representation-example.tex}
 
 \section{Relative orientation on meshes}
 \label{section:relative_orientation_on_meshes}
-
 \input{mesh/diamond_property-theorem.tex}
 \input{mesh/relative_orientation/concept-definition.tex}
 \input{mesh/relative_orientation/concept-remark.tex}
@@ -151,7 +156,6 @@
 
 \section{Chains and boundary operator on meshes}
 \label{section:chains_and_boundary_operator_on_meshes}
-
 \input{mesh/chain/p-definition.tex}
 \input{mesh/chain/concept-definition.tex}
 \input{mesh/boundary_operator/concept-definition.tex}
@@ -162,7 +166,6 @@
 
 \section{Cochains and coboundary operator on meshes}
 \label{section:cochains_and_coboundary_operator_on_meshes}
-
 \input{mesh/cochain/concept-definition.tex}
 \input{mesh/coboundary_operator/concept-definition.tex}
 \input{mesh/coboundary_operator/is_cochain_complex-proposition.tex}
@@ -170,7 +173,6 @@
 
 \section{Combinatorial differential forms and Forman subdivision}
 \label{section:combinatorial_differential_forms_and_forman_subdivision}
-
 \input{mesh/combinatorial_differential_form/concept-definition.tex}
 \input{mesh/combinatorial_differential_form/discrete_exterior_derivative-definition.tex}
 \input{mesh/combinatorial_differential_form/is_cochain_complex-proposition.tex}
@@ -192,7 +194,6 @@
 
 \section{Metric-dependent calculus on quasi-cubical meshes}
 \label{section:metric_dependent_calculus_on_quasi_cubical_meshes}
-
 \input{mesh/interval_simplicial_are_not_unkommon-discussion.tex}
 \input{mesh/quasi_cubical/topological_orthogonality-definition.tex}
 \input{euclidean_measure-notation.tex}
@@ -204,7 +205,6 @@
 
 \section{Approximating vector fields with 1-cochains}
 \label{section:approximating_vector_fields_with_1_cochains}
-
 \input{moore_penrose_inverse/concept-definition.tex}
 \input{moore_penrose_inverse/physical_dimension-remark.tex}
 \input{moore_penrose_inverse/existence_and_uniqueness-theorem.tex}
@@ -220,7 +220,6 @@
 
 \section{Continuous heat transport}
 \label{section:continuous_heat_transport}
-
 \input{heat_transport/continuous/introduction-discussion.tex}
 \input{heat_transport/continuous/model_with_differential_forms-discussion.tex}
 \input{heat_transport/continuous/strong_model-formulation.tex}
@@ -228,7 +227,6 @@
 
 \section{Discrete heat transport}
 \label{section:discrete_heat_transport}
-
 \input{restriction_of_free_vector_space-notation.tex}
 \input{generalized-external_normal-notation.tex}
 \input{heat_transport/discrete/model_with_normals-discussion.tex}
@@ -238,13 +236,11 @@
 
 \section{Discrete elasticity}
 \label{section:discrete_elasticity}
-
 \input{elasticity/discrete/model-discussion.tex}
 \input{elasticity/discrete/model-example.tex}
 
 \section{Discrete vector bundles and covariant exterior derivative}
 \label{section:discrete_vector_bundles_and_covariant_exterior_derivative}
-
 \input{mesh/quasi_cubical/bundle_valued_chain/concept-definition.tex}
 \input{mesh/quasi_cubical/bundle_valued_chain/cup_product-definition.tex}
 \input{mesh/quasi_cubical/bundle_valued_chain/cup_product-remark.tex}

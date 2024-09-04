@@ -1,0 +1,65 @@
+\begin{definition}
+  Let $V$ be a vector space over $\R$.
+  An inner product on $V$ is a function $g \colon V \times V \to \R$ that is:
+  \begin{enumerate}
+    \item
+      bilinear, i.e., for all $\lambda, \mu \in \R$, $u, v, w \in V$:
+      \begin{equation}
+        g(\lambda u + \mu v, w) = \lambda g(u, w) + \mu g(v, w),\
+        g(w, \lambda u + \mu v) = \lambda g(w, u) + \mu g(w, v);
+      \end{equation}
+    \item
+      symmetric, i.e., for all $u, v \in V$,
+      \begin{equation}
+        g(u, v) = g(v, u);
+      \end{equation}
+    \item
+      positive definite: for all $v \in V \setminus \{0\}$,
+      \begin{equation}
+        g(v, v) > 0.
+      \end{equation}
+  \end{enumerate}
+  If $g$ is an inner product on $V$, the pair $(V, g)$ is called an
+  \textbf{real inner product space}.
+\end{definition}
+\begin{notation}
+  Let $R$ be a commutative ring with unity and $V$ be a module over $R$.
+  Denote by $V^*$ the \textbf{dual space} of $V$:
+  \begin{equation}
+    V^* := \Hom(V, R).
+  \end{equation}
+\end{notation}
+\begin{proposition}
+  Let $(V, g)$ be a finite-dimensional real inner product space.
+  Define the map $\tilde{g} \colon V \to V^*$ as follows: for any $v \in V$,
+  \begin{equation}
+    \tilde{g}(v) := (w \in V \mapsto g(v, w)).
+  \end{equation}
+  Then $\tilde{g}$ is an isomorphism.
+\end{proposition}
+\begin{definition}
+  Let
+    $d \in \N$,
+    $(V, g)$ be a real inner product space of dimension $d$,
+    $e = \{e_0, ..., e_{d - 1}\}$ be a basis of $V$.
+  We say that $e$ is an \textbf{orthogonal basis} if any two disjoint elements
+  are orthogonal, i.e., for all $i, j \in \{0, ..., d - 1\}$,
+  if $i \neq j$, then
+  \begin{equation}
+    g(e_i, e_j) = 0.
+  \end{equation}
+  The basis $e$ is called \textbf{orthonormal}, if it is orthogonal and
+  for any $i \in \{0, ..., d - 1\}$,
+  \begin{equation}
+     g(e_i, e_i) = 1.
+  \end{equation}
+  An equivalent way of saying that $e$ is orthonormal is by using the Kronecker
+  delta symbol: for all $i, j \in \{0, ..., d - 1\}$,
+  \begin{equation}
+    g(e_i, e_j) = \delta_{i, j} :=
+    \begin{cases}
+      0, & \text{if $i \neq j$} \\
+      1, & \text{if $i = j$}
+    \end{cases}.
+  \end{equation}
+\end{definition}
