@@ -14,9 +14,8 @@ build/website: | build
 	mkdir -p $@
 
 .PHONY: website_fast
-website_fast: code/latex/main.tex build/website/index.html\
-  build/website/style.css | build/docs build/website
-	$(LATEX_COMPILER) -output-directory=$(word 1, $|) $<
+website_fast: docs_fast build/website/index.html build/website/style.css\
+  | build/docs build/website
 	cp $(word 1, $|)/main.pdf $(word 2, $|)
 
 .PHONY: site_clean
