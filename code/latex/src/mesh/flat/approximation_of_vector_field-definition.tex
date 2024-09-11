@@ -1,15 +1,20 @@
 \begin{definition}
   \label{idec/vector_field_to_1_cochain/definition}
-  Let $K$ be an embedded flat mesh and $u$ be a vector field on $|K|$.
+  Let
+    $K$ be an embedded flat mesh,
+    $X$ be the manifold enclosed by $K$,
+    $u$ be a vector field on $X$.
   Define the \textbf{approximation} $\underline{u} \in C^1 K$ as follows.
   Let $\mathcal{E}_i$ be an edge with endpoints $\mathcal{N}_{i_0}$ and
   $\mathcal{N}_{i_1}$, oriented from $\mathcal{N}_{i_0}$ to $\mathcal{N}_{i_1}$.
+  Let $p_0$ and $p_1$ be such that for $j = 0, 1$,
+  the $p_j$-th edge adjacent to $N_{i_j}$ is $E_i$.
   Then
   \begin{equation}
     \underline{u}(\mathcal{E}_i) :=
       \frac{1}{2}
-      ( - (\mathcal{L}_{\mathcal{N}_{i_0}} u(x_{i_0}))_0
-        + (\mathcal{L}_{\mathcal{N}_{i_1}} u(x_{i_1}))_1
+      ( - (\mathcal{L}_{\mathcal{N}_{i_0}} u(x_{i_0}))_{p_0}
+        + (\mathcal{L}_{\mathcal{N}_{i_1}} u(x_{i_1}))_{p_1}
       ).
   \end{equation}
   The approximation operator is of physical dimension $[L]$.
