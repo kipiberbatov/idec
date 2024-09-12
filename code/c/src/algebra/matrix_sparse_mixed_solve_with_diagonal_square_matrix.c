@@ -19,37 +19,37 @@ Let:
 We are looking for $x$ and $y$ -- pointers to already allocated memory segments
 of lengths $m$ and $n$ respectively -- that satisfy the following linear system:
 $$
-  a x + b y = f,
-  b^T x = g.
+  a q + b u = g,
+  b^T q = f.
 $$
 
 ********************************** definition **********************************
 We can solve the system directly, without much overhead, thanks to the fact that
 $a^{-1}$ is also diagonal.
 Indeed,
-$x = a^{-1} (f - b y)$
+$q = a^{-1} (g - b u)$
 and therefore
-$g = b^T x = b^T (a^{-1} (f - b y)) = b^T a^{-1} f - b^T a^{-1} b y$
-from which we gen the following linear system with respect to $y$:
-$b^T a^{-1} b y = b^T a^{-1} f - g$.
+$f = b^T q = b^T (a^{-1} (g - b u)) = b^T a^{-1} g - b^T a^{-1} b u$
+from which we gen the following linear system with respect to $u$:
+$b^T a^{-1} b u = b^T a^{-1} g - f$.
 It is assumed that the symmetric matrix $c := b^T a^{-1} b$ is invertible.
 Hence, we have the following solving procedure:
 $$
-  y := matrix_sparse_linear_solve_cholesky(b^T a^{-1} b, b^T a^{-1} f - g),
-  x := a^{-1} (f - b y).
+  u := matrix_sparse_linear_solve_cholesky(b^T a^{-1} b, b^T a^{-1} g - f),
+  q := a^{-1} (g - b u).
 $$
 */
 void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
-  double * x,
-  double * y,
+  double * q,
+  double * u,
   const double * a,
   const matrix_sparse * b,
-  const double * f,
-  const double * g)
+  const double * g,
+  const double * f)
 {
   int m, n;
   double * a_inverse; /* diagonal matrix */
-  double * rhs_x, * rhs_y;
+  double * rhs_u;
   matrix_sparse * c, * lhs;
 
   m = b->rows;
@@ -71,7 +71,7 @@ void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
     goto c_free;
   }
 
-  rhs_y = calloc(n, sizeof(double));
+  rhs_u = calloc(n, sizeof(double));
   if (lhs == NULL)
   {
     fprintf(stderr,
@@ -79,9 +79,9 @@ void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
     goto lhs_free;
   }
 
-  matrix_sparse_multiply_with_vector_and_add_to(rhs_y, c, f);
-  double_array_subtract_from(rhs_y, n, g);
-  matrix_sparse_linear_solve(y, lhs, rhs_y, "--cholesky");
+  matrix_sparse_multiply_with_vector_and_add_to(rhs_u, c, g);
+  double_array_subtract_from(rhs_u, n, f);
+  matrix_sparse_linear_solve(u, lhs, rhs_u, "--cholesky");
   if (errno)
   {
     fprintf(stderr,
@@ -89,12 +89,12 @@ void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
     goto rhs_y_free;
   }
 
-  double_array_copy(x, m, f);
-  matrix_sparse_multiply_with_vector_and_subtract_from(x, b, y);
-  double_array_left_multiply_with_inverse_of_diagonal_matrix(x, m, a);
+  double_array_copy(q, m, g);
+  matrix_sparse_multiply_with_vector_and_subtract_from(q, b, u);
+  double_array_left_multiply_with_inverse_of_diagonal_matrix(q, m, a);
 
-rhs_y_free:
-  free(rhs_y);
+rhs_u_free:
+  free(rhs_u);
 lhs_free:
   matrix_sparse_free(lhs);
 c_free:

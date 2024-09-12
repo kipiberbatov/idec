@@ -26,6 +26,8 @@ jagged1 * jagged1_delete_duplicates(jagged1 * arr);
 
 int jagged1_member(const jagged1 * arr, int element);
 
+int jagged1_member_index(const jagged1 * arr, int element);
+
 int jagged1_intersection_count(const jagged1 * arr, const jagged1 * arr2);
 
 int jagged1_intersection_unique(const jagged1 * arr1, const jagged1 * arr2);

@@ -16,7 +16,9 @@ vector_sparse ** mesh_qc_metric_p(
 
 vector_sparse *** mesh_qc_metric(const mesh_qc * m, double ** m_vol);
 
-vector_sparse ** mesh_qc_metric_p_file_scan(FILE * in, const mesh_qc * m, int p);
+vector_sparse **
+mesh_qc_metric_p_file_scan(FILE * in, const mesh_qc * m, int p);
+
 vector_sparse *** mesh_qc_metric_file_scan(FILE * in, const mesh_qc * m);
 
 /************************** mesh_qc_metric_corrected **************************/
@@ -48,7 +50,7 @@ double * mesh_qc_inner_direct_p(
 );
 
 double ** mesh_qc_inner_direct(const mesh_qc * m);
-/***************************** mesh_qc_coboundary_star *******************************/
+/************************** mesh_qc_coboundary_star ***************************/
 /* q = p - 1 */
 matrix_sparse * mesh_qc_coboundary_star_p(
   const mesh_qc * m, int p, const matrix_sparse * m_bd_p,
@@ -86,7 +88,7 @@ matrix_sparse * mesh_qc_elasticity_coboundary_star_2(
   const mesh_qc * m, const matrix_sparse * m_bd_2,
   const double * m_inner_2, const double * m_inner_1, double mu);
 
-/****************************** mesh_qc_boundary_layer ******************************/
+/*************************** mesh_qc_boundary_layer ***************************/
 jagged1 * mesh_qc_boundary_layer_0_hyperfaces(const mesh * m);
 
 jagged1 * mesh_qc_boundary_layer_0_cells(
@@ -94,5 +96,49 @@ jagged1 * mesh_qc_boundary_layer_0_cells(
 
 jagged1 * mesh_qc_boundary_layer_0_1_nodes(
   const mesh * m, const jagged1 * m_bd_layer_0_cells);
+
+/************ vectors and matrices for discrete weak formulations *************/
+
+/* calculate vector f, f_i := (N^i \_/ sigma^d)[M] */
+void mesh_qc_vector_from_integral_of_basis_0_cup_d_cochain(
+  double * f,
+  const mesh_qc * m,
+  const double * coefficients_d);
+
+/*
+calculate nonzero values of sparse vector g,
+g_i := (N^i \_/ g_{gamma}^{d - 1})[gamma]
+*/
+void mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
+  double * g,
+  const mesh * m,
+  const jagged1 * boundary_hyperfaces,
+  const double * coefficients_dm1);
+
+/*
+calculate nonzero values of sparse vector g,
+g_i := (c{d - 1, i} \_/ g_{gamma}^0)[gamma]
+*/
+void mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
+  double * g,
+  const mesh * m,
+  const jagged1 * boundary_hyperfaces,
+  const double * coefficients_0);
+
+/* calculate sparse matrix a, a_{i, j} := <delta N^j, pi_1 (delta N^i)> */
+matrix_sparse *
+mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(
+  const mesh_qc * m,
+  const double * m_inner_1,
+  const double * pi_1);
+
+/*
+calculate sparse matrix b,
+b_{i, k} := (N^k \_/ delta c^{d - 1, i})[M]
+*/
+matrix_sparse * 
+mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
+  const mesh_qc * m,
+  const matrix_sparse * m_bd_d);
 
 #endif /* _mesh_qc_h */

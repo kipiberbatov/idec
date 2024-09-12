@@ -29,7 +29,7 @@ jagged1 * mesh_neighboring_nodes(const mesh * m, int i)
     return NULL;
   }
 
-  for (j_local = 0; j_local <= m_fc_0_1_i.a0; ++ j_local)
+  for (j_local = 0; j_local < m_fc_0_1_i.a0; ++j_local)
   {
     j = m_fc_0_1_i.a1[j_local];
     jagged2_part1(&m_cf_1_0_j, &m_cf_1_0, j);

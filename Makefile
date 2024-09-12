@@ -295,7 +295,7 @@ $(_obj_src_graphics): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/graphics/%.c\
 	  $(shell pkg-config --cflags gtk+-3.0) -c $<
 
 # in case `dep_src` is not called
--include build/$(MODE)/obj/src/*$(.DEP)
+# -include build/$(MODE)/obj/src/*$(.DEP)
 
 # compiling main files
 build/$(MODE)/obj/main: | build/$(MODE)/obj
@@ -323,7 +323,7 @@ $(_obj_main_graphics): build/$(MODE)/obj/main/%$(.OBJ):\
 	  $(shell pkg-config --cflags gtk+-3.0) -c $<
 
 # in case `dep_main` is not called
--include build/$(MODE)/obj/main/*$(.DEP)
+# -include build/$(MODE)/obj/main/*$(.DEP)
 
 ########################### move header dependencies ###########################
 build/$(MODE)/dep: | build/$(MODE)
@@ -383,7 +383,7 @@ $(_dep_main_graphics): build/$(MODE)/dep/main/%.d: build/$(MODE)/obj/main/%.o\
   | build/$(MODE)/dep/main
 	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/main
 
--include build/$(MODE)/src/main/*$(.DEP)
+-include build/$(MODE)/dep/main/*$(.DEP)
 
 ################################## archiving ###################################
 build/$(MODE)/lib: | build/$(MODE)
