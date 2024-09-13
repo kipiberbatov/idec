@@ -7,6 +7,33 @@
 #include "diffusion_discrete.h"
 #include "unsigned_approximation.h"
 
+typedef struct diffusion_discrete_mixed
+{
+  double  * pi_0;
+  double  * pi_2;
+  double  * initial;
+  double  * source;
+  jagged1 * boundary_dirichlet;
+  double  * g_dirichlet;
+  jagged1 * boundary_neumann;
+  double  * g_neumann;
+} diffusion_discrete_mixed;
+
+static void unsigned_approximation_of_scalar_field_on_2_cells(
+  double * x,
+  const mesh * m,
+  double (*f)(const double *))
+{
+  return;
+}
+
+void boundary_pseudoscalar_field_discretize(
+  double * result,
+  int m_dim_embedded,
+  const double * m_coord,
+  const jagged1 * boundary_nodes,
+  double (*g)(const double *));
+
 diffusion_discrete_mixed * diffusion_continuous_mixed_discretize(
   const mesh * m,
   const diffusion_continuous * data_continuous)
@@ -28,11 +55,11 @@ diffusion_discrete_mixed * diffusion_continuous_mixed_discretize(
   if (errno)
     goto data_discrete_pi_0_free;
   unsigned_approximation_of_scalar_field_on_2_cells(
-    data_discrete->pi_2, m, data_continuous->pi_2);
+    data_discrete->pi_2, m, data_continuous->pi_1);
 
   data_discrete->initial = (double *) malloc(sizeof(double) * m->cn[0]);
   if (errno)
-    goto data_discrete_pi_1_free;
+    goto data_discrete_pi_2_free;
   de_rham_0(data_discrete->initial, m, data_continuous->initial);
 
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[0]);
@@ -86,8 +113,8 @@ data_discrete_source_free:
   free(data_discrete->source);
 data_discrete_initial_free:
   free(data_discrete->initial);
-data_discrete_pi_1_free:
-  free(data_discrete->pi_1);
+data_discrete_pi_2_free:
+  free(data_discrete->pi_2);
 data_discrete_pi_0_free:
   free(data_discrete->pi_0);
 data_discrete_free:

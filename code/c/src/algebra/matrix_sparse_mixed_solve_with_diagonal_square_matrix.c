@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "double.h"
 #include "matrix_sparse.h"
@@ -39,6 +40,50 @@ $$
   q := a^{-1} (g - b u).
 $$
 */
+
+static void matrix_sparse_right_multiply_with_inverse_of_diagonal_matrix(
+  matrix_sparse * c,
+  const double * a)
+{
+  return;
+}
+
+static void matrix_sparse_multiply_with_vector_and_add_to(
+  double * rhs_u,
+  const matrix_sparse * c,
+  const double * g)
+{
+  return;
+}
+
+static void double_array_subtract_from(double * a, int n, const double * b)
+{
+  int i;
+  for (i = 0; i < n; ++i)
+    a[i] -= b[i];
+}
+
+static void double_array_copy(double * a, int n, const double * b)
+{
+  memcpy(a, b, sizeof(double) * n);
+}
+
+static void matrix_sparse_multiply_with_vector_and_subtract_from(
+  double * q,
+  const matrix_sparse * b,
+  const double * u)
+{
+  return;
+}
+
+static void double_array_left_multiply_with_inverse_of_diagonal_matrix(
+  double * q,
+  int m,
+  const double * a)
+{
+  return;
+}
+
 void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
   double * q,
   double * u,
@@ -48,7 +93,6 @@ void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
   const double * f)
 {
   int m, n;
-  double * a_inverse; /* diagonal matrix */
   double * rhs_u;
   matrix_sparse * c, * lhs;
 
@@ -59,15 +103,15 @@ void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
   if (c == NULL)
   {
     fprintf(stderr,
-      "%s:%d: cannot calculate transpose of b", __FILE__, __LINE__);
+      "%s:%d: cannot calculate transpose of b\n", __FILE__, __LINE__);
     goto end;
   }
   matrix_sparse_right_multiply_with_inverse_of_diagonal_matrix(c, a);
 
-  lhs = matrix_sparse_multiply(c, b);
+  lhs = matrix_sparse_product(c, b);
   if (lhs == NULL)
   {
-    fprintf(stderr, "%s:%d: cannot calculate lhs", __FILE__, __LINE__);
+    fprintf(stderr, "%s:%d: cannot calculate lhs\n", __FILE__, __LINE__);
     goto c_free;
   }
 
@@ -75,18 +119,19 @@ void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
   if (lhs == NULL)
   {
     fprintf(stderr,
-      "%s:%d: cannot allocate memory for rhs_y", __FILE__, __LINE__);
+      "%s:%d: cannot allocate memory for rhs_y\n", __FILE__, __LINE__);
     goto lhs_free;
   }
 
   matrix_sparse_multiply_with_vector_and_add_to(rhs_u, c, g);
   double_array_subtract_from(rhs_u, n, f);
-  matrix_sparse_linear_solve(u, lhs, rhs_u, "--cholesky");
+  memcpy(u, rhs_u, sizeof(double) * n);
+  matrix_sparse_linear_solve(lhs, u, "--cholesky");
   if (errno)
   {
     fprintf(stderr,
-      "%s:%d: cannot solve linear system for y", __FILE__, __LINE__);
-    goto rhs_y_free;
+      "%s:%d: cannot solve linear system for u\n", __FILE__, __LINE__);
+    goto rhs_u_free;
   }
 
   double_array_copy(q, m, g);

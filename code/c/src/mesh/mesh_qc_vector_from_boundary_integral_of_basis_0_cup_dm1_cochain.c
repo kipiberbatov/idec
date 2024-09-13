@@ -13,8 +13,8 @@ void mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
   const jagged1 * boundary_hyperfaces,
   const double * coefficients_dm1)
 {
-  int boundary_hyperfaces_a0, dm1, i, j, j_local, n;
-  int * boundary_hyperfaces_a1, 
+  int boundary_hyperfaces_a0, dm1, i, i_local, j, j_local, n;
+  int * boundary_hyperfaces_a1;
   double coefficients_dm1_j, pow_2_dm1;
   double * f;
   jagged1 m_cf_dm1_0_j;
@@ -28,12 +28,12 @@ void mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
 
   for (j_local = 0; j_local < boundary_hyperfaces_a0; ++j_local)
   {
-    j = boundary_hyperfaces_a0[j_local];
+    j = boundary_hyperfaces_a1[j_local];
     coefficients_dm1_j = coefficients_dm1[j];
     jagged2_part1(&m_cf_dm1_0_j, &m_cf_dm1_0, j);
     for (i_local = 0; i_local < m_cf_dm1_0_j.a0; ++i_local)
     {
-      i = m_cf_dm1_0_j.a0[i_local];
+      i = m_cf_dm1_0_j.a1[i_local];
       g[i] += coefficients_dm1_j / pow_2_dm1;
     }
   }

@@ -125,6 +125,16 @@ void mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
   const jagged1 * boundary_hyperfaces,
   const double * coefficients_0);
 
+/*
+calculate diagonal matrix a,
+a_{i, j} := <c^{d - 1, j}, pi_{d - 1}^{-1} c^{d - 1 i}>
+*/
+void mesh_qc_matrix_diagonal_from_inner_of_basis_dm1_cup_inverse_pi_2_basis_dm1(
+  double * a,
+  const mesh * m,
+  const double * m_inner_dm1,
+  const double * pi_dm1);
+
 /* calculate sparse matrix a, a_{i, j} := <delta N^j, pi_1 (delta N^i)> */
 matrix_sparse *
 mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(

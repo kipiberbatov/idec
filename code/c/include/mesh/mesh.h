@@ -103,6 +103,10 @@ jagged1 * mesh_boundary_nodes_from_constraint(
   const mesh * m,
   int (*constraint)(const double *));
 
+jagged1 * mesh_boundary_hyperfaces_from_constraint(
+  const mesh * m,
+  int (*constraint)(const double *));
+
 jagged1 * mesh_neighboring_nodes(const mesh * m, int i);
 
 double * mesh_boundary_node_vectors_matrix(const mesh * m, int i);

@@ -23,7 +23,7 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0_row_ind
   int * a_row_indices,
   const mesh_qc * m)
 {
-  int index, j, k, k_local, m_cn_0;
+  int index, i, j, k, k_local, m_cn_0;
   jagged1 m_cf_1_0_k, m_fc_0_1_j;
   jagged2 m_cf_1_0, m_fc_0_1;
 
@@ -37,7 +37,7 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0_row_ind
     a_row_indices[index] = j;
     ++index;
     jagged2_part1(&m_fc_0_1_j, &m_fc_0_1, j);
-    for (k_local = 0; k_local < m_fc_0_1_i.a0; ++k_local)
+    for (k_local = 0; k_local < m_fc_0_1_j.a0; ++k_local)
     {
       k = m_fc_0_1_j.a1[k_local];
       jagged2_part1(&m_cf_1_0_k, &m_cf_1_0, k);
@@ -57,12 +57,11 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0_values(
 {
   int diagonal_index, index, j, k, k_local, m_cn_0;
   double c_k;
-  jagged1 m_cf_1_0_k, m_fc_0_1_j;
-  jagged2 m_cf_1_0, m_fc_0_1;
+  jagged1 m_fc_0_1_j;
+  jagged2 m_fc_0_1;
 
   m_cn_0 = m->cn[0];
   mesh_fc_part2(&m_fc_0_1, m, 0, 1);
-  mesh_cf_part2(&m_cf_1_0, m, 1, 0);
 
   index = 0;
   for (j = 0; j < m_cn_0; ++j)
@@ -71,7 +70,7 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0_values(
     a_values[diagonal_index] = 0;
     ++index;
     jagged2_part1(&m_fc_0_1_j, &m_fc_0_1, j);
-    for (k_local = 0; k_local < m_fc_0_1_i.a0; ++k_local)
+    for (k_local = 0; k_local < m_fc_0_1_j.a0; ++k_local)
     {
       k = m_fc_0_1_j.a1[k_local];
       c_k = pi_1[k] * m_inner_1[k];
@@ -89,6 +88,7 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(
   const double * m_inner_1,
   const double * pi_1)
 {
+  int nonzero_max;
   matrix_sparse * a;
 
   a->rows = m->cn[0];
@@ -124,7 +124,7 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(
     goto a_row_indices_free;
   }
   mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0_values(
-    a->values, m, m_bd_1, m_inner_1, pi_1);
+    a->values, m, m_inner_1, pi_1);
 
   return a;
 
@@ -134,7 +134,7 @@ a_row_indices_free:
 a_cols_total_free:
   free(a->cols_total);
 a_free:
-  free(b);
+  free(a);
 end:
   return NULL;
 }
