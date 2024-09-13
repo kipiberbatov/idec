@@ -3,7 +3,7 @@ MODE := release
 
 ############### general preprocessor, compiler and linker flags ################
 CPPFLAGS := -MMD -MP
-CFLAGS := -O2 -Wall -Wfatal-errors
+CFLAGS := -O2 -Wall -Wfatal-errors -Werror
 LDLIBS := -lm
 
 ######################### OS-dependent file extensions #########################

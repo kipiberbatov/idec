@@ -91,6 +91,14 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(
   int nonzero_max;
   matrix_sparse * a;
 
+  a = (matrix_sparse *) malloc(sizeof(matrix_sparse));
+  if (a == NULL)
+  {
+    fprintf(stderr,
+      "%s:%d: cannot allocate memory for a\n", __FILE__, __LINE__);
+    goto end;
+  }
+
   a->rows = m->cn[0];
   a->cols = a->rows;
 
@@ -98,8 +106,8 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(
   if (a->cols_total == NULL)
   {
     fprintf(stderr,
-      "%s:%d: cannot allocate memory for cols_total\n", __FILE__, __LINE__);
-    goto end;
+      "%s:%d: cannot allocate memory for a->cols_total\n", __FILE__, __LINE__);
+    goto a_free;
   }
   mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0_cols_total(
     a->cols_total, m);

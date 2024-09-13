@@ -43,7 +43,7 @@ void diffusion_steady_state_mixed_weak_discrete_solve(
   // const diffusion_steady_state_mixed_weak_discrete * data)
 {
   double * a;
-  double * f, * g;
+  double * f, * g = NULL;
   matrix_sparse * b;
 
   a = (double *) malloc(sizeof(double) * m->cn[m->dim - 1]);
@@ -58,7 +58,7 @@ void diffusion_steady_state_mixed_weak_discrete_solve(
 
   b = mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
     m, m_bd_d);
-  if (f == NULL)
+  if (b == NULL)
   {
     fprintf(stderr, "%s:%d: cannot calculate b\n", __FILE__, __LINE__);
     goto a_free;

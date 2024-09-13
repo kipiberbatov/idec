@@ -39,18 +39,27 @@ algorithm
 static void 
 mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1_cols_total(
   int * b_cols_total,
-  const mesh_qc * m);
+  const mesh_qc * m)
+{
+  return;
+}
 
 static void
 mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1_row_indices(
   int * b_row_indices,
-  const mesh_qc * m);
+  const mesh_qc * m)
+{
+  return;
+}
 
 static void
 mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1_values(
   double * b_values,
   const mesh_qc * m,
-  const matrix_sparse * m_bd_d);
+  const matrix_sparse * m_bd_d)
+{
+  return;
+}
 
 matrix_sparse *
 mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
