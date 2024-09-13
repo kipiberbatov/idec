@@ -5,7 +5,7 @@ void boundary_scalar_field_discretize(
   int m_dim_embedded,
   const double * m_coord,
   const jagged1 * boundary_nodes,
-  scalar_field g)
+  double (*g)(const double *))
 {
   int j, j_loc, boundary_nodes_a0;
   int * boundary_nodes_a1;

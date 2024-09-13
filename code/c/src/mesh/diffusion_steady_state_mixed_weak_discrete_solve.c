@@ -20,21 +20,6 @@ static void matrix_sparse_mixed_constrained_solve_with_diagonal_square_matrix(
   return;
 }
 
-static double * mesh_qc_a_matrix_for_mixed_heat_equation(
-  int m_cn_dm1,
-  const double * m_inner_dm1,
-  const double * data_p2)
-{
-  int i;
-  double * a;
-
-  a = (double *) malloc(sizeof(double) * m_cn_dm1);
-  /* NULL pointer handling */
-  for (i = 0; i < m_cn_dm1; ++i)
-    a[i] = m_inner_dm1[i] / data_p2[i];
-  return a;
-}
-
 /* copied just to compile */
 typedef struct diffusion_discrete_mixed
 {
