@@ -10,7 +10,7 @@
 diffusion_steady_state_discrete_primal_weak *
 diffusion_steady_state_discrete_primal_weak_from_continuous(
   const mesh * m,
-  const double * m_vol,
+  const double * m_vol_dm1,
   const diffusion_steady_state_continuous * data_continuous)
 {
   diffusion_steady_state_discrete_primal_weak * data_discrete;
@@ -65,7 +65,7 @@ diffusion_steady_state_discrete_primal_weak_from_continuous(
   boundary_pseudoscalar_field_discretize(
     data_discrete->g_neumann,
     m,
-    m_vol,
+    m_vol_dm1,
     data_discrete->boundary_neumann,
     data_continuous->g_neumann);
 

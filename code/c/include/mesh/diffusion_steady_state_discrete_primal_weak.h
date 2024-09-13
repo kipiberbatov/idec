@@ -18,7 +18,7 @@ typedef struct diffusion_steady_state_discrete_primal_weak
 diffusion_steady_state_discrete_primal_weak *
 diffusion_steady_state_discrete_primal_weak_from_continuous(
   const mesh * m,
-  const double * m_vol,
+  const double * m_vol_dm1,
   const diffusion_steady_state_continuous * data_continuous);
 
 void diffusion_steady_state_discrete_primal_weak_free(
