@@ -14,8 +14,8 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0_cols_to
   m_cn_0 = m->cn[0];
   mesh_fc_part2(&m_fc_0_1, m, 0, 1);
   a_cols_total[0] = 0;
-  for (j = 1; j <= m_cn_0; ++j)
-    a_cols_total[j] = a_cols_total[j - 1] + m_fc_0_1.a1[j];
+  for (j = 0; j < m_cn_0; ++j)
+    a_cols_total[j + 1] = a_cols_total[j] + m_fc_0_1.a1[j] + 1;
 }
 
 static void

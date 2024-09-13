@@ -8,6 +8,7 @@ _demo_graphics_pdf :=\
   build/$(MODE)/demo/graphics/pdf/mesh_2d_10_grains_forman_edge_skeleton.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.pdf\
+  build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion_steady_state_continuous_p4_primal_weak_temperature.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_continuous_p4_temperature.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_steady_state_continuous_p4_temperature.pdf\
@@ -76,6 +77,13 @@ build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion_continuous_p0_f
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 20 --raw $(word 3, $^) $@
+
+build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion_steady_state_continuous_p4_primal_weak_temperature.pdf:\
+  build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_steady_state_continuous_p4_primal_weak_temperature.txt\
+  | build/$(MODE)/demo/graphics/pdf
+	$< --raw $(word 2, $^) 0 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_continuous_p2_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\

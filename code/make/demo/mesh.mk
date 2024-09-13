@@ -276,6 +276,7 @@ _demo_mesh_brick_regular_2d_2 := \
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_neumann_modified_laplacian.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperature.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_steady_state_continuous_p4_primal_weak_temperature.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p1_temperature.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p2_temperature.txt\
@@ -425,6 +426,16 @@ build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_temperatu
   | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
   diffusion_continuous_p0 0.05 100 > $@
+
+build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_steady_state_continuous_p4_primal_weak_temperature.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_primal_weak_solve$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_inner.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_p4$(.OBJ)\
+  | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_p4 > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_continuous_p0_flux.txt:\
   build/$(MODE)/bin/diffusion_discrete_calculate_flux$(.EXE)\
