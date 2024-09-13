@@ -9,7 +9,7 @@ static int mesh_boundary_nodes_from_constraint_size(
   const double * m_coord,
   int (*constraint)(const double *))
 {
-  int i, size;  
+  int i, size;
 
   size = 0;
   for (i = 0; i < m_cn_0; ++i)

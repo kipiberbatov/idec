@@ -146,7 +146,7 @@ mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(
 calculate sparse matrix b,
 b_{i, k} := (N^k \_/ delta c^{d - 1, i})[M]
 */
-matrix_sparse * 
+matrix_sparse *
 mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
   const mesh_qc * m,
   const matrix_sparse * m_bd_d);

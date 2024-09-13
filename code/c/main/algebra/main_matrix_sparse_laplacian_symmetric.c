@@ -72,7 +72,7 @@ int main(int argc, char * argv[])
   );
   if (errno)
   {
-    fputs("main - cannot  scan m_inner\n", stderr);
+    fputs("main - cannot scan m_inner\n", stderr);
     goto m_inner_file_close;
   }
 

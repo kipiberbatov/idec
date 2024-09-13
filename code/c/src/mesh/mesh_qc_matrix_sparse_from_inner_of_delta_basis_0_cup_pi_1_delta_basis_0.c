@@ -3,7 +3,7 @@
 
 #include "mesh_qc.h"
 
-static void 
+static void
 mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0_cols_total(
   int * a_cols_total,
   const mesh_qc * m)

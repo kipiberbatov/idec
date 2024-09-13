@@ -16,7 +16,7 @@ diffusion_steady_state_discrete_primal_weak_from_continuous(
   diffusion_steady_state_discrete_primal_weak * data_discrete;
 
   data_discrete
-  = (diffusion_steady_state_discrete_primal_weak *) 
+  = (diffusion_steady_state_discrete_primal_weak *)
     malloc(sizeof(diffusion_steady_state_discrete_primal_weak));
   if (errno)
     goto end;

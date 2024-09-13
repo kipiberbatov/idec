@@ -17,7 +17,7 @@ with respect to the standard bases of $C^0 M$ and $C^{d - 1} M$, i.e.,
 $b_{i, j} := $b(c^{d - 1, i}, c^{0, j})$.
 
 ********************************** definition **********************************
-take a node N_j  
+take a node N_j
   0 F_i is not a boundary of the 3-coboundary of N_j -> b_{i, j} = 0
   1 F_i is a boundary of the 3-coboundary of N_j
       0 N_j is not on the boundary of F_i: let V_k be the common volume
@@ -36,7 +36,7 @@ algorithm
     (more precisely, the signs epsilon(V_k, F_i) before 1 / 2^d)
 */
 
-static void 
+static void
 mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1_cols_total(
   int * b_cols_total,
   const mesh_qc * m)
@@ -69,7 +69,7 @@ mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
   int d, nonzero_max;
   int * m_cn;
   matrix_sparse * b;
- 
+
   d = m->dim;
   m_cn = m->cn;
 
