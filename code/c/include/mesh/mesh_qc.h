@@ -135,6 +135,12 @@ void mesh_qc_matrix_diagonal_from_inner_of_basis_dm1_cup_inverse_pi_2_basis_dm1(
   const double * m_inner_dm1,
   const double * pi_dm1);
 
+void mesh_qc_matrix_diagonal_from_inner_of_basis_0_cup_pi_0_basis_0(
+  double * a,
+  const mesh * m,
+  const double * m_inner_0,
+  const double * pi_0);
+
 /* calculate sparse matrix a, a_{i, j} := <delta N^j, pi_1 (delta N^i)> */
 matrix_sparse *
 mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(
