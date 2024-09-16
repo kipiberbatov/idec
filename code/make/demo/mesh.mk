@@ -1463,6 +1463,7 @@ _demo_mesh_2d_10_grains :=\
   build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_temperature.txt\
   build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_continuous_p7_flux.txt\
   build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.txt\
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_primal_weak_temperature.txt\
 
 .PHONY: demo_mesh_2d_10_grains
 demo_mesh_2d_10_grains: $(_demo_mesh_2d_10_grains)\
@@ -1538,6 +1539,16 @@ build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuo
   | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
   diffusion_steady_state_continuous_p7 > $@
+
+build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_primal_weak_temperature.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_primal_weak_solve$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_vol.txt\
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_inner.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_p7$(.OBJ)\
+  | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_p7 > $@
 
 _demo_mesh_square := \
   build/$(MODE)/demo/mesh/mesh_square_2.txt\
