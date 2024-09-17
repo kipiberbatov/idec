@@ -1,3 +1,6 @@
+#ifndef _diffusion_transient_discrete_primal_weak_h
+#define _diffusion_transient_discrete_primal_weak_h
+
 #include "diffusion_transient_continuous.h"
 
 typedef struct diffusion_transient_discrete_primal_weak
@@ -29,3 +32,5 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
   const diffusion_transient_discrete_primal_weak * data,
   double time_step,
   int number_of_steps);
+
+#endif /* _diffusion_transient_discrete_primal_weak_h */

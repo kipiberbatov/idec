@@ -84,8 +84,8 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  result = diffusion_steady_state_continuous_primal_weak_solve(
-    m, m_vol[m->dim - 1], m_inner[1], data);
+  result = diffusion_steady_state_continuous_primal_weak_cochain_solve(
+    m, m_vol[m->dim - 1], m_vol[m->dim], m_inner[1], data);
   if (errno)
   {
     fputs("  main: cannot calculate result\n", stderr);

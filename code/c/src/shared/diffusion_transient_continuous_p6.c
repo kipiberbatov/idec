@@ -1,4 +1,4 @@
-#include "diffusion_continuous.h"
+#include "diffusion_transient_continuous.h"
 
 /*
 Given a mesh M for the unit cube, and the discrete Laplacian, solve:
@@ -67,7 +67,7 @@ static double g_neumann(const double * x)
   return 0.;
 }
 
-const diffusion_continuous diffusion_continuous_p6 =
+const diffusion_transient_continuous diffusion_transient_continuous_p6 =
 {
   pi_0,
   pi_1,

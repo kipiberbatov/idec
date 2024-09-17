@@ -14,6 +14,9 @@ typedef struct diffusion_steady_state_discrete_mixed_weak
   double  * g_neumann;
 } diffusion_steady_state_discrete_mixed_weak;
 
+void diffusion_steady_state_discrete_mixed_weak_free(
+  diffusion_steady_state_discrete_mixed_weak * data);
+
 diffusion_steady_state_discrete_mixed_weak *
 diffusion_steady_state_discrete_mixed_weak_from_continuous(
   const mesh * m,
@@ -21,11 +24,11 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
   const double * m_vol_d,
   const diffusion_steady_state_continuous * data_continuous);
 
-void diffusion_steady_state_discrete_mixed_weak_free(
-  diffusion_steady_state_discrete_mixed_weak * data);
-
-double * diffusion_steady_state_discrete_mixed_weak_solve(
+void diffusion_steady_state_discrete_mixed_weak_solve(
+  double * q,
+  double * u,
   const mesh * m,
+  const matrix_sparse * m_bd_d,
   const double * m_inner_dm1,
   const diffusion_steady_state_discrete_mixed_weak * data);
 

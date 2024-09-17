@@ -25,7 +25,7 @@ void de_rham_nonzero(
     for (j_local = 0; j_local < m_cf_p_0_i.a0; ++j_local)
     {
       j = m_cf_p_0_i.a1[j_local];
-      tmp += g(m_coord + m_dim_embedded * j);
+      tmp += f(m_coord + m_dim_embedded * j);
     }
     tmp *= m_vol_p[i] / (double) m_cf_p_0_i.a0;
     x[i] = tmp;

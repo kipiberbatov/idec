@@ -19,14 +19,9 @@ diffusion_steady_state_discrete_primal_strong_from_continuous(
   if (errno)
     goto end;
 
-  data_discrete->pi_0 = (double *) malloc(sizeof(double) * m->cn[0]);
-  if (errno)
-    goto data_discrete_free;
-  de_rham_0(data_discrete->pi_0, m, data_continuous->pi_0);
-
   data_discrete->pi_1 = (double *) malloc(sizeof(double) * m->cn[1]);
   if (errno)
-    goto data_discrete_pi_0_free;
+    goto data_discrete_free;
   unsigned_approximation_of_scalar_field_on_1_cells(
     data_discrete->pi_1, m, data_continuous->pi_1);
 
@@ -81,8 +76,6 @@ data_discrete_source_free:
   free(data_discrete->source);
 data_discrete_pi_1_free:
   free(data_discrete->pi_1);
-data_discrete_pi_0_free:
-  free(data_discrete->pi_0);
 data_discrete_free:
   free(data_discrete);
 end:

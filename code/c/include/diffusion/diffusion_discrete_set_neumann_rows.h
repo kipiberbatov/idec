@@ -9,4 +9,4 @@ void diffusion_discrete_set_neumann_rows(
   const jagged1 * boundary_neumann_discrete,
   const double * pi_1);
 
-#endif /* diffusion_discrete_set_neumann_rows */
+#endif /* _diffusion_discrete_set_neumann_rows_h */

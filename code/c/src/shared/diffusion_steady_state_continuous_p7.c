@@ -1,10 +1,5 @@
 #include "diffusion_steady_state_continuous.h"
 
-static double pi_0(const double * x)
-{
-  return 4.;
-}
-
 static double pi_1(const double * x)
 {
   return 6.;
@@ -41,7 +36,6 @@ static double g_neumann(const double * x)
 
 const diffusion_steady_state_continuous diffusion_steady_state_continuous_p7 =
 {
-  pi_0,
   pi_1,
   source,
   boundary_dirichlet,

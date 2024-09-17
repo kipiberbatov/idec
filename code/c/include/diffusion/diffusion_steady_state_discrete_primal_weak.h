@@ -6,7 +6,6 @@
 
 typedef struct diffusion_steady_state_discrete_primal_weak
 {
-  double  * pi_0;
   double  * pi_1;
   double  * source;
   jagged1 * boundary_dirichlet;

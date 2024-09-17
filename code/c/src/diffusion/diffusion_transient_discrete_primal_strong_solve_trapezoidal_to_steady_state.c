@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "diffusion_discrete_set_neumann_rows.h"
 #include "diffusion_transient_discrete_primal_strong.h"
 
 /*
@@ -85,7 +86,7 @@ diffusion_transient_discrete_primal_strong_solve_trapezoidal_to_steady_state(
   const mesh * m,
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,
-  const diffusion_discrete * data,
+  const diffusion_transient_discrete_primal_strong * data,
   double time_step,
   double tolerance)
 {

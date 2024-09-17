@@ -2,15 +2,15 @@
 #include <stdlib.h>
 
 #include "double.h"
-#include "diffusion_transient_discrete_primal_calculate_flux.h"
+#include "diffusion_transient_discrete_primal_edge_flux.h"
 #include "int.h"
 
 int main(int argc, char ** argv)
 {
   mesh * m;
   matrix_sparse ** m_bd;
-  int i, n, number_of_steps;
-  double * temperature, * flux;
+  int number_of_steps;
+  double * flux, * pi_1, * temperature;
 
   if (argc != 4)
   {
@@ -46,7 +46,10 @@ int main(int argc, char ** argv)
     fprintf(stderr, "Cannot allocate memory for flux");
     goto temperature_free;
   }
-  diffusion_transient_discrete_primal_calculate_flux(
+
+  m_bd = NULL; /* has to be read */
+  pi_1 = NULL; /* has to be read */
+  diffusion_transient_discrete_primal_edge_flux(
     flux, m, m_bd[0], pi_1, number_of_steps, temperature);
 
   double_matrix_file_print(

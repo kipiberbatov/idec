@@ -1,6 +1,6 @@
 #include <math.h>
 
-#include "diffusion_continuous.h"
+#include "diffusion_transient_continuous.h"
 
 #define A 5.
 
@@ -52,7 +52,7 @@ static double g_neumann(const double * x)
   return 0;
 }
 
-const diffusion_continuous diffusion_continuous_p5 =
+const diffusion_transient_continuous diffusion_transient_continuous_p5 =
 {
   pi_0,
   pi_1,

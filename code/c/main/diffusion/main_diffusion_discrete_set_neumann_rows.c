@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "double.h"
-#include "diffusion_discrete.h"
+#include "diffusion_discrete_set_neumann_rows.h"
 
 static int x1_axis_constant(const double * x)
 {

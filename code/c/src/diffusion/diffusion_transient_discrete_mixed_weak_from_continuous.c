@@ -13,7 +13,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   const mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
-  const diffusion_continuous * data_continuous)
+  const diffusion_transient_continuous * data_continuous)
 {
   diffusion_transient_discrete_mixed_weak * data_discrete;
 
@@ -28,21 +28,22 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   unsigned_approximation_of_scalar_field_on_2_cells(
     data_discrete->pi_0, m, data_continuous->pi_0);
 
-  data_discrete->pi_2 = (double *) malloc(sizeof(double) * m->cn[2]);
+  data_discrete->pi_dm1 = (double *) malloc(sizeof(double) * m->cn[2]);
   if (errno)
     goto data_discrete_pi_0_free;
   unsigned_approximation_of_scalar_field_on_2_cells(
-    data_discrete->pi_2, m, data_continuous->pi_1);
+    data_discrete->pi_dm1, m, data_continuous->pi_1);
 
   data_discrete->initial = (double *) malloc(sizeof(double) * m->cn[0]);
   if (errno)
-    goto data_discrete_pi_2_free;
+    goto data_discrete_pi_dm1_free;
   de_rham_0(data_discrete->initial, m, data_continuous->initial);
 
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[m->dim]);
   if (errno)
     goto data_discrete_initial_free;
-  de_rham(data_discrete->source, m, m->dim, m_vol_d, data_continuous->source);
+  de_rham_nonzero(
+    data_discrete->source, m, m->dim, m_vol_d, data_continuous->source);
 
   data_discrete->boundary_dirichlet
   = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_dirichlet);
@@ -90,8 +91,8 @@ data_discrete_source_free:
   free(data_discrete->source);
 data_discrete_initial_free:
   free(data_discrete->initial);
-data_discrete_pi_2_free:
-  free(data_discrete->pi_2);
+data_discrete_pi_dm1_free:
+  free(data_discrete->pi_dm1);
 data_discrete_pi_0_free:
   free(data_discrete->pi_0);
 data_discrete_free:

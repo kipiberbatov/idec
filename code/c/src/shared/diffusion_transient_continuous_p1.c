@@ -1,6 +1,6 @@
 #include <math.h>
 
-#include "diffusion_continuous.h"
+#include "diffusion_transient_continuous.h"
 
 /*
 Solve the following problem:
@@ -8,10 +8,11 @@ Given a mesh M for the unit square, and the discrete Laplacian, solve:
   . du/dt = -Laplacian(u) + f    in the interior nodes of M
   . u = g_d                      at the boundary nodes of M
   . u(0) = initial               at all nodes of M
-In this example:
-  . we have zero degrees everywhere except at the central node where it is 100
-  . we maintain zero degrees at the boundary
-After a finite amount of time the temperature will be zero degrees everywhere.
+For this example it is assumed that f and g_d are time independent.
+An artificial example with
+  u(t, x, y) = exp(-2 * pi^2) sin(pi x) sin(pi y)
+is taken.
+This corresponds to f = 0, g_d = 0, initial = sin(pi x) sin(pi y).
 */
 
 static double pi_0(const double * x)
@@ -26,9 +27,7 @@ static double pi_1(const double * x)
 
 static double initial(const double * x)
 {
-  if (fabs(x[0] - 0.5) < 0.00001 && fabs(x[1] - 0.5) < 0.00001)
-    return 100;
-  return 0;
+  return sin(M_PI * x[0]) * sin(M_PI * x[1]);
 }
 
 static double source(const double * x)
@@ -56,7 +55,7 @@ static double g_neumann(const double * x)
   return 0.;
 }
 
-const diffusion_continuous diffusion_continuous_p2 =
+const diffusion_transient_continuous diffusion_transient_continuous_p1 =
 {
   pi_0,
   pi_1,

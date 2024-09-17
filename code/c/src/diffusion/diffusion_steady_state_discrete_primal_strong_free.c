@@ -1,8 +1,8 @@
 #include <stdlib.h>
-#include "diffusion_steady_state_discrete_primal_weak.h"
+#include "diffusion_steady_state_discrete_primal_strong.h"
 
-void diffusion_steady_state_discrete_primal_weak_free(
-  diffusion_steady_state_discrete_primal_weak * data)
+void diffusion_steady_state_discrete_primal_strong_free(
+  diffusion_steady_state_discrete_primal_strong * data)
 {
   free(data->g_neumann);
   jagged1_free(data->boundary_neumann);

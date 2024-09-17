@@ -6,7 +6,7 @@
 #include <dlfcn.h>
 
 #include "double.h"
-#include "diffusion_steady_state_continuous.h"
+#include "diffusion_transient_continuous.h"
 #include "int.h"
 #include "mesh.h"
 
@@ -22,9 +22,11 @@ int main(int argc, char ** argv)
   mesh * m;
   matrix_sparse * m_cbd_0, * m_cbd_star_1;
   void * lib_handle;
-  const diffusion_steady_state_continuous * data;
+  const diffusion_transient_continuous * data;
+  int number_of_steps;
+  double time_step;
 
-  if (argc != 7)
+  if (argc != 9)
   {
     errno = EINVAL;
     fputs("Runtime error stack trace:\n", stderr);
@@ -75,6 +77,7 @@ int main(int argc, char ** argv)
   }
   fclose(m_cbd_star_1_file);
 
+
   lib_name = argv[5];
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
@@ -87,8 +90,7 @@ int main(int argc, char ** argv)
   dlerror();
 
   data_name = argv[6];
-  data = (const diffusion_steady_state_continuous *)
-    dlsym(lib_handle, data_name);
+  data = (const diffusion_transient_continuous *) dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
   {
@@ -97,15 +99,36 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  result = diffusion_steady_state_continuous_solve(
-    m, m_cbd_0, m_cbd_star_1, data);
+  time_step = double_string_scan(argv[7]);
+  if (errno)
+  {
+    fputs("  main: cannot scan time_step\n", stderr);
+    goto lib_close;
+  }
+
+  number_of_steps = int_string_scan(argv[8]);
+  if (errno)
+  {
+    fputs("  main: cannot scan number_of_steps\n", stderr);
+    goto lib_close;
+  }
+
+  result
+  = diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
+    m,
+    m_cbd_0,
+    m_cbd_star_1,
+    data,
+    time_step,
+    number_of_steps);
   if (errno)
   {
     fputs("  main: cannot calculate result\n", stderr);
     goto lib_close;
   }
 
-  double_array_file_print(stdout, m->cn[0], result, "--raw");
+  double_matrix_file_print(
+    stdout, number_of_steps + 1, m->cn[0], result, "--raw");
 
   free(result);
 lib_close:

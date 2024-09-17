@@ -3,17 +3,17 @@
 #include <string.h>
 
 #include "double.h"
-#include "diffusion_discrete.h"
-#include "diffusion_steady_state_discrete.h"
+#include "diffusion_discrete_set_neumann_rows.h"
+#include "diffusion_steady_state_discrete_primal_strong.h"
 
-#define FUNCTION "diffusion_steady_state_discrete_solve"
+#define FUNCTION "diffusion_steady_state_discrete_primal_strong_cochain_solve"
 #define START_ERROR_MESSAGE fprintf(stderr,"  %s: ", FUNCTION)
 
-double * diffusion_steady_state_discrete_solve(
+double * diffusion_steady_state_discrete_primal_strong_solve(
   const mesh * m,
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,
-  const diffusion_steady_state_discrete * data)
+  const diffusion_steady_state_discrete_primal_strong * data)
 {
   int n;
   double * result = NULL;

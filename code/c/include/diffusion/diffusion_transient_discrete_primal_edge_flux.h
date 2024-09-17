@@ -1,3 +1,6 @@
+#ifndef _diffusion_transient_discrete_primal_edge_flux_h
+#define _diffusion_transient_discrete_primal_edge_flux_h
+
 #include "mesh.h"
 
 void diffusion_transient_discrete_primal_edge_flux(
@@ -7,3 +10,5 @@ void diffusion_transient_discrete_primal_edge_flux(
   const double * pi_1,
   int number_of_steps,
   const double * temperature);
+
+#endif /* _diffusion_transient_discrete_primal_edge_flux_h */

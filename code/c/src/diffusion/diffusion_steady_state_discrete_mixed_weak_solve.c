@@ -17,7 +17,7 @@ static void matrix_sparse_mixed_constrained_solve_with_diagonal_square_matrix(
   return;
 }
 
-void diffusion_steady_state_mixed_weak_discrete_solve(
+void diffusion_steady_state_discrete_mixed_weak_solve(
   double * q,
   double * u,
   const mesh * m,
@@ -37,7 +37,7 @@ void diffusion_steady_state_mixed_weak_discrete_solve(
     return;
   }
   mesh_qc_matrix_diagonal_from_inner_of_basis_dm1_cup_inverse_pi_2_basis_dm1(
-    a, m, m_inner_dm1, data->pi_2);
+    a, m, m_inner_dm1, data->pi_dm1);
 
   b = mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
     m, m_bd_d);

@@ -5,7 +5,8 @@
 
 #include <dlfcn.h>
 
-#include "diffusion_continuous.h"
+#include "double.h"
+#include "diffusion_steady_state_continuous.h"
 #include "int.h"
 #include "mesh.h"
 
@@ -16,18 +17,18 @@ int main(int argc, char ** argv)
   char * m_cbd_0_name;
   char * m_cbd_star_1_name;
   FILE * m_cbd_star_1_file;
-  double_array_sequence_dynamic * result;
+  double * result;
 
   mesh * m;
   matrix_sparse * m_cbd_0, * m_cbd_star_1;
   void * lib_handle;
-  const diffusion_continuous * data;
-  double time_step;
+  const diffusion_steady_state_continuous * data;
 
-  if (argc != 8)
+  if (argc != 7)
   {
     errno = EINVAL;
-    fputs("main - the number of command-line arguments must be 8\n", stderr);
+    fputs("Runtime error stack trace:\n", stderr);
+    fputs("  main: the number of command-line arguments must be 8\n", stderr);
     goto end;
   }
 
@@ -36,14 +37,14 @@ int main(int argc, char ** argv)
   m = mesh_file_scan_by_name(m_name, m_format);
   if (errno)
   {
-    fputs("main - cannot scan m\n", stderr);
+    fputs("  main: cannot scan m\n", stderr);
     goto end;
   }
 
   m->fc = mesh_fc(m);
   if (errno)
   {
-    fputs("main - cannot calculate m->fc\n", stderr);
+    fputs("  main: cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
@@ -52,7 +53,7 @@ int main(int argc, char ** argv)
   m_cbd_0 = matrix_sparse_file_scan_by_name(m_cbd_0_name, "--raw");
   if (errno)
   {
-    fputs("main - cannot scan m_cbd_0\n", stderr);
+    fputs("  main: cannot scan m_cbd_0\n", stderr);
     goto m_free;
   }
 
@@ -61,31 +62,33 @@ int main(int argc, char ** argv)
   m_cbd_star_1_file = fopen(m_cbd_star_1_name, "r");
   if (errno)
   {
-    fprintf(stderr, "Cannot open file %s\n", m_cbd_star_1_name);
+    fputs("Runtime error stack trace:\n", stderr);
+    fprintf(stderr, "  main: cannot open file %s\n", m_cbd_star_1_name);
     goto m_cbd_0_free;
   }
   m_cbd_star_1 = mesh_file_scan_boundary_p(m_cbd_star_1_file, m, 1);
   if (errno)
   {
-    fputs("main - cannot scan m_cbd_star_1\n", stderr);
+    fputs("  main: cannot scan m_cbd_star_1\n", stderr);
     fclose(m_cbd_star_1_file);
     goto m_cbd_0_free;
   }
   fclose(m_cbd_star_1_file);
 
-
   lib_name = argv[5];
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
   {
-    fputs("main - cannot open libshared\n", stderr);
+    fputs("Runtime error stack trace:\n", stderr);
+    fputs("  main: cannot open libshared\n", stderr);
     goto m_cbd_star_1_free;
   }
   /* clear any existing errors */
   dlerror();
 
   data_name = argv[6];
-  data = (const diffusion_continuous *) dlsym(lib_handle, data_name);
+  data = (const diffusion_steady_state_continuous *)
+    dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
   {
@@ -94,28 +97,17 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  time_step = double_string_scan(argv[7]);
+  result = diffusion_steady_state_continuous_primal_strong_cochain_solve(
+    m, m_cbd_0, m_cbd_star_1, data);
   if (errno)
   {
-    fprintf(stderr, "Error in %s: cannot scan time_step\n", __func__);
+    fputs("  main: cannot calculate result\n", stderr);
     goto lib_close;
   }
 
-  result = diffusion_continuous_solve_trapezoidal_method_to_steady_state(
-    m,
-    m_cbd_0,
-    m_cbd_star_1,
-    data,
-    time_step,
-    0.004);
-  if (errno)
-  {
-    fputs("main - cannot calculate x\n", stderr);
-    goto lib_close;
-  }
-  double_array_sequence_dynamic_file_print(stdout, result);
+  double_array_file_print(stdout, m->cn[0], result, "--raw");
 
-  double_array_sequence_dynamic_free(result);
+  free(result);
 lib_close:
   dlclose(lib_name);
 m_cbd_star_1_free:

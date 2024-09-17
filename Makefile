@@ -182,7 +182,7 @@ _include_src_region := $(_include_main_region) -iquote code/c/src/region
 _include_src_mesh := $(_include_main_mesh) -iquote code/c/src/mesh
 _include_src_diffusion := $(_include_main_diffusion)\
   -iquote code/c/src/diffusion
-_include_src_shared := $(_include_main_mesh)
+_include_src_shared := $(_include_main_diffusion)
 _include_src_graphics := $(_include_main_graphics) -iquote code/c/src/graphics
 
 ############################# library dependencies #############################

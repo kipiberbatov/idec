@@ -3,7 +3,7 @@
 #include "diffusion_steady_state_continuous.h"
 #include "diffusion_steady_state_discrete_primal_weak.h"
 
-double * diffusion_steady_state_continuous_primal_weak_solve(
+double * diffusion_steady_state_continuous_primal_weak_cochain_solve(
   const mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,

@@ -1,7 +1,7 @@
 #ifndef _diffusion_steady_state_discrete_primal_strong_h
 #define _diffusion_steady_state_discrete_primal_strong_h
 
-#include "mesh.h"
+#include "diffusion_steady_state_continuous.h"
 
 typedef struct diffusion_steady_state_discrete_primal_strong
 {
@@ -16,6 +16,11 @@ typedef struct diffusion_steady_state_discrete_primal_strong
 
 void diffusion_steady_state_discrete_primal_strong_free(
   diffusion_steady_state_discrete_primal_strong * data);
+
+diffusion_steady_state_discrete_primal_strong *
+diffusion_steady_state_discrete_primal_strong_from_continuous(
+  const mesh * m,
+  const diffusion_steady_state_continuous * data_continuous);
 
 double * diffusion_steady_state_discrete_primal_strong_solve(
   const mesh * m,

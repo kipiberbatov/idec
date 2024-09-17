@@ -41,7 +41,8 @@ diffusion_transient_discrete_primal_weak_from_continuous(
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[m->dim]);
   if (errno)
     goto data_discrete_initial_free;
-  de_rham_d(data_discrete->source, m, m_vol_d, data_continuous->source);
+  de_rham_nonzero(
+    data_discrete->source, m, m->dim, m_vol_d, data_continuous->source);
 
   data_discrete->boundary_dirichlet
   = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_dirichlet);
