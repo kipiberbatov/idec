@@ -3,17 +3,19 @@
 
 #include "boundary_scalar_field_discretize.h"
 #include "de_rham.h"
-#include "diffusion_continuous.h"
-#include "diffusion_discrete.h"
+#include "diffusion_transient_continuous.h"
+#include "diffusion_transient_discrete_primal_strong.h"
 #include "unsigned_approximation.h"
 
-diffusion_discrete * diffusion_continuous_discretize(
+diffusion_transient_discrete_primal_strong *
+diffusion_transient_discrete_primal_strong_from_continuous(
   const mesh * m,
   const diffusion_continuous * data_continuous)
 {
-  diffusion_discrete * data_discrete;
+  diffusion_transient_discrete_primal_strong * data_discrete;
 
-  data_discrete = (diffusion_discrete *) malloc(sizeof(diffusion_discrete));
+  data_discrete = (diffusion_transient_discrete_primal_strong *) malloc(
+    sizeof(diffusion_transient_discrete_primal_strong));
   if (errno)
     goto end;
 

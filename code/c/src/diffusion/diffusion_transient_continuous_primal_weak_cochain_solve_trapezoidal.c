@@ -5,6 +5,7 @@ double *
 diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal_method(
   const mesh * m,
   const double * m_vol_dm1,
+  const double * m_vol_d,
   const double * m_inner_0,
   const double * m_inner_1,
   const diffusion_transient_continuous * data_continuous,
@@ -15,7 +16,7 @@ diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal_method(
   diffusion_transient_discrete_primal_weak * data_discrete;
 
   data_discrete = diffusion_transient_discrete_primal_weak_from_continuous(
-    m, m_vol_dm1, data_continuous);
+    m, m_vol_dm1, m_vol_d, data_continuous);
   if (data_discrete == NULL)
   {
     fprintf(stderr,

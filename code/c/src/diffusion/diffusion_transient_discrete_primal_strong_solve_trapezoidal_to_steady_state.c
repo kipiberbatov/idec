@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "diffusion_discrete.h"
+#include "diffusion_transient_discrete_primal_strong.h"
 
 /*
 $result$ stores the final solution $y_0, ..., y_{number_of_steps}$.
@@ -77,11 +77,11 @@ static void loop(
   while (relative_norm >= tolerance);
 }
 
-#define FUNCTION "diffusion_discrete_solve_trapezoidal_method_to_steady_state"
+#define FUNCTION "diffusion_transient_discrete_primal_strong_solve_trapezoidal_to_steady_state"
 #define START_ERROR_MESSAGE fprintf(stderr,"  %s: ", FUNCTION)
 
 double_array_sequence_dynamic *
-diffusion_discrete_solve_trapezoidal_method_to_steady_state(
+diffusion_transient_discrete_primal_strong_solve_trapezoidal_to_steady_state(
   const mesh * m,
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,

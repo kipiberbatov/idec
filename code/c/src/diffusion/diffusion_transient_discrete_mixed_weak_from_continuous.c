@@ -4,39 +4,21 @@
 #include "boundary_scalar_field_discretize.h"
 #include "boundary_pseudoscalar_field_discretize.h"
 #include "de_rham.h"
-#include "diffusion_continuous.h"
-#include "diffusion_discrete.h"
+#include "diffusion_transient_continuous.h"
+#include "diffusion_transient_discrete_mixed_weak.h"
 #include "unsigned_approximation.h"
 
-typedef struct diffusion_discrete_mixed
-{
-  double  * pi_0;
-  double  * pi_2;
-  double  * initial;
-  double  * source;
-  jagged1 * boundary_dirichlet;
-  double  * g_dirichlet;
-  jagged1 * boundary_neumann;
-  double  * g_neumann;
-} diffusion_discrete_mixed;
-
-static void unsigned_approximation_of_scalar_field_on_2_cells(
-  double * x,
-  const mesh * m,
-  double (*f)(const double *))
-{
-  return;
-}
-
-diffusion_discrete_mixed * diffusion_continuous_mixed_discretize(
+diffusion_transient_discrete_mixed_weak *
+diffusion_transient_discrete_mixed_weak_from_continuous(
   const mesh * m,
   const double * m_vol_dm1,
+  const double * m_vol_d,
   const diffusion_continuous * data_continuous)
 {
-  diffusion_discrete_mixed * data_discrete;
+  diffusion_transient_discrete_mixed_weak * data_discrete;
 
-  data_discrete
-  = (diffusion_discrete_mixed *) malloc(sizeof(diffusion_discrete_mixed));
+  data_discrete = (diffusion_transient_discrete_mixed_weak *) malloc(
+    sizeof(diffusion_transient_discrete_mixed_weak));
   if (errno)
     goto end;
 
@@ -57,10 +39,10 @@ diffusion_discrete_mixed * diffusion_continuous_mixed_discretize(
     goto data_discrete_pi_2_free;
   de_rham_0(data_discrete->initial, m, data_continuous->initial);
 
-  data_discrete->source = (double *) malloc(sizeof(double) * m->cn[0]);
+  data_discrete->source = (double *) malloc(sizeof(double) * m->cn[m->dim]);
   if (errno)
     goto data_discrete_initial_free;
-  de_rham_3(data_discrete->source, m, data_continuous->source);
+  de_rham(data_discrete->source, m, m->dim, m_vol_d, data_continuous->source);
 
   data_discrete->boundary_dirichlet
   = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_dirichlet);

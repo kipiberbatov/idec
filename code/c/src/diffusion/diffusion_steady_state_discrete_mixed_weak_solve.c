@@ -1,10 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
-#include <string.h>
 
-#include "double.h"
-#include "diffusion_discrete.h"
-#include "diffusion_steady_state_discrete.h"
+#include "diffusion_steady_state_discrete_mixed_weak.h"
 #include "mesh_qc.h"
 
 static void matrix_sparse_mixed_constrained_solve_with_diagonal_square_matrix(
@@ -20,27 +17,13 @@ static void matrix_sparse_mixed_constrained_solve_with_diagonal_square_matrix(
   return;
 }
 
-/* copied just to compile */
-typedef struct diffusion_discrete_mixed
-{
-  double  * pi_0;
-  double  * pi_2;
-  double  * initial;
-  double  * source;
-  jagged1 * boundary_dirichlet;
-  double  * g_dirichlet;
-  jagged1 * boundary_neumann;
-  double  * g_neumann;
-} diffusion_discrete_mixed;
-
 void diffusion_steady_state_mixed_weak_discrete_solve(
   double * q,
   double * u,
   const mesh * m,
   const matrix_sparse * m_bd_d,
   const double * m_inner_dm1,
-  const diffusion_discrete_mixed * data)
-  // const diffusion_steady_state_mixed_weak_discrete * data)
+  const diffusion_steady_state_discrete_mixed_weak * data)
 {
   double * a;
   double * f, * g = NULL;

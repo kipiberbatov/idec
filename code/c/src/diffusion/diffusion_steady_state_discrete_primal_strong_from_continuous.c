@@ -4,17 +4,18 @@
 #include "boundary_scalar_field_discretize.h"
 #include "de_rham.h"
 #include "diffusion_steady_state_continuous.h"
-#include "diffusion_steady_state_discrete.h"
+#include "diffusion_steady_state_discrete_primal_strong.h"
 #include "unsigned_approximation.h"
 
-diffusion_steady_state_discrete * diffusion_steady_state_continuous_discretize(
+diffusion_steady_state_discrete_primal_strong *
+diffusion_steady_state_discrete_primal_strong_from_continuous(
   const mesh * m,
   const diffusion_steady_state_continuous * data_continuous)
 {
-  diffusion_steady_state_discrete * data_discrete;
+  diffusion_steady_state_discrete_primal_strong * data_discrete;
 
-  data_discrete = (diffusion_steady_state_discrete *)
-    malloc(sizeof(diffusion_steady_state_discrete));
+  data_discrete = (diffusion_steady_state_discrete_primal_strong *)
+    malloc(sizeof(diffusion_steady_state_discrete_primal_strong));
   if (errno)
     goto end;
 

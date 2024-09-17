@@ -2,13 +2,13 @@
 #include <stdlib.h>
 
 #include "double.h"
-#include "diffusion_discrete_calculate_flux.h"
+#include "diffusion_transient_discrete_primal_calculate_flux.h"
 #include "int.h"
 
 int main(int argc, char ** argv)
 {
   mesh * m;
-  matrix_sparse * m_cbd = NULL;
+  matrix_sparse ** m_bd;
   int i, n, number_of_steps;
   double * temperature, * flux;
 
@@ -33,29 +33,24 @@ int main(int argc, char ** argv)
   }
 
   temperature = double_array_file_scan_by_name(
-    argv[3],
-    m->cn[0] * (number_of_steps + 1),
-    "--raw");
+    argv[3], m->cn[0] * (number_of_steps + 1), "--raw");
   if (errno)
   {
     fprintf(stderr, "Cannot scan temperature\n");
     goto m_free;
   }
 
-  flux
-  = diffusion_discrete_calculate_flux(m, m_cbd, number_of_steps, temperature);
+  flux = (double *) malloc(sizeof(double) * m->cn[1] * (number_of_steps + 1));
   if (errno)
   {
-    fprintf(stderr, "Cannot calculaate flux\n");
+    fprintf(stderr, "Cannot allocate memory for flux");
     goto temperature_free;
   }
+  diffusion_transient_discrete_primal_calculate_flux(
+    flux, m, m_bd[0], pi_1, number_of_steps, temperature);
 
-  n = m->cn[1];
-  for (i = 0; i <= number_of_steps; ++i)
-  {
-    double_array_file_print(stdout, n, flux + i * n, "--raw");
-    fputs("\n", stdout);
-  }
+  double_matrix_file_print(
+    stdout, number_of_steps + 1, m->cn[0], flux, "--raw");
 
   free(flux);
 temperature_free:

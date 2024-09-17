@@ -16,6 +16,7 @@ diffusion_transient_discrete_primal_weak *
 diffusion_transient_discrete_primal_weak_from_continuous(
   const mesh * m,
   const double * m_vol_dm1,
+  const double * m_vol_d,
   const diffusion_transient_continuous * data_continuous);
 
 void diffusion_transient_discrete_primal_weak_free(

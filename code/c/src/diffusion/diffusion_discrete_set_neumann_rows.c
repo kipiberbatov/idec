@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "double.h"
-#include "diffusion_discrete.h"
+#include "diffusion_discrete_set_neumann_rows.h"
 #include "matrix.h"
 #include "mesh.h"
 

@@ -4,20 +4,21 @@
 #include "boundary_scalar_field_discretize.h"
 #include "boundary_pseudoscalar_field_discretize.h"
 #include "de_rham.h"
-#include "diffusion_transient_discrete_primal_weak.h"
+#include "diffusion_steady_state_discrete_primal_weak.h"
 #include "unsigned_approximation.h"
 
-diffusion_transient_discrete_primal_weak *
-diffusion_transient_discrete_primal_weak_from_continuous(
+diffusion_steady_state_discrete_primal_weak *
+diffusion_steady_state_discrete_primal_weak_from_continuous(
   const mesh * m,
   const double * m_vol_dm1,
-  const diffusion_transient_continuous * data_continuous)
+  const double * m_vol_d,
+  const diffusion_steady_state_continuous * data_continuous)
 {
-  diffusion_transient_discrete_primal_weak * data_discrete;
+  diffusion_steady_state_discrete_primal_weak * data_discrete;
 
   data_discrete
-  = (diffusion_transient_discrete_primal_weak *)
-    malloc(sizeof(diffusion_transient_discrete_primal_weak));
+  = (diffusion_steady_state_discrete_primal_weak *)
+    malloc(sizeof(diffusion_steady_state_discrete_primal_weak));
   if (errno)
     goto end;
 
@@ -32,15 +33,11 @@ diffusion_transient_discrete_primal_weak_from_continuous(
   unsigned_approximation_of_scalar_field_on_1_cells(
     data_discrete->pi_1, m, data_continuous->pi_1);
 
-  data_discrete->initial = (double *) malloc(sizeof(double) * m->cn[0]);
+  data_discrete->source = (double *) malloc(sizeof(double) * m->cn[m->dim]);
   if (errno)
     goto data_discrete_pi_1_free;
-  de_rham_0(data_discrete->initial, m, data_continuous->initial);
-
-  data_discrete->source = (double *) malloc(sizeof(double) * m->cn[0]);
-  if (errno)
-    goto data_discrete_initial_free;
-  de_rham_0(data_discrete->source, m, data_continuous->source);
+  de_rham_nonzero(
+    data_discrete->source, m, m->dim, m_vol_d, data_continuous->source);
 
   data_discrete->boundary_dirichlet
   = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_dirichlet);
@@ -86,8 +83,6 @@ data_discrete_boundary_dirichlet_free:
   jagged1_free(data_discrete->boundary_dirichlet);
 data_discrete_source_free:
   free(data_discrete->source);
-data_discrete_initial_free:
-  free(data_discrete->initial);
 data_discrete_pi_1_free:
   free(data_discrete->pi_1);
 data_discrete_pi_0_free:

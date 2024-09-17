@@ -6,6 +6,7 @@
 double * diffusion_steady_state_continuous_primal_weak_solve(
   const mesh * m,
   const double * m_vol_dm1,
+  const double * m_vol_d,
   const double * m_inner_1,
   const diffusion_steady_state_continuous * data_continuous)
 {
@@ -13,7 +14,7 @@ double * diffusion_steady_state_continuous_primal_weak_solve(
   diffusion_steady_state_discrete_primal_weak * data_discrete;
 
   data_discrete = diffusion_steady_state_discrete_primal_weak_from_continuous(
-    m, m_vol_dm1, data_continuous);
+    m, m_vol_dm1, m_vol_d, data_continuous);
   if (errno)
   {
     fprintf(stderr, "cannot discretize continuous data\n");
