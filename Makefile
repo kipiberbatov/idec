@@ -317,7 +317,7 @@ $(_obj_src_mesh): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/mesh/%.c\
 
 $(_obj_src_diffusion): build/$(MODE)/obj/src/%$(.OBJ):\
   code/c/src/diffusion/%.c | build/$(MODE)/obj/src
-        $(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_diffusion) -c $<
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_diffusion) -c $<
 
 $(_obj_src_shared): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/shared/%.c\
     | build/$(MODE)/obj/src
