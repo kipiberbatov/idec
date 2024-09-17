@@ -440,9 +440,12 @@ build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_steady_state_continuous
 build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_flux.txt:\
   build/$(MODE)/bin/diffusion_transient_discrete_primal_edge_flux$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_boundary.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_temperature.txt\
+  build/$(MODE)/obj/src/diffusion_transient_continuous_p0$(.OBJ)\
   | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
-	@echo "skip" > $@ #$< $(word 2, $^) 100 $(word 3, $^) > $@
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 2, $|)\
+	  diffusion_transient_continuous_p0 100 --raw $(word 4, $^) --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p1_temperature.txt:\
   build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal$(.EXE)\
@@ -1035,9 +1038,12 @@ build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman_diffusion_transient_continuous_p
 build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_flux.txt:\
   build/$(MODE)/bin/diffusion_transient_discrete_primal_edge_flux$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_temperature.txt \
-  | build/$(MODE)/demo/mesh
-	@echo "skip" > $@ #$< $(word 2, $^) 4000 $(word 3, $^) > $@
+  build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman_boundary.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_temperature.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_p4$(.OBJ)\
+  | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 2, $|)\
+	  diffusion_transient_continuous_p4 4000 --raw $(word 4, $^) --raw > $@
 
 _demo_mesh_brick_regular_2:=\
   $(_demo_mesh_brick_regular_2d_1)\
@@ -1526,9 +1532,11 @@ build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_transient_continuous_
 build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_transient_continuous_p7_flux.txt:\
   build/$(MODE)/bin/diffusion_transient_discrete_primal_edge_flux$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_transient_continuous_p7_temperature.txt \
-  | build/$(MODE)/demo/mesh
-	@echo "skip" > $@ #$< $(word 2, $^) 1000 $(word 3, $^) > $@
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_transient_continuous_p7_temperature.txt\
+  build/$(MODE)/obj/src/diffusion_transient_continuous_p7$(.OBJ)\
+  | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) "-" $(word 2, $|)\
+	  diffusion_transient_continuous_p7 1000 --raw $(word 3, $^) --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_primal_weak_cochain_solve$(.EXE)\
