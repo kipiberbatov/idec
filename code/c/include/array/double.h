@@ -1,6 +1,8 @@
 #ifndef _double_h
 #define _double_h
 
+#include "jagged.h"
+
 #include <stdio.h>
 
 /*********************************** double ***********************************/
@@ -24,6 +26,9 @@ void double_array_assign_identity(double * a, int n);
 void double_array_assign_constant(double * a, int n, double c);
 
 void double_array_add_to(double * a, int d, const double * b);
+
+void double_array_add_sparse_to(
+  double * f, const jagged1 * indices, const double * g);
 
 void double_array_multiply_with(double * a, int d, double lambda);
 
