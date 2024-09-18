@@ -15,8 +15,8 @@ Until error is less than $tolerance$:
 
 static void loop(
   double_array_sequence_dynamic * result,
-  matrix_sparse * lhs,
   double * rhs_final,
+  const matrix_sparse * lhs,
   const matrix_sparse * rhs,
   const double * free_part,
   const diffusion_transient_discrete_primal_strong * data,
@@ -35,7 +35,9 @@ static void loop(
       double_array_sequence_dynamic_resize(result);
       if (errno)
       {
-        fprintf(stderr, "  loop: error in iteration %d\n", i);
+        fprintf(stderr,
+          "%s:%d: loop: cannot resize in iteration %d\n",
+          __FILE__, __LINE__, i);
         return;
       }
     }
@@ -45,19 +47,22 @@ static void loop(
     {
       fputs("Runtime error stack trace:\n", stderr);
       fprintf(stderr,
-        "  loop: cannot allocate memory for result->values[%d]\n",
-        i + 1);
+        "%s:%d: loop: cannot allocate memory for result->values[%d]\n",
+        __FILE__, __LINE__, i + 1);
       return;
     }
+
     diffusion_transient_discrete_primal_strong_solve_trapezoidal_next(
       result->values[i + 1], rhs_final, result->values[i], lhs, rhs, free_part,
       data);
     if (errno)
     {
       fprintf(stderr,
-        "%s:%d: loop: error in iteration %d\n", __FILE__, __LINE__, i);
+        "%s:%d: loop: cannot calculate result->values[%d]\n",
+        __FILE__, __LINE__, i + 1);
       return;
     }
+
     relative_norm = double_array_pair_norm_uniform_relative(
       n, result->values[i], result->values[i + 1]);
     ++result->length;
@@ -178,7 +183,7 @@ diffusion_transient_discrete_primal_strong_solve_trapezoidal_to_steady_state(
    * are calculated iteratively with $rhs_final$ updating at each step
    * (until error is than tolerance).
    */
-  loop(result, lhs, rhs_final, rhs, free_part, data, tolerance);
+  loop(result, rhs_final, lhs, rhs, free_part, data, tolerance);
   if (errno)
   {
     START_ERROR_MESSAGE;
