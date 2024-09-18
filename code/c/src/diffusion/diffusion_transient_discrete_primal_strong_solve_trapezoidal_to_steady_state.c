@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "diffusion_discrete_set_neumann_rows.h"
+#include "diffusion_transient_discrete_primal_strong.h"
 #include "diffusion_transient_discrete_primal_strong_solve_trapezoidal_next.h"
 
 /*
@@ -11,10 +12,11 @@ $y_0$ is the initial condition.
 Until error is less than $tolerance$:
   $rhs_final$ is updated using $y_i$ and used to find $y_{i + 1}$.
 */
+
 static void loop(
   double_array_sequence_dynamic * result,
+  matrix_sparse * lhs,
   double * rhs_final,
-  const matrix_sparse * lhs,
   const matrix_sparse * rhs,
   const double * free_part,
   const diffusion_transient_discrete_primal_strong * data,
@@ -47,7 +49,6 @@ static void loop(
         i + 1);
       return;
     }
-
     diffusion_transient_discrete_primal_strong_solve_trapezoidal_next(
       result->values[i + 1], rhs_final, result->values[i], lhs, rhs, free_part,
       data);
@@ -57,7 +58,6 @@ static void loop(
         "%s:%d: loop: error in iteration %d\n", __FILE__, __LINE__, i);
       return;
     }
-
     relative_norm = double_array_pair_norm_uniform_relative(
       n, result->values[i], result->values[i + 1]);
     ++result->length;
@@ -178,7 +178,7 @@ diffusion_transient_discrete_primal_strong_solve_trapezoidal_to_steady_state(
    * are calculated iteratively with $rhs_final$ updating at each step
    * (until error is than tolerance).
    */
-  loop(result, rhs_final, lhs, rhs, free_part, data, tolerance);
+  loop(result, lhs, rhs_final, rhs, free_part, data, tolerance);
   if (errno)
   {
     START_ERROR_MESSAGE;

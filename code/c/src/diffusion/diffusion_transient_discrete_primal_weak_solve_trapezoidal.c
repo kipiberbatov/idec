@@ -13,40 +13,78 @@ For $i = 0, ..., number_of_steps$:
   $rhs_final$ is updated using $y_i$ and used to find $y_{i + 1}$.
 */
 
+static void find_next(
+  double * next,
+  double * rhs_final,
+  const double * current,
+  const matrix_sparse * lhs,
+  const matrix_sparse * rhs,
+  const double * free_part,
+  const diffusion_transient_discrete_primal_weak * data)
+{
+  /* $rhs_final = free_part + rhs * current$ */
+  memcpy(rhs_final, free_part, sizeof(double) * lhs->rows);
+  matrix_sparse_vector_multiply_add(rhs_final, rhs, current);
+
+  /* update Dirichlet rows of rhs_final by Dirichlet boundary conditions */
+  double_array_substitute_inverse(
+    rhs_final,
+    data->boundary_dirichlet->a0,
+    data->g_dirichlet, 
+    data->boundary_dirichlet->a1);
+
+  /* $next = lhs^{-1} . rhs_final$ */
+  memcpy(next, rhs_final, sizeof(double) * lhs->rows);
+  matrix_sparse_linear_solve(lhs, next, "--lu");
+  if (errno)
+  {
+    fprintf(stderr, "%s:%d: cannot solve linear system\n", __FILE__, __LINE__);
+    return;
+  }
+}
+
 static void loop(
   double * result,
   double * rhs_final,
   const matrix_sparse * lhs,
   const matrix_sparse * rhs,
   const double * free_part,
-  const jagged1 * boundary_dirichlet,
-  const double * g_dirichlet,
+  const diffusion_transient_discrete_primal_weak * data,
   int number_of_steps)
 {
-  int i, m_cn_0;
+  int i, n;
 
-  m_cn_0 = rhs->rows;
+  n = rhs->rows;
   for (i = 0; i < number_of_steps; ++i)
   {
-    /* let $y_i := result + i * n$ be the $i$-th solution vector */
-    /* $rhs_final += rhs * y_i$ */
-    memcpy(rhs_final, free_part, sizeof(double) * m_cn_0);
-    matrix_sparse_vector_multiply_add(rhs_final, rhs, result + m_cn_0 * i);
-
-    /* update Dirichlet rows of rhs_final by Dirichlet boundary conditions */
-    double_array_substitute_inverse(
-      rhs_final, boundary_dirichlet->a0, g_dirichlet, boundary_dirichlet->a1);
-
-    /* $y_{i + 1} = lhs^{-1} . rhs_final$ */
-    memcpy(result + (i + 1) * m_cn_0, rhs_final, sizeof(double) * m_cn_0);
-    matrix_sparse_linear_solve(lhs, result + m_cn_0 * (i + 1), "--lu");
+    find_next(
+      result + n * (i + 1), rhs_final,
+      result + n * i, lhs, rhs, free_part, data);
     if (errno)
     {
       fprintf(stderr,
-        "%s:%d: loop: error in iteration %d: cannot solve linear system\n",
-        __FILE__, __LINE__, i);
+        "%s:%d: loop: error in iteration %d\n", __FILE__, __LINE__, i);
       return;
     }
+    // /* let $y_i := result + i * n$ be the $i$-th solution vector */
+    // /* $rhs_final += rhs * y_i$ */
+    // memcpy(rhs_final, free_part, sizeof(double) * m_cn_0);
+    // matrix_sparse_vector_multiply_add(rhs_final, rhs, result + m_cn_0 * i);
+
+    // /* update Dirichlet rows of rhs_final by Dirichlet boundary conditions */
+    // double_array_substitute_inverse(
+    //   rhs_final, boundary_dirichlet->a0, g_dirichlet, boundary_dirichlet->a1);
+
+    // /* $y_{i + 1} = lhs^{-1} . rhs_final$ */
+    // memcpy(result + (i + 1) * m_cn_0, rhs_final, sizeof(double) * m_cn_0);
+    // matrix_sparse_linear_solve(lhs, result + m_cn_0 * (i + 1), "--lu");
+    // if (errno)
+    // {
+    //   fprintf(stderr,
+    //     "%s:%d: loop: error in iteration %d: cannot solve linear system\n",
+    //     __FILE__, __LINE__, i);
+    //   return;
+    // }
   }
 }
 
@@ -154,10 +192,7 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
   /* the initial $n$ elements of $result$ are the initial condition */
   memcpy(result, data->initial, sizeof(double) * m_cn_0);
 
-  loop(result, rhs_final,
-    lhs, rhs, free_part,
-    data->boundary_dirichlet, data->g_dirichlet,
-    number_of_steps);
+  loop(result, rhs_final, lhs, rhs, free_part, data, number_of_steps);
   if (errno)
   {
     fprintf(stderr, "%s:%d: cannot execute loop\n", __FILE__, __LINE__);

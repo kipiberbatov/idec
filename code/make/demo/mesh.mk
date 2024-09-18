@@ -281,6 +281,7 @@ _demo_mesh_brick_regular_2d_2 := \
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p1_temperature.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p2_temperature.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p4_temperature.txt\
+  build/$(MODE)/demo/diffusion/2d-transient-continuous-temperature-primal_weak-cochain-trapezoidal-p4-brick_2d_2_forman.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_hodge.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_node_curvature.txt\
@@ -447,6 +448,29 @@ build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_p0 100 --raw $(word 4, $^) --raw > $@
 
+build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p4_temperature.txt:\
+  build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal_to_steady_state$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
+  build/$(MODE)/obj/src/diffusion_transient_continuous_p4$(.OBJ)\
+  | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
+	  diffusion_transient_continuous_p4 0.001 > $@
+
+build/$(MODE)/demo/diffusion/2d-transient-continuous-temperature-primal_weak-cochain-trapezoidal-p4-brick_2d_2_forman.txt:\
+  build/$(MODE)/bin/diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_inner.txt\
+  build/$(MODE)/obj/src/diffusion_transient_continuous_p4$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^)\
+	  $(word 2, $|) diffusion_transient_continuous_p4 0.001 1000 --raw > $@
+
+build/$(MODE)/demo/diffusion: | build/$(MODE)/demo
+	mkdir -p $@
+
 build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p1_temperature.txt:\
   build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
@@ -466,16 +490,6 @@ build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p2
   | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
   diffusion_transient_continuous_p2 0.001 100 > $@
-
-build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p4_temperature.txt:\
-  build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal_to_steady_state$(.EXE)\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_cbd.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_p4$(.OBJ)\
-  | build/$(MODE)/demo/mesh build/$(MODE)/lib/libshared$(.DLL)
-	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
-  diffusion_transient_continuous_p4 0.001 > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_hodge_coeff.txt:\
   build/$(MODE)/bin/mesh_qc_hodge_coeff$(.EXE)\

@@ -81,6 +81,7 @@ int main(int argc, char ** argv)
   n = int_file_scan(in);
   if (errno)
   {
+    fprintf(stderr, "%s:%d: cannot scan n\n", __FILE__, __LINE__);
     fclose(in);
     goto m_free;
   }

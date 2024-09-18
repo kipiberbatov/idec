@@ -1,8 +1,7 @@
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_primal_weak.h"
 
-double *
-diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal_method(
+double * diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal(
   const mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
