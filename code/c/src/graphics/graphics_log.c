@@ -13,9 +13,9 @@ void graphics_log(FILE * out, int argc, char ** argv)
   p = gmtime(&rawtime);
 
   fputs("The following command was run:\n", out);
-  for (i = 0; i < argc; ++i)
+  for (i = 0; i < argc - 1; ++i)
     fprintf(out, "%s ", argv[i]);
-  fputc('\n', out);
+  fprintf(out, "%s\n", argv[i]);
   fprintf(out, "Program exited at %02d.%02d.%d %02d:%02d:%02d UTC\n",
     p->tm_mday, p->tm_mon + 1, p->tm_year + 1900,
     p->tm_hour, p->tm_min, p->tm_sec);
