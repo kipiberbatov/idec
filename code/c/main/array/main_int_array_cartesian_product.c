@@ -26,7 +26,7 @@ static void int_array_cartesian_product_file_print(FILE * out, int d, const int 
   free(a);
 }
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   int d, p;
   int * n;

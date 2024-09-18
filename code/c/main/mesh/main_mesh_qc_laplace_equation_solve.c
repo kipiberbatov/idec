@@ -32,7 +32,7 @@ static double g_d(const double * x)
   return x[0] * x[0] + x[1] * x[1];
 }
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   char * m_format, * m_laplacian_0_format, * m_laplacian_0_name, * m_name,
        * out_format;

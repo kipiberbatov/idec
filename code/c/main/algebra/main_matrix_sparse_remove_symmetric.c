@@ -2,7 +2,7 @@
 #include "jagged.h"
 #include "matrix_sparse.h"
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   char * a_format, * a_name, * rows_format, * rows_name, * out_format;
   FILE * rows_file;

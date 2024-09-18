@@ -3,7 +3,7 @@
 #include <string.h>
 #include "mesh.h"
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   char * m_format, * m_name, * out_format;
   FILE * m_file;

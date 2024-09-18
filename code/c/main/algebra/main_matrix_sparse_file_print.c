@@ -41,7 +41,7 @@ static void matrix_sparse_array_file_print_file_scan(
   }
 }
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   char * format, * list;
   int d;

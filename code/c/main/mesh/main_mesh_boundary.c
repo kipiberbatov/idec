@@ -1,7 +1,7 @@
 #include <errno.h>
 #include "mesh.h"
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   mesh * m;
   matrix_sparse ** m_bd;

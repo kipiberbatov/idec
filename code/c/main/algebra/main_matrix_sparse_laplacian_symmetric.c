@@ -5,7 +5,7 @@
 #include "int.h"
 #include "matrix_sparse.h"
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   char * m_inner_format, * m_inner_name, * m_laplacian_format,
        * m_laplacian_name, * out_format;

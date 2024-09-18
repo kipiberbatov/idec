@@ -31,7 +31,7 @@ static void mesh_coboundary_file_print(
   }
 }
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   int m_dim;
   mesh * m;

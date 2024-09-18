@@ -46,7 +46,7 @@ end:
   return;
 }
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   char * a_format, * a_name, * b_format, * b_name, * out_format, * ptr;
   double alpha, beta;

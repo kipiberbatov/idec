@@ -4,7 +4,7 @@
 #include "matrix_sparse.h"
 
 /* read a sparse matrix and vector from a file, multiply and print them */
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   double * x, * y;
   matrix_sparse * a;

@@ -27,7 +27,7 @@ static void int_array_combination_file_print(FILE * out, int m, int n)
   free(a);
 }
 
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   int m, n;
 

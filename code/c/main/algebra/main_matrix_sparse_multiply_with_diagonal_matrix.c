@@ -7,7 +7,7 @@
 matrix_sparse_multiply_with_diagonal_matrix --raw <matrix_sparse_input> \
 --raw <diagonal_matrix_input> --raw > <output>
 */
-int main(int argc, char * argv[])
+int main(int argc, char ** argv)
 {
   double * d;
   matrix_sparse * a;
