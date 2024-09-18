@@ -2,9 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "double.h"
 #include "diffusion_discrete_set_neumann_rows.h"
-#include "diffusion_transient_discrete_primal_strong.h"
+#include "diffusion_transient_discrete_primal_strong_solve_trapezoidal_next.h"
 
 /*
 $result$ stores the final solution $y_0, ..., y_{number_of_steps}$.
@@ -12,16 +11,13 @@ $y_0$ is the initial condition.
 For $i = 0, ..., number_of_steps$:
   $rhs_final$ is updated using $y_i$ and used to find $y_{i + 1}$.
 */
-static void loop(
+static void loop( 
   double * result,
   double * rhs_final,
-  matrix_sparse * lhs,
+  const matrix_sparse * lhs,
   const matrix_sparse * rhs,
   const double * free_part,
-  const jagged1 * boundary_dirichlet,
-  const double * g_dirichlet,
-  const jagged1 * boundary_neumann,
-  const double * g_neumann,
+  const diffusion_transient_discrete_primal_strong * data,
   int number_of_steps)
 {
   int i, n;
@@ -29,25 +25,13 @@ static void loop(
   n = rhs->rows;
   for (i = 0; i < number_of_steps; ++i)
   {
-    /* let $y_i := result + i * n$ be the $i$-th solution vector */
-    /* $rhs_final += rhs * y_i$ */
-    memcpy(rhs_final, free_part, sizeof(double) * n);
-    matrix_sparse_vector_multiply_add(rhs_final, rhs, result + i * n);
-
-    /* update Dirichlet rows of rhs_final by Dirichlet boundary conditions */
-    double_array_substitute_inverse(
-      rhs_final, boundary_dirichlet->a0, g_dirichlet, boundary_dirichlet->a1);
-
-    /* update Neumann rows of rhs_final by Neumann boundary conditions */
-    double_array_substitute_inverse(
-      rhs_final, boundary_neumann->a0, g_neumann, boundary_neumann->a1);
-
-    /* $y_{i + 1} = lhs^{-1} . rhs_final$ */
-    memcpy(result + (i + 1) * n, rhs_final, sizeof(double) * n);
-    matrix_sparse_linear_solve(lhs, result + (i + 1) * n, "--lu");
+    diffusion_transient_discrete_primal_strong_solve_trapezoidal_next(
+      result + (i + 1) * n, rhs_final, result + i * n, lhs, rhs, free_part,
+      data);
     if (errno)
     {
-      fprintf(stderr, "  loop: error in iteration %d\n", i);
+      fprintf(stderr,
+        "%s:%d: loop: error in iteration %d\n", __FILE__, __LINE__, i);
       return;
     }
   }
@@ -155,11 +139,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   /* The following $number_of_steps$ elements of $result$ (each of size $n$)
    * are calculated iteratively with $rhs_final$ updating at each step.
    */
-  loop(result, rhs_final,
-    lhs, rhs, free_part,
-    data->boundary_dirichlet, data->g_dirichlet,
-    data->boundary_neumann, data->g_neumann,
-    number_of_steps);
+  loop(result, rhs_final, lhs, rhs, free_part, data, number_of_steps);
   if (errno)
   {
     START_ERROR_MESSAGE;

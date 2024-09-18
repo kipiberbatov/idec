@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "diffusion_discrete_set_neumann_rows.h"
-#include "diffusion_transient_discrete_primal_strong.h"
+#include "diffusion_transient_discrete_primal_strong_solve_trapezoidal_next.h"
 
 /*
 $result$ stores the final solution $y_0, ..., y_{number_of_steps}$.
@@ -13,14 +13,11 @@ Until error is less than $tolerance$:
 */
 static void loop(
   double_array_sequence_dynamic * result,
-  matrix_sparse * lhs,
   double * rhs_final,
+  const matrix_sparse * lhs,
   const matrix_sparse * rhs,
   const double * free_part,
-  const jagged1 * boundary_dirichlet,
-  const double * g_dirichlet,
-  const jagged1 * boundary_neumann,
-  const double * g_neumann,
+  const diffusion_transient_discrete_primal_strong * data,
   double tolerance)
 {
   int i, n;
@@ -31,17 +28,6 @@ static void loop(
 
   do
   {
-    /* let $y_i := result->values[i]$ be the $i$-th solution vector */
-    /* $rhs_final += rhs * y_i$ */
-    memcpy(rhs_final, free_part, sizeof(double) * n);
-    matrix_sparse_vector_multiply_add(rhs_final, rhs, result->values[i]);
-
-    /* update Dirichlet rows of rhs_final by Dirichlet boundary conditions */
-    double_array_substitute_inverse(
-      rhs_final, boundary_dirichlet->a0, g_dirichlet, boundary_dirichlet->a1);
-
-    double_array_substitute_inverse(
-      rhs_final, boundary_neumann->a0, g_neumann, boundary_neumann->a1);
     if (i == result->capacity - 1)
     {
       double_array_sequence_dynamic_resize(result);
@@ -62,14 +48,16 @@ static void loop(
       return;
     }
 
-    /* $y_{i + 1} = lhs^{-1} . rhs_final$ */
-    memcpy(result->values[i + 1], rhs_final, sizeof(double) * n);
-    matrix_sparse_linear_solve(lhs, result->values[i + 1], "--lu");
+    diffusion_transient_discrete_primal_strong_solve_trapezoidal_next(
+      result->values[i + 1], rhs_final, result->values[i], lhs, rhs, free_part,
+      data);
     if (errno)
     {
-      fprintf(stderr, "  loop: error in iteration %d\n", i);
+      fprintf(stderr,
+        "%s:%d: loop: error in iteration %d\n", __FILE__, __LINE__, i);
       return;
     }
+
     relative_norm = double_array_pair_norm_uniform_relative(
       n, result->values[i], result->values[i + 1]);
     ++result->length;
@@ -190,10 +178,7 @@ diffusion_transient_discrete_primal_strong_solve_trapezoidal_to_steady_state(
    * are calculated iteratively with $rhs_final$ updating at each step
    * (until error is than tolerance).
    */
-  loop(result, lhs, rhs_final, rhs, free_part,
-    data->boundary_dirichlet, data->g_dirichlet,
-    data->boundary_neumann, data->g_neumann,
-    tolerance);
+  loop(result, rhs_final, lhs, rhs, free_part, data, tolerance);
   if (errno)
   {
     START_ERROR_MESSAGE;
