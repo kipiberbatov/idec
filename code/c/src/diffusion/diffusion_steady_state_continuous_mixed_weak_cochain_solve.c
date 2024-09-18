@@ -29,7 +29,7 @@ double * diffusion_steady_state_continuous_mixed_weak_cochain_solve(
     fprintf(stderr, "cannot find discretized result\n");
     goto data_discrete_free;
   }
-  
+
   q = result;
   u = result + m->cn[m->dim - 1];
   diffusion_steady_state_discrete_mixed_weak_solve(

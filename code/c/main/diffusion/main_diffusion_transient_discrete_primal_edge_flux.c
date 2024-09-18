@@ -49,8 +49,8 @@ int main(int argc, char ** argv)
     fclose(m_file);
     goto end;
   }
-  
-  
+
+
   m_bd_1_name = argv[3];
   if (m_bd_1_name[1] == 0 && m_bd_1_name[0] == '-')
   {
