@@ -8,6 +8,8 @@ _demo_graphics_gtk :=\
   build/$(MODE)/demo/graphics/log/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_flux_gtk.log\
   build/$(MODE)/demo/graphics/log/mesh_2d_10_grains_forman_diffusion_transient_continuous_p7_temperature_gtk.log\
   build/$(MODE)/demo/graphics/log/mesh_2d_10_grains_forman_diffusion_transient_continuous_p7_flux_gtk.log\
+  build/$(MODE)/demo/graphics/log/diffusion_2d_transient_continuous_p7_temperature_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman_gtk.log\
+  build/$(MODE)/demo/graphics/log/diffusion_2d_transient_continuous_p7_flux_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman_gtk.log\
   build/$(MODE)/demo/graphics/log/mesh_square_8_diffusion_transient_continuous_p5_temperature_gtk.log\
   build/$(MODE)/demo/graphics/log/diffusion-2d-transient-continuous-temperature-primal_weak-cochain-trapezoidal-p4-brick_2d_2_forman_gtk.log
 
@@ -78,6 +80,20 @@ build/$(MODE)/demo/graphics/log/mesh_2d_10_grains_forman_diffusion_transient_con
   build/$(MODE)/demo/diffusion/mesh_2d_10_grains_forman_diffusion_transient_continuous_p7_flux.txt\
   | build/$(MODE)/demo/graphics/log
 	$< --raw $(word 2, $^) 1000 --raw $(word 3, $^) > $@
+
+build/$(MODE)/demo/graphics/log/diffusion_2d_transient_continuous_p7_temperature_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman_gtk.log:\
+  build/$(MODE)/bin/gtk_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_transient_continuous_p7_temperature_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman.txt\
+  | build/$(MODE)/demo/graphics/log
+	$< --raw $(word 2, $^) 2000 --raw $(word 3, $^) > $@
+
+build/$(MODE)/demo/graphics/log/diffusion_2d_transient_continuous_p7_flux_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman_gtk.log:\
+  build/$(MODE)/bin/gtk_mesh_2d_colored_one_cochain_sequence$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_transient_continuous_p7_flux_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman.txt\
+  | build/$(MODE)/demo/graphics/log
+	$< --raw $(word 2, $^) 2000 --raw $(word 3, $^) > $@
 
 build/$(MODE)/demo/graphics/log/mesh_square_8_diffusion_transient_continuous_p5_temperature_gtk.log:\
   build/$(MODE)/bin/gtk_mesh_2d_colored_zero_cochain_sequence$(.EXE)\

@@ -68,77 +68,77 @@ build/$(MODE)/demo/graphics/pdf/mesh_2d_10_grains_forman_edge_skeleton.pdf:\
 build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_temperature.txt\
+  build/$(MODE)/demo/diffusion/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 20 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_flux.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_one_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_flux.txt\
+  build/$(MODE)/demo/diffusion/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_flux.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 20 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_2_forman_diffusion_steady_state_continuous_p4_primal_weak_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_diffusion_steady_state_continuous_p4_primal_weak_temperature.txt\
+  build/$(MODE)/demo/diffusion/mesh_brick_2d_2_forman_diffusion_steady_state_continuous_p4_primal_weak_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 0 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_transient_continuous_p2_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman_diffusion_transient_continuous_p2_temperature.txt\
+  build/$(MODE)/demo/diffusion/mesh_brick_2d_5_forman_diffusion_transient_continuous_p2_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 1000 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_transient_continuous_p4_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman_diffusion_transient_continuous_p4_temperature.txt\
+  build/$(MODE)/demo/diffusion/mesh_brick_2d_5_forman_diffusion_transient_continuous_p4_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 10000 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_5_forman_diffusion_steady_state_continuous_p4_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman_diffusion_steady_state_continuous_p4_temperature.txt\
+  build/$(MODE)/demo/diffusion/mesh_brick_2d_5_forman_diffusion_steady_state_continuous_p4_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 0 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_temperature.txt\
+  build/$(MODE)/demo/diffusion/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_flux.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_one_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_flux.txt\
+  build/$(MODE)/demo/diffusion/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_flux.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.txt\
+  build/$(MODE)/demo/diffusion/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 0 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_primal_weak_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_primal_weak_temperature.txt\
+  build/$(MODE)/demo/diffusion/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_primal_weak_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 0 --raw $(word 3, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_square_8_diffusion_transient_continuous_p5_temperature.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_square_8.txt\
-  build/$(MODE)/demo/mesh/mesh_square_8_diffusion_transient_continuous_p5_temperature.txt\
+  build/$(MODE)/demo/diffusion/mesh_square_8_diffusion_transient_continuous_p5_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) $@
 
