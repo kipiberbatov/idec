@@ -14,41 +14,75 @@ For $i = 0, ..., number_of_steps$:
 */
 
 static void loop(
-  double * result,
+  double_array_sequence_dynamic * result,
   double * rhs_final,
   const matrix_sparse * lhs,
   const matrix_sparse * rhs,
   const double * free_part,
   const diffusion_transient_discrete_primal_weak * data,
-  int number_of_steps)
+  double tolerance)
 {
   int i, n;
+  double relative_norm;
 
+  i = 0;
   n = rhs->rows;
-  for (i = 0; i < number_of_steps; ++i)
+
+  do
   {
+    if (i == result->capacity - 1)
+    {
+      double_array_sequence_dynamic_resize(result);
+      if (errno)
+      {
+        fprintf(stderr,
+          "%s:%d: loop: cannot resize in iteration %d\n",
+          __FILE__, __LINE__, i);
+        return;
+      }
+    }
+
+    result->values[i + 1] = (double *) malloc(sizeof(double) * n);
+    if (errno)
+    {
+      fputs("Runtime error stack trace:\n", stderr);
+      fprintf(stderr,
+        "%s:%d: loop: cannot allocate memory for result->values[%d]\n",
+        __FILE__, __LINE__, i + 1);
+      return;
+    }
+
     diffusion_transient_discrete_primal_weak_solve_trapezoidal_next(
-      result + n * (i + 1), rhs_final,
-      result + n * i, lhs, rhs, free_part, data);
+      result->values[i + 1], rhs_final, result->values[i], lhs, rhs, free_part,
+      data);
     if (errno)
     {
       fprintf(stderr,
-        "%s:%d: loop: error in iteration %d\n", __FILE__, __LINE__, i);
+        "%s:%d: loop: cannot calculate result->values[%d]\n",
+        __FILE__, __LINE__, i + 1);
       return;
     }
+
+    relative_norm = double_array_pair_norm_uniform_relative(
+      n, result->values[i], result->values[i + 1]);
+    ++result->length;
+    ++i;
   }
+  while (relative_norm >= tolerance);
 }
 
-double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
+double_array_sequence_dynamic *
+diffusion_transient_discrete_primal_weak_solve_trapezoidal_to_steady_state(
   const mesh * m,
   const double * m_inner_0,
   const double * m_inner_1,
   const diffusion_transient_discrete_primal_weak * data,
   double time_step,
-  int number_of_steps)
+  double tolerance)
 {
   int m_cn_0;
-  double * b, * f, * free_part, * g, * result, * rhs_final;
+  double * b, * f, * free_part, * g, * rhs_final;
+  double_array_sequence_dynamic * result;
   matrix_sparse * a, * lhs, * rhs;
 
   result = NULL;
@@ -131,7 +165,7 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
   }
 
   /* allocate memory for $result$ -> $m_cn_0$ elements filled at each step */
-  result = (double *) malloc(sizeof(double) * (number_of_steps + 1) * m_cn_0);
+  result = double_array_sequence_dynamic_initialize(m_cn_0);
   if (errno)
   {
     fputs("Runtime error stack trace:\n", stderr);
@@ -141,9 +175,9 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
   }
 
   /* the initial $n$ elements of $result$ are the initial condition */
-  memcpy(result, data->initial, sizeof(double) * m_cn_0);
+  memcpy(result->values[0], data->initial, sizeof(double) * m_cn_0);
 
-  loop(result, rhs_final, lhs, rhs, free_part, data, number_of_steps);
+  loop(result, rhs_final, lhs, rhs, free_part, data, tolerance);
   if (errno)
   {
     fprintf(stderr, "%s:%d: cannot execute loop\n", __FILE__, __LINE__);

@@ -147,6 +147,8 @@ int main(int argc, char ** argv)
   a = (diffusion *) alloca(diffusion_size());
   diffusion_set(a,
     i, n, m, new_coordinates, data.point_size, u, total_colors, paint_rgb);
+  fprintf(stderr, "min = %g\nmax = %g\n",
+    diffusion_min_value(a), diffusion_max_value(a));
 
   speed = 100;
 

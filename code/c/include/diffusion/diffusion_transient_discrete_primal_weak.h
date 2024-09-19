@@ -33,4 +33,13 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
   double time_step,
   int number_of_steps);
 
+double_array_sequence_dynamic *
+diffusion_transient_discrete_primal_weak_solve_trapezoidal_to_steady_state(
+  const mesh * m,
+  const double * m_inner_0,
+  const double * m_inner_1,
+  const diffusion_transient_discrete_primal_weak * data,
+  double time_step,
+  double tolerance);
+
 #endif /* _diffusion_transient_discrete_primal_weak_h */

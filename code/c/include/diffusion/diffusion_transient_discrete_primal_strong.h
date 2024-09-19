@@ -19,14 +19,6 @@ typedef struct diffusion_transient_discrete_primal_strong
 void diffusion_transient_discrete_primal_strong_free(
   diffusion_transient_discrete_primal_strong * data);
 
-/*
-void diffusion_transient_discrete_primal_strong_set_neumann_rows(
-  matrix_sparse * lhs,
-  const mesh * m,
-  const jagged1 * boundary_neumann_discrete,
-  const double * pi_1);
-*/
-
 diffusion_transient_discrete_primal_strong *
 diffusion_transient_discrete_primal_strong_from_continuous(
   const mesh * m,

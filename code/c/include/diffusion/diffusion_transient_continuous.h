@@ -67,7 +67,7 @@ diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal(
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_0,
-  const double * m_inner_2,
+  const double * m_inner_dm1,
   const diffusion_transient_continuous * data_continuous,
   double time_step,
   int number_of_steps);
@@ -78,7 +78,7 @@ diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal_to_steady_st
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_0,
-  const double * m_inner_2,
+  const double * m_inner_dm1,
   const diffusion_transient_continuous * data_continuous,
   double time_step,
   double tolerance);
