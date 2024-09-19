@@ -495,10 +495,11 @@ build/$(MODE)/demo: | build/$(MODE)
 -include code/make/demo/algebra.mk
 -include code/make/demo/region.mk
 -include code/make/demo/mesh.mk
+-include code/make/demo/diffusion.mk
 -include code/make/demo/graphics.mk
 
 .PHONY: demo
-demo: $(patsubst %, demo_%, array algebra mesh region)
+demo: $(patsubst %, demo_%, array algebra region mesh diffusion)
 
 ############### create documentation and publish it as a website ###############
 -include code/make/docs/latex.mk
@@ -600,7 +601,8 @@ bin_diffusion_clean:
 diffusion_clean: obj_diffusion_clean
 
 .PHONY: diffusion_distclean
-diffusion_distclean: diffusion_clean lib_diffusion_clean bin_diffusion_clean
+diffusion_distclean: diffusion_clean lib_diffusion_clean bin_diffusion_clean\
+  demo_diffusion_clean
 
 # graphics
 .PHONY: obj_graphics_clean
