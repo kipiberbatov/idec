@@ -29,8 +29,21 @@ take a node N_j
             which is always 1 / 2^d when d > 1 and orientation is positive
 
 algorithm
-  . take a cell N_i
+  . take a cell N_j
   . count the number of cells F_i satisfying 1.0 or 1.1.1
+    let F_i be on the boundary of the 3 coboundary of N_j. count it if
+      . F_i is not on the coboundary of N_i
+      . F_i is on the coboundary of N_j and F_i is a boundary cell
+  . take the indices of those cells
+  . calculate the values
+    (more precisely, the signs epsilon(V_k, F_i) before 1 / 2^d)
+
+alternative algorithm
+  . take a cell c_{d - 1, i}
+  . there are 2^d 0-cells that have nonzero contribution
+    let F_i be on the boundary of the 3 coboundary of N_j. count it if
+      . F_i is not on the coboundary of N_i
+      . F_i is on the coboundary of N_j and F_i is a boundary cell
   . take the indices of those cells
   . calculate the values
     (more precisely, the signs epsilon(V_k, F_i) before 1 / 2^d)
@@ -41,7 +54,14 @@ mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1_cols_total(
   int * b_cols_total,
   const mesh_qc * m)
 {
-  return;
+  int d, i, m_cn_dm1, pow_2_d;
+
+  d = m->dim;
+  pow_2_d = 1 << d;
+  m_cn_dm1 = m->cn[d - 1];
+  b_cols_total[0] = 0;
+  for (i = 0; i < m_cn_dm1; ++i)
+    b_cols_total[i + 1] = b_cols_total[i] + pow_2_d;
 }
 
 static void
@@ -49,16 +69,76 @@ mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1_row_indices(
   int * b_row_indices,
   const mesh_qc * m)
 {
-  return;
+  int d, i, index, j, j_local, k, k_local, m_cn_dm1, pow_2_d;
+  jagged1 m_cf_d_0_k, m_cf_dm1_0_i, m_fc_dm1_d_i;
+  jagged2 m_cf_d_0, m_cf_dm1_0, m_fc_dm1_d;
+
+  d = m->dim;
+  pow_2_d = 1 << d;
+  m_cn_dm1 = m->cn[d - 1];
+  mesh_cf_part2(&m_cf_d_0, m, d, 0);
+  mesh_cf_part2(&m_cf_dm1_0, m, d - 1, 0);
+  mesh_fc_part2(&m_fc_dm1_d, m, d - 1, d);
+
+  index = 0;
+  for (i = 0; i < m_cn_dm1; ++i)
+  {
+    jagged2_part1(&m_fc_dm1_d_i, &m_fc_dm1_d, i);
+    if (m_fc_dm1_d_i.a0 == 1) /* boundary hyperface */
+    {
+      k = m_fc_dm1_d_i.a1[0];
+      jagged2_part1(&m_cf_d_0_k, &m_cf_d_0, k);
+      for (j_local = 0; j_local < pow_2_d; ++j_local)
+      {
+        j = m_cf_d_0_k.a1[j_local];
+        b_row_indices[index] = j;
+        ++index;
+      }
+    }
+    else /* interior hyperface */
+    {
+      jagged2_part1(&m_cf_dm1_0_i, &m_cf_dm1_0, i);
+      for (k_local = 0; k_local < 2; ++k_local)
+      {
+        k = m_fc_dm1_d_i.a1[k_local];
+        jagged2_part1(&m_cf_d_0_k, &m_cf_d_0, k);
+        for (j_local = 0; j_local < pow_2_d; ++j_local)
+        {
+          j = m_cf_d_0_k.a1[j_local];
+          if (!jagged1_member(&m_cf_dm1_0_i, j))
+          {
+            b_row_indices[index] = j;
+            ++index;
+          }
+        }
+      }
+    }
+  }
 }
 
 static void
 mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1_values(
   double * b_values,
   const mesh_qc * m,
-  const matrix_sparse * m_bd_d)
+  const matrix_sparse * m_cbd_dm1)
 {
-  return;
+  // int d, i, index, j, m_cn_dm1, size_i;
+  // jagged1 m_cf_d_0_j, m_fc_dm1_d_i;
+  // jagged2 m_cf_d_0, m_fc_dm1_d;
+
+  // d = m->dim;
+  // m_cn_dm1 = m->cn[d - 1];
+  // mesh_fc_part2(&m_cf_d_0, m, d, 0);
+  // mesh_fc_part2(&m_fc_dm1_d, m, d - 1, d);
+
+  // index = 0;
+  // size_i = 0;
+  // for (i = 0; i < m_cn_dm1; ++i)
+  // {
+  //   jagged2_part1(&m_fc_dm1_d_i, &m_fc_dm1_d, i);
+
+  //   b_cols_total[i + 1] = b_cols_total[i] + size_i;
+  // }
 }
 
 matrix_sparse *

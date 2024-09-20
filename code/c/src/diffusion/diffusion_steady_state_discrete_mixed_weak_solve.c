@@ -5,8 +5,8 @@
 #include "mesh_qc.h"
 
 static void matrix_sparse_mixed_constrained_solve_with_diagonal_square_matrix(
-  double * q,
-  double * u,
+  double * flux,
+  double * temperature,
   const double * a,
   const matrix_sparse * b,
   const double * g,
@@ -18,8 +18,8 @@ static void matrix_sparse_mixed_constrained_solve_with_diagonal_square_matrix(
 }
 
 void diffusion_steady_state_discrete_mixed_weak_solve(
-  double * q,
-  double * u,
+  double * flux,
+  double * temperature,
   const mesh * m,
   const matrix_sparse * m_bd_d,
   const double * m_inner_dm1,
@@ -67,11 +67,11 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   mesh_qc_vector_from_integral_of_basis_0_cup_d_cochain(f, m, data->source);
 
   matrix_sparse_mixed_constrained_solve_with_diagonal_square_matrix(
-    q, u, a, b, g, f, data->boundary_neumann, data->g_neumann);
+    flux, temperature, a, b, g, f, data->boundary_neumann, data->g_neumann);
   if (errno)
   {
     fprintf(stderr,
-      "%s:%d: cannot solve linear system for q and u\n", __FILE__, __LINE__);
+      "%s:%d: cannot find flux and temperature\n", __FILE__, __LINE__);
     goto f_free;
   }
 

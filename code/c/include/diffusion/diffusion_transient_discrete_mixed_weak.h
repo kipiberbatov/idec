@@ -25,4 +25,21 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   const double * m_vol_d,
   const diffusion_transient_continuous * data_continuous);
 
+double * diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
+  const mesh * m,
+  const double * m_inner_0,
+  const double * m_inner_dm1,
+  const diffusion_transient_discrete_mixed_weak * data,
+  double time_step,
+  int number_of_steps);
+
+double_array_sequence_dynamic *
+diffusion_transient_discrete_mixed_weak_solve_trapezoidal_to_steady_state(
+  const mesh * m,
+  const double * m_inner_0,
+  const double * m_inner_dm1,
+  const diffusion_transient_discrete_mixed_weak * data,
+  double time_step,
+  double tolerance);
+
 #endif /* _diffusion_transient_discrete_mixed_weak_h */
