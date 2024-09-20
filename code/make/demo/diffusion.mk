@@ -165,6 +165,7 @@ _demo_diffusion_2d_10_grains :=\
   build/$(MODE)/demo/diffusion/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.txt\
   build/$(MODE)/demo/diffusion/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_primal_weak_temperature.txt\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_p7_temperature_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_transient_continuous_p8_temperature_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman.txt\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_p7_flux_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman.txt\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_p7_temperature_primal_weak_cochain_trapezoidal_to_steady_state_neper_2d_10_grains_forman.txt\
 
@@ -216,6 +217,16 @@ build/$(MODE)/demo/diffusion/2d_transient_continuous_p7_temperature_primal_weak_
   | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^)\
 	  $(word 2, $|) diffusion_transient_continuous_p7 0.01 2000 --raw > $@
+
+build/$(MODE)/demo/diffusion/2d_transient_continuous_p8_temperature_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman.txt:\
+  build/$(MODE)/bin/diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_vol.txt\
+  build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_inner.txt\
+  build/$(MODE)/obj/src/diffusion_transient_continuous_p8$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^)\
+  	  $(word 2, $|) diffusion_transient_continuous_p8 0.01 2000 --raw > $@
 
 build/$(MODE)/demo/diffusion/2d_transient_continuous_p7_flux_primal_weak_cochain_trapezoidal_neper_2d_10_grains_forman.txt:\
   build/$(MODE)/bin/diffusion_transient_discrete_primal_edge_flux$(.EXE)\
