@@ -18,13 +18,6 @@ _demo_diffusion_brick_2d_2 :=\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_p4_temperature_primal_weak_cochain_trapezoidal_brick_2d_2_forman.txt\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_p4_temperature_primal_weak_cochain_trapezoidal_to_steady_state_brick_2d_2_forman.txt\
 
-build/$(MODE)/demo/diffusion/mesh_brick_2d_2_forman_neumann_modified_laplacian.txt:\
-  build/$(MODE)/bin/diffusion_discrete_set_neumann_rows$(.EXE)\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_laplacian.txt\
-  | build/$(MODE)/demo/diffusion
-	 $< --raw $(word 2, $^) --raw $(word 3, $^) > $@
-
 build/$(MODE)/demo/diffusion/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_temperature.txt:\
   build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
