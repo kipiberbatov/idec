@@ -56,7 +56,7 @@ double * diffusion_steady_state_discrete_primal_weak_solve(
   mesh_qc_vector_from_integral_of_basis_0_cup_d_cochain(f, m, data->source);
 
   g = (double *) malloc(sizeof(double) * data->boundary_neumann->a0);
-  if (f == NULL)
+  if (g == NULL)
     goto f_free;
   mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
     g, m, data->boundary_neumann, data->g_neumann);

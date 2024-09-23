@@ -48,7 +48,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   }
   matrix_sparse_file_print(stdout, b, "--raw");
 
-  /* allocate memory for g */
+  g = (double *) malloc(sizeof(double) * data->boundary_dirichlet->a0);
   if (g == NULL)
   {
     fprintf(stderr,

@@ -103,6 +103,7 @@ _demo_diffusion_brick_2d_5 :=\
   build/$(MODE)/demo/diffusion/mesh_brick_2d_5_forman_diffusion_transient_continuous_p2_temperature.txt\
   build/$(MODE)/demo/diffusion/mesh_brick_2d_5_forman_diffusion_transient_continuous_p4_temperature.txt\
   build/$(MODE)/demo/diffusion/mesh_brick_2d_5_forman_diffusion_steady_state_continuous_p4_temperature.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_continuous_p4_temperature_mixed_weak_cochain_brick_2d_5_forman.txt\
 
 build/$(MODE)/demo/diffusion/mesh_brick_2d_5_forman_diffusion_transient_continuous_p2_temperature.txt:\
   build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal$(.EXE)\
@@ -132,6 +133,16 @@ build/$(MODE)/demo/diffusion/mesh_brick_2d_5_forman_diffusion_steady_state_conti
   build/$(MODE)/obj/src/diffusion_steady_state_continuous_p4$(.OBJ)\
   | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_p4 > $@
+
+build/$(MODE)/demo/diffusion/2d_steady_state_continuous_p4_temperature_mixed_weak_cochain_brick_2d_5_forman.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_mixed_weak_cochain_solve$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman_vol.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman_inner.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_p4$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_steady_state_continuous_p4 > $@
 
 _demo_diffusion_brick_2d_10 :=\
