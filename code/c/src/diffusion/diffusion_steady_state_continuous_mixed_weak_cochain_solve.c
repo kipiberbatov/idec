@@ -8,7 +8,7 @@ void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
   double * flux,
   double * temperature,
   const mesh * m,
-  const matrix_sparse * m_bd_d,
+  const matrix_sparse * m_cbd_dm1,
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_dm1,
@@ -28,7 +28,7 @@ void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
     flux,
     temperature,
     m,
-    m_bd_d,
+    m_cbd_dm1,
     m_inner_dm1,
     data_discrete);
   if (errno)

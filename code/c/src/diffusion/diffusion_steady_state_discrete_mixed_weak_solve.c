@@ -21,7 +21,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   double * flux,
   double * temperature,
   const mesh * m,
-  const matrix_sparse * m_bd_d,
+  const matrix_sparse * m_cbd_dm1,
   const double * m_inner_dm1,
   const diffusion_steady_state_discrete_mixed_weak * data)
 {
@@ -40,12 +40,13 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
     a, m, m_inner_dm1, data->pi_dm1);
 
   b = mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
-    m, m_bd_d);
+    m, m_cbd_dm1);
   if (b == NULL)
   {
     fprintf(stderr, "%s:%d: cannot calculate b\n", __FILE__, __LINE__);
     goto a_free;
   }
+  matrix_sparse_file_print(stdout, b, "--raw");
 
   /* allocate memory for g */
   if (g == NULL)

@@ -28,7 +28,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   double * flux,
   double * temperature,
   const mesh * m,
-  const matrix_sparse * m_bd_d,
+  const matrix_sparse * m_cbd_dm1,
   const double * m_inner_dm1,
   const diffusion_steady_state_discrete_mixed_weak * data);
 

@@ -122,29 +122,55 @@ mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1_values(
   const mesh_qc * m,
   const matrix_sparse * m_cbd_dm1)
 {
-  // int d, i, index, j, m_cn_dm1, size_i;
-  // jagged1 m_cf_d_0_j, m_fc_dm1_d_i;
-  // jagged2 m_cf_d_0, m_fc_dm1_d;
+  int d, i, index, j_local, k_local, m_cbd_dm1_columns_i, m_cn_dm1, pow_2_d,
+      pow_2_dm1;
+  int * m_cbd_dm1_cols_total;//, * m_cbd_dm1_row_indices;
+  double sign_k_i, value_k_i;
+  double * m_cbd_dm1_values, * m_cbd_dm1_values_i;
+  jagged1 m_fc_dm1_d_i;
+  jagged2 m_fc_dm1_d;
 
-  // d = m->dim;
-  // m_cn_dm1 = m->cn[d - 1];
-  // mesh_fc_part2(&m_cf_d_0, m, d, 0);
-  // mesh_fc_part2(&m_fc_dm1_d, m, d - 1, d);
+  d = m->dim;
+  pow_2_dm1 = 1 << (d - 1);
+  pow_2_d = 1 << d;
+  m_cn_dm1 = m->cn[d - 1];
+  mesh_fc_part2(&m_fc_dm1_d, m, d - 1, d);
+  m_cbd_dm1_cols_total = m_cbd_dm1->cols_total;
+  // m_cbd_dm1_row_indices = m_cbd_dm1->row_indices;
+  m_cbd_dm1_values = m_cbd_dm1->values;
 
-  // index = 0;
-  // size_i = 0;
-  // for (i = 0; i < m_cn_dm1; ++i)
-  // {
-  //   jagged2_part1(&m_fc_dm1_d_i, &m_fc_dm1_d, i);
-
-  //   b_cols_total[i + 1] = b_cols_total[i] + size_i;
-  // }
+  index = 0;
+  for (i = 0; i < m_cn_dm1; ++i)
+  {
+    jagged2_part1(&m_fc_dm1_d_i, &m_fc_dm1_d, i);
+    m_cbd_dm1_columns_i = m_cbd_dm1_cols_total[i];
+    // m_cbd_dm1_rows_i = m_cbd_dm1_row_indices + m_cbd_dm1_columns_i;
+    m_cbd_dm1_values_i = m_cbd_dm1_values + m_cbd_dm1_columns_i;
+    if (m_fc_dm1_d_i.a0 == 1) /* boundary hyperface */
+    {
+      value_k_i = 1. / (double) pow_2_d;
+      for (j_local = 0; j_local < pow_2_d; ++j_local)
+        b_values[index + j_local] = value_k_i;
+      index += pow_2_d;
+    }
+    else /* interior hyperface */
+    {
+      for (k_local = 0; k_local < 2; ++k_local)
+      {
+        sign_k_i = m_cbd_dm1_values_i[k_local];
+        value_k_i = sign_k_i / (double) pow_2_d;
+        for (j_local = 0; j_local < pow_2_dm1; ++j_local)
+          b_values[index + j_local] = value_k_i;
+        index += pow_2_dm1;
+      }
+    }
+  }
 }
 
 matrix_sparse *
 mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
   const mesh_qc * m,
-  const matrix_sparse * m_bd_d)
+  const matrix_sparse * m_cbd_dm1)
 {
   int d, nonzero_max;
   int * m_cn;
@@ -194,7 +220,7 @@ mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
     goto b_row_indices_free;
   }
   mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1_values(
-    b->values, m, m_bd_d);
+    b->values, m, m_cbd_dm1);
 
   return b;
 

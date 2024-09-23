@@ -25,7 +25,7 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
   data_discrete->pi_dm1 = (double *) malloc(sizeof(double) * m->cn[m->dim - 1]);
   if (errno)
     goto data_discrete_free;
-  unsigned_approximation_of_scalar_field_on_2_cells(
+  unsigned_approximation_of_scalar_field_on_hyperfaces(
     data_discrete->pi_dm1, m, data_continuous->pi_1);
 
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[m->dim]);
