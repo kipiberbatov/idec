@@ -235,6 +235,38 @@ void matrix_sparse_neumann_modify(
   const int * neighbors,
   const double * coefficients);
 
+/* procedures using in mixed weak problems */
+void matrix_sparse_multiply_with_inverse_of_diagonal(
+  matrix_sparse * b,
+  const double * a);
+
+void matrix_sparse_vector_subtract_product(
+  double * q,
+  const matrix_sparse * b,
+  const double * u);
+
+void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
+  double * q,
+  double * u,
+  const double * a,
+  const matrix_sparse * b,
+  const double * g,
+  const double * f);
+
+matrix_sparse * matrix_sparse_columns_restrict(
+  const matrix_sparse * a,
+  const jagged1 * columns);
+
+void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
+  double * flux,
+  double * temperature,
+  const double * a,
+  const matrix_sparse * b,
+  const double * g,
+  const double * f,
+  const jagged1 * boundary_neumann,
+  const double * g_neumann);
+
 /***************************** matrix_sparse_array ****************************/
 /* scan an array of matrices of size n */
 matrix_sparse ** matrix_sparse_array_file_scan(

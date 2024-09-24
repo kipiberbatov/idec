@@ -1,21 +1,10 @@
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "diffusion_steady_state_discrete_mixed_weak.h"
+#include "double.h"
 #include "mesh_qc.h"
-
-static void matrix_sparse_mixed_constrained_solve_with_diagonal_square_matrix(
-  double * flux,
-  double * temperature,
-  const double * a,
-  const matrix_sparse * b,
-  const double * g,
-  const double * f,
-  const jagged1 * boundary,
-  const double * boundary_condition)
-{
-  return;
-}
 
 void diffusion_steady_state_discrete_mixed_weak_solve(
   double * flux,
@@ -26,7 +15,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   const diffusion_steady_state_discrete_mixed_weak * data)
 {
   double * a;
-  double * f, * g = NULL;
+  double * f, * g, * g_small;
   matrix_sparse * b;
 
   a = (double *) malloc(sizeof(double) * m->cn[m->dim - 1]);
@@ -48,15 +37,25 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   }
   matrix_sparse_file_print(stdout, b, "--raw");
 
-  g = (double *) malloc(sizeof(double) * data->boundary_dirichlet->a0);
-  if (g == NULL)
+  g_small = (double *) malloc(sizeof(double) * data->boundary_dirichlet->a0);
+  if (g_small == NULL)
   {
     fprintf(stderr,
-      "%s:%d: cannot allocate memory for g\n", __FILE__, __LINE__);
+      "%s:%d: cannot allocate memory for g_small\n", __FILE__, __LINE__);
     goto b_free;
   }
   mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
-    g, m, data->boundary_dirichlet, data->g_dirichlet);
+    g_small, m, data->boundary_dirichlet, data->g_dirichlet);
+
+  g = (double *) malloc(sizeof(double) * m->cn[m->dim - 1]);
+  if (g == NULL)
+  {
+    fprintf(stderr,
+      "%s:%d: cannot allocate memory for g_big\n", __FILE__, __LINE__);
+    goto g_small_free;
+  }
+  double_array_substitute_inverse(
+    g, data->boundary_dirichlet->a0, g, data->boundary_dirichlet->a1);
 
   f = (double *) malloc(sizeof(double) * m->cn[0]);
   if (f == NULL)
@@ -67,7 +66,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   }
   mesh_qc_vector_from_integral_of_basis_0_cup_d_cochain(f, m, data->source);
 
-  matrix_sparse_mixed_constrained_solve_with_diagonal_square_matrix(
+  matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     flux, temperature, a, b, g, f, data->boundary_neumann, data->g_neumann);
   if (errno)
   {
@@ -80,6 +79,8 @@ f_free:
   free(f);
 g_free:
   free(g);
+g_small_free:
+  free(g_small);
 b_free:
   matrix_sparse_free(b);
 a_free:

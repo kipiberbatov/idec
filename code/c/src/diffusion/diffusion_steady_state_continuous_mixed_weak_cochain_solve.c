@@ -20,7 +20,8 @@ void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
     m, m_vol_dm1, m_vol_d, data_continuous);
   if (errno)
   {
-    fprintf(stderr, "cannot discretize continuous data\n");
+    fprintf(stderr,
+      "%s:%d: cannot discretize continuous data\n", __FILE__, __LINE__);
     return;
   }
 
