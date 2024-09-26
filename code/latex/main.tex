@@ -40,6 +40,7 @@
   }
 }
 
+
 \counterwithin{equation}{section}
 \theoremstyle{definition}
 
@@ -124,6 +125,8 @@
 
 \maketitle
 
+%\addtocontents{toc}{\protect{\pdfbookmark[0]{\contentsname}{toc}}}
+\pdfbookmark{\contentsname}{toc}
 \tableofcontents
 
 \section{Exterior algebra}
@@ -221,20 +224,32 @@
 \section{Continuous heat transport}
 \label{section:continuous_heat_transport}
 \input{heat_transport/continuous/introduction-discussion.tex}
+\subsection{Primal strong formulation}
 \input{heat_transport/continuous/model_with_differential_forms-discussion.tex}
 \input{heat_transport/continuous/strong_model-formulation.tex}
+\subsection{Primal weak formulation}
+\phantom{T}
 \input{heat_transport/continuous/weak_primal_model-formulation.tex}
+\subsection{Mixed weak formulation}
 \input{heat_transport/continuous/weak_mixed_model-formulation.tex}
+\input{heat_transport/continuous/mixed_weak_transient-formulation.tex}
+\input{heat_transport/continuous/mixed_weak_steady_state-formulation.tex}
 
 \section{Discrete heat transport}
 \label{section:discrete_heat_transport}
 \input{restriction_of_free_vector_space-notation.tex}
 \input{generalized-external_normal-notation.tex}
+\subsection{Primal strong formulation}
 \input{heat_transport/discrete/model_with_normals-discussion.tex}
 \input{heat_transport/discrete/strong_model_with_normals-formulation.tex}
 \input{heat_transport/discrete/strong_model_with_normals_crank_nicolson_scheme-discussion.tex}
+\subsection{Primal weak formulation}
 \input{heat_transport/discrete/model_with_forms-formulation.tex}
-\input{heat_transport/discrete/mixed_weak-formulation.tex}
+\subsection{Mixed weak formulation}
+\phantom{T}
+% \input{heat_transport/discrete/mixed_weak-formulation.tex}
+\input{heat_transport/discrete/mixed_weak_transient-formulation.tex}
+\input{heat_transport/discrete/mixed_weak_steady_state-formulation.tex}
 
 \section{Discrete elasticity}
 \label{section:discrete_elasticity}

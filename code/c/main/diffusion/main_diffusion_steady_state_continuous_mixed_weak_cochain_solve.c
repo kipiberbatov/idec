@@ -148,7 +148,8 @@ int main(int argc, char ** argv)
     goto temperature_free;
   }
 
-  // double_array_file_print(stdout, m->cn[0], result, "--raw");
+  double_array_file_print(stdout, m->cn[d - 1], flux, "--raw");
+  double_array_file_print(stdout, m->cn[0], temperature, "--raw");
 
 temperature_free:
   free(temperature);

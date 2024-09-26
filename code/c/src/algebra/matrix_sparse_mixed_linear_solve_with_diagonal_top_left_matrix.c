@@ -6,32 +6,6 @@
 #include "double.h"
 #include "matrix_sparse.h"
 
-static void double_array_left_multiply_with_inverse_of_diagonal_matrix(
-  double * q, int m, const double * a)
-{
-  int i;
-
-  for (i = 0; i < m; ++i)
-    q[i] /= a[i];
-}
-
-static void double_array_negate(double * b, int n, const double * a)
-{
-  int i;
-
-  for (i = 0; i < n; ++i)
-    b[i] = -a[i];
-}
-
-static void
-matrix_sparse_copy_topology(matrix_sparse * b, const matrix_sparse * a)
-{
-  b->rows = a->rows;
-  b->cols = a->cols;
-  b->cols_total = a->cols_total;
-  b->row_indices = a->row_indices;
-}
-
 void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   double * q,
   double * u,
@@ -96,7 +70,7 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
 
   memcpy(q, g, sizeof(double) * m);
   matrix_sparse_vector_subtract_product(q, b_transpose, u);
-  double_array_left_multiply_with_inverse_of_diagonal_matrix(q, m, a);
+  double_array_pointwise_divide(q, m, a);
 
 c_free:
   matrix_sparse_free(c);

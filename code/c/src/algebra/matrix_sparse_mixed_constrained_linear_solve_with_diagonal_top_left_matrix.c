@@ -6,6 +6,56 @@
 #include "double.h"
 #include "matrix_sparse.h"
 
+static void set_f_new(
+  double * f_new,
+  const double * f,
+  const matrix_sparse * b,
+  const jagged1 * boundary_neumann,
+  const double * g_neumann)
+{
+  int boundary_neumann_a0, i, i_local, k, k_local;
+  int * b_cols_total, * b_row_indices, * boundary_neumann_a1;
+  double lambda_i;
+  double * b_values;
+
+  boundary_neumann_a0 = boundary_neumann->a0;
+  boundary_neumann_a1 = boundary_neumann->a1;
+  b_cols_total = b->cols_total;
+  b_row_indices = b->row_indices;
+  b_values = b->values;
+
+  memcpy(f_new, f, sizeof(double) * b->rows);
+  for (i_local = 0; i_local < boundary_neumann_a0; ++i_local)
+  {
+    i = boundary_neumann_a1[i_local];
+    lambda_i = g_neumann[i_local];
+    for (k_local = b_cols_total[i]; k_local < b_cols_total[i + 1]; ++k_local)
+    {
+      k = b_row_indices[k_local];
+      f_new[k] -= b_values[k_local] * lambda_i;
+    }
+  }
+}
+
+static void set_g_new(
+  double * g_new,
+  const double * a,
+  const jagged1 * boundary_neumann,
+  const double * g_neumann)
+{
+  int boundary_neumann_a0, i, i_local;
+  int * boundary_neumann_a1;
+
+  boundary_neumann_a0 = boundary_neumann->a0;
+  boundary_neumann_a1 = boundary_neumann->a1;
+
+  for (i_local = 0; i_local < boundary_neumann_a0; ++i_local)
+  {
+    i = boundary_neumann_a1[i_local];
+    g_new[i] -= a[i] * g_neumann[i_local];
+  }
+}
+
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double * flux,
   double * temperature,
@@ -16,8 +66,7 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   const jagged1 * boundary_neumann,
   const double * g_neumann)
 {
-  int i, i_local, k, k_local, restrict_size;
-  double lambda_i;
+  int restrict_size;
   double * a_restrict, * flux_restrict, * f_new, * g_new, * g_new_restrict;
   jagged1 * boundary_neumann_complement;
   matrix_sparse * b_restrict;
@@ -49,20 +98,16 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     goto a_restrict_free;
   }
 
-  g_new = malloc(sizeof(double) * b->cols);
+  g_new = (double *) malloc(sizeof(double) * b->cols);
   if (g_new == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot allocate memory for g_new\n", stderr);
     goto b_restrict_free;
   }
-  for (i_local = 0; i_local < boundary_neumann->a0; ++i_local)
-  {
-    i = boundary_neumann->a1[i_local];
-    g_new[i] -= a[i] * g_neumann[i_local];
-  }
+  set_g_new(g_new, a, boundary_neumann, g_neumann);
 
-  g_new_restrict = malloc(sizeof(double) * restrict_size);
+  g_new_restrict = (double *) malloc(sizeof(double) * restrict_size);
   if (g_new_restrict == NULL)
   {
     color_error_position(__FILE__, __LINE__);
@@ -72,24 +117,14 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double_array_substitute(g_new_restrict,
     restrict_size, g_new, boundary_neumann_complement->a1);
 
-  f_new = malloc(sizeof(double) * b->rows);
+  f_new = (double *) malloc(sizeof(double) * b->rows);
   if (f_new == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot allocate memory for f_new\n", stderr);
     goto g_new_restrict_free;
   }
-  memcpy(f_new, f, sizeof(double) * b->rows);
-  for (i_local = 0; i_local < boundary_neumann->a0; ++i_local)
-  {
-    i = boundary_neumann->a1[i_local];
-    lambda_i = g_neumann[i_local];
-    for (k_local = b->cols_total[i]; k_local < b->cols_total[i + 1]; ++k_local)
-    {
-      k = b->row_indices[k_local];
-      f_new[k] -= b->values[k_local] * lambda_i;
-    }
-  }
+  set_f_new(f_new, f, b, boundary_neumann, g_neumann);
 
   flux_restrict = (double *) malloc(sizeof(double) * restrict_size);
   if (flux_restrict == NULL)
@@ -98,6 +133,7 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     fputs("cannot allocate memory for flux_restrict\n", stderr);
     goto f_new_free;
   }
+
   matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
     flux_restrict, temperature, a_restrict, b_restrict, g_new_restrict, f_new);
   if (errno)
@@ -106,6 +142,7 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     fputs("cannot solve restricted mixed linear system\n", stderr);
     goto flux_restrict_free;
   }
+
   double_array_substitute_inverse(flux,
     restrict_size, flux_restrict, boundary_neumann_complement->a1);
   double_array_substitute_inverse(flux,

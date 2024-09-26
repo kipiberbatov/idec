@@ -1,0 +1,62 @@
+\begin{formulation}
+  Unfortunately, the model described in the previous point is not well-posed.
+  As in vector-field formulations, the appropriate space for temperature is
+  volume based.
+  Hence, I will propose a formulation in which we work with temperature-volume.
+  Let:
+  \begin{itemize}
+    \item
+      $X$ be an open region in $3$D, representing a material body;
+    \item
+      $t_0 \in \R$ be the initial time;
+    \item
+      $I = [t_0, \infty)$ be the time-interval where process occurs;
+    \item
+      $u_0 [\Theta] \in \Omega^0 X$ be the initial temperature;
+    \item
+      $\pi_2 [E L^{-1} T^{-1} \Theta^{-1}] \colon \Omega^2 X \to \Omega^2 X$
+      be the thermal conductivity of the material;
+    \item
+      $\pi_3 [E \Theta^{-1}] \colon \Omega^3 X \to \Omega^3 X$
+      be the heat capacity of the material;
+    \item
+      $\partial X = \Gamma_D \cup \Gamma_N$ be the partition of the boundary of
+      $X$ into Dirichlet ($\Gamma_D$) and Neumann ($\Gamma_N$) regions;
+    \item
+      $g_D [\Theta] \colon I \to \Omega^0 \Gamma_D$
+      be the prescribed temperature on the Dirichlet boundary;
+    \item
+      $g_N [E T^{-1}] \colon I \to \Omega^2 \Gamma_N$
+      be the prescribed flow on the Neumann boundary.
+  \end{itemize}
+  Our unknowns are:
+  \begin{itemize}
+    \item $q [E T^{-1}] \colon I \to \Omega^2 X$ (heat flow);
+    \item $u [\Theta L^3] \colon I \to \Omega^3 X$ (temperature-volume).
+  \end{itemize}
+  We are solving the following problem for $q$ and $u$:
+  \begin{subequations}
+    \begin{alignat}{4}
+      & \forall r [E T^{-1}] \in \Ker \tr_{\Gamma_N, 2}, \quad
+      && \inner{r}{\pi_2^{-1} q}_{X, 2} + \inner{u}{\delta_2 r}_{X, 3}
+      && = \int_X (\tr_{\Gamma_D, 2} r \wedge g_D) \qquad
+      && [E T^{-1} \Theta], \\
+%
+      & \forall v [E L^3] \in \Omega^3 X, \quad
+      && \inner{v}{\delta_2 q}_{X, 3}
+        - \inner{v}{\pi_3 \frac{\partial u}{\partial t}}_{X, 3}
+      && = \inner{v}{f}_{X, 3} \qquad
+      && [E T^{-1} \Theta], \\
+%
+      &
+      && \tr_{\Gamma_N, 2} q
+      && = g_N \qquad
+      && [E T^{-1}], \\
+%
+      &
+      && u(t_0)
+      && = \star_{X, 0} u_0 \qquad
+      && [\Theta L^{-3}].
+    \end{alignat}
+  \end{subequations}
+\end{formulation}

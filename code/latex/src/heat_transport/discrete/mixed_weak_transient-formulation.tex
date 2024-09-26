@@ -1,0 +1,59 @@
+\begin{formulation}
+  [Mixed weak formulation for the discrete transient heat equation]
+  Let:
+  \begin{itemize}
+    \item
+      $K$ be a $3$-mesh, representing a material body;
+    \item
+      $t_0 \in \R$ be the initial time;
+    \item
+      $I = [t_0, \infty)$ be the time-interval where process occurs;
+    \item
+      $u_0 [\Theta] \in C^0 K$ be the initial temperature;
+    \item
+      $\pi_2 [E L^{-1} T^{-1} \Theta^{-1}] \colon C^2 K \to C^2 K$
+      be the thermal conductivity of the material;
+    \item
+      $\pi_3 [E \Theta^{-1}] \colon C^3 K \to C^3 K$
+      be the heat capacity of the material;
+    \item
+      $\partial K = \Gamma_D \cup \Gamma_N$ be the partition of the boundary of
+      $K$ into Dirichlet ($\Gamma_D$) and Neumann ($\Gamma_N$) regions;
+    \item
+      $g_D [\Theta] \colon I \to C^0 \Gamma_D$
+      be the prescribed temperature on the Dirichlet boundary;
+    \item
+      $g_N [E T^{-1}] \colon I \to C^2 \Gamma_N$
+      be the prescribed flow on the Neumann boundary.
+  \end{itemize}
+  Our unknowns are:
+  \begin{itemize}
+    \item $q [E T^{-1}] \colon I \to C^2 K$ (heat flow);
+    \item $u [\Theta L^3] \colon I \to C^3 K$ (temperature-volume).
+  \end{itemize}
+  We are solving the following problem for $q$ and $u$:
+  \begin{subequations}
+    \begin{alignat}{4}
+      & \forall r [E T^{-1}] \in \Ker \tr_{\Gamma_N, 2}, \quad
+      && \inner{r}{\pi_2^{-1} q}_{K, 2} + \inner{u}{\delta_2 r}_{K, 3}
+      && = (\tr_{\Gamma_D, 2} r \smile g_D)[K] \qquad
+      && [E T^{-1} \Theta], \\
+%
+      & \forall v [E L^3] \in C^3 K, \quad
+      && \inner{v}{\delta_2 q}_{K, 3}
+        - \inner{v}{\pi_3 \frac{\partial u}{\partial t}}_{K, 3}
+      && = \inner{v}{f}_{K, 3} \qquad
+      && [E T^{-1} \Theta], \\
+%
+      &
+      && \tr_{\Gamma_N, 2} q
+      && = g_N \qquad
+      && [E T^{-1}], \\
+%
+      &
+      && u(t_0)
+      && = \star_{K, 0} u_0 \qquad
+      && [\Theta L^{-3}].
+    \end{alignat}
+  \end{subequations}
+\end{formulation}

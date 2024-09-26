@@ -58,7 +58,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
     goto g_small_free;
   }
   double_array_substitute_inverse(
-    g, data->boundary_dirichlet->a0, g, data->boundary_dirichlet->a1);
+    g, data->boundary_dirichlet->a0, g_small, data->boundary_dirichlet->a1);
 
   f = (double *) malloc(sizeof(double) * m->cn[0]);
   if (f == NULL)

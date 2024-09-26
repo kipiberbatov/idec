@@ -30,7 +30,11 @@ void double_array_add_to(double * a, int d, const double * b);
 void double_array_add_sparse_to(
   double * f, const jagged1 * indices, const double * g);
 
+void double_array_negate(double * b, int n, const double * a);
+
 void double_array_multiply_with(double * a, int d, double lambda);
+
+void double_array_pointwise_divide(double * b, int n, const double * a);
 
 void double_array_substitute(
   double * b, int n, const double * a, const int * position);
