@@ -111,7 +111,7 @@ g_i := (N^i \_/ g_{gamma}^{d - 1})[gamma]
 */
 void mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
   double * g,
-  const mesh * m,
+  const mesh_qc * m,
   const jagged1 * boundary_hyperfaces,
   const double * coefficients_dm1);
 
@@ -121,9 +121,19 @@ g_i := (c{d - 1, i} \_/ g_{gamma}^0)[gamma]
 */
 void mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
   double * g,
-  const mesh * m,
+  const mesh_qc * m,
   const jagged1 * boundary_hyperfaces,
   const double * coefficients_0);
+
+/*
+calculate nonzero values of sparse vector g,
+g_i := (c{d - 1, i} \_/ g_{gamma}^0)[gamma]
+*/
+void mesh_qc_vector_from_inner_of_basis_d_cup_d_cochain(
+  double * f,
+  const mesh_qc * m,
+  const double * m_inner_d,
+  const double * coefficients_d);
 
 /*
 calculate diagonal matrix a,
@@ -131,13 +141,13 @@ a_{i, j} := <c^{d - 1, j}, pi_{d - 1}^{-1} c^{d - 1 i}>
 */
 void mesh_qc_matrix_diagonal_from_inner_of_basis_dm1_cup_inverse_pi_2_basis_dm1(
   double * a,
-  const mesh * m,
+  const mesh_qc * m,
   const double * m_inner_dm1,
   const double * pi_dm1);
 
 void mesh_qc_matrix_diagonal_from_inner_of_basis_0_cup_pi_0_basis_0(
   double * a,
-  const mesh * m,
+  const mesh_qc * m,
   const double * m_inner_0,
   const double * pi_0);
 
@@ -155,6 +165,12 @@ b_{i, k} := (N^k \_/ delta c^{d - 1, i})[M]
 matrix_sparse *
 mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
   const mesh_qc * m,
-  const matrix_sparse * m_bd_d);
+  const matrix_sparse * m_cbd_dm1);
+
+matrix_sparse *
+mesh_qc_matrix_sparse_from_inner_of_basis_d_cup_delta_basis_dm1(
+  const mesh_qc * m,
+  const matrix_sparse * m_bd_d,
+  const double * m_inner_d);
 
 #endif /* _mesh_qc_h */

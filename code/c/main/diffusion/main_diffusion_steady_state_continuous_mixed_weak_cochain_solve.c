@@ -17,8 +17,7 @@ int main(int argc, char ** argv)
   double * flux, * temperature;
   double ** m_inner, ** m_vol;
   FILE * m_file;
-  matrix_sparse * m_cbd_dm1;
-  matrix_sparse ** m_bd;
+  matrix_sparse ** m_bd, * m_bd_d;
   mesh * m;
   void * lib_handle;
   const diffusion_steady_state_continuous * data;
@@ -69,6 +68,7 @@ int main(int argc, char ** argv)
 
   d = m->dim;
   m_cn = m->cn;
+  m_bd_d = m_bd[d - 1];
 
   m->fc = mesh_fc(m);
   if (errno)
@@ -77,21 +77,13 @@ int main(int argc, char ** argv)
     fputs("cannot calculate m->fc\n", stderr);
     goto m_bd_free;
   }
-
-  m_cbd_dm1 = matrix_sparse_transpose(m_bd[d - 1]);
-  if (errno)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fputs("cannot calculate m_cbd_dm1\n", stderr);
-    goto m_bd_free;
-  }
   
   m_vol = double_array2_file_scan_by_name(m_vol_name, d + 1, m_cn, "--raw");
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot scan m_vol\n", stderr);
-    goto m_cbd_dm1_free;
+    goto m_bd_free;
   }
 
   m_inner = double_array2_file_scan_by_name(m_inner_name, d + 1, m_cn, "--raw");
@@ -130,7 +122,7 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  temperature = (double *) malloc(sizeof(double) * m->cn[0]);
+  temperature = (double *) malloc(sizeof(double) * m->cn[d]);
   if (temperature == NULL)
   {
     color_error_position(__FILE__, __LINE__);
@@ -140,7 +132,7 @@ int main(int argc, char ** argv)
 
   diffusion_steady_state_continuous_mixed_weak_cochain_solve(
     flux, temperature,
-    m, m_cbd_dm1, m_vol[d - 1], m_vol[d], m_inner[d - 1], data);
+    m, m_bd_d, m_vol[d - 1], m_vol[d], m_inner[d - 1], m_inner[d], data);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
@@ -148,8 +140,12 @@ int main(int argc, char ** argv)
     goto temperature_free;
   }
 
-  double_array_file_print(stdout, m->cn[d - 1], flux, "--raw");
-  double_array_file_print(stdout, m->cn[0], temperature, "--raw");
+  fprintf(stderr, "\n%sflux:%s\n", color_red, color_none);
+  double_array_file_print(stderr, m->cn[d - 1], flux, "--curly");
+
+  fprintf(stderr, "\n%stemperature:%s\n", color_red, color_none);
+  double_array_file_print(stderr, m->cn[d], temperature, "--curly");
+  fputc('\n', stderr);
 
 temperature_free:
   free(temperature);
@@ -161,8 +157,6 @@ m_inner_free:
   double_array2_free(m_inner, d + 1);
 m_vol_free:
   double_array2_free(m_vol, d + 1);
-m_cbd_dm1_free:
-  matrix_sparse_free(m_cbd_dm1);
 m_bd_free:
   matrix_sparse_array_free(m_bd, d);
 m_free:

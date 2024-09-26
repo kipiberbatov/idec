@@ -23,7 +23,7 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   b_nonzero_max = b->cols_total[b->cols];
 
   fprintf(stderr, "\n%sa:%s\n", color_red, color_none);
-  double_array_file_print(stderr, m, a, "--raw");
+  double_array_file_print(stderr, m, a, "--curly");
 
   matrix_sparse_copy_topology(&b_times_inverse_a, b);
   b_times_inverse_a.values = (double *) malloc(sizeof(double) * b_nonzero_max);
@@ -36,7 +36,7 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   memcpy(b_times_inverse_a.values, b->values, sizeof(double) * b_nonzero_max);
   matrix_sparse_multiply_with_inverse_of_diagonal(&b_times_inverse_a, a);
   fprintf(stderr, "\n%sb a^{-1}:%s\n", color_red, color_none);
-  matrix_sparse_file_print(stderr, &b_times_inverse_a, "--raw");
+  matrix_sparse_file_print(stderr, &b_times_inverse_a, "--matrix-form-curly");
 
   b_transpose = matrix_sparse_transpose(b);
   if (b_transpose == NULL)
@@ -46,7 +46,7 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
     goto b_times_inverse_a_values_free;
   }
   fprintf(stderr, "\n%sb^T:%s\n", color_red, color_none);
-  matrix_sparse_file_print(stderr, b_transpose, "--raw");
+  matrix_sparse_file_print(stderr, b_transpose, "--matrix-form-curly");
 
   c = matrix_sparse_product(&b_times_inverse_a, b_transpose);
   if (c == NULL)
@@ -59,7 +59,13 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   matrix_sparse_file_print(stderr, c, "--matrix-form-curly");
 
   double_array_negate(u, n, f);
+  fprintf(stderr, "\n%s-f:%s\n", color_red, color_none);
+  double_array_file_print(stderr, n, u, "--curly");
+
   matrix_sparse_vector_multiply_add(u, &b_times_inverse_a, g);
+  fprintf(stderr, "\n%sb a^{-1} g - f:%s\n", color_red, color_none);
+  double_array_file_print(stderr, n, u, "--curly");
+
   matrix_sparse_linear_solve(c, u, "--lu");
   if (errno)
   {
@@ -67,6 +73,8 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
     fputs("cannot calculate variable u\n", stderr);
     goto c_free;
   }
+  fprintf(stderr, "\n%su:%s\n", color_red, color_none);
+  double_array_file_print(stderr, n, u, "--curly");
 
   memcpy(q, g, sizeof(double) * m);
   matrix_sparse_vector_subtract_product(q, b_transpose, u);

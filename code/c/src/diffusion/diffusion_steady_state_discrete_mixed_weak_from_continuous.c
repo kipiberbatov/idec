@@ -3,9 +3,11 @@
 
 #include "boundary_scalar_field_discretize.h"
 #include "boundary_pseudoscalar_field_discretize.h"
+#include "color.h"
 #include "de_rham.h"
 #include "diffusion_steady_state_continuous.h"
 #include "diffusion_steady_state_discrete_mixed_weak.h"
+#include "double.h"
 #include "unsigned_approximation.h"
 
 diffusion_steady_state_discrete_mixed_weak *
@@ -38,6 +40,8 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
   = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_dirichlet);
   if (errno)
     goto data_discrete_source_free;
+  fprintf(stderr, "\n%sboundary_dirichlet:%s\n", color_red, color_none);
+  jagged1_file_print(stderr, data_discrete->boundary_dirichlet, "--curly");
 
   data_discrete->g_dirichlet
   = (double *) malloc(sizeof(double) * (data_discrete->boundary_dirichlet->a0));
@@ -49,11 +53,17 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
     m->coord,
     data_discrete->boundary_dirichlet,
     data_continuous->g_dirichlet);
+  fprintf(stderr, "\n%sg_dirichlet:%s\n", color_red, color_none);
+  double_array_file_print(stderr,
+    data_discrete->boundary_dirichlet->a0,
+    data_discrete->g_dirichlet,
+    "--curly");
 
   data_discrete->boundary_neumann = mesh_boundary_hyperfaces_from_constraint(
     m, data_continuous->boundary_neumann);
   if (errno)
     goto data_discrete_g_dirichlet_free;
+  fprintf(stderr, "\n%sboundary_neumann:%s\n", color_red, color_none);
   jagged1_file_print(stderr, data_discrete->boundary_neumann, "--curly");
 
   data_discrete->g_neumann
@@ -66,6 +76,9 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
     m_vol_dm1,
     data_discrete->boundary_neumann,
     data_continuous->g_neumann);
+  fprintf(stderr, "\n%sg_neumann:%s\n", color_red, color_none);
+  double_array_file_print(stderr,
+    data_discrete->boundary_neumann->a0, data_discrete->g_neumann, "--curly");
 
   return data_discrete;
 

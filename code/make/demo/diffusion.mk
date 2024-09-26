@@ -143,7 +143,7 @@ build/$(MODE)/demo/diffusion/2d_steady_state_continuous_p4_temperature_mixed_wea
   build/$(MODE)/obj/src/diffusion_steady_state_continuous_p4$(.OBJ)\
   | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
 	$< $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
-	  diffusion_steady_state_continuous_p4 > $@
+	  diffusion_steady_state_continuous_p4 &> $@
 
 _demo_diffusion_brick_2d_10 :=\
   build/$(MODE)/demo/diffusion/mesh_brick_2d_10_forman_diffusion_transient_continuous_p4_temperature.txt\
