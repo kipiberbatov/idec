@@ -2,7 +2,35 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "color.h"
+#include "double.h"
 #include "matrix_sparse.h"
+
+static void double_array_left_multiply_with_inverse_of_diagonal_matrix(
+  double * q, int m, const double * a)
+{
+  int i;
+
+  for (i = 0; i < m; ++i)
+    q[i] /= a[i];
+}
+
+static void double_array_negate(double * b, int n, const double * a)
+{
+  int i;
+
+  for (i = 0; i < n; ++i)
+    b[i] = -a[i];
+}
+
+static void
+matrix_sparse_copy_topology(matrix_sparse * b, const matrix_sparse * a)
+{
+  b->rows = a->rows;
+  b->cols = a->cols;
+  b->cols_total = a->cols_total;
+  b->row_indices = a->row_indices;
+}
 
 void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   double * q,
@@ -12,42 +40,68 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   const double * g,
   const double * f)
 {
-  int i, m, n;
-  matrix_sparse * c, * d;
+  int b_nonzero_max, m, n;
+  matrix_sparse b_times_inverse_a;
+  matrix_sparse * b_transpose, * c;
 
   m = b->cols;
   n = b->rows;
+  b_nonzero_max = b->cols_total[b->cols];
 
-  c = matrix_sparse_transpose(b);
-  if (c == NULL)
+  fprintf(stderr, "\n%sa:%s\n", color_red, color_none);
+  double_array_file_print(stderr, m, a, "--raw");
+
+  matrix_sparse_copy_topology(&b_times_inverse_a, b);
+  b_times_inverse_a.values = (double *) malloc(sizeof(double) * b_nonzero_max);
+  if (b_times_inverse_a.values == NULL)
   {
-    fprintf(stderr, "%s:%d: cannot calculate c\n", __FILE__, __LINE__);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot allocate memory for b_times_inverse_a.values\n", stderr);
     return;
   }
+  memcpy(b_times_inverse_a.values, b->values, sizeof(double) * b_nonzero_max);
+  matrix_sparse_multiply_with_inverse_of_diagonal(&b_times_inverse_a, a);
+  fprintf(stderr, "\n%sb a^{-1}:%s\n", color_red, color_none);
+  matrix_sparse_file_print(stderr, &b_times_inverse_a, "--raw");
 
-  matrix_sparse_multiply_with_inverse_of_diagonal(c, a);
-  d = matrix_sparse_product(c, b);
-  if (d == NULL)
+  b_transpose = matrix_sparse_transpose(b);
+  if (b_transpose == NULL)
   {
-    fprintf(stderr, "%s:%d: cannot calculate d\n", __FILE__, __LINE__);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate b_transpose = b^T\n", stderr);
+    goto b_times_inverse_a_values_free;
+  }
+  fprintf(stderr, "\n%sb^T:%s\n", color_red, color_none);
+  matrix_sparse_file_print(stderr, b_transpose, "--raw");
+
+  c = matrix_sparse_product(&b_times_inverse_a, b_transpose);
+  if (c == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate c = b a^{-1} b^T\n", stderr);
+    goto b_transpose_free;
+  }
+  fprintf(stderr, "\n%sb a^{-1} b^T:%s\n", color_red, color_none);
+  matrix_sparse_file_print(stderr, c, "--matrix-form-curly");
+
+  double_array_negate(u, n, f);
+  matrix_sparse_vector_multiply_add(u, &b_times_inverse_a, g);
+  matrix_sparse_linear_solve(c, u, "--lu");
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate variable u\n", stderr);
     goto c_free;
   }
 
-  for (i = 0; i < n; ++i)
-    u[i] = -f[i];
-  matrix_sparse_vector_multiply_add(u, c, g);
-  matrix_sparse_linear_solve(d, u, "--cholesky");
-  if (errno)
-  {
-    fprintf(stderr, "%s:%d: cannot solve for u\n", __FILE__, __LINE__);
-    goto d_free;
-  }
-
   memcpy(q, g, sizeof(double) * m);
-  matrix_sparse_vector_subtract_product(q, b, u);
+  matrix_sparse_vector_subtract_product(q, b_transpose, u);
+  double_array_left_multiply_with_inverse_of_diagonal_matrix(q, m, a);
 
-d_free:
-  matrix_sparse_free(d);
 c_free:
   matrix_sparse_free(c);
+b_transpose_free:
+  matrix_sparse_free(b_transpose);
+b_times_inverse_a_values_free:
+  free(b_times_inverse_a.values);
 }

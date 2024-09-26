@@ -54,6 +54,7 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
     m, data_continuous->boundary_neumann);
   if (errno)
     goto data_discrete_g_dirichlet_free;
+  jagged1_file_print(stderr, data_discrete->boundary_neumann, "--curly");
 
   data_discrete->g_neumann
   = (double *) malloc(sizeof(double) * (data_discrete->boundary_neumann->a0));

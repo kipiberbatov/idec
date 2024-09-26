@@ -187,8 +187,8 @@ mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
     goto end;
   }
 
-  b->rows = m_cn[d - 1];
-  b->cols = m_cn[0];
+  b->rows = m_cn[0];
+  b->cols = m_cn[d - 1];
 
   b->cols_total = (int *) malloc(sizeof(int) * (b->cols + 1));
   if (b->cols_total == NULL)

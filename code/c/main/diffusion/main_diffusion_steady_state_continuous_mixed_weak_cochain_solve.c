@@ -4,6 +4,7 @@
 
 #include <dlfcn.h>
 
+#include "color.h"
 #include "double.h"
 #include "diffusion_steady_state_continuous.h"
 #include "mesh.h"
@@ -13,7 +14,7 @@ int main(int argc, char ** argv)
   char * error, * data_name, * lib_name, * m_inner_name, * m_name, * m_vol_name;
   int d;
   int * m_cn;
-  double * flux = NULL, * temperature = NULL;
+  double * flux, * temperature;
   double ** m_inner, ** m_vol;
   FILE * m_file;
   matrix_sparse * m_cbd_dm1;
@@ -24,9 +25,11 @@ int main(int argc, char ** argv)
 
   if (argc != 6)
   {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of command-line arguments must be 6; instead it is %d\n",
+      argc);
     errno = EINVAL;
-    fputs("Runtime error stack trace:\n", stderr);
-    fputs("  main: the number of command-line arguments must be 8\n", stderr);
     goto end;
   }
 
@@ -39,14 +42,16 @@ int main(int argc, char ** argv)
   m_file = fopen(m_name, "r");
   if (errno)
   {
-    fprintf(stderr, "Cannot open mesh file: %s\n", strerror(errno));
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open mesh file %s: %s\n", m_name, strerror(errno));
     goto end;
   }
 
   m = mesh_file_scan(m_file, "--raw");
   if (errno)
   {
-    fputs("main - cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan mesh m in format 'raw'\n", stderr);
     fclose(m_file);
     goto end;
   }
@@ -54,7 +59,8 @@ int main(int argc, char ** argv)
   m_bd = mesh_file_scan_boundary(m_file, m);
   if (errno)
   {
-    fputs("main - cannot scan m_bd\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_bd\n", stderr);
     fclose(m_file);
     goto m_free;
   }
@@ -67,36 +73,40 @@ int main(int argc, char ** argv)
   m->fc = mesh_fc(m);
   if (errno)
   {
-    fputs("  main: cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_bd_free;
   }
 
   m_cbd_dm1 = matrix_sparse_transpose(m_bd[d - 1]);
   if (errno)
   {
-    fputs("  main: cannot calculate m_cbd[d - 1]\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_cbd_dm1\n", stderr);
     goto m_bd_free;
   }
   
   m_vol = double_array2_file_scan_by_name(m_vol_name, d + 1, m_cn, "--raw");
   if (errno)
   {
-    fputs("  main: cannot scan m_vol\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_vol\n", stderr);
     goto m_cbd_dm1_free;
   }
 
   m_inner = double_array2_file_scan_by_name(m_inner_name, d + 1, m_cn, "--raw");
   if (errno)
   {
-    fputs("  main: cannot scan m_vol\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_inner\n", stderr);
     goto m_vol_free;
   }
 
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
   {
-    fputs("Runtime error stack trace:\n", stderr);
-    fputs("  main: cannot open libshared\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open dynamic library %s\n", lib_name);
     goto m_inner_free;
   }
   /* clear any existing errors */
@@ -107,9 +117,25 @@ int main(int argc, char ** argv)
   error = dlerror();
   if (error)
   {
-    fputs(error, stderr);
-    fputs("\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "%s\n", error);
     goto lib_close;
+  }
+
+  flux = (double *) malloc(sizeof(double) * m->cn[d - 1]);
+  if (flux == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot allocate memory for flux\n", stderr);
+    goto lib_close;
+  }
+
+  temperature = (double *) malloc(sizeof(double) * m->cn[0]);
+  if (temperature == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot allocate memory for temperature\n", stderr);
+    goto flux_free;
   }
 
   diffusion_steady_state_continuous_mixed_weak_cochain_solve(
@@ -117,12 +143,17 @@ int main(int argc, char ** argv)
     m, m_cbd_dm1, m_vol[d - 1], m_vol[d], m_inner[d - 1], data);
   if (errno)
   {
-    fputs("  main: cannot calculate result\n", stderr);
-    goto lib_close;
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot find flux and temperature\n", stderr);
+    goto temperature_free;
   }
 
   // double_array_file_print(stdout, m->cn[0], result, "--raw");
 
+temperature_free:
+  free(temperature);
+flux_free:
+  free(flux);
 lib_close:
   dlclose(lib_name);
 m_inner_free:
