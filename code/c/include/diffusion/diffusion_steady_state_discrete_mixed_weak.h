@@ -7,11 +7,12 @@
 typedef struct diffusion_steady_state_discrete_mixed_weak
 {
   double  * pi_dm1;
-  double  * source;
-  jagged1 * boundary_dirichlet;
-  double  * g_dirichlet;
-  jagged1 * boundary_neumann;
-  double  * g_neumann;
+  double  * source_d;
+  jagged1 * boundary_dirichlet_dm1;
+  jagged1 * boundary_dirichlet_0;
+  double  * g_dirichlet_0;
+  jagged1 * boundary_neumann_dm1;
+  double  * g_neumann_dm1;
 } diffusion_steady_state_discrete_mixed_weak;
 
 void diffusion_steady_state_discrete_mixed_weak_free(

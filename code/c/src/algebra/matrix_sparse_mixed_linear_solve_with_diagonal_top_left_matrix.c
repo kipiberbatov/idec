@@ -24,6 +24,7 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
 
   fprintf(stderr, "\n%sa:%s\n", color_red, color_none);
   double_array_file_print(stderr, m, a, "--curly");
+  fputc('\n', stderr);
 
   matrix_sparse_copy_topology(&b_times_inverse_a, b);
   b_times_inverse_a.values = (double *) malloc(sizeof(double) * b_nonzero_max);
@@ -61,10 +62,12 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   double_array_negate(u, n, f);
   fprintf(stderr, "\n%s-f:%s\n", color_red, color_none);
   double_array_file_print(stderr, n, u, "--curly");
+  fputc('\n', stderr);
 
   matrix_sparse_vector_multiply_add(u, &b_times_inverse_a, g);
   fprintf(stderr, "\n%sb a^{-1} g - f:%s\n", color_red, color_none);
   double_array_file_print(stderr, n, u, "--curly");
+  fputc('\n', stderr);
 
   matrix_sparse_linear_solve(c, u, "--lu");
   if (errno)
@@ -75,6 +78,7 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   }
   fprintf(stderr, "\n%su:%s\n", color_red, color_none);
   double_array_file_print(stderr, n, u, "--curly");
+  fputc('\n', stderr);
 
   memcpy(q, g, sizeof(double) * m);
   matrix_sparse_vector_subtract_product(q, b_transpose, u);

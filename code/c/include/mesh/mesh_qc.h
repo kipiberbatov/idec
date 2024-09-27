@@ -122,7 +122,7 @@ g_i := (c{d - 1, i} \_/ g_{gamma}^0)[gamma]
 void mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
   double * g,
   const mesh_qc * m,
-  const jagged1 * boundary_hyperfaces,
+  const jagged1 * boundary_dm1,
   const double * coefficients_0);
 
 /*

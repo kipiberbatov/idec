@@ -142,6 +142,7 @@ int main(int argc, char ** argv)
 
   fprintf(stderr, "\n%sflux:%s\n", color_red, color_none);
   double_array_file_print(stderr, m->cn[d - 1], flux, "--curly");
+  fputc('\n', stderr);
 
   fprintf(stderr, "\n%stemperature:%s\n", color_red, color_none);
   double_array_file_print(stderr, m->cn[d], temperature, "--curly");
