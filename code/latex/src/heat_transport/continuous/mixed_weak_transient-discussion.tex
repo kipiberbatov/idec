@@ -1,0 +1,35 @@
+\begin{discussion}
+  We are going to formulate the \textbf{mixed weak formulation for continuous
+  heat transport with differential forms}.
+  Consider the model
+  \Cref{idec/heat_transport/continuous/model_with_differential_forms-discussion}
+  with the same domains and variable names.
+  Let $v \in \Omega^0 X$ and $r \in \Ker \tr_{\Gamma_N, 2}$ be test functions.
+  Define
+  \begin{equation}
+    \pi_2 :=
+    \star_2^{-1} \circ \pi_1 \circ \star_2 \colon \Omega^2 X \to \Omega^2 X.
+  \end{equation}
+  Then
+  \begin{equation}
+    \pi_2^{-1} q = \star_2^{-1} (d_0 u),
+  \end{equation}
+  and therefore
+  \begin{equation}
+    \begin{split}
+      \inner{r}{\pi_2^{-1} q}
+      & = \int_X (r \wedge \star_2 (\pi_2^{-1} q)) \\
+      & = \int_X (r \wedge d_0 u) \\
+      & = \int_{\partial X} (\tr_{X, 2} r \wedge \tr_{X, 0} u)
+        - \int_{X} (d_2 r \wedge u) \\
+      & = \int_{\Gamma_D} (\tr_{\Gamma_D, 2} r \wedge g_D)
+        - \int_{X} (d_2 r \wedge u).
+    \end{split}
+  \end{equation}
+  Multiplying the balance equation with $v$ and integrating over $X$ gives
+  \begin{equation}
+    \frac{d}{d t} \int_X (v \wedge \star_0 (\pi_0 u))
+    = \int_X v \wedge d_2 q + \int_X (v \wedge f).
+  \end{equation}
+  We get the following formulation.
+\end{discussion}

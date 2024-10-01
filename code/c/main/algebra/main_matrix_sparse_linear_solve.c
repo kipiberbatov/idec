@@ -42,7 +42,6 @@ static void matrix_sparse_linear_solve_file_print(
   }
 
   double_array_file_print(out, a->rows, b, "--raw");
-  fputs("\n", out);
 
 b_free:
   free(b);
@@ -66,7 +65,8 @@ int main(int argc, char ** argv)
   a_format = argv[2];
   b_name = argv[3];
   method = argv[4];
-  matrix_sparse_linear_solve_file_print(stdout, a_name, a_format, b_name, method);
+  matrix_sparse_linear_solve_file_print(
+    stdout, a_name, a_format, b_name, method);
   if (errno)
   {
     perror("Unsuccessful execution of matrix_sparse_linear_solve");

@@ -117,6 +117,9 @@
 \newcommand{\usmile}{\underline{\smile}}
 \newcommand{\uwedge}{\underline{\wedge}}
 
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
 \title{IDEC documentation}
 \author{Kiprian Berbatov}
 \date{11 September 2024}
@@ -180,7 +183,7 @@
 \input{mesh/coboundary_operator/is_cochain_complex-proposition.tex}
 \input{mesh/coboundary_operator/is_cochain_complex-proof.tex}
 
-\input{heat_transport/continuous/weak_primal_model-formulation.tex}
+% \input{heat_transport/continuous/primal_weak_transient-formulation.tex}
 
 \section{Combinatorial differential forms and Forman subdivision}
 \label{section:combinatorial_differential_forms_and_forman_subdivision}
@@ -237,10 +240,12 @@
 \input{heat_transport/continuous/strong_model-formulation.tex}
 \subsection{Primal weak formulation}
 \phantom{T}
-\input{heat_transport/continuous/weak_primal_model-formulation.tex}
+\input{heat_transport/continuous/primal_weak_transient-discussion.tex}
+\input{heat_transport/continuous/primal_weak_transient-formulation.tex}
+\input{heat_transport/continuous/primal_weak_steady_state-formulation.tex}
 \subsection{Mixed weak formulation}
 \phantom{T}
-\input{heat_transport/continuous/weak_mixed_model-formulation.tex}
+\input{heat_transport/continuous/mixed_weak_transient-discussion.tex}
 \input{heat_transport/continuous/mixed_weak_transient-formulation.tex}
 \input{heat_transport/continuous/mixed_weak_steady_state-formulation.tex}
 
@@ -258,7 +263,6 @@
 \input{heat_transport/discrete/model_with_forms-formulation.tex}
 \subsection{Mixed weak formulation}
 \phantom{T}
-% \input{heat_transport/discrete/mixed_weak-formulation.tex}
 \input{heat_transport/discrete/mixed_weak_transient-formulation.tex}
 \input{heat_transport/discrete/mixed_weak_steady_state-formulation.tex}
 
@@ -277,6 +281,5 @@
 \input{mesh/quasi_cubical/covariant_exterior_derivative/leibniz_rule-proof.tex}
 \input{mesh/quasi_cubical/covariant_exterior_derivative/graded_leibniz_rule-proposition.tex}
 \input{mesh/quasi_cubical/covariant_exterior_derivative/graded_leibniz_rule-proof.tex}
-%\input{mesh/quasi_cubical/covariant_exterior_derivative/tmp-example.tex}
 
 \end{document}
