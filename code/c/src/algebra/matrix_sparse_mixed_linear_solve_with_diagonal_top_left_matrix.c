@@ -81,8 +81,19 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   fputc('\n', stderr);
 
   memcpy(q, g, sizeof(double) * m);
+  fprintf(stderr, "\n%sg:%s\n", color_red, color_none);
+  double_array_file_print(stderr, m, q, "--curly");
+  fputc('\n', stderr);
+  
   matrix_sparse_vector_subtract_product(q, b_transpose, u);
+  fprintf(stderr, "\n%sg - b^T u:%s\n", color_red, color_none);
+  double_array_file_print(stderr, m, q, "--curly");
+  fputc('\n', stderr);
+  
   double_array_pointwise_divide(q, m, a);
+  fprintf(stderr, "\n%sq = a^{-1} (g - b^t u):%s\n", color_red, color_none);
+  double_array_file_print(stderr, m, q, "--curly");
+  fputc('\n', stderr);
 
 c_free:
   matrix_sparse_free(c);

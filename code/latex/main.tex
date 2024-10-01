@@ -126,8 +126,14 @@
 \maketitle
 
 %\addtocontents{toc}{\protect{\pdfbookmark[0]{\contentsname}{toc}}}
-\pdfbookmark{\contentsname}{toc}
+% \pdfbookmark{\contentsname}{toc}
 \tableofcontents
+
+% \input{heat_transport/continuous/weak_primal_model-formulation.tex}
+% \begin{formulation}
+% \input{heat_transport/continuous/weak_primal_model-formulation.tex}
+% \end{formulation}
+% \input{heat_transport/continuous/weak_primal_model-formulation.tex}
 
 \section{Exterior algebra}
 \label{section:exterior_algebra}
@@ -173,6 +179,8 @@
 \input{mesh/coboundary_operator/concept-definition.tex}
 \input{mesh/coboundary_operator/is_cochain_complex-proposition.tex}
 \input{mesh/coboundary_operator/is_cochain_complex-proof.tex}
+
+\input{heat_transport/continuous/weak_primal_model-formulation.tex}
 
 \section{Combinatorial differential forms and Forman subdivision}
 \label{section:combinatorial_differential_forms_and_forman_subdivision}
@@ -224,13 +232,14 @@
 \section{Continuous heat transport}
 \label{section:continuous_heat_transport}
 \input{heat_transport/continuous/introduction-discussion.tex}
-\subsection{Primal strong formulation}
 \input{heat_transport/continuous/model_with_differential_forms-discussion.tex}
+\subsection{Primal strong formulation}
 \input{heat_transport/continuous/strong_model-formulation.tex}
 \subsection{Primal weak formulation}
 \phantom{T}
 \input{heat_transport/continuous/weak_primal_model-formulation.tex}
 \subsection{Mixed weak formulation}
+\phantom{T}
 \input{heat_transport/continuous/weak_mixed_model-formulation.tex}
 \input{heat_transport/continuous/mixed_weak_transient-formulation.tex}
 \input{heat_transport/continuous/mixed_weak_steady_state-formulation.tex}
@@ -240,10 +249,12 @@
 \input{restriction_of_free_vector_space-notation.tex}
 \input{generalized-external_normal-notation.tex}
 \subsection{Primal strong formulation}
+\phantom{T}
 \input{heat_transport/discrete/model_with_normals-discussion.tex}
 \input{heat_transport/discrete/strong_model_with_normals-formulation.tex}
 \input{heat_transport/discrete/strong_model_with_normals_crank_nicolson_scheme-discussion.tex}
 \subsection{Primal weak formulation}
+\phantom{T}
 \input{heat_transport/discrete/model_with_forms-formulation.tex}
 \subsection{Mixed weak formulation}
 \phantom{T}

@@ -1,5 +1,6 @@
 #include "matrix_sparse.h"
 
+/* q -= b . u */
 void matrix_sparse_vector_subtract_product(
   double * q,
   const matrix_sparse * b,
@@ -20,11 +21,15 @@ void matrix_sparse_vector_subtract_product(
     b_row_indices_j = b_row_indices + b_cols_total[j];
     b_values_j = b_values + b_cols_total[j];
     u_j = u[j];
+    fprintf(stderr, "u[%d] = %g\n", j, u_j);
     for (i_local = 0; i_local < b_rows_j; ++i_local)
     {
       i = b_row_indices_j[i_local];
       b_i_j = b_values_j[i_local];
+      fprintf(stderr, "  b[%d, %d] = %g\n", i, j, b_i_j);
+      fprintf(stderr, "  q_before[%d] = %g\n", i, q[i]);
       q[i] -= b_i_j * u_j;
+      fprintf(stderr, "  q_next[%d] = %g\n", i, q[i]);
     }
   }
 }
