@@ -115,6 +115,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   }
   mesh_qc_vector_from_inner_of_basis_d_cup_d_cochain(
     f, m, m_inner_d, data->source_d);
+  double_array_multiply_with(f, m->cn[d], -1.);
   fprintf(stderr, "\n%sf^%d:%s\n", color_red, d, color_none);
   double_array_file_print(stderr, m->cn[d], f, "--curly");
   fputc('\n', stderr);

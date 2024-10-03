@@ -32,7 +32,7 @@ mesh_qc_matrix_sparse_from_inner_of_basis_d_cup_delta_basis_dm1(
     a_col_j = pow_2_d * j;
     m_inner_d_j = m_inner_d[j];
     for (i_local = 0; i_local < pow_2_d; ++i_local)
-      a_values[a_col_j + i_local] *= -m_inner_d_j;
+      a_values[a_col_j + i_local] *= m_inner_d_j;
   }
 
   b = matrix_sparse_transpose(a);
