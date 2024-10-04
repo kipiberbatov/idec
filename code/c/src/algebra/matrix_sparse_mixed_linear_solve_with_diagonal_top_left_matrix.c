@@ -69,7 +69,7 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   double_array_file_print(stderr, n, u, "--curly");
   fputc('\n', stderr);
 
-  matrix_sparse_linear_solve(c, u, "--lu");
+  matrix_sparse_linear_solve(c, u, "--cholesky");
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
