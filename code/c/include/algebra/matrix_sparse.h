@@ -272,7 +272,7 @@ $
 for $q = fluxe$ and $u = temperature$ */
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double * flux,
-  double * temperature,
+  double * temperature_on_cells,
   const double * a,
   const matrix_sparse * b,
   const double * g,

@@ -95,6 +95,22 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   double_array_file_print(stderr, m, q, "--curly");
   fputc('\n', stderr);
 
+  {
+    int i;
+    double * h = (double *) malloc(sizeof(double) * m);
+    // double_array_pointwise_divide(h, a, q);
+    for (i = 0; i < m; ++i)
+      h[i] = a[i] * q[i];
+    matrix_sparse_vector_multiply_add(h, b_transpose, u);
+    fprintf(stderr, "\n%scheck a q + b^t u:%s\n", color_red, color_none);
+    double_array_file_print(stderr, m, h, "--curly");
+    fputc('\n', stderr);
+    fprintf(stderr, "\n%scheck g:%s\n", color_red, color_none);
+    double_array_file_print(stderr, m, g, "--curly");
+    fputc('\n', stderr);
+    free(h);
+  }
+
 c_free:
   matrix_sparse_free(c);
 b_transpose_free:

@@ -122,6 +122,7 @@ g_i := (c{d - 1, i} \_/ g_{gamma}^0)[gamma]
 void mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
   double * g,
   const mesh_qc * m,
+  const matrix_sparse * m_bd_d,
   const jagged1 * boundary_dm1,
   const double * coefficients_0);
 
@@ -169,7 +170,6 @@ mesh_qc_matrix_sparse_from_integral_of_basis_0_cup_delta_basis_dm1(
 
 matrix_sparse *
 mesh_qc_matrix_sparse_from_inner_of_basis_d_cup_delta_basis_dm1(
-  const mesh_qc * m,
   const matrix_sparse * m_bd_d,
   const double * m_inner_d);
 

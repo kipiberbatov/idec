@@ -9,9 +9,9 @@
 
 void diffusion_steady_state_discrete_mixed_weak_solve(
   double * flux,
-  double * temperature,
+  double * temperature_on_cells,
   const mesh * m,
-  const matrix_sparse * m_bd_d,
+  const matrix_sparse * m_cbd_dm1,
   const double * m_inner_dm1,
   const double * m_inner_d,
   const diffusion_steady_state_discrete_mixed_weak * data)
@@ -49,7 +49,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   fputc('\n', stderr);
 
   b = mesh_qc_matrix_sparse_from_inner_of_basis_d_cup_delta_basis_dm1(
-    m, m_bd_d, m_inner_d);
+    m_cbd_dm1, m_inner_d);
   if (b == NULL)
   {
     color_error_position(__FILE__, __LINE__);
@@ -98,11 +98,13 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
     goto g_dirichlet_0_big_free;
   }
   mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
-    g, m, data->boundary_dirichlet_dm1, g_dirichlet_0_big);
+    g, m, m_cbd_dm1, data->boundary_dirichlet_dm1, g_dirichlet_0_big);
   // double_array_substitute_inverse(
   //   g, data->boundary_dirichlet_dm1->a0, g_small,
   //   data->boundary_dirichlet_dm1->a1);
-  fprintf(stderr, "\n%sg:%s\n", color_red, color_none);
+  fprintf(stderr,
+    "\n%sg = {(g_d \\_/ c^{%d, i})}_{i = 0}^{%d}:%s\n",
+    color_red, d - 1, m->cn[d - 1] - 1, color_none);
   double_array_file_print(stderr, m->cn[d - 1], g, "--curly");
   fputc('\n', stderr);
 
@@ -121,7 +123,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   fputc('\n', stderr);
 
   matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
-    flux, temperature,
+    flux, temperature_on_cells,
     a, b, g, f, data->boundary_neumann_dm1, data->g_neumann_dm1);
   if (errno)
   {
@@ -137,7 +139,8 @@ g_free:
 g_dirichlet_0_big_free:
   free(g_dirichlet_0_big);
 b_free:
-  matrix_sparse_free(b);
+  free(b->values);
+  free(b);
 a_free:
   free(a);
 }
