@@ -58,7 +58,7 @@ static void set_g_new(
 
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double * flux,
-  double * temperature,
+  double * temperature_on_cells,
   const double * a,
   const matrix_sparse * b,
   const double * g,
@@ -153,7 +153,8 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   }
 
   matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
-    flux_restrict, temperature, a_restrict, b_restrict, g_new_restrict, f_new);
+    flux_restrict, temperature_on_cells,
+    a_restrict, b_restrict, g_new_restrict, f_new);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
