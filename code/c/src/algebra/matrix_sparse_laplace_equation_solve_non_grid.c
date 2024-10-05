@@ -106,8 +106,8 @@ double * matrix_sparse_laplace_equation_solve_non_grid(
           "x\n", stderr);
     goto m_laplacian_in_free;
   }
-  double_array_substitute_inverse(x, m_nodes_in->a0, b_in, m_nodes_in->a1);
-  double_array_substitute_inverse(x, m_nodes_bd->a0, b_bd, m_nodes_bd->a1);
+  double_array_assemble_from_sparse_array(x, m_nodes_in, b_in);
+  double_array_assemble_from_sparse_array(x, m_nodes_bd, b_bd);
   coordinates_in_standard_basis(x, m_laplacian->rows, m_inner);
 
 m_laplacian_in_free:

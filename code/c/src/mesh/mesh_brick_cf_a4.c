@@ -31,7 +31,7 @@ void mesh_brick_cf_a4(int * m_cf_a4, int d, const int * n)
           int_array_assign_identity(positions, q);
           for (v = 0; v < bin_p_q; ++v)
           {
-            int_array_substitute(b, q, a, positions);
+            int_array_compress_to_sparse_array(b, q, positions, a);
             memcpy(b_copy, b, sizeof(int) * q);
             comb_passed = int_array_combination_index(b_copy, d, q);
             int_array_assign_identity(l, q);
@@ -48,7 +48,7 @@ void mesh_brick_cf_a4(int * m_cf_a4, int d, const int * n)
             for (w_ind = 0; w_ind < w_size; ++w_ind)
             {
               int_array_assign_constant(z, d, 0);
-              int_array_substitute_inverse(z, p - q, w, b_bar);
+              int_array_assemble_from_sparse_array(z, p - q, b_bar, w);
               int_array_sum(y_plus_z, d, y, z);
               m_cf_a4[ind] =
                 ind_b + int_array_flatten_index(d, n_bar_u_v, y_plus_z);

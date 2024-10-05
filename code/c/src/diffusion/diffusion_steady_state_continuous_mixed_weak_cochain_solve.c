@@ -85,10 +85,10 @@ void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
   double_array_file_print(stderr, m->cn[0], temperature, "--curly");
   fputc('\n', stderr);
   
-  double_array_substitute_inverse(temperature,
-    data_discrete->boundary_dirichlet_0->a0,
-    data_discrete->g_dirichlet_0,
-    data_discrete->boundary_dirichlet_0->a1);
+  double_array_assemble_from_sparse_array(
+    temperature,
+    data_discrete->boundary_dirichlet_0,
+    data_discrete->g_dirichlet_0);
   fprintf(stderr, "\n%stemperature:%s\n", color_red, color_none);
   double_array_file_print(stderr, m->cn[0], temperature, "--curly");
   fputc('\n', stderr);

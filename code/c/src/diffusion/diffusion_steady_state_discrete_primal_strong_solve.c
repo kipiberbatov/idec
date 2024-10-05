@@ -41,11 +41,8 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
 
   /* apply Dirichlet boundary conditions */
   matrix_sparse_set_identity_rows(lhs, data->boundary_dirichlet);
-  double_array_substitute_inverse(
-    result,
-    data->boundary_dirichlet->a0,
-    data->g_dirichlet,
-    data->boundary_dirichlet->a1);
+  double_array_assemble_from_sparse_array(
+    result, data->boundary_dirichlet, data->g_dirichlet);
 
   /* apply Neumann boundary conditions */
   diffusion_discrete_set_neumann_rows(
@@ -56,11 +53,8 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
     fputs("cannot apply Neumann boundary condition\n", stderr);
     goto lhs_free;
   }
-  double_array_substitute_inverse(
-    result,
-    data->boundary_neumann->a0,
-    data->g_neumann,
-    data->boundary_neumann->a1);
+  double_array_assemble_from_sparse_array(
+    result, data->boundary_neumann, data->g_neumann);
 
   matrix_sparse_linear_solve(lhs, result, "--lu");
   if (errno)

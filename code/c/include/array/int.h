@@ -25,10 +25,11 @@ void int_array_assign_identity(int * a, int n);
 
 void int_array_assign_constant(int * a, int n, int c);
 
-void int_array_substitute(int * b, int n, const int * a, const int * k);
+void int_array_compress_to_sparse_array(
+  int * b, int size, const int * positions, const int * a);
 
-void int_array_substitute_inverse(
-  int * b, int n, const int * a, const int * position);
+void int_array_assemble_from_sparse_array(
+  int * b, int size, const int * positions, const int * a);
 
 void int_array_sum(int * c, int n, const int * a, const int * b);
 

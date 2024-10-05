@@ -36,11 +36,11 @@ void double_array_multiply_with(double * a, int d, double lambda);
 
 void double_array_pointwise_divide(double * b, int n, const double * a);
 
-void double_array_substitute(
-  double * b, int n, const double * a, const int * position);
+void double_array_compress_to_sparse_array(
+  double * b, const jagged1 * positions, const double * a);
 
-void double_array_substitute_inverse(
-  double * b, int n, const double * a, const int * position);
+void double_array_assemble_from_sparse_array(
+  double * b, const jagged1 * positions, const double * a);
 
 double double_array_dot_product(int d, const double * a, const double * b);
 

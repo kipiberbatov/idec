@@ -90,8 +90,8 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     fputs("cannot allocate memory for a_restrict\n", stderr);
     goto boundary_neumann_complement_free;
   }
-  double_array_substitute(a_restrict,
-    restrict_size, a, boundary_neumann_complement->a1);
+  double_array_compress_to_sparse_array(
+    a_restrict, boundary_neumann_complement, a);
   fprintf(stderr, "\n%sa_restrict (diagonal):%s\n", color_red, color_none);
   double_array_file_print(stderr, restrict_size, a_restrict, "--curly");
   fputc('\n', stderr);
@@ -126,8 +126,8 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     fputs("cannot allocate memory for g_new_restrict\n", stderr);
     goto g_new_free;
   }
-  double_array_substitute(g_new_restrict,
-    restrict_size, g_new, boundary_neumann_complement->a1);
+  double_array_compress_to_sparse_array(
+    g_new_restrict, boundary_neumann_complement, g_new);
   fprintf(stderr, "\n%sg_new_restrict:%s\n", color_red, color_none);
   double_array_file_print(stderr, restrict_size, g_new_restrict, "--curly");
   fputc('\n', stderr);
@@ -162,10 +162,9 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     goto flux_restrict_free;
   }
 
-  double_array_substitute_inverse(flux,
-    restrict_size, flux_restrict, boundary_neumann_complement->a1);
-  double_array_substitute_inverse(flux,
-    boundary_neumann->a0, g_neumann, boundary_neumann->a1);
+  double_array_assemble_from_sparse_array(
+    flux, boundary_neumann_complement, flux_restrict);
+  double_array_assemble_from_sparse_array(flux, boundary_neumann, g_neumann);
 
 flux_restrict_free:
   free(flux_restrict);
