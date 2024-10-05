@@ -20,6 +20,9 @@ and functions operating on them are implemented;
 - mesh: structure **mesh** and functions on meshes are implemented;
 the structure **mesh\_qc** is the same as **mesh** but is intended to be used
 for quasi-cubical meshes resulting from applying **forman**;
+- diffusion: includes various structures for encoding the input data for
+diffusion problems (in particular, heat equation), as well as implementations
+of solution methods for those problems;
 - graphics: examples using [Cairo](https://www.cairographics.org) and
 [GTK 3](https://docs.gtk.org/gtk3/)
 - shared: inputs that are dynamically loaded during execution:
