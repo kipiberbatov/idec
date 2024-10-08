@@ -14,25 +14,23 @@
         + \int_X (v \wedge f) \\
       & = \int_{\Gamma_D} (\tr_{\Gamma_D} v \wedge \tr_{\Gamma_D} q)
         + \int_{\Gamma_N} (\tr_{\Gamma_N} v \wedge \tr_{\Gamma_N} q)
-        - \int_X (d v \wedge \star_1 \pi_1 d_0 u)
-        + \int_X (v \wedge \star_0 \tilde{f}) \\
+        - \int_X (d v \wedge \star_1 \tilde{\kappa}_1 d_0 u)
+        + \int_X (v \wedge f) \\
       & = 0
-        + \int_{\Gamma_N}
-          (\tr_{\Gamma_N} v \wedge \star^{(\Gamma_N)}_0 \widetilde{g_N})
-        - \int_X (d v \wedge \star_1 \pi_1 d_0 u)
-        + \int_X (v \wedge \star_0 \tilde{f}) \\
-      & = \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{(\Gamma_N)}
-        - \inner{d v}{\pi_1 d_0 u}_{(X)}
-        + \inner{v}{\tilde{f}}_{(X)}.
+        + \int_{\Gamma_N} (\tr_{\Gamma_N} v \wedge g_N)
+        - \int_X (d v \wedge \star_1 \tilde{\kappa}_1 d_0 u)
+        + \int_X (v \wedge f) \\
+      & = \int_{\Gamma_N} (\tr_{\Gamma_N} v \wedge g_N)
+        - \inner{d v}{\tilde{\kappa}_1 d_0 u}_{X, 1}
+        + \int_X (v \wedge f).
     \end{split}
   \end{equation}
   We also have:
   \begin{equation}
     \int_X v \wedge \frac{\partial Q}{\partial t}
     = \frac{\partial}{\partial t} \left(\int_X v \wedge Q\right)
-    = \frac{\partial}{\partial t}
-      \left(\int_X v \wedge \star_3 (\pi_0 u)\right)
-    = \frac{\partial}{\partial t} \inner{v}{\pi_0 u}_X.
+    = \int_X \left(v \wedge \star_0 \pi_0 \frac{\partial u}{\partial t}\right)
+    =  \inner{v}{\pi_0 \frac{\partial u}{\partial t}}_{X, 0}.
   \end{equation}
-  Hence, we get the following (primal weak) formulation.
+  This leads to the following (primal weak) formulation.
 \end{discussion}

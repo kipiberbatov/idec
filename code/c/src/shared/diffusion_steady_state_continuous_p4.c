@@ -18,9 +18,9 @@ static int boundary_dirichlet(const double * x)
 static double g_dirichlet(const double * x)
 {
   if (x[0] == 0.)
-    return 64.;
+    return -100.;
   else /* x[0] == 1. */
-    return 0.;
+    return 100.;
 }
 
 // static double g_dirichlet(const double * x)

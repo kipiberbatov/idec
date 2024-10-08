@@ -18,8 +18,14 @@
         \text{``temperature $[\Theta]$ on $x$ at time $t$''}
         = u(t)(x) := u(t, x);
       \end{equation}
+      We will also use the temperature-volume
+      $\tilde{u} [\Theta L^3] \colon I \to \Omega^3 X$
+      defined by
+      \begin{equation}
+        \tilde{u} := \star_0 u;
+      \end{equation}
     \item
-      heat energy $Q [E]\colon I \to \Omega^3 X$:
+      heat energy $Q [E] \colon I \to \Omega^3 X$:
       for any moment $t \in I$ and any volume $V \subseteq X$,
       \begin{equation}
         \text{``total heat energy $[E]$ of the system on $V$ at time $t$''}
@@ -32,6 +38,30 @@
       \begin{equation}
         \text{``total inflow $[E]$ through $S$ between $t_1$ and $t_2$''}
         = \int_{t_1}^{t_2} \left(\int_S q(\cdot) \right)\, d t.
+      \end{equation}
+  \end{itemize}
+  We will also need the dual variables of heat energy, temperature and flux.
+  \begin{itemize}
+    \item
+      temperature-volume $\tilde{u} [\Theta L^3] \colon I \to \Omega^3 X$
+      defined by
+      \begin{equation}
+        \tilde{u} := \star_0 u
+      \end{equation}
+      (althiugh using non-zero based temperature scale might make $\star_0$ not
+      well defined, this will not cause problems as we will always take
+      temperature differences when substituting in equations);
+    \item
+      heat energy density $\tilde{Q} [E L^{-3}] \colon I \to \Omega^0 X$
+      defined by
+      \begin{equation}
+        \tilde{Q} := \star_3 Q;
+      \end{equation}
+    \item
+      orthogonal (edge) flux $\tilde{q} [E T L^{-1}] \colon I \to \Omega^1 X$
+      defined by
+      \begin{equation}
+        \tilde{q} := \star_2 q;
       \end{equation}
   \end{itemize}
   The governing laws are formulated as follows.
@@ -84,11 +114,11 @@
       \end{equation}
     \item
       Let $\pi_0 [E L^{-3} \Theta^{-1}] \colon \Omega^0 X \to \Omega^0 X$
-      be the role of volumetric heat capacity,
-      $\tilde{Q}^0 := \star_3 Q$.
+      be the volumetric heat capacity.
       The \textbf{relation between temperature and heat energy} is given by
       \begin{equation}
         \frac{\partial Q}{\partial t}
+        = \star_0 \left(\frac{\partial \tilde{Q}}{\partial t}\right).
         = \star_0 \left(\pi_0 \frac{\partial u}{\partial t}\right).
       \end{equation}
     \item
@@ -99,13 +129,23 @@
       Therefore, the net flow through $S$ is in the negative direction of the
       temperature difference between $V_1$ and $V_0$.
       
-      Let $\pi_1 [E L^{-1} T^{-1} \Theta^{-1}] \colon \Omega^1 X \to \Omega^1 X$
+      Let
+      $\kappa_2 [E L^{-1} T^{-1} \Theta^{-1}] \colon \Omega^2 X \to \Omega^2 X$
       be the thermal conductivity.
       The \textbf{Fourier's constitutive relation}
       quantifies the above relation by a proportionality factor:
       \begin{equation}
-        \tilde{q} := \star_2 q = - \pi_1 (d_0 u).
+        q^2 = - \kappa_2 \delta_3^\star \tilde{u}^3
+        = \kappa_2 \star_1 \delta_0 u = \star_1 \kappa_1 \delta_0 u,
       \end{equation}
+      where we have denoted
+      \begin{equation}
+        \kappa_1 := \star_1^{-1} \kappa_2 \star_1 [E L^{-1} T^{-1} \Theta^{-1}]
+        \colon \Omega^1 X \to \Omega^1 X.
+      \end{equation}
+      % \begin{equation}
+      %   \tilde{q} := \star_2 q = - \pi_1 (d_0 u).
+      % \end{equation}
   \end{itemize}
   We complete our model with boundary conditions.
   Let $\Gamma_D, \Gamma_N$ form a partition of $\partial X$
@@ -125,9 +165,9 @@
       \begin{equation}
         \tr_{\Gamma_N, 2} q = g_N.
       \end{equation}
-      The prescribed flow is usually calculated using its density form
-      \begin{equation}
-        \widetilde{g_N} := \star^{(\Gamma_N)}_2 g_N.
-      \end{equation}
+      % The prescribed flow is usually calculated using its density form
+      % \begin{equation}
+      %   \widetilde{g_N} := \star^{(\Gamma_N)}_2 g_N.
+      % \end{equation}
   \end{itemize}
 \end{discussion}

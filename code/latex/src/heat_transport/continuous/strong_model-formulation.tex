@@ -21,16 +21,17 @@
       $g_D [\Theta] \colon I \to \Omega^0 \Gamma_D$
       be the prescribed temperature on the Dirchlet boundary.
     \item
-      $g_N [E L^{-2} T^{-1}] \colon I \to \Omega^0 \Gamma_N$
-      be the prescribed flow through the Neumann boundary;
+      $\tilde{g_N} [E L^{-2} T^{-1}] \colon I \to \Omega^0 \Gamma_N$
+      be the prescribed flux through the Neumann boundary;
     \item
       $\pi_0 [E L^{-3} \Theta^{-1}] \colon \Omega^0 M \to \Omega^0 M$
       be the volumetric heat capacity;
     \item
-      $\pi_1 [E L^{-1} T^{-1} \Theta^{-1}] \colon \Omega^1 X \to \Omega^1 X$
+      $\tilde{\kappa}_1 [E L^{-1} T^{-1} \Theta^{-1}]
+      \colon \Omega^1 X \to \Omega^1 X$
       be the thermal conductivity.
   \end{itemize}
-  Our unknown is temperature $u [\Theta] \colon I \to \Omega^3 X$.
+  Our unknown is temperature $u [\Theta] \colon I \to \Omega^0 X$.
   We are solving the following problem for $u$:
   \begin{subequations}
     \begin{alignat}{3}
@@ -42,9 +43,10 @@
       && = g_D \qquad
       && [\Theta], \\
 %
-      & - (\tr_{\Gamma_N, 2} \circ \star_1 \circ \pi_1 \circ d_0) u
-      && = g_N \qquad
-      && [E T^{-1}], \\
+      & - (\star_{\Gamma_N, 2} \circ \tr_{\Gamma_N, 2} \circ \star_1 \circ \pi_1
+        \circ d_0) u
+      && = \tilde{g_N} \qquad
+      && [E L^{-2} T^{-1}], \\
 %
       & u(t_0, \cdot)
       && = u_0 \qquad

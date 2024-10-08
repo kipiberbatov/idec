@@ -4,32 +4,37 @@
   Consider the model
   \Cref{idec/heat_transport/continuous/model_with_differential_forms-discussion}
   with the same domains and variable names.
-  Let $v \in \Omega^0 X$ and $r \in \Ker \tr_{\Gamma_N, 2}$ be test functions.
-  Define
-  \begin{equation}
-    \pi_2 :=
-    \star_2^{-1} \circ \pi_1 \circ \star_2 \colon \Omega^2 X \to \Omega^2 X.
-  \end{equation}
+  Let $r^{D - 1} [E T^{-1}] \in \Ker \left(\tr_{\Gamma_N, D - 1}\right)$.
   Then
   \begin{equation}
-    \pi_2^{-1} q = \star_2^{-1} (d_0 u),
+    \kappa_{D - 1}^{-1} q^{D - 1}
+    = - d_\star^D \tilde{u}^D
+    = (-1)^{D - 1} \star_1 d_0 u^0,
   \end{equation}
   and therefore
   \begin{equation}
     \begin{split}
-      \inner{r}{\pi_2^{-1} q}
-      & = \int_X (r \wedge \star_2 (\pi_2^{-1} q)) \\
-      & = \int_X (r \wedge d_0 u) \\
-      & = \int_{\partial X} (\tr_{X, 2} r \wedge \tr_{X, 0} u)
-        - \int_{X} (d_2 r \wedge u) \\
-      & = \int_{\Gamma_D} (\tr_{\Gamma_D, 2} r \wedge g_D)
-        - \int_{X} (d_2 r \wedge u).
+      \inner{r^{D - 1}}{\kappa_{D - 1}^{-1} q^{D - 1}}_{X, D - 1}
+      & = \inner{r^{D - 1}}{(-1)^{D - 1} \star_1 d_0 u^0}_{X, D - 1} \\
+      & = (-1)^{D - 1} \int_X (r^{D - 1} \wedge d_0 u^0) \\
+      & = \int_X
+        (d_{D - 1}(r^{D - 1} \wedge u^0) - d_{D - 1} r^{D - 1} \wedge u^0) \\
+      & = \int_{\partial X}
+        (\tr_{\partial X, D - 1} r^{D - 1} \wedge \tr_{\partial X, 0} u^0)
+        - \int_{X} (d_{D - 1} r^{D - 1} \wedge u^0) \\
+      & = \int_{\Gamma_D} (\tr_{\Gamma_D, D - 1} r^{D - 1} \wedge g_D^0)
+        - \int_{X} (d_{D - 1} r^{D - 1} \wedge u^0) \\
+      & = \int_{\Gamma_D} (\tr_{\Gamma_D, D - 1} r^{D - 1} \wedge g_D^0)
+        - \inner{d_{D - 1} r^{D - 1}}{\star_0 u^0} \\
+      & = \int_{\Gamma_D} (\tr_{\Gamma_D, D - 1} r^{D - 1} \wedge g_D^0)
+        - \inner{d_{D - 1} r^{D - 1}}{\tilde{u}^D}.
     \end{split}
   \end{equation}
-  Multiplying the balance equation with $v$ and integrating over $X$ gives
+  Let $v^D [\Theta] \in \Omega^D X$.
+  Taking the inner product of the conservation law with $v^D$ gives
   \begin{equation}
-    \frac{d}{d t} \int_X (v \wedge \star_0 (\pi_0 u))
-    = \int_X v \wedge d_2 q + \int_X (v \wedge f).
+   \inner{\tilde{\pi}_D \frac{\partial \tilde{u}^D}{\partial t}}{v^D}_{X, D}
+    = \inner{\delta_{D - 1} q^{D - 1}}{v^D}_{X, D} + \inner{f^D}{v^D}.
   \end{equation}
-  We get the following formulation.
+  This leads to the following (mixed weak) formulation.
 \end{discussion}
