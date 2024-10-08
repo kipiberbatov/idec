@@ -53,7 +53,7 @@
       && [\Theta], \\
 %
       & F \colon \Omega^D X \to \R, \quad
-      && G(v^D) := \inner{f^D}{v^D}_{X, D} \qquad
+      && F(v^D) := \inner{f^D}{v^D}_{X, D} \qquad
       && [E T^{-1} L^{-D}].
     \end{alignat}
   \end{subequations}
@@ -94,9 +94,8 @@
     u^0(t, x) :=
     \begin{cases}
       u_0(x), & t = t_0 \\
-      (\star_D \tilde{u}^D)(t, x_0),
-        & t > t_0 \text{and}\ x_0 \notin \Gamma_D \\
-      g_D^0(t, x_0), & t_0 > 0 \text{and}\ x_0 \in \Gamma_D
+      (\star_D \tilde{u}^D)(t, x), & t > t_0\ \text{and}\ x \notin \Gamma_D \\
+      g_D^0(t, x), & t_0 > 0\ \text{and}\ x \in \Gamma_D
     \end{cases}.
   \end{equation}
 \end{formulation}

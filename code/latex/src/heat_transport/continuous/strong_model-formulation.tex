@@ -14,17 +14,17 @@
     \item
       $u_0 [\Theta] \in \Omega^0 X$ be the initial temperature;
     \item
-      $f [E L^{-3} T^{-1}] \in \Omega^0 X$ be the external heat source;
+      $f [E L^{-D} T^{-1}] \in \Omega^0 X$ be the heat source density;
     \item
-      $\Gamma_D, \Gamma_N$ form a partition of $(\partial K)_0$;
+      $\Gamma_D, \Gamma_N$ form a partition of $(\partial X)_0$;
     \item
-      $g_D [\Theta] \colon I \to \Omega^0 \Gamma_D$
+      $g_D^0 [\Theta] \colon I \to \Omega^0 \Gamma_D$
       be the prescribed temperature on the Dirchlet boundary.
     \item
-      $\tilde{g_N} [E L^{-2} T^{-1}] \colon I \to \Omega^0 \Gamma_N$
+      $\tilde{g_N}^0 [E L^{1 - D} T^{-1}] \colon I \to \Omega^0 \Gamma_N$
       be the prescribed flux through the Neumann boundary;
     \item
-      $\pi_0 [E L^{-3} \Theta^{-1}] \colon \Omega^0 M \to \Omega^0 M$
+      $\pi_0 [E L^{-D} \Theta^{-1}] \colon \Omega^0 X \to \Omega^0 X$
       be the volumetric heat capacity;
     \item
       $\tilde{\kappa}_1 [E L^{-1} T^{-1} \Theta^{-1}]
@@ -35,20 +35,20 @@
   We are solving the following problem for $u$:
   \begin{subequations}
     \begin{alignat}{3}
-      & \pi_0 \frac{\partial u}{\partial t}
-      && = - (d_1^\star \circ \pi_1 \circ d_0) u + f \qquad
-      && [E L^{-3} T^{-1}], \\
+      & \pi_0 \frac{\partial u^0}{\partial t}
+      && = - (d_1^\star \circ \tilde{\kappa}_1 \circ d_0) u + f \qquad
+      && [E L^{-D} T^{-1}], \\
 %
-      & \tr_{\Gamma_D, 0} u = g_D 
-      && = g_D \qquad
+      & \tr_{\Gamma_D, 0} u^0
+      && = g_D^0 \qquad
       && [\Theta], \\
 %
-      & - (\star_{\Gamma_N, 2} \circ \tr_{\Gamma_N, 2} \circ \star_1 \circ \pi_1
-        \circ d_0) u
-      && = \tilde{g_N} \qquad
-      && [E L^{-2} T^{-1}], \\
+      & - (\star_{\Gamma_N, D - 1} \circ \tr_{\Gamma_N, D - 1} \circ \star_1
+        \circ \pi_1 \circ d_0) u^0
+      && = \widetilde{g_N}^0 \qquad
+      && [E L^{1 - D} T^{-1}], \\
 %
-      & u(t_0, \cdot)
+      & u^0(t_0, \cdot)
       && = u_0 \qquad
       && [\Theta].
     \end{alignat}
