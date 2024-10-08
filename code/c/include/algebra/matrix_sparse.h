@@ -16,6 +16,8 @@ typedef struct matrix_sparse
 /* creates an exact copy of a sparse matrix */
 matrix_sparse * matrix_sparse_copy(const matrix_sparse * a);
 
+void matrix_sparse_copy_topology(matrix_sparse * b, const matrix_sparse * a);
+
 /* find a[i][j] */
 double matrix_sparse_part(const matrix_sparse * a, int i, int j);
 double * matrix_sparse_part_pointer(const matrix_sparse * a, int i, int j);
@@ -234,6 +236,49 @@ void matrix_sparse_neumann_modify(
   int size_i,
   const int * neighbors,
   const double * coefficients);
+
+/* $b := b a^{-1}$, where $a$ pints to the diagonal values of a diagonal matrix */
+void matrix_sparse_multiply_with_inverse_of_diagonal(
+  matrix_sparse * b,
+  const double * a);
+
+/* q := q - b u*/
+void matrix_sparse_vector_subtract_product(
+  double * q,
+  const matrix_sparse * b,
+  const double * u);
+
+/* solve the mixed problem $a q + b^T u = g, b q = f$ for $q$ and $u$ */
+void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
+  double * q,
+  double * u,
+  const double * a,
+  const matrix_sparse * b,
+  const double * g,
+  const double * f);
+
+/* restrict $a$ to the columns specify by the array $columns$ */
+matrix_sparse * matrix_sparse_columns_restrict(
+  const matrix_sparse * a,
+  const jagged1 * columns);
+
+/*
+solve the mixed problem
+$
+  (a q)[i] + (b^T u)[i] = g[i], text{for $i$ not in $boundary_neumann$};
+  (b q)[k] = f[k],              text{for all $k$};
+  q[boundary_neumann->a1[i_local]] = g_neumann[i_local]
+$
+for $q = fluxe$ and $u = temperature$ */
+void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
+  double * flux,
+  double * temperature_on_cells,
+  const double * a,
+  const matrix_sparse * b,
+  const double * g,
+  const double * f,
+  const jagged1 * boundary_neumann,
+  const double * g_neumann);
 
 /***************************** matrix_sparse_array ****************************/
 /* scan an array of matrices of size n */

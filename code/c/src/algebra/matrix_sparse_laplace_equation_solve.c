@@ -134,8 +134,8 @@ double * matrix_sparse_laplace_equation_solve(
           "x\n", stderr);
     goto m_laplacian_in_free;
   }
-  double_array_substitute_inverse(x, m_nodes_in->a0, b_in, m_nodes_in->a1);
-  double_array_substitute_inverse(x, m_nodes_bd->a0, b_bd, m_nodes_bd->a1);
+  double_array_assemble_from_sparse_array(x, m_nodes_in, b_in);
+  double_array_assemble_from_sparse_array(x, m_nodes_bd, b_bd);
 
 m_laplacian_in_free:
   matrix_sparse_free(m_laplacian_in);

@@ -2,27 +2,37 @@
   \label{idec/heat_transport/continuous/model_with_differential_forms-discussion}
   Let:
   \begin{itemize}
-    \item $X$ be an open region in $3$D (the space region);
-    \item $t_0 \in \R$ be the initial time, $I = [t_0, \infty)$.
+    \item
+      $X$ be an open region in $3$D (the space region);
+    \item
+      $t_0 [T] \in \R$ be the initial time;
+    \item
+      $I = [t_0, \infty)$ be the time interval this phenomenon happens.
   \end{itemize}
   The main physical quantities in our model are:
   \begin{itemize}
     \item
-      temperature $u \colon I \to \Omega^0 X$ of physical dimension $[\Theta]$:
+      temperature $u [\Theta] \colon I \to \Omega^0 X$:
       for any moment $t \in I$ and any point $x \in X$,
       \begin{equation}
         \text{``temperature $[\Theta]$ on $x$ at time $t$''}
         = u(t)(x) := u(t, x);
       \end{equation}
+      We will also use the temperature-volume
+      $\tilde{u} [\Theta L^3] \colon I \to \Omega^3 X$
+      defined by
+      \begin{equation}
+        \tilde{u} := \star_0 u;
+      \end{equation}
     \item
-      heat energy $Q \colon I \to \Omega^3 K$ of physical dimension $[E]$:
+      heat energy $Q [E] \colon I \to \Omega^3 X$:
       for any moment $t \in I$ and any volume $V \subseteq X$,
       \begin{equation}
         \text{``total heat energy $[E]$ of the system on $V$ at time $t$''}
         = \int_V Q(t);
       \end{equation}
     \item
-      heat flow $q \colon I \to \Omega^2 X$ of physical dimension $[E T^{-1}]$:
+      heat flow $q [E T^{-1}] \colon I \to \Omega^2 X$:
       for any time interval $[t_1, t_2] \subset I$
       and any ($2$D) surface $S \subset X$,
       \begin{equation}
@@ -30,11 +40,34 @@
         = \int_{t_1}^{t_2} \left(\int_S q(\cdot) \right)\, d t.
       \end{equation}
   \end{itemize}
+  We will also need the dual variables of heat energy, temperature and flux.
+  \begin{itemize}
+    \item
+      temperature-volume $\tilde{u} [\Theta L^3] \colon I \to \Omega^3 X$
+      defined by
+      \begin{equation}
+        \tilde{u} := \star_0 u
+      \end{equation}
+      (althiugh using non-zero based temperature scale might make $\star_0$ not
+      well defined, this will not cause problems as we will always take
+      temperature differences when substituting in equations);
+    \item
+      heat energy density $\tilde{Q} [E L^{-3}] \colon I \to \Omega^0 X$
+      defined by
+      \begin{equation}
+        \tilde{Q} := \star_3 Q;
+      \end{equation}
+    \item
+      orthogonal (edge) flux $\tilde{q} [E T L^{-1}] \colon I \to \Omega^1 X$
+      defined by
+      \begin{equation}
+        \tilde{q} := \star_2 q;
+      \end{equation}
+  \end{itemize}
   The governing laws are formulated as follows.
   \begin{itemize}
     \item
-      Let $f \colon I \to \Omega^3 X$ be an external heat source
-      of physical dimension $[E T^{-1}]$ (power):
+      Let $f [E T^{-1}] \colon I \to \Omega^3 X$ be an external heat source:
       for any time interval $[t_1, t_2] \subset I$
       and any volume $V \subseteq X$,
       \begin{equation}
@@ -74,56 +107,67 @@
       \end{equation}
     \item
       Let
-        $u_0 \in \Omega^0 X$ be the initial temperature, $u_0\ [\Theta]$.
+        $u_0 [\Theta] \in \Omega^0 X$ be the initial temperature.
       The \textbf{initial condition} is the prescribed initial temperature:
       \begin{equation}
         u(t_0) = u_0.
       \end{equation}
     \item
-      Let $\pi_0 \colon C^0 K \to C^0 K$
-      of physical dimension $[E L^{-3} \Theta^{-1}]$
-      be a material property of the nodes of $K$,
-      playing the role of volumetric heat capacity
-      (its matrix in the standard basis is diagonal).
+      Let $\pi_0 [E L^{-3} \Theta^{-1}] \colon \Omega^0 X \to \Omega^0 X$
+      be the volumetric heat capacity.
       The \textbf{relation between temperature and heat energy} is given by
       \begin{equation}
-        \tilde{Q}^0 := \star_3 Q = \pi_0 u.
+        \frac{\partial Q}{\partial t}
+        = \star_0 \left(\frac{\partial \tilde{Q}}{\partial t}\right).
+        = \star_0 \left(\pi_0 \frac{\partial u}{\partial t}\right).
       \end{equation}
     \item
-      Let $\pi_1 \colon C^1 K \to C^1 K$
-      of physical dimension $[E L^{-1} T^{-1} \Theta^{-1}]$
-      be a material property of the edges of $K$,
-      playing the role of thermal conductivity
-      (its matrix in the standard basis is diagonal).
-      The \textbf{Fourier's constitutive relation} is given by
+      Consider two adjacent volumes $V_0$ and $V_1$ with a common surface $S$,
+      such that $\varepsilon(V_0, S) = -1,\ \varepsilon(V_1, S) = 1$.
+      According to the second law of thermodynamics, heat flows from regions of
+      higher temperature to regions of lower temperatures.
+      Therefore, the net flow through $S$ is in the negative direction of the
+      temperature difference between $V_1$ and $V_0$.
+      
+      Let
+      $\kappa_2 [E L^{-1} T^{-1} \Theta^{-1}] \colon \Omega^2 X \to \Omega^2 X$
+      be the thermal conductivity.
+      The \textbf{Fourier's constitutive relation}
+      quantifies the above relation by a proportionality factor:
       \begin{equation}
-        \tilde{q} := \star_2 q = \pi_1 (d_0 u).
+        q^2 = - \kappa_2 \delta_3^\star \tilde{u}^3
+        = \kappa_2 \star_1 \delta_0 u = \star_1 \kappa_1 \delta_0 u,
       \end{equation}
+      where we have denoted
+      \begin{equation}
+        \kappa_1 := \star_1^{-1} \kappa_2 \star_1 [E L^{-1} T^{-1} \Theta^{-1}]
+        \colon \Omega^1 X \to \Omega^1 X.
+      \end{equation}
+      % \begin{equation}
+      %   \tilde{q} := \star_2 q = - \pi_1 (d_0 u).
+      % \end{equation}
   \end{itemize}
   We complete our model with boundary conditions.
   Let $\Gamma_D, \Gamma_N$ form a partition of $\partial X$
   into Dirichlet and Neumann boundary.
   \begin{itemize}
     \item
-      Let $g_D \colon I \to \Omega^0 \Gamma_D$
-      of physical dimension $[\Theta]$
+      Let $g_D [\Theta] \colon I \to \Omega^0 \Gamma_D$
       be the prescribed temperature on the Dirichlet boundary $\Gamma_D$.
       The \textbf{Dirichlet boundary condition} is given by
       \begin{equation}
-        \tr_{\Gamma_D} u := \restrict{u}{\Gamma_D} = g_D.
+        \tr_{\Gamma_D, 0} u := \restrict{u}{\Gamma_D} = g_D.
       \end{equation}
     \item
-      Let
-        $g_N \colon I \to \Omega^2 \Gamma_N$
-          of physical dimension $[E T^{-1}]$
-          be the prescribed flow on the Neumann boundary $\Gamma_N$.
+      Let $g_N [E T^{-1}] \colon I \to \Omega^2 \Gamma_N$
+      be the prescribed flow on the Neumann boundary $\Gamma_N$.
       The \textbf{Neumann boundary condition} is given by
       \begin{equation}
-        \tr_{\Gamma_N} q = g_N.
+        \tr_{\Gamma_N, 2} q = g_N.
       \end{equation}
-      The prescribed flow is usually calculated using its density form
-      \begin{equation}
-        \widetilde{g_N} := \star^{(\Gamma_N)}_2 g_N.
-      \end{equation}
+      % The prescribed flow is usually calculated using its density form
+      % \begin{equation}
+      %   \widetilde{g_N} := \star^{(\Gamma_N)}_2 g_N.
+      % \end{equation}
   \end{itemize}
 \end{discussion}

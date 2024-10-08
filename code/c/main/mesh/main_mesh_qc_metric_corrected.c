@@ -94,7 +94,8 @@ int main(int argc, char ** argv)
     goto m_vol_free;
   }
 
-  mesh_qc_metric_corrected_file_print_only_values(stdout, m, m_vol, node_curvatures);
+  mesh_qc_metric_corrected_file_print_only_values(
+    stdout, m, m_vol, node_curvatures);
   if (errno)
   {
     fputs("main - cannot print m_metric\n", stderr);

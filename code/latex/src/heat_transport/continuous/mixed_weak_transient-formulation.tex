@@ -1,0 +1,102 @@
+\begin{formulation}
+  Let:
+  \begin{itemize}
+    \item
+      $D$ be a positive integer (space dimension);
+    \item
+      $X$ be a $D$-dimensional open region, representing a material body;
+    \item
+      $t_0 \in \R$ be the initial time;
+    \item
+      $I = [t_0, \infty)$ be the time-interval where the process occurs;
+    \item
+      $f [E T^{-1}] \colon I \to \Omega^D X$ be the heat source;
+    \item
+      $u_0 [\Theta] \in \Omega^0 X$ be the initial temperature;
+    \item
+      $\kappa_{D - 1} [E L^{2 - D} T^{-1} \Theta^{-1}]
+      \colon \Omega^{D - 1} X \to \Omega^{D - 1} X$
+      be the thermal conductivity of the material;
+    \item
+      $\tilde{\pi}_D [E \Theta^{-1}] \colon \Omega^D X \to \Omega^3 D$
+      be the heat capacity of the material;
+    \item
+      $\partial X = \Gamma_D \cup \Gamma_N$ be the partition of the boundary of
+      $X$ into Dirichlet ($\Gamma_D$) and Neumann ($\Gamma_N$) regions;
+    \item
+      $g_D^0 [\Theta] \colon I \to \Omega^0 \Gamma_D$
+      be the prescribed temperature on the Dirichlet boundary;
+    \item
+      $g_N^{D - 1} [E T^{-1}] \colon I \to \Omega^{D - 1} \Gamma_N$
+      be the prescribed flow on the Neumann boundary.
+  \end{itemize}
+  Define the following operators:
+  \begin{subequations}
+    \begin{alignat}{3}
+      & A \colon \Omega^{d - 1} X \times (I \to \Omega^{d - 1} X) \to \R, \quad
+      && A(r^{D - 1}, s^{D - 1})
+        := \inner{r^{D - 1}}{\kappa_{D - 1}^{-1} s^{D - 1}}_{X, D - 1} \qquad
+      && [E^{-1} T \Theta], \\
+%
+      & B \colon \Omega^d X \times (I \to \Omega^{d - 1} X) \to \R, \quad
+      && B(v^D, r^{D - 1})
+        := \inner{\delta_{D - 1} r^{D - 1}}{v^D}_{X, D} \qquad
+      && [L^{-D}], \\
+%
+      & C \colon \Omega^d X \times (I \to \Omega^d X) \to \R, \quad
+      && C(v^D, w^D) := \inner{\tilde{\pi}_D w^d}{v^D}_{X, D} \qquad
+      && [E L^{_D} \Theta^{-1}], \\
+%
+      & G \colon \Omega^{D - 1} X \to \R, \quad
+      && G(r^{D - 1})
+        := \int_{\Gamma_D} (\tr_{\Gamma_D, D - 1} r^{D - 1} \wedge g_D^0) \qquad
+      && [\Theta], \\
+%
+      & F \colon \Omega^D X \to \R, \quad
+      && G(v^D) := \inner{f^D}{v^D}_{X, D} \qquad
+      && [E T^{-1} L^{-D}].
+    \end{alignat}
+  \end{subequations}
+  Our unknowns are:
+  \begin{itemize}
+    \item
+      $q^{D - 1} [E T^{-1}] \colon I \to \Omega^{D - 1} X$ (heat flow);
+    \item
+      $\tilde{u}^D [\Theta L^D] \colon I \to \Omega^D X$ (temperature-volume).
+  \end{itemize}
+  We are solving the following problem for $q$ and $u$:
+  \begin{subequations}
+    \begin{alignat}{4}
+      & \forall r^{D - 1} [E T^{-1}] \in \Ker \tr_{\Gamma_N, D - 1}, \quad
+      && A(r^{D - 1}, q^{d - 1}) + B^T(r^{D - 1}, \tilde{u}^D)
+      && = G(r^{D - 1}) \qquad
+      && [E T^{-1} \Theta], \\
+%
+      & \forall v^D [\Theta L^D] \in \Omega^D X, \quad
+      && B(v^D, q^{D - 1}) - C(v^d, \frac{\partial \tilde{u}^D}{\partial t})
+      && = - F(v^D) \qquad
+      && [E T^{-1} \Theta], \\
+%
+      &
+      && \tr_{\Gamma_N, D - 1} q^{D - 1}
+      && = g_N^{D - 1} \qquad
+      && [E T^{-1}], \\
+%
+      &
+      && \tilde{u}^D(t_0)
+      && = \star_{X, 0} u_0 \qquad
+      && [\Theta L^D].
+    \end{alignat}
+  \end{subequations}
+  The temperature $u^0 [\Theta] \colon I \to \Omega^0 X$ is calculated in the
+  post-processing phase by the formula
+  \begin{equation}
+    u^0(t, x) :=
+    \begin{cases}
+      u_0(x), & t = t_0 \\
+      (\star_D \tilde{u}^D)(t, x_0),
+        & t > t_0 \text{and}\ x_0 \notin \Gamma_D \\
+      g_D^0(t, x_0), & t_0 > 0 \text{and}\ x_0 \in \Gamma_D
+    \end{cases}.
+  \end{equation}
+\end{formulation}

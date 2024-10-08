@@ -2,7 +2,7 @@
 
 static double pi_1(const double * x)
 {
-  return 6.;
+  return 1.;
 }
 
 static double source(const double * x)
@@ -18,14 +18,19 @@ static int boundary_dirichlet(const double * x)
 static double g_dirichlet(const double * x)
 {
   if (x[0] == 0.)
-    return 100.;
+    return -100.;
   else /* x[0] == 1. */
-    return 0.;
+    return 100.;
 }
+
+// static double g_dirichlet(const double * x)
+// {
+//   return 1;
+// }
 
 static int boundary_neumann(const double * x)
 {
-  return ((x[1] == 0. || x[1] == 1.) && (0. < x[0] && x[0] < 1.));
+  return ((x[1] == 0. || x[1] == 1.) && (0. <= x[0] && x[0] <= 1.));
 }
 
 static double g_neumann(const double * x)

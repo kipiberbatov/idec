@@ -31,12 +31,15 @@ double * diffusion_steady_state_continuous_primal_weak_cochain_solve(
   const diffusion_steady_state_continuous * data_continuous);
 
 /******************************** mixed weak *********************************/
-double * diffusion_steady_state_continuous_mixed_weak_cochain_solve(
+void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
+  double * flux,
+  double * temperature_on_cells,
   const mesh * m,
   const matrix_sparse * m_bd_d,
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_dm1,
+  const double * m_inner_d,
   const diffusion_steady_state_continuous * data_continuous);
 
 #endif /* _diffusion_steady_state_continuous_h */

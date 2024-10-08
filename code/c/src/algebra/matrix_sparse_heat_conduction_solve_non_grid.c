@@ -238,8 +238,8 @@ double * matrix_sparse_heat_conduction_solve_non_grid(
       goto b_bd_free;
     }
     y = x + m_laplacian->rows * k;
-    double_array_substitute_inverse(y, m_nodes_in->a0, b_in, m_nodes_in->a1);
-    double_array_substitute_inverse(y, m_nodes_bd->a0, b_bd, m_nodes_bd->a1);
+    double_array_assemble_from_sparse_array(y, m_nodes_in, b_in);
+    double_array_assemble_from_sparse_array(y, m_nodes_bd, b_bd);
     coordinates_in_standard_basis(y, m_laplacian->rows, m_inner);
     double_array_file_print(stdout, m_laplacian->rows, y, "--raw");
     fputc('\n', stdout);

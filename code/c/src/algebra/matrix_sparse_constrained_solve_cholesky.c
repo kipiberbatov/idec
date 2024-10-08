@@ -5,28 +5,6 @@
 #include "int.h"
 #include "matrix_sparse.h"
 
-// static double * double_array_restrict(
-//   int m, const double * b, const jagged1 * rows_complement)
-// {
-//   double * b_restrict;
-//   int i, i_loc;
-//
-//   b_restrict = (double *) malloc(sizeof(double) * rows_complement->a0);
-//   if (errno)
-//   {
-//     fputs("double_array_restrict - cannot allocate memory for b_restrict\n",
-//           stderr);
-//     return NULL;
-//   }
-//   // double_array_substitute(b_restrict, m, b, rows_complement->a1);
-//   for (i_loc = 0; i_loc < m; ++i_loc)
-//   {
-//     i = rows_complement->a1[i_loc];
-//     b_restrict[i_loc] = b[i];
-//   }
-//   return b_restrict;
-// }
-
 static double * double_array_constrain(
   const matrix_sparse * a, const double * b, const jagged1 * cols,
   const jagged1 * rows_complement)
@@ -49,14 +27,7 @@ static double * double_array_constrain(
           stderr);
     return NULL;
   }
-  double_array_substitute(b_restrict, rows_complement_a0, b,
-                          rows_complement_a1);
-  //b_restrict = double_array_restrict(a->rows, b, rows_complement);
-  // if (errno)
-  // {
-  //   fputs("double_array_constrain - cannot calculate b_restrict\n", stderr);
-  //   return NULL;
-  // }
+  double_array_compress_to_sparse_array(b_restrict, rows_complement, b);
 
   for (j_loc = 0; j_loc < cols_a0; ++j_loc)
   {
@@ -70,21 +41,6 @@ static double * double_array_constrain(
   }
   return b_restrict;
 }
-
-// static void matrix_sparse_fill(
-//   double * x, const double * b, const jagged1 * rows)
-// {
-//   int i, i_loc, rows_a0;
-//   int * rows_a1;
-//
-//   rows_a0 = rows->a0;
-//   rows_a1 = rows->a1;
-//   for (i_loc = 0; i_loc < rows_a0; ++i_loc)
-//   {
-//     i = rows_a1[i_loc];
-//     x[i] = b[i_loc];
-//   }
-// }
 
 double * matrix_sparse_constrained_solve_cholesky(
   const matrix_sparse * a, const double * b, const jagged1 * rows)
@@ -136,12 +92,8 @@ double * matrix_sparse_constrained_solve_cholesky(
     goto b_restrict_free;
   }
 
-  double_array_substitute_inverse(x, rows->a0, b, rows->a1);
-
-  double_array_substitute_inverse(x, rows_complement->a0, b_restrict,
-                                  rows_complement->a1);
-  // matrix_sparse_fill(x, b, rows);
-  // matrix_sparse_fill(x, b_restrict, rows_complement);
+  double_array_assemble_from_sparse_array(x, rows, b);
+  double_array_assemble_from_sparse_array(x, rows_complement, b_restrict);
 
 b_restrict_free:
   free(b_restrict);

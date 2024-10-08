@@ -76,14 +76,6 @@ static void matrix_sparse_multiply_with_vector_and_subtract_from(
   return;
 }
 
-static void double_array_left_multiply_with_inverse_of_diagonal_matrix(
-  double * q,
-  int m,
-  const double * a)
-{
-  return;
-}
-
 void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
   double * q,
   double * u,
@@ -136,7 +128,7 @@ void matrix_sparse_mixed_solve_with_diagonal_square_matrix(
 
   double_array_copy(q, m, g);
   matrix_sparse_multiply_with_vector_and_subtract_from(q, b, u);
-  double_array_left_multiply_with_inverse_of_diagonal_matrix(q, m, a);
+  double_array_pointwise_divide(q, m, a);
 
 rhs_u_free:
   free(rhs_u);

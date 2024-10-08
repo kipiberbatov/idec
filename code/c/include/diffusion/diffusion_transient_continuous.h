@@ -20,8 +20,7 @@ typedef struct diffusion_transient_continuous
 } diffusion_transient_continuous;
 
 /******************************* primal strong ********************************/
-double *
-diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
+double * diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
   const mesh * m,
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,
@@ -61,9 +60,11 @@ diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal_to_steady_s
   double tolerance);
 
 /******************************** mixed weak *********************************/
-double *
-diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal(
+void diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal(
+  double * flux,
+  double * temperature,
   const mesh * m,
+  const matrix_sparse * m_bd_d,
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_0,
@@ -72,8 +73,10 @@ diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal(
   double time_step,
   int number_of_steps);
 
-double_array_sequence_dynamic *
+void
 diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal_to_steady_state(
+  double_array_sequence_dynamic * flux,
+  double_array_sequence_dynamic * temperature,
   const mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,

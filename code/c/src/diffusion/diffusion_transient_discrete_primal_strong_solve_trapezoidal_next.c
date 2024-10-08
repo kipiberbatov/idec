@@ -17,18 +17,12 @@ void diffusion_transient_discrete_primal_strong_solve_trapezoidal_next(
   matrix_sparse_vector_multiply_add(rhs_final, rhs, current);
 
   /* update Dirichlet rows of rhs_final by Dirichlet boundary conditions */
-  double_array_substitute_inverse(
-    rhs_final,
-    data->boundary_dirichlet->a0,
-    data->g_dirichlet,
-    data->boundary_dirichlet->a1);
+  double_array_assemble_from_sparse_array(
+    rhs_final, data->boundary_dirichlet, data->g_dirichlet);
 
   /* update Neumann rows of rhs_final by Neumann boundary conditions */
-  double_array_substitute_inverse(
-    rhs_final,
-    data->boundary_neumann->a0,
-    data->g_neumann,
-    data->boundary_neumann->a1);
+  double_array_assemble_from_sparse_array(
+    rhs_final, data->boundary_neumann, data->g_neumann);
 
   memcpy(next, rhs_final, sizeof(double) * rhs->rows);
 
