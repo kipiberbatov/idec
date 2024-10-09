@@ -6,6 +6,8 @@
 
 typedef struct diffusion_steady_state_discrete_mixed_weak
 {
+  int number_of_cells_dm1;
+  int number_of_cells_d;
   double  * pi_dm1;
   double  * source_d;
   jagged1 * boundary_dirichlet_dm1;
@@ -33,5 +35,12 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   const double * m_inner_dm1,
   const double * m_inner_d,
   const diffusion_steady_state_discrete_mixed_weak * data);
+
+void diffusion_steady_state_discrete_mixed_weak_file_print_raw(
+  FILE * out,
+  const diffusion_steady_state_discrete_mixed_weak * data);
+
+diffusion_steady_state_discrete_mixed_weak *
+diffusion_steady_state_discrete_mixed_weak_file_scan_raw(FILE * in);
 
 #endif /* _diffusion_steady_state_discrete_mixed_weak_h */

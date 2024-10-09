@@ -57,7 +57,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
     goto a_free;
   }
   fprintf(stderr, "\n%sb_original:%s\n", color_red, color_none);
-  matrix_sparse_file_print(stdout, b, "--matrix-form-curly");
+  matrix_sparse_file_print(stderr, b, "--matrix-form-curly");
 
   g_dirichlet_0_big = (double *) calloc(m->cn[0], sizeof(double));
   if (g_dirichlet_0_big == NULL)

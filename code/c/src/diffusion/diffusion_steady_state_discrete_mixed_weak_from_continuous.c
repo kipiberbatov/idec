@@ -27,6 +27,10 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
   if (errno)
     goto end;
 
+  data_discrete->number_of_cells_dm1 = m->cn[d - 1];
+
+  data_discrete->number_of_cells_d = m->cn[d];
+
   data_discrete->pi_dm1 = (double *) malloc(sizeof(double) * m->cn[d - 1]);
   if (errno)
     goto data_discrete_free;
@@ -38,25 +42,17 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
     goto data_discrete_pi_dm1_free;
   de_rham_nonzero(
     data_discrete->source_d, m, m->dim, m_vol_d, data_continuous->source);
-  fprintf(stderr, "\n%ssource_%d:%s\n", color_red, d - 1, color_none);
-  double_array_file_print(stderr, m->cn[d], data_discrete->source_d, "--curly");
-  fputc('\n', stderr);
 
   data_discrete->boundary_dirichlet_dm1
   = mesh_boundary_hyperfaces_from_constraint(
     m, data_continuous->boundary_dirichlet);
   if (errno)
     goto data_discrete_source_d_free;
-  fprintf(stderr,
-    "\n%sboundary_dirichlet_%d:%s\n", color_red, d - 1, color_none);
-  jagged1_file_print(stderr, data_discrete->boundary_dirichlet_dm1, "--curly");
 
   data_discrete->boundary_dirichlet_0
   = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_dirichlet);
   if (errno)
     goto data_discrete_boundary_dirichlet_dm1_free;
-  fprintf(stderr, "\n%sboundary_dirichlet_0:%s\n", color_red, color_none);
-  jagged1_file_print(stderr, data_discrete->boundary_dirichlet_0, "--curly");
 
   data_discrete->g_dirichlet_0 = (double *) malloc(
     sizeof(double) * data_discrete->boundary_dirichlet_0->a0);
@@ -68,21 +64,12 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
     m->coord,
     data_discrete->boundary_dirichlet_0,
     data_continuous->g_dirichlet);
-  fprintf(stderr, "\n%sg_dirichlet^0:%s\n", color_red, color_none);
-  double_array_file_print(stderr,
-    data_discrete->boundary_dirichlet_0->a0,
-    data_discrete->g_dirichlet_0,
-    "--curly");
-  fputc('\n', stderr);
 
   data_discrete->boundary_neumann_dm1
   = mesh_boundary_hyperfaces_from_constraint(
     m, data_continuous->boundary_neumann);
   if (errno)
     goto data_discrete_g_dirichlet_0_free;
-  fprintf(stderr,
-    "\n%sboundary_neumann_%d:%s\n", color_red, d - 1, color_none);
-  jagged1_file_print(stderr, data_discrete->boundary_neumann_dm1, "--curly");
 
   data_discrete->g_neumann_dm1
   = (double *) malloc(sizeof(double) * data_discrete->boundary_neumann_dm1->a0);
@@ -94,12 +81,6 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
     m_vol_dm1,
     data_discrete->boundary_neumann_dm1,
     data_continuous->g_neumann);
-  fprintf(stderr, "\n%sg_neumann^%d:%s\n", color_red, d - 1, color_none);
-  double_array_file_print(stderr,
-    data_discrete->boundary_neumann_dm1->a0,
-    data_discrete->g_neumann_dm1,
-    "--curly");
-  fputc('\n', stderr);
 
   return data_discrete;
 
