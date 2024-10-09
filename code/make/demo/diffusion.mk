@@ -18,7 +18,8 @@ _demo_diffusion_brick_2d_2 :=\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_p4_temperature_primal_weak_cochain_trapezoidal_brick_2d_2_forman.txt\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_p4_temperature_primal_weak_cochain_trapezoidal_to_steady_state_brick_2d_2_forman.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman.txt\
-  build/$(MODE)/demo/diffusion/2d_steady_state_discreete_mixed_weak_p4_brick_2d_2_forman_all.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_all.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_temperature.txt\
 
 build/$(MODE)/demo/diffusion/mesh_brick_2d_2_forman_diffusion_transient_continuous_p0_temperature.txt:\
   build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal$(.EXE)\
@@ -109,13 +110,22 @@ build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_f
 	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 2, $|)\
 	  diffusion_steady_state_continuous_p4 > $@
 
-build/$(MODE)/demo/diffusion/2d_steady_state_discreete_mixed_weak_p4_brick_2d_2_forman_all.txt:\
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_all.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_solve$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_inner.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman.txt\
   | build/$(MODE)/demo/diffusion
 	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@
+
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_temperature.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_all.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) $(word 5, $^) > $@
 
 _demo_diffusion_brick_2d_5 :=\
   build/$(MODE)/demo/diffusion/mesh_brick_2d_5_forman_diffusion_transient_continuous_p2_temperature.txt\
