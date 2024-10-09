@@ -8,35 +8,6 @@
 #include "int.h"
 #include "mesh_qc.h"
 
-static void hodge_star_d(
-  double * cochain_0,
-  const mesh * m,
-  const double * m_vol_d,
-  const double * cochain_d)
-{
-  int d, i, j, j_local, m_cn_0;
-  double numerator_i, denominator_i;
-  jagged1 m_fc_0_d_i;
-  jagged2 m_fc_0_d;
-
-  d = m->dim;
-  m_cn_0 = m->cn[0];
-  mesh_fc_part2(&m_fc_0_d, m, 0, d);
-  for (i = 0; i < m_cn_0; ++i)
-  {
-    numerator_i = 0.;
-    denominator_i = 0.;
-    jagged2_part1(&m_fc_0_d_i, &m_fc_0_d, i);
-    for (j_local = 0; j_local < m_fc_0_d_i.a0; ++j_local)
-    {
-      j = m_fc_0_d_i.a1[j_local];
-      numerator_i += cochain_d[j];
-      denominator_i += m_vol_d[j];
-    }
-    cochain_0[i] = numerator_i / denominator_i;
-  }
-}
-
 int main(int argc, char ** argv)
 {
   char * data_name, * m_vol_format, * m_vol_name, * m_format, * m_name,
@@ -166,7 +137,7 @@ int main(int argc, char ** argv)
     goto temperature_on_cells_free;
   }
 
-  hodge_star_d(temperature, m, m_vol[d], temperature_on_cells);
+  mesh_qc_hodge_star_d(temperature, m, m_vol[d], temperature_on_cells);
   double_array_assemble_from_sparse_array(
     temperature, data->boundary_dirichlet_0, data->g_dirichlet_0);
 

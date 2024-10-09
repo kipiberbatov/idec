@@ -40,7 +40,6 @@ double * mesh_qc_inner_p(const mesh_qc * m, const double * m_vol_d,
 double ** mesh_qc_inner(const mesh_qc * m, const double * m_vol_d,
                         vector_sparse *** m_metric);
 
-
 double * mesh_qc_inner_direct_p(
   const mesh_qc * m,
   int p,
@@ -66,6 +65,12 @@ matrix_sparse * mesh_qc_hodge_p(
 
 matrix_sparse ** mesh_qc_hodge(const mesh_qc * m, matrix_sparse ** m_bd,
                                double ** m_inner, double ** m_coeff);
+
+void mesh_qc_hodge_star_d(
+  double * cochain_0,
+  const mesh * m,
+  const double * m_vol_d,
+  const double * cochain_d);
 
 /******************************************************************************/
 /*                                 miscelaneous                               */

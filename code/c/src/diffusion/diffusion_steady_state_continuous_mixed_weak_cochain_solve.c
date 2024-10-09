@@ -5,35 +5,7 @@
 #include "double.h"
 #include "diffusion_steady_state_continuous.h"
 #include "diffusion_steady_state_discrete_mixed_weak.h"
-
-static void hodge_star_d(
-  double * cochain_0,
-  const mesh * m,
-  const double * m_vol_d,
-  const double * cochain_d)
-{
-  int d, i, j, j_local, m_cn_0;
-  double numerator_i, denominator_i;
-  jagged1 m_fc_0_d_i;
-  jagged2 m_fc_0_d;
-
-  d = m->dim;
-  m_cn_0 = m->cn[0];
-  mesh_fc_part2(&m_fc_0_d, m, 0, d);
-  for (i = 0; i < m_cn_0; ++i)
-  {
-    numerator_i = 0.;
-    denominator_i = 0.;
-    jagged2_part1(&m_fc_0_d_i, &m_fc_0_d, i);
-    for (j_local = 0; j_local < m_fc_0_d_i.a0; ++j_local)
-    {
-      j = m_fc_0_d_i.a1[j_local];
-      numerator_i += cochain_d[j];
-      denominator_i += m_vol_d[j];
-    }
-    cochain_0[i] = numerator_i / denominator_i;
-  }
-}
+#include "mesh_qc.h"
 
 void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
   double * flux,
@@ -80,7 +52,7 @@ void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
     fputs("cannot allocate memory for temperature\n", stderr);
     goto data_discrete_free;
   }
-  hodge_star_d(temperature, m, m_vol_d, temperature_on_cells);
+  mesh_qc_hodge_star_d(temperature, m, m_vol_d, temperature_on_cells);
   fprintf(stderr, "\n%stemperature:%s\n", color_red, color_none);
   double_array_file_print(stderr, m->cn[0], temperature, "--curly");
   fputc('\n', stderr);

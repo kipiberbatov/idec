@@ -56,6 +56,14 @@ int main(int argc, char ** argv)
     goto end;
   }
 
+  m->fc = mesh_fc(m);
+  if (m->fc == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
+    goto m_free;
+  }
+
   m_bd = mesh_file_scan_boundary(m_file, m);
   if (m_bd == NULL)
   {
@@ -78,14 +86,6 @@ int main(int argc, char ** argv)
     goto m_bd_free;
   }
 
-  m->fc = mesh_fc(m);
-  if (m->fc == NULL)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fputs("cannot calculate m->fc\n", stderr);
-    goto m_cbd_dm1_free;
-  }
-
   m_inner = double_array2_file_scan_by_name(
     m_inner_name, d + 1, m_cn, m_inner_format);
   if (m_inner == NULL)
@@ -94,7 +94,7 @@ int main(int argc, char ** argv)
     fprintf(stderr,
       "cannot scan inner products from file %s in format %s\n",
       m_inner_name, m_inner_format);
-    goto m_free;
+    goto m_cbd_dm1_free;
   }
 
   data_file = fopen(data_name, "r");
