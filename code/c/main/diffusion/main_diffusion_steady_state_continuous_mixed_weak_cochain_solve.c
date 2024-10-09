@@ -85,7 +85,7 @@ int main(int argc, char ** argv)
     fputs("cannot calculate m->fc\n", stderr);
     goto m_bd_free;
   }
-  
+
   m_vol = double_array2_file_scan_by_name(m_vol_name, d + 1, m_cn, "--raw");
   if (m_vol == NULL)
   {

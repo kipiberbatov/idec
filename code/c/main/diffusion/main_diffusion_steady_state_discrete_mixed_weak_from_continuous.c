@@ -48,7 +48,7 @@ int main(int argc, char ** argv)
 
   d = m->dim;
   m_cn = m->cn;
-  
+
   m_vol = double_array2_file_scan_by_name(
     m_vol_name, d + 1, m_cn, m_vol_format);
   if (m_vol == NULL)
@@ -88,7 +88,7 @@ int main(int argc, char ** argv)
     fprintf(stderr, "cannot open dynamic library %s\n", lib_name);
     goto lib_close;
   }
-  
+
   diffusion_steady_state_discrete_mixed_weak_file_print_raw(
     stdout, data_discrete);
 

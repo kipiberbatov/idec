@@ -11,7 +11,7 @@ $y_0$ is the initial condition.
 For $i = 0, ..., number_of_steps$:
   $rhs_final$ is updated using $y_i$ and used to find $y_{i + 1}$.
 */
-static void loop( 
+static void loop(
   double * result,
   double * rhs_final,
   const matrix_sparse * lhs,

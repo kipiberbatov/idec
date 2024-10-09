@@ -128,7 +128,7 @@ int main(int argc, char ** argv)
     goto flux_free;
   }
   fclose(solution_file);
-  
+
   temperature = (double *) malloc(sizeof(double) * m->cn[0]);
   if (temperature == NULL)
   {
