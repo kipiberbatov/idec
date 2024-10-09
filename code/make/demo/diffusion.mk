@@ -116,7 +116,7 @@ build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_f
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_inner.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman.txt\
   | build/$(MODE)/demo/diffusion
-	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@ 2> /dev/null
 
 build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_temperature.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
