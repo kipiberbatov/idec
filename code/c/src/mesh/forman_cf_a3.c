@@ -27,15 +27,17 @@ static void forman_cf_a3_level_5_zero_middle(int * m_forman_cf_a3_index,
 static void forman_cf_a3_level_3_zero(int * m_forman_cf_a3, int * index,
   const mesh * m, const jagged2 * m_cf_p_s, int p, int m_cn_p, int s)
 {
-  int i, l, l_local;
-  jagged1 m_cf_p_s_i;
+  int i, l, l_local, m_cf_p_s_a1_i;
+  int * m_cf_p_s_a1, * m_cf_p_s_i;
 
+  m_cf_p_s_a1 = m_cf_p_s->a1;
+  m_cf_p_s_i = m_cf_p_s->a2;
   for (i = 0; i < m_cn_p; ++i)
   {
-    jagged2_part1(&m_cf_p_s_i, m_cf_p_s, i);
-    for (l_local = 0; l_local < m_cf_p_s_i.a0; ++l_local)
+    m_cf_p_s_a1_i = m_cf_p_s_a1[i];
+    for (l_local = 0; l_local < m_cf_p_s_a1_i; ++l_local)
     {
-      l = m_cf_p_s_i.a1[l_local];
+      l = m_cf_p_s_i[l_local];
 
       /* c(p, i) > c(q, j) = c(r, k) = c(s, l) -- begin
        * c(p, i) = c(q, j) = c(r, k) > c(s, l) -- end
@@ -48,6 +50,7 @@ static void forman_cf_a3_level_3_zero(int * m_forman_cf_a3, int * index,
 
       ++*index;
     }
+    m_cf_p_s_i += m_cf_p_s_a1_i;
   }
 }
 
@@ -132,16 +135,17 @@ static void forman_cf_a3_level_5_nonzero_end(int * m_forman_cf_a3_index,
 static void forman_cf_a3_level_3_nonzero(int * m_forman_cf_a3, int * index,
   const mesh * m, const jagged2 * m_cf_p_s, int p, int m_cn_p, int s, int q_f)
 {
-  int i, l, l_local;
-  int * m_forman_cf_a3_index;
-  jagged1 m_cf_p_s_i;
+  int i, l, l_local, m_cf_p_s_a1_i;
+  int * m_cf_p_s_a1, * m_cf_p_s_i, * m_forman_cf_a3_index;
 
+  m_cf_p_s_a1 = m_cf_p_s->a1;
+  m_cf_p_s_i = m_cf_p_s->a2;
   for (i = 0; i < m_cn_p; ++i)
   {
-    jagged2_part1(&m_cf_p_s_i, m_cf_p_s, i);
-    for (l_local = 0; l_local < m_cf_p_s_i.a0; ++l_local)
+    m_cf_p_s_a1_i = m_cf_p_s_a1[i];
+    for (l_local = 0; l_local < m_cf_p_s_a1_i; ++l_local)
     {
-      l = m_cf_p_s_i.a1[l_local];
+      l = m_cf_p_s_i[l_local];
       m_forman_cf_a3_index = m_forman_cf_a3 + *index;
 
       /* initialize */
@@ -161,6 +165,7 @@ static void forman_cf_a3_level_3_nonzero(int * m_forman_cf_a3, int * index,
 
       ++*index;
     }
+    m_cf_p_s_i += m_cf_p_s_a1_i;
   }
 }
 

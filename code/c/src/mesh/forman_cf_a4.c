@@ -34,22 +34,26 @@ static void forman_cf_a4_level_5_zero_middle(
 
 /* q_f = 0 => p >= q = r >= s*/
 static void forman_cf_a4_level_3_zero(int * m_forman_cf_a4, int * index,
-  const mesh * m, const jagged2 * m_cf_p_s, int p, int m_cn_p, int s)
+  const mesh * m, const jagged2 * m_cf_p_s, int p, int s)
 {
-  int i, l_local, l;
-  int * m_cn;
-  jagged1 m_cf_p_s_i;
+  int i, l_local, l, m_cf_p_s_a1_i, m_cn_p, m_cn_up_to_p, m_cn_up_to_s;
+  int * m_cf_p_s_a1, * m_cf_p_s_i, * m_cn;
 
   m_cn = m->cn;
+  m_cn_p = m_cn[p];
+  m_cn_up_to_p = int_array_total_sum(p, m_cn);
+  m_cn_up_to_s = int_array_total_sum(s, m_cn);
+  m_cf_p_s_a1 = m_cf_p_s->a1;
+  m_cf_p_s_i = m_cf_p_s->a2;
   for (i = 0; i < m_cn_p; ++i)
   {
-    jagged2_part1(&m_cf_p_s_i, m_cf_p_s, i);
-    for (l_local = 0; l_local < m_cf_p_s_i.a0; ++l_local)
+    m_cf_p_s_a1_i = m_cf_p_s_a1[i];
+    for (l_local = 0; l_local < m_cf_p_s_a1_i; ++l_local)
     {
-      l = m_cf_p_s_i.a1[l_local];
+      l = m_cf_p_s_i[l_local];
 
       /* c(p, i) > c(q, j) = c(r, k) = c(s, l) */
-      m_forman_cf_a4[*index] = int_array_total_sum(s, m->cn) + l;
+      m_forman_cf_a4[*index] = m_cn_up_to_s + l;
       ++*index;
 
       /* c(p, i) > c(q, j) = c(r, k) > c(s, l) */
@@ -57,9 +61,10 @@ static void forman_cf_a4_level_3_zero(int * m_forman_cf_a4, int * index,
         m, p, s, m_cn, i, l);
 
       /* c(p, i) = c(q, j) = c(r, k) > c(s, l) */
-      m_forman_cf_a4[*index] = int_array_total_sum(p, m_cn) + i;
+      m_forman_cf_a4[*index] = m_cn_up_to_p + i;
       ++*index;
     }
+    m_cf_p_s_i += m_cf_p_s_a1_i;
   }
 }
 
@@ -182,17 +187,20 @@ forman_cf_a4_level_5_nonzero_end(int * m_forman_cf_a4, int * index,
 
 /* q_f > 0 => p >= q > r >= s */
 static void forman_cf_a4_level_3_nonzero(int * m_forman_cf_a4, int * index,
-  const mesh * m, const jagged2 * m_cf_p_s, int p, int m_cn_p, int s, int q_f)
+  const mesh * m, const jagged2 * m_cf_p_s, int p, int s, int q_f)
 {
-  int i, l, l_local;
-  jagged1 m_cf_p_s_i;
+  int i, l, l_local, m_cf_p_s_a1_i, m_cn_p;
+  int * m_cf_p_s_a1, * m_cf_p_s_i;
 
+  m_cn_p = m_cf_p_s->a0;
+  m_cf_p_s_a1 = m_cf_p_s->a1;
+  m_cf_p_s_i = m_cf_p_s->a2;
   for (i = 0; i < m_cn_p; ++i)
   {
-    jagged2_part1(&m_cf_p_s_i, m_cf_p_s, i);
-    for (l_local = 0; l_local < m_cf_p_s_i.a0; ++l_local)
+    m_cf_p_s_a1_i = m_cf_p_s_a1[i];
+    for (l_local = 0; l_local < m_cf_p_s_a1_i; ++l_local)
     {
-      l = m_cf_p_s_i.a1[l_local];
+      l = m_cf_p_s_i[l_local];
 
       /* c(p, i) > c(q, j) > c(r, k) = c(s, l) */
       forman_cf_a4_level_5_nonzero_begin(m_forman_cf_a4, index,
@@ -206,17 +214,16 @@ static void forman_cf_a4_level_3_nonzero(int * m_forman_cf_a4, int * index,
       forman_cf_a4_level_5_nonzero_end(m_forman_cf_a4, index,
         m, p, s, q_f, i, l);
     }
+    m_cf_p_s_i += m_cf_p_s_a1_i;
   }
 }
 
 void forman_cf_a4(int * m_forman_cf_a4, const mesh * m)
 {
-  int d, index, m_cn_p, p, p_f, q_f, s;
-  int * m_cn;
+  int d, index, p, p_f, q_f, s;
   jagged2 m_cf_p_s;
 
   d = m->dim;
-  m_cn = m->cn;
   index = 0;
 
   for (p_f = 1; p_f <= d; ++p_f)
@@ -224,22 +231,19 @@ void forman_cf_a4(int * m_forman_cf_a4, const mesh * m)
     /* q_f = 0 */
     for (p = p_f; p <= d; ++p)
     {
-      m_cn_p = m_cn[p];
       s = p - p_f;
       mesh_cf_part2(&m_cf_p_s, m, p, s);
-      forman_cf_a4_level_3_zero(m_forman_cf_a4, &index,
-                                m, &m_cf_p_s, p, m_cn_p, s);
+      forman_cf_a4_level_3_zero(m_forman_cf_a4, &index, m, &m_cf_p_s, p, s);
     }
     /* q_f > 0 */
     for (q_f = 1; q_f < p_f; ++q_f)
     {
       for (p = p_f; p <= d; ++p)
       {
-        m_cn_p = m_cn[p];
         s = p - p_f;
         mesh_cf_part2(&m_cf_p_s, m, p, s);
         forman_cf_a4_level_3_nonzero(m_forman_cf_a4, &index,
-                                     m, &m_cf_p_s, p, m_cn_p, s, q_f);
+                                     m, &m_cf_p_s, p, s, q_f);
       }
     }
   }
