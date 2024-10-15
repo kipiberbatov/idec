@@ -1397,7 +1397,8 @@ build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt:\
 
 _demo_mesh_circular :=\
   build/$(MODE)/demo/mesh/mesh_circular_4_3.txt\
-  build/$(MODE)/demo/mesh/mesh_circular_17_10.txt
+  build/$(MODE)/demo/mesh/mesh_circular_17_10.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt
 
 .PHONY: demo_mesh_circular
 demo_mesh_circular: $(_demo_mesh_circular) | build/$(MODE)/demo/mesh
@@ -1409,6 +1410,12 @@ build/$(MODE)/demo/mesh/mesh_circular_4_3.txt:\
 build/$(MODE)/demo/mesh/mesh_circular_17_10.txt:\
   build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/demo/mesh
 	$< 17 10 > $@
+
+build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt:\
+  build/$(MODE)/bin/forman_boundary$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10.txt\
+  | build/$(MODE)/demo/mesh
+	$< < $(word 2, $^) > $@
 
 _demo_mesh_square := \
   build/$(MODE)/demo/mesh/mesh_square_2.txt\
