@@ -2,6 +2,7 @@
 demo_mesh:\
   bin_mesh\
   demo_mesh_brick_regular\
+  demo_mesh_circular\
   demo_mesh_square\
   demo_mesh_two_triangles\
   demo_mesh_triangle_and_square\
@@ -1393,6 +1394,21 @@ build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt:\
   build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_inner.txt\
   | build/$(MODE)/demo/mesh
 	$^ > $@
+
+_demo_mesh_circular :=\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10.txt
+
+.PHONY: demo_mesh_circular
+demo_mesh_circular: $(_demo_mesh_circular) | build/$(MODE)/demo/mesh
+
+build/$(MODE)/demo/mesh/mesh_circular_4_3.txt:\
+  build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/demo/mesh
+	$< 4 3 > $@
+
+build/$(MODE)/demo/mesh/mesh_circular_17_10.txt:\
+  build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/demo/mesh
+	$< 17 10 > $@
 
 _demo_mesh_square := \
   build/$(MODE)/demo/mesh/mesh_square_2.txt\

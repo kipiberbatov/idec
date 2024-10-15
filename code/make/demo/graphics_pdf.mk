@@ -1,5 +1,7 @@
 _demo_graphics_pdf :=\
   build/$(MODE)/demo/graphics/pdf/fill.pdf\
+  build/$(MODE)/demo/graphics/pdf/mesh_circular_4_3_edge_skeleton.pdf\
+  build/$(MODE)/demo/graphics/pdf/mesh_circular_17_10_edge_skeleton.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_pentagon_edge_skeleton.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_pentagon_forman_edge_skeleton.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_brick_2d_1_forman_edge_skeleton.pdf\
@@ -28,6 +30,18 @@ build/$(MODE)/demo/graphics/pdf: | build/$(MODE)/demo/graphics
 build/$(MODE)/demo/graphics/pdf/fill.pdf:\
   build/$(MODE)/bin/pdf_fill | build/$(MODE)/demo/graphics/pdf
 	$< 100 $@
+
+build/$(MODE)/demo/graphics/pdf/mesh_circular_4_3_edge_skeleton.pdf:\
+  build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3.txt\
+  | build/$(MODE)/demo/graphics/pdf
+	$< --raw $(word 2, $^) $@
+
+build/$(MODE)/demo/graphics/pdf/mesh_circular_17_10_edge_skeleton.pdf:\
+  build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10.txt\
+  | build/$(MODE)/demo/graphics/pdf
+	$< --raw $(word 2, $^) $@
 
 build/$(MODE)/demo/graphics/pdf/mesh_pentagon_edge_skeleton.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\
