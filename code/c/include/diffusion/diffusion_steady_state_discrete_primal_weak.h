@@ -6,6 +6,8 @@
 
 typedef struct diffusion_steady_state_discrete_primal_weak
 {
+  int number_of_cells_1;
+  int number_of_cells_d;
   double  * pi_1;
   double  * source;
   jagged1 * boundary_dirichlet;
@@ -28,5 +30,12 @@ double * diffusion_steady_state_discrete_primal_weak_solve(
   const mesh * m,
   const double * m_inner_1,
   const diffusion_steady_state_discrete_primal_weak * data);
+
+void diffusion_steady_state_discrete_primal_weak_file_print_raw(
+  FILE * out,
+  const diffusion_steady_state_discrete_primal_weak * data);
+
+diffusion_steady_state_discrete_primal_weak *
+diffusion_steady_state_discrete_primal_weak_file_scan_raw(FILE * in);
 
 #endif /* _diffusion_steady_state_discrete_primal_weak_h */

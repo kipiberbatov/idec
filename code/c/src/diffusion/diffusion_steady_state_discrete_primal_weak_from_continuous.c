@@ -14,7 +14,10 @@ diffusion_steady_state_discrete_primal_weak_from_continuous(
   const double * m_vol_d,
   const diffusion_steady_state_continuous * data_continuous)
 {
+  int d;
   diffusion_steady_state_discrete_primal_weak * data_discrete;
+
+  d = m->dim;
 
   data_discrete
   = (diffusion_steady_state_discrete_primal_weak *)
@@ -22,17 +25,20 @@ diffusion_steady_state_discrete_primal_weak_from_continuous(
   if (errno)
     goto end;
 
+  data_discrete->number_of_cells_1 = m->cn[1];
+  data_discrete->number_of_cells_d = m->cn[d];
+
   data_discrete->pi_1 = (double *) malloc(sizeof(double) * m->cn[1]);
   if (errno)
     goto data_discrete_free;
   unsigned_approximation_of_scalar_field_on_1_cells(
     data_discrete->pi_1, m, data_continuous->pi_1);
 
-  data_discrete->source = (double *) malloc(sizeof(double) * m->cn[m->dim]);
+  data_discrete->source = (double *) malloc(sizeof(double) * m->cn[d]);
   if (errno)
     goto data_discrete_pi_1_free;
   de_rham_nonzero(
-    data_discrete->source, m, m->dim, m_vol_d, data_continuous->source);
+    data_discrete->source, m, d, m_vol_d, data_continuous->source);
 
   data_discrete->boundary_dirichlet
   = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_dirichlet);

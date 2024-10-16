@@ -20,6 +20,8 @@ _demo_graphics_pdf :=\
   build/$(MODE)/demo/graphics/pdf/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_temperature.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_2d_10_grains_forman_diffusion_steady_state_continuous_p7_primal_weak_temperature.pdf\
   build/$(MODE)/demo/graphics/pdf/mesh_square_8_diffusion_transient_continuous_p5_temperature.pdf\
+  build/$(MODE)/demo/graphics/pdf/diffusion_2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman_temperature.pdf\
+  build/$(MODE)/demo/graphics/pdf/diffusion_2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_temperature.pdf
 
 .PHONY: demo_graphics_pdf
 demo_graphics_pdf: bin $(_demo_graphics_pdf)\
@@ -162,6 +164,20 @@ build/$(MODE)/demo/graphics/pdf/mesh_square_8_diffusion_transient_continuous_p5_
   build/$(MODE)/demo/diffusion/mesh_square_8_diffusion_transient_continuous_p5_temperature.txt\
   | build/$(MODE)/demo/graphics/pdf
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) $@
+
+build/$(MODE)/demo/graphics/pdf/diffusion_2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman_temperature.pdf:\
+  build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman_temperature.txt\
+  | build/$(MODE)/demo/graphics/pdf
+	$< --raw $(word 2, $^) 0 --raw $(word 3, $^) $@
+
+build/$(MODE)/demo/graphics/pdf/diffusion_2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_temperature.pdf:\
+  build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_temperature.txt\
+  | build/$(MODE)/demo/graphics/pdf
+	$< --raw $(word 2, $^) 0 --raw $(word 3, $^) $@
 
 .PHONY: demo_graphics_pdf_clean
 demo_graphics_pdf_clean:

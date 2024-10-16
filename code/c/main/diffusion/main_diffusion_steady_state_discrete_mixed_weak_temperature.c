@@ -141,7 +141,6 @@ int main(int argc, char ** argv)
   double_array_assemble_from_sparse_array(
     temperature, data->boundary_dirichlet_0, data->g_dirichlet_0);
 
-  fprintf(stdout, "%d\n", m->cn[0]);
   double_array_file_print(stdout, m->cn[0], temperature, "--raw");
 
   free(temperature);
