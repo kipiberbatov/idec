@@ -217,6 +217,18 @@ build/$(MODE)/demo/diffusion/mesh_brick_2d_10_forman_diffusion_transient_continu
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_p4 4000 --raw $(word 4, $^) --raw > $@
 
+_demo_diffusion_circular :=\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_17_10_forman.txt
+
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_17_10_forman.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_from_continuous$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_vol.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_p9$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_p9 > $@
+
 _demo_diffusion_2d_10_grains :=\
   build/$(MODE)/demo/diffusion/mesh_2d_10_grains_forman_diffusion_transient_continuous_p7_temperature.txt\
   build/$(MODE)/demo/diffusion/mesh_2d_10_grains_forman_diffusion_transient_continuous_p7_flux.txt\
@@ -332,8 +344,9 @@ _demo_diffusion_2d :=\
   $(_demo_diffusion_brick_2d_2)\
   $(_demo_diffusion_brick_2d_5)\
   $(_demo_diffusion_brick_2d_10)\
+  $(_demo_diffusion_circular)\
   $(_demo_diffusion_2d_10_grains)\
-  $(_demo_diffusion_squae_8)\
+  $(_demo_diffusion_square_8)\
 
 .PHONY: demo_diffusion_2d
 demo_diffusion_2d: $(_demo_diffusion_2d)
