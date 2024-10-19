@@ -1400,7 +1400,8 @@ _demo_mesh_circular :=\
   build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt\
   build/$(MODE)/demo/mesh/mesh_circular_17_10.txt\
   build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_vol.txt
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_vol.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_inner.txt\
 
 .PHONY: demo_mesh_circular
 demo_mesh_circular: $(_demo_mesh_circular) | build/$(MODE)/demo/mesh
@@ -1409,27 +1410,46 @@ build/$(MODE)/demo/mesh/mesh_circular_4_3.txt:\
   build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/demo/mesh
 	$< 4 3 > $@
 
+# build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt:\
+#   build/$(MODE)/bin/forman_boundary$(.EXE)\
+#   build/$(MODE)/demo/mesh/mesh_circular_4_3.txt\
+#   | build/$(MODE)/demo/mesh
+# 	$< < $(word 2, $^) > $@
+
 build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt:\
-  build/$(MODE)/bin/forman_boundary$(.EXE)\
+  build/$(MODE)/bin/forman$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_circular_4_3.txt\
   | build/$(MODE)/demo/mesh
-	$< < $(word 2, $^) > $@
+	$< --raw $(word 2, $^) --circular --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_circular_17_10.txt:\
   build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/demo/mesh
 	$< 17 10 > $@
 
+# build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt:\
+#   build/$(MODE)/bin/forman_boundary$(.EXE)\
+#   build/$(MODE)/demo/mesh/mesh_circular_17_10.txt\
+#   | build/$(MODE)/demo/mesh
+# 	$< < $(word 2, $^) > $@
+
 build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt:\
-  build/$(MODE)/bin/forman_boundary$(.EXE)\
+  build/$(MODE)/bin/forman$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_circular_17_10.txt\
   | build/$(MODE)/demo/mesh
-	$< < $(word 2, $^) > $@
+	$< --raw $(word 2, $^) --circular --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt\
   | build/$(MODE)/demo/mesh
 	 $< < $(word 2, $^) > $@
+
+build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_inner.txt:\
+  build/$(MODE)/bin/mesh_qc_inner_direct$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_vol.txt\
+  | build/$(MODE)/demo/mesh
+	$^ > $@
 
 _demo_mesh_square := \
   build/$(MODE)/demo/mesh/mesh_square_2.txt\
@@ -2199,7 +2219,7 @@ build/$(MODE)/demo/mesh/mesh_square_pyramid_forman.txt:\
   build/$(MODE)/bin/forman$(.EXE)\
   data/mesh/mesh_square_pyramid.txt\
   | build/$(MODE)/demo/mesh
-	$< --raw < $(word 2, $^) > $@
+	$< --raw $(word 2, $^) --standard --raw > $@
 
 # d = 4
 _demo_mesh_brick_regular_4d := demo_mesh_brick_regular_4d_2

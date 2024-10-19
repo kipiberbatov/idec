@@ -4,7 +4,7 @@
 #include "int.h"
 #include "mesh_private.h"
 
-mesh * forman(const mesh * m)
+mesh * forman(const mesh * m, const char * new_coordinates_format)
 {
   int m_forman_c_size, m_forman_coord_size;
   mesh * m_forman;
@@ -52,7 +52,7 @@ mesh * forman(const mesh * m)
     fputs("forman - cannot allocate memory for m_forman_coord", stderr);
     goto m_forman_cf_free;
   }
-  forman_coord(m_forman->coord, m);
+  forman_coordinates(m_forman->coord, m, new_coordinates_format);
 
   return m_forman;
 

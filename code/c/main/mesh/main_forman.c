@@ -1,47 +1,51 @@
 #include <errno.h>
+
+#include "color.h"
 #include "forman.h"
-
-static mesh * forman_mesh_file_scan(FILE * in, const char * format)
-{
-  mesh * m, * m_forman = NULL;
-
-  m = mesh_file_scan(in, format);
-  if (errno)
-  {
-    fputs("forman_mesh_file_scan - cannot scan m\n", stderr);
-    goto end;
-  }
-  m_forman = forman(m);
-  if (errno)
-  {
-    fputs("forman_mesh_file_scan - cannot calculate m->fc\n", stderr);
-    goto m_free;
-  }
-
-m_free:
-  mesh_free(m);
-end:
-  return m_forman;
-}
 
 int main(int argc, char ** argv)
 {
-  mesh * m_forman;
+  char * m_format, * m_name, * new_coordinates_format, * output_format;
+  mesh * m, * m_forman;
 
-  if (argc != 2)
+  if (argc != 5)
   {
-    fputs("main - number of command line arguments should be 1\n", stderr);
-    return errno;
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "number of command line arguments should be 5; instead it is %d\n", argc);
+    errno = EINVAL;
+    goto end;
   }
 
-  m_forman = forman_mesh_file_scan(stdin, argv[1]);
-  if (errno)
+  m_format = argv[1];
+  m_name = argv[2];
+  new_coordinates_format = argv[3];
+  output_format = argv[4];
+  
+  m = mesh_file_scan_by_name(m_name, m_format);
+  if (m == NULL)
   {
-    fputs("main - cannot calculate m_forman\n", stderr);
-    return errno;
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan mesh m in from file %s in fromat %s\n",
+      m_name, m_format);
+    goto end;
   }
 
-  mesh_file_print(stdout, m_forman, "--raw");
+  m_forman = forman(m, new_coordinates_format);
+  if (m_forman == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot calculate m_forman in new coordinates format %s\n",
+      new_coordinates_format);
+    goto m_free;
+  }
+
+  mesh_file_print(stdout, m_forman, output_format);
+
   mesh_free(m_forman);
-  return 0;
+m_free:
+  mesh_free(m);
+end:
+  return errno;
 }

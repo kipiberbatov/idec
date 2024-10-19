@@ -1,5 +1,5 @@
-#ifndef FORMAN_PRIVATE_H
-#define FORMAN_PRIVATE_H
+#ifndef _forman_private_h
+#define _forman_private_h
 
 #include "forman.h"
 
@@ -15,6 +15,7 @@ void forman_cf_a4(int * m_forman_cf_a4, const mesh * m);
 jagged4 * forman_cf(const mesh * m, const int * m_forman_cn);
 
 /******************************** forman_coord ********************************/
-void forman_coord(double * m_forman_coord, const mesh * m);
+void forman_coordinates(
+  double * m_forman_coord, const mesh * m, const char * format);
 
-#endif /* FORMAN_PRIVATE_H */
+#endif /* _forman_private_h */

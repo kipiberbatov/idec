@@ -22,7 +22,7 @@ static void forman_boundary_file_print_raw(
   mesh * m_forman;
   matrix_sparse ** m_forman_boundary;
 
-  m_forman = forman(m);
+  m_forman = forman(m, "--standard");
   if (errno)
   {
     fputs("forman_boundary_file_print - cannot calculate m_forman\n", stderr);
