@@ -1398,6 +1398,8 @@ build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_cbd_star.txt:\
 _demo_mesh_circular :=\
   build/$(MODE)/demo/mesh/mesh_circular_4_3.txt\
   build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman_vol.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman_inner.txt\
   build/$(MODE)/demo/mesh/mesh_circular_17_10.txt\
   build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt\
   build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_vol.txt\
@@ -1421,6 +1423,19 @@ build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt:\
   build/$(MODE)/demo/mesh/mesh_circular_4_3.txt\
   | build/$(MODE)/demo/mesh
 	$< --raw $(word 2, $^) --circular --raw > $@
+
+build/$(MODE)/demo/mesh/mesh_circular_4_3_forman_vol.txt:\
+  build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt\
+  | build/$(MODE)/demo/mesh
+	 $< < $(word 2, $^) > $@
+
+build/$(MODE)/demo/mesh/mesh_circular_4_3_forman_inner.txt:\
+  build/$(MODE)/bin/mesh_qc_inner_direct$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman_vol.txt\
+  | build/$(MODE)/demo/mesh
+	$^ > $@
 
 build/$(MODE)/demo/mesh/mesh_circular_17_10.txt:\
   build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/demo/mesh

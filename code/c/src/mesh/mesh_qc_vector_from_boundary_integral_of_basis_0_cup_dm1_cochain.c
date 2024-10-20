@@ -4,8 +4,9 @@
 #include "mesh_qc.h"
 
 /*
-calculate nonzero values of sparse vector g,
-g_i := (N^i \_/ g_{gamma}^{d - 1})[gamma]
+add to vector g,
+$(N^i \_/ g_{gamma}^{d - 1})[gamma]$,
+for $N_i$ on the Neumann boundary
 */
 void mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
   double * g,
@@ -28,7 +29,7 @@ void mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
   for (j_local = 0; j_local < boundary_hyperfaces_a0; ++j_local)
   {
     j = boundary_hyperfaces_a1[j_local];
-    coefficients_dm1_j = coefficients_dm1[j];
+    coefficients_dm1_j = coefficients_dm1[j_local];
     jagged2_part1(&m_cf_dm1_0_j, &m_cf_dm1_0, j);
     for (i_local = 0; i_local < m_cf_dm1_0_j.a0; ++i_local)
     {

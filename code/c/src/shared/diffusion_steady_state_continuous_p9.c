@@ -21,9 +21,10 @@ This problem has exact solution
 . q(x, y) = - 2 y dx + 2 x dy
 */
 
+#define EPSILON 0.000001
+
 static int on_unit_circle(const double * x)
 {
-#define EPSILON 0.000001
   double error = x[0] * x[0] + x[1] * x[1] - 1;
   if (error < EPSILON && -error < EPSILON)
     return 1;
@@ -42,22 +43,38 @@ static double source(const double * x)
 
 static int boundary_dirichlet(const double * x)
 {
-  return (on_unit_circle(x) && x[0] >= 0);
+  return (on_unit_circle(x) && x[0] > -EPSILON );
 }
+
+/* in pure Dirichlet problem */
+/*
+static int boundary_dirichlet(const double * x)
+{
+  return (on_unit_circle(x));
+}
+*/
 
 static double g_dirichlet(const double * x)
 {
-  return 2.;
+  return 1.;
 }
 
 static int boundary_neumann(const double * x)
 {
-  return (on_unit_circle(x) && x[0] <= 0);
+  return (on_unit_circle(x) && x[0] < EPSILON);
 }
+
+/* in pure Dirichlet problem */
+/*
+static int boundary_neumann(const double * x)
+{
+  return 0;
+}
+*/
 
 static double g_neumann(const double * x)
 {
-  return 2;
+  return 2.;
 }
 
 const diffusion_steady_state_continuous diffusion_steady_state_continuous_p9 =

@@ -40,7 +40,7 @@ double * diffusion_steady_state_discrete_primal_weak_solve(
   const diffusion_steady_state_discrete_primal_weak * data)
 {
   int m_cn_0;
-  double * f, * g, * u = NULL;
+  double * f, * u = NULL;
   matrix_sparse * a;
 
   m_cn_0 = m->cn[0];
@@ -54,20 +54,13 @@ double * diffusion_steady_state_discrete_primal_weak_solve(
   if (f == NULL)
     goto a_free;
   mesh_qc_vector_from_integral_of_basis_0_cup_d_cochain(f, m, data->source);
-
-  g = (double *) malloc(sizeof(double) * data->boundary_neumann->a0);
-  if (g == NULL)
-    goto f_free;
+  /* add contributions from Neumann boundary condition */
   mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
-    g, m, data->boundary_neumann, data->g_neumann);
-
-  double_array_add_sparse_to(f, data->boundary_neumann, g);
+    f, m, data->boundary_neumann, data->g_neumann);
 
   u = matrix_sparse_symmetric_constrained_solve(
     a, f, data->boundary_dirichlet, data->g_dirichlet);
 
-  free(g);
-f_free:
   free(f);
 a_free:
   matrix_sparse_free(a);
