@@ -122,8 +122,8 @@ generating PDFs may take from a few seconds to a minute for the big animations.
 You can run GTK+ animations and PDF animations separately, by typing
 
 ```
-make demo_graphics_gtk
-make -j demo_graphics_pdf
+make demo_gtk
+make -j demo_pdf
 ```
 
 You can build the latex documentation by typing
