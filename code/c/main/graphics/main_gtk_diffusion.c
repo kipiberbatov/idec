@@ -7,6 +7,7 @@
 #include "double.h"
 #include "diffusion.h"
 #include "frame.h"
+#include "graphics_log.h"
 #include "int.h"
 #include "mesh.h"
 #include "paint_rgb.h"
@@ -157,6 +158,12 @@ int main(int argc, char ** argv)
   gtk_run(gtk_draw_diffusion, (void *) a, width, height, speed, title);
 
   gtk_main();
+
+  graphics_log(stdout, argc, argv);
+  printf("Iterations from i = 0 to i = %d were executed\n",
+    diffusion_get_index(a));
+  printf("Total range of iterations: i = 0 to i = %d\n",
+    diffusion_get_total_steps(a));
 
   errno = 0;
 
