@@ -1,3 +1,6 @@
+#ifndef _string_private_h
+#define _string_private_h
+
 #include <stdio.h>
 
 /*
@@ -10,3 +13,5 @@ int string_compare_with_file(FILE * in, int n, const char * s);
 
 /* like fgets, but does not discriminate against newlines */
 void string_file_scan(FILE * in, char * s, int n);
+
+#endif /* _string_private_h */

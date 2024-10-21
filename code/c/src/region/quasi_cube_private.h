@@ -1,5 +1,5 @@
-#ifndef QUASI_CUBE_PRIVATE_H
-#define QUASI_CUBE_PRIVATE_H
+#ifndef _quasi_cube_private_h
+#define _quasi_cube_private_h
 
 #include "quasi_cube.h"
 
@@ -23,4 +23,4 @@ double quasi_cube_triangulation_simplex_measure(
 double quasi_cube_measure_from_triangulation(
   const quasi_cube * r, const int * r_nodes_all);
 
-#endif /* QUASI_CUBE_PRIVATE_H */
+#endif /* _quasi_cube_private_h */

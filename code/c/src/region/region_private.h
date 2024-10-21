@@ -1,3 +1,6 @@
+#ifndef _region_private_h
+#define _region_private_h
+
 #include "line_2d.h"
 #include "point_2d.h"
 #include "simplex.h"
@@ -44,3 +47,5 @@ struct region
   region_type type;
   void * data;
 };
+
+#endif /* _region_private_h */

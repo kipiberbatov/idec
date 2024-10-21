@@ -1,5 +1,5 @@
-#ifndef MESH_PRIVATE_H
-#define MESH_PRIVATE_H
+#ifndef _mesh_private_h
+#define _mesh_private_h
 
 #include "mesh.h"
 
@@ -24,4 +24,4 @@ mesh * mesh_file_scan_tess(FILE * in);
 /******************************** mesh_file_print *********************************/
 void mesh_file_print_raw(FILE * out, const mesh * a);
 
-#endif /* MESH_PRIVATE_H */
+#endif /* _mesh_private_h */

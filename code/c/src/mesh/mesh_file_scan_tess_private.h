@@ -1,3 +1,6 @@
+#ifndef _mesh_file_scan_tess_private_h
+#define _mesh_file_scan_tess_private_h
+
 #include <stdio.h>
 
 void mesh_file_scan_tess_check_preamble(FILE * in, int * error);
@@ -47,3 +50,5 @@ void mesh_file_scan_tess_get_faces_to_subfaces(int * faces_to_subfaces,
 
 void mesh_file_scan_tess_get_boundary_values(double * bd_values_2,
   FILE * in, int cn_2, int faces_total_edges);
+
+#endif /* _mesh_file_scan_tess_private_h */

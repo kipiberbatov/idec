@@ -1,5 +1,5 @@
-#ifndef MESH_BRICK_PRIVATE_H
-#define MESH_BRICK_PRIVATE_H
+#ifndef _mesh_brick_private_h
+#define _mesh_brick_private_h
 
 #include "mesh_brick.h"
 
@@ -17,4 +17,4 @@ jagged4 * mesh_brick_cf(int m_dim, const int * m_cn, const int * n);
 void mesh_brick_coord(double * m_coord, int m_dim,
                       const double * brick_lengths, const int * n);
 
-#endif /* MESH_BRICK_PRIVATE_H */
+#endif /* _mesh_brick_private_h */

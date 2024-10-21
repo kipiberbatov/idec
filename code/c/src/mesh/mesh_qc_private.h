@@ -1,5 +1,5 @@
-#ifndef MESH_QC_PRIVATE_H
-#define MESH_QC_PRIVATE_H
+#ifndef _mesh_qc_private_h
+#define _mesh_qc_private_h
 
 #include "mesh_qc.h"
 
@@ -20,4 +20,4 @@ void mesh_qc_hodge_p_values(
   double * m_hodge_p_values, const mesh * m, matrix_sparse ** m_bd, int p,
   const double * m_inner_q, const double * m_coeff_q);
 
-#endif /* MESH_PRIVATE_H */
+#endif /* _mesh_qc_private_h */
