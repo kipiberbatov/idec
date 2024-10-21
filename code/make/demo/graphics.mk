@@ -1,5 +1,5 @@
-include code/make/demo/graphics_gtk.mk
-include code/make/demo/graphics_pdf.mk
+include code/make/demo/gtk.mk
+include code/make/demo/pdf.mk
 
 build/$(MODE)/demo/graphics/frame.txt: build/$(MODE)/bin/frame\
   | build/$(MODE)/demo/graphics
