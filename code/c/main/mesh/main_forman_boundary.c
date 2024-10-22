@@ -1,9 +1,12 @@
 #include <errno.h>
+#include <string.h>
+
+#include "color.h"
 #include "double.h"
 #include "forman.h"
 
-static void mesh_boundary_file_print_raw(
-  FILE * out, int m_dim, matrix_sparse ** m_bd)
+static void mesh_boundary_file_print(
+  FILE * out, int m_dim, matrix_sparse ** m_bd, const char * output_format)
 {
   int m_bd_p_nonzero_max, p;
   const matrix_sparse * m_bd_p;
@@ -12,17 +15,19 @@ static void mesh_boundary_file_print_raw(
   {
     m_bd_p = m_bd[p - 1];
     m_bd_p_nonzero_max = m_bd_p->cols_total[m_bd_p->cols];
-    double_array_file_print(out, m_bd_p_nonzero_max, m_bd_p->values, "--raw");
+    double_array_file_print(out,
+      m_bd_p_nonzero_max, m_bd_p->values, output_format);
   }
 }
 
-static void forman_boundary_file_print_raw(
-  FILE * out, const mesh * m, matrix_sparse ** m_bd)
+static void forman_boundary_file_print(
+  FILE * out, const mesh * m, matrix_sparse ** m_bd,
+  const char * new_coordinates_format, const char * output_format)
 {
   mesh * m_forman;
   matrix_sparse ** m_forman_boundary;
 
-  m_forman = forman(m, "--standard");
+  m_forman = forman(m, new_coordinates_format);
   if (errno)
   {
     fputs("forman_boundary_file_print - cannot calculate m_forman\n", stderr);
@@ -38,7 +43,7 @@ static void forman_boundary_file_print_raw(
     goto m_forman_free;
   }
 
-  mesh_boundary_file_print_raw(out, m->dim, m_forman_boundary);
+  mesh_boundary_file_print(out, m->dim, m_forman_boundary, output_format);
 
   matrix_sparse_array_free(m_forman_boundary, m->dim);
 m_forman_free:
@@ -47,36 +52,72 @@ end:
   return;
 }
 
-int main(void)
+int main(int argc, char ** argv)
 {
-  mesh * m;
+  // mesh * m;
+  // matrix_sparse ** m_bd;
+  // FILE * in, * out;
+  // out = stdout;
+  // in = stdin;
+  char * m_format, * m_name, * new_coordinates_format, * output_format;
+  FILE * m_file;
   matrix_sparse ** m_bd;
-  FILE * in, * out;
+  mesh * m;
 
-  out = stdout;
-  in = stdin;
-  m = mesh_file_scan(in, "--raw");
-  if (errno)
+  if (argc != 5)
   {
-    fputs("main - cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "number of command line arguments should be 5; instead it is %d\n", argc);
+    errno = EINVAL;
+    goto end;
+  }
+
+  m_format = argv[1];
+  m_name = argv[2];
+  new_coordinates_format = argv[3];
+  output_format = argv[4];
+
+  m_file = fopen(m_name, "r");
+  if (m_file == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open mesh file %s: %s\n", m_name, strerror(errno));
+    goto end;
+  }
+
+  m = mesh_file_scan(m_file, m_format);
+  if (m == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan mesh m in from file %s in fromat %s\n",
+      m_name, m_format);
+    fclose(m_file);
     goto end;
   }
 
   m->fc = mesh_fc(m);
-  if (errno)
+  if (m->fc == NULL)
   {
-    fputs("main - cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
-  m_bd = mesh_file_scan_boundary(in, m);
-  if (errno)
+  m_bd = mesh_file_scan_boundary(m_file, m);
+  if (m_bd == NULL)
   {
-    fputs("main - cannot calculate m->bd\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_bd\n", stderr);
+    fclose(m_file);
     goto m_free;
   }
 
-  forman_boundary_file_print_raw(out, m, m_bd);
+  fclose(m_file);
+
+  forman_boundary_file_print(stdout,
+    m, m_bd, new_coordinates_format, output_format);
   if (errno)
   {
     fputs("main - cannot calculate and print m_forman->bd\n", stderr);

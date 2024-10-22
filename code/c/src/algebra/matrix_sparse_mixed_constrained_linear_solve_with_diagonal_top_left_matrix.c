@@ -37,24 +37,24 @@ static void set_f_new(
   }
 }
 
-static void set_g_new(
-  double * g_new,
-  const double * a,
-  const jagged1 * boundary_neumann,
-  const double * g_neumann)
-{
-  int boundary_neumann_a0, i, i_local;
-  int * boundary_neumann_a1;
+// static void set_g_new(
+//   double * g_new,
+//   const double * a,
+//   const jagged1 * boundary_neumann,
+//   const double * g_neumann)
+// {
+//   int boundary_neumann_a0, i, i_local;
+//   int * boundary_neumann_a1;
 
-  boundary_neumann_a0 = boundary_neumann->a0;
-  boundary_neumann_a1 = boundary_neumann->a1;
+//   boundary_neumann_a0 = boundary_neumann->a0;
+//   boundary_neumann_a1 = boundary_neumann->a1;
 
-  for (i_local = 0; i_local < boundary_neumann_a0; ++i_local)
-  {
-    i = boundary_neumann_a1[i_local];
-    g_new[i] -= a[i] * g_neumann[i_local];
-  }
-}
+//   for (i_local = 0; i_local < boundary_neumann_a0; ++i_local)
+//   {
+//     i = boundary_neumann_a1[i_local];
+//     g_new[i] -= a[i] * g_neumann[i_local];
+//   }
+// }
 
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double * flux,
@@ -67,7 +67,7 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   const double * g_neumann)
 {
   int restrict_size;
-  double * a_restrict, * flux_restrict, * f_new, * g_new, * g_new_restrict;
+  double * a_restrict, * flux_restrict, * f_new,/* * g_new, */* g_new_restrict;
   jagged1 * boundary_neumann_complement;
   matrix_sparse * b_restrict;
 
@@ -106,28 +106,38 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   fprintf(stderr, "\n%sb_restrict:%s\n", color_red, color_none);
   matrix_sparse_file_print(stderr, b_restrict, "--matrix-form-curly");
 
-  g_new = (double *) malloc(sizeof(double) * b->cols);
-  if (g_new == NULL)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for g_new\n", stderr);
-    goto b_restrict_free;
-  }
-  memcpy(g_new, g, sizeof(double) * b->cols);
-  set_g_new(g_new, a, boundary_neumann, g_neumann);
-  fprintf(stderr, "\n%sg_new:%s\n", color_red, color_none);
-  double_array_file_print(stderr, b->cols, g_new, "--curly");
-  fputc('\n', stderr);
+  // g_new = (double *) malloc(sizeof(double) * b->cols);
+  // if (g_new == NULL)
+  // {
+  //   color_error_position(__FILE__, __LINE__);
+  //   fputs("cannot allocate memory for g_new\n", stderr);
+  //   goto b_restrict_free;
+  // }
+  // memcpy(g_new, g, sizeof(double) * b->cols);
+  // set_g_new(g_new, a, boundary_neumann, g_neumann);
+  // fprintf(stderr, "\n%sg_new:%s\n", color_red, color_none);
+  // double_array_file_print(stderr, b->cols, g_new, "--curly");
+  // fputc('\n', stderr);
+
+  // g_new_restrict = (double *) malloc(sizeof(double) * restrict_size);
+  // if (g_new_restrict == NULL)
+  // {
+  //   color_error_position(__FILE__, __LINE__);
+  //   fputs("cannot allocate memory for g_new_restrict\n", stderr);
+  //   goto g_new_free;
+  // }
+  // double_array_compress_to_sparse_array(
+  //   g_new_restrict, boundary_neumann_complement, g_new);
 
   g_new_restrict = (double *) malloc(sizeof(double) * restrict_size);
   if (g_new_restrict == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot allocate memory for g_new_restrict\n", stderr);
-    goto g_new_free;
+    goto b_restrict_free;
   }
   double_array_compress_to_sparse_array(
-    g_new_restrict, boundary_neumann_complement, g_new);
+    g_new_restrict, boundary_neumann_complement, g);
   fprintf(stderr, "\n%sg_new_restrict:%s\n", color_red, color_none);
   double_array_file_print(stderr, restrict_size, g_new_restrict, "--curly");
   fputc('\n', stderr);
@@ -172,8 +182,8 @@ f_new_free:
   free(f_new);
 g_new_restrict_free:
   free(g_new_restrict);
-g_new_free:
-  free(g_new);
+// g_new_free:
+//   free(g_new);
 b_restrict_free:
   matrix_sparse_free(b_restrict);
 a_restrict_free:

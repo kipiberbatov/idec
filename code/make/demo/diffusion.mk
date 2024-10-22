@@ -135,7 +135,7 @@ build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_f
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_inner.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman.txt\
   | build/$(MODE)/demo/diffusion
-	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@ 2> /dev/null
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@ #2> /dev/null
 
 build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_temperature.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
@@ -220,8 +220,14 @@ build/$(MODE)/demo/diffusion/2d_transient_continuous_primal_strong_cochain_p4_br
 _demo_diffusion_circular :=\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_4_3_forman.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_4_3_forman_temperature.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_4_3_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_4_3_forman_all.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_4_3_forman_temperature.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_17_10_forman.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_17_10_forman_temperature.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_17_10_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_17_10_forman_all.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_17_10_forman_temperature.txt\
 
 build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_4_3_forman.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_from_continuous$(.EXE)\
@@ -240,6 +246,32 @@ build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_4_
   | build/$(MODE)/demo/diffusion
 	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@
 
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_4_3_forman.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_from_continuous$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman_vol.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_p9$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_p9 > $@
+
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_4_3_forman_all.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_solve$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman_inner.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_4_3_forman.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@ #2> /dev/null
+
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_4_3_forman_temperature.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_4_3_forman_vol.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_4_3_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_4_3_forman_all.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) $(word 5, $^) > $@
+
 build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_17_10_forman.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_from_continuous$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt\
@@ -256,6 +288,32 @@ build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_17
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_17_10_forman.txt\
   | build/$(MODE)/demo/diffusion
 	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@
+
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_17_10_forman.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_from_continuous$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_vol.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_p9$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_p9 > $@
+
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_17_10_forman_all.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_solve$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_inner.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_17_10_forman.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@ 2> /dev/null
+
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_17_10_forman_temperature.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_circular_17_10_forman_vol.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_17_10_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p9_circular_17_10_forman_all.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) $(word 5, $^) > $@
 
 _demo_diffusion_2d_10_grains :=\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_primal_strong_cochain_p7_2d_10_grains_forman_temperature.txt\

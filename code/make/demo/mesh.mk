@@ -85,7 +85,7 @@ build/$(MODE)/demo/mesh/mesh_brick_2d_1_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_1.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_2d_1_forman_boundary.txt:\
   build/$(MODE)/bin/mesh_boundary$(.EXE)\
@@ -309,7 +309,7 @@ build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_boundary_hyperfaces.txt:\
   build/$(MODE)/bin/mesh_boundary_hyperfaces$(.EXE)\
@@ -746,7 +746,7 @@ build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_5.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_2d_5_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -877,7 +877,7 @@ build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_10.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman_boundary.txt:\
   build/$(MODE)/bin/mesh_boundary$(.EXE)\
@@ -967,7 +967,7 @@ build/$(MODE)/demo/mesh/mesh_two_triangles_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   data/mesh/mesh_two_triangles.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_two_triangles_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -1120,7 +1120,7 @@ build/$(MODE)/demo/mesh/mesh_triangle_and_square_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   data/mesh/mesh_triangle_and_square.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_triangle_and_square_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -1245,7 +1245,7 @@ build/$(MODE)/demo/mesh/mesh_pentagon_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   data/mesh/mesh_pentagon.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_pentagon_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -1357,17 +1357,11 @@ build/$(MODE)/demo/mesh/mesh_2d_10_grains.txt:\
   | build/$(MODE)/demo/mesh
 	$< --tess < $(word 2, $^) > $@
 
-# build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman.txt:\
-#   build/$(MODE)/bin/forman$(.EXE)\
-#   data/mesh/mesh_2d_10_grains.tess\
-#   | build/$(MODE)/demo/mesh
-# 	$< --tess < $(word 2, $^) > $@
-
 build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_2d_10_grains.txt\
   | build/$(MODE)/demo/mesh
-	$< --raw < $(word 2, $^) > $@
+	$< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_2d_10_grains_forman_cbd.txt:\
   build/$(MODE)/bin/mesh_coboundary$(.EXE)\
@@ -1412,14 +1406,8 @@ build/$(MODE)/demo/mesh/mesh_circular_4_3.txt:\
   build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/demo/mesh
 	$< 4 3 > $@
 
-# build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt:\
-#   build/$(MODE)/bin/forman_boundary$(.EXE)\
-#   build/$(MODE)/demo/mesh/mesh_circular_4_3.txt\
-#   | build/$(MODE)/demo/mesh
-# 	$< < $(word 2, $^) > $@
-
 build/$(MODE)/demo/mesh/mesh_circular_4_3_forman.txt:\
-  build/$(MODE)/bin/forman$(.EXE)\
+  build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_circular_4_3.txt\
   | build/$(MODE)/demo/mesh
 	$< --raw $(word 2, $^) --circular --raw > $@
@@ -1441,14 +1429,8 @@ build/$(MODE)/demo/mesh/mesh_circular_17_10.txt:\
   build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/demo/mesh
 	$< 17 10 > $@
 
-# build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt:\
-#   build/$(MODE)/bin/forman_boundary$(.EXE)\
-#   build/$(MODE)/demo/mesh/mesh_circular_17_10.txt\
-#   | build/$(MODE)/demo/mesh
-# 	$< < $(word 2, $^) > $@
-
 build/$(MODE)/demo/mesh/mesh_circular_17_10_forman.txt:\
-  build/$(MODE)/bin/forman$(.EXE)\
+  build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_circular_17_10.txt\
   | build/$(MODE)/demo/mesh
 	$< --raw $(word 2, $^) --circular --raw > $@
@@ -1483,19 +1465,19 @@ build/$(MODE)/demo/mesh/mesh_square_2.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   data/mesh/mesh_square.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_square_4.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_square_2.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_square_8.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_square_4.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_square_8_cbd.txt:\
   build/$(MODE)/bin/mesh_coboundary$(.EXE)\
@@ -1573,7 +1555,7 @@ build/$(MODE)/demo/mesh/mesh_brick_3d_1_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_3d_1.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_3d_1_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -1706,7 +1688,7 @@ build/$(MODE)/demo/mesh/mesh_brick_3d_2_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_3d_2.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_3d_2_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -1844,7 +1826,7 @@ build/$(MODE)/demo/mesh/mesh_brick_3d_5_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_3d_5.txt\
   | build/$(MODE)/demo/mesh
-	$< < $(word 2, $^) > $@
+	$< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_3d_5_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -1977,7 +1959,7 @@ build/$(MODE)/demo/mesh/mesh_brick_3d_10_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_3d_10.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_3d_10_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -2116,7 +2098,7 @@ build/$(MODE)/demo/mesh/mesh_brick_3d_25_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_3d_25.txt\
   | build/$(MODE)/demo/mesh
-	 $< < $(word 2, $^) > $@
+	 $< --raw $(word 2, $^) --standard --raw > $@
 
 build/$(MODE)/demo/mesh/mesh_brick_3d_25_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -2261,7 +2243,7 @@ build/$(MODE)/demo/mesh/mesh_brick_4d_2_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_4d_2.txt\
   | build/$(MODE)/demo/mesh
-	$< < $(word 2, $^) > $@
+	$< --raw $(word 2, $^) --standard --raw > $@
 
 # dimensions 8, 9, 10
 _demo_mesh_brick_regular_high_dimensions :=\
@@ -2306,7 +2288,7 @@ build/$(MODE)/demo/mesh/mesh_brick_8d_1_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_8d_1.txt\
   | build/$(MODE)/demo/mesh
-	$< < $(word 2, $^) > $@
+	$< --raw $(word 2, $^) --standard --raw > $@
 
 _demo_mesh_brick_regular_4 := $(_demo_mesh_brick_regular_4d_2)
 

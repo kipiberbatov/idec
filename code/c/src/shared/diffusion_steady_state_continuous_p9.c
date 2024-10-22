@@ -41,36 +41,36 @@ static double source(const double * x)
   return -4.;
 }
 
-static int boundary_dirichlet(const double * x)
-{
-  return (on_unit_circle(x) && x[0] > -EPSILON );
-}
+// static int boundary_dirichlet(const double * x)
+// {
+//   return (on_unit_circle(x) && x[0] > -EPSILON );
+// }
 
 /* in pure Dirichlet problem */
-/*
+
 static int boundary_dirichlet(const double * x)
 {
   return (on_unit_circle(x));
 }
-*/
+
 
 static double g_dirichlet(const double * x)
 {
   return 1.;
 }
 
-static int boundary_neumann(const double * x)
-{
-  return (on_unit_circle(x) && x[0] < EPSILON);
-}
+// static int boundary_neumann(const double * x)
+// {
+//   return (on_unit_circle(x) && x[0] < EPSILON);
+// }
 
 /* in pure Dirichlet problem */
-/*
+
 static int boundary_neumann(const double * x)
 {
   return 0;
 }
-*/
+
 
 static double g_neumann(const double * x)
 {
