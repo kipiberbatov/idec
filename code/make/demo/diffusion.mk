@@ -416,6 +416,106 @@ build/$(MODE)/demo/diffusion/2d_transient_continuous_primal_strong_cochain_p5_sq
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_p5 0.001 4000 > $@
 
+_demo_diffusion_steady_continuous_2d_p00 :=\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_primal_weak_cochain_input.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_primal_weak_cochain_potential.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_mixed_weak_cochain_input.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_mixed_weak_cochain_solution.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_mixed_weak_cochain_potential.txt\
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_primal_weak_cochain_input.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_from_continuous$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_p00$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_2d_p00 > $@
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_primal_weak_cochain_potential.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_solve$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_inner.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_primal_weak_cochain_input.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_mixed_weak_cochain_input.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_from_continuous$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_p00$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_2d_p00 > $@
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_mixed_weak_cochain_solution.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_solve$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_inner.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_mixed_weak_cochain_input.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@ #2> /dev/null
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_mixed_weak_cochain_potential.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_mixed_weak_cochain_input.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p00_brick_2d_2_forman_mixed_weak_cochain_solution.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) $(word 5, $^) > $@
+
+_demo_diffusion_steady_continuous_2d_p01 :=\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_primal_weak_cochain_input.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_primal_weak_cochain_potential.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_mixed_weak_cochain_input.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_mixed_weak_cochain_solution.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_mixed_weak_cochain_potential.txt\
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_primal_weak_cochain_input.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_from_continuous$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_p01$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_2d_p01 > $@
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_primal_weak_cochain_potential.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_solve$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_inner.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_primal_weak_cochain_input.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_mixed_weak_cochain_input.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_from_continuous$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_p01$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 2, $|)\
+	  diffusion_steady_state_continuous_2d_p01 > $@
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_mixed_weak_cochain_solution.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_solve$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_inner.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_mixed_weak_cochain_input.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@ #2> /dev/null
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_mixed_weak_cochain_potential.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_vol.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_mixed_weak_cochain_input.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_p01_brick_2d_2_forman_mixed_weak_cochain_solution.txt\
+  | build/$(MODE)/demo/diffusion
+	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) $(word 5, $^) > $@
+
 _demo_diffusion_2d :=\
   $(_demo_diffusion_brick_2d_2)\
   $(_demo_diffusion_brick_2d_5)\
@@ -423,6 +523,8 @@ _demo_diffusion_2d :=\
   $(_demo_diffusion_circular)\
   $(_demo_diffusion_2d_10_grains)\
   $(_demo_diffusion_square_8)\
+  $(_demo_diffusion_steady_continuous_2d_p00)\
+  $(_demo_diffusion_steady_continuous_2d_p01)\
 
 .PHONY: demo_diffusion_2d
 demo_diffusion_2d: $(_demo_diffusion_2d)
