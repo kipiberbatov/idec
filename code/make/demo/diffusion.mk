@@ -19,6 +19,7 @@ _demo_diffusion_brick_2d_2 :=\
   build/$(MODE)/demo/diffusion/2d_transient_to_steady_state_continuous_primal_weak_cochain_p4_brick_2d_2_forman_temperature.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman_temperature.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman_flow.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_all.txt\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_temperature.txt\
@@ -46,12 +47,11 @@ build/$(MODE)/demo/diffusion/2d_steady_state_continuous_primal_weak_cochain_p4_b
 build/$(MODE)/demo/diffusion/2d_transient_continuous_primal_strong_cochain_p0_brick_2d_2_forman_flux.txt:\
   build/$(MODE)/bin/diffusion_transient_discrete_primal_edge_flux$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_boundary.txt\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_primal_strong_cochain_p0_brick_2d_2_forman_temperature.txt\
   build/$(MODE)/obj/src/diffusion_transient_continuous_p0$(.OBJ)\
   | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
-	$< --raw $(word 2, $^) $(word 3, $^) $(word 2, $|)\
-	  diffusion_transient_continuous_p0 100 --raw $(word 4, $^) --raw > $@
+	$< --raw $(word 2, $^) "-" $(word 2, $|)\
+	  diffusion_transient_continuous_p0 100 --raw $(word 3, $^) --raw > $@
 
 build/$(MODE)/demo/diffusion/2d_transient_continuous_primal_strong_cochain_p4_brick_2d_2_forman_temperature.txt:\
   build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal_to_steady_state$(.EXE)\
@@ -128,6 +128,20 @@ build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p4_brick_2d_2_
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman.txt\
   | build/$(MODE)/demo/diffusion
 	$< --raw $(word 2, $^) --raw $(word 3, $^) $(word 4, $^) > $@
+
+build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman_flow.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_primal_flow_from_potential$(.EXE)\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/mesh/mesh_brick_2d_2_forman_hodge.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman.txt\
+  build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p4_brick_2d_2_forman_temperature.txt\
+  | build/$(MODE)/demo/diffusion
+	$<\
+  --raw $(word 2, $^)\
+  --raw $(word 3, $^)\
+  --steady-state-primal_weak-raw $(word 4, $^)\
+  --raw $(word 5, $^)\
+  --raw > $@
 
 build/$(MODE)/demo/diffusion/2d_steady_state_discrete_mixed_weak_p4_brick_2d_2_forman_all.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_solve$(.EXE)\
@@ -210,12 +224,11 @@ build/$(MODE)/demo/diffusion/2d_transient_continuous_primal_strong_cochain_p4_br
 build/$(MODE)/demo/diffusion/2d_transient_continuous_primal_strong_cochain_p4_brick_2d_10_forman_flux.txt:\
   build/$(MODE)/bin/diffusion_transient_discrete_primal_edge_flux$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman.txt\
-  build/$(MODE)/demo/mesh/mesh_brick_2d_10_forman_boundary.txt\
   build/$(MODE)/demo/diffusion/2d_transient_continuous_primal_strong_cochain_p4_brick_2d_10_forman_temperature.txt\
   build/$(MODE)/obj/src/diffusion_steady_state_continuous_p4$(.OBJ)\
   | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
-	$< --raw $(word 2, $^) $(word 3, $^) $(word 2, $|)\
-	  diffusion_transient_continuous_p4 4000 --raw $(word 4, $^) --raw > $@
+	$< --raw $(word 2, $^) "-" $(word 2, $|)\
+	  diffusion_transient_continuous_p4 4000 --raw $(word 3, $^) --raw > $@
 
 _demo_diffusion_circular :=\
   build/$(MODE)/demo/diffusion/2d_steady_state_discrete_primal_weak_p9_circular_4_3_forman.txt\

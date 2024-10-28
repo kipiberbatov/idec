@@ -14,6 +14,8 @@ double * double_array_file_scan(FILE * in, int n, const char * format)
 
   if (!strcmp(format, "--raw"))
     a = double_array_file_scan_raw(in, n);
+  else if (!strcmp(format, "--steady-state-primal_weak-raw"))
+    a = double_array_file_scan_steady_state_primal_weak_raw(in, n);
   else
   {
     errno = EINVAL;
