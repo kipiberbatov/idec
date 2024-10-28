@@ -8,17 +8,17 @@ We solve the following continuous steady state diffusion problem for (u^0, q^1):
 . tr_{G_N, 1} q^1 = g_N^1
 
 with the following data
-. M = [0, 1]^2
+. M = [0, 1]^2 with boundary G
 . pi_1 = 1
 . f^2 = -4 dx /\ dy
-. G_D := {x in M | x[0] = 0 or x[0] = 1}
-. G_N := {x in M | x[1] = 0 or x[1] = 1}
-. g_D^0 = 0
-. g_N^1 = 0
+. G_D := {(x, y) in G | x = 0 or x = 1}
+. G_N := {(x, y) in G | y = 0 or y = 1}
+. g_D^0 = y (y - 1)
+. g_N^1 = dx
 
 This problem has exact solution
 . u^0(x, y) = x (x - 1) + y (y - 1)
-. q^1(x, y) = (2 x - 1) d y - (2 y - 1) dx
+. q^1(x, y) = (1 - 2 y) dx + (2 x - 1) dy
 */
 
 static double pi_1(const double * x)
@@ -36,7 +36,6 @@ static int boundary_dirichlet(const double * x)
   return ((x[0] == 0 || x[0] == 1) && 0 <= x[1] && x[1] <= 1);
 }
 
-
 static double g_dirichlet(const double * x)
 {
   return x[1] * (x[1] - 1);
@@ -46,7 +45,6 @@ static int boundary_neumann(const double * x)
 {
   return ((x[1] == 0 || x[1] == 1) && 0 <= x[0] && x[0] <= 1);
 }
-
 
 static double g_neumann(const double * x)
 {
