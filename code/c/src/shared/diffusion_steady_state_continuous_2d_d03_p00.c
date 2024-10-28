@@ -77,7 +77,8 @@ static double g_neumann(const double * x)
   return 2.;
 }
 
-const diffusion_steady_state_continuous diffusion_steady_state_continuous_p9 =
+const diffusion_steady_state_continuous
+diffusion_steady_state_continuous_2d_d03_p00 =
 {
   pi_1,
   source,

@@ -10,15 +10,15 @@ We solve the following continuous steady state diffusion problem for (u^0, q^1):
 with the following data
 . M = [0, 1]^2 with boundary G
 . pi_1 = 1
-. f^2 = -4 dx /\ dy
+. f^2 = -2 dx /\ dy
 . G_D := {(x, y) in G | x = 0 or x = 1}
 . G_N := {(x, y) in G | y = 0 or y = 1}
-. g_D^0 = y (y - 1)
-. g_N^1 = dx
+. g_D^0 = 0
+. g_N^1 = 0
 
 This problem has exact solution
-. u^0(x, y) = x (x - 1) + y (y - 1)
-. q^1(x, y) = (1 - 2 y) dx + (2 x - 1) dy
+. u^0(x, y) = x (x - 1)
+. q^1(x, y) = (2 x - 1) dy
 */
 
 static double pi_1(const double * x)
@@ -28,7 +28,7 @@ static double pi_1(const double * x)
 
 static double source(const double * x)
 {
-  return -4.;
+  return -2.;
 }
 
 static int boundary_dirichlet(const double * x)
@@ -38,7 +38,7 @@ static int boundary_dirichlet(const double * x)
 
 static double g_dirichlet(const double * x)
 {
-  return x[1] * (x[1] - 1);
+  return 0.;
 }
 
 static int boundary_neumann(const double * x)
@@ -48,11 +48,11 @@ static int boundary_neumann(const double * x)
 
 static double g_neumann(const double * x)
 {
-  return 1.;
+  return 0.;
 }
 
 const diffusion_steady_state_continuous
-diffusion_steady_state_continuous_2d_p01 =
+diffusion_steady_state_continuous_2d_d00_p03 =
 {
   pi_1,
   source,
