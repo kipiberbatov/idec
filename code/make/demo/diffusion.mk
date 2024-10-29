@@ -8,8 +8,6 @@ demo_diffusion:\
 build/$(MODE)/demo/diffusion: | build/$(MODE)/demo
 	mkdir -p $@
 
-_demo_diffusion_steady_continuous_2d_d00_p00 :=
-
 _demo_diffusion_brick_2d_2 :=\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_temperature.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p02_primal_weak_cochain_brick_2d_2_forman_temperature.txt\
@@ -211,7 +209,6 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p01_mixed_weak_cocha
 _demo_diffusion_brick_2d_10 :=\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_temperature.txt\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_flux.txt\
-
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_temperature.txt:\
   build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal$(.EXE)\
@@ -545,10 +542,10 @@ _demo_diffusion_2d :=\
 demo_diffusion_2d: $(_demo_diffusion_2d)
 
 _demo_diffusion_brick_3d_2 :=\
-  build/$(MODE)/demo/diffusion/3d_transient_continuous_primal_strong_cochain_p6_brick_3d_2_forman_temperature.txt\
-  build/$(MODE)/demo/diffusion/3d_steady_state_continuous_primal_strong_cochain_p6_brick_3d_2_forman_temperature.txt\
+  build/$(MODE)/demo/diffusion/transient_continuous_3d_d00_p00_primal_strong_cochain_brick_3d_2_forman_temperature.txt\
+  build/$(MODE)/demo/diffusion/transient_continuous_3d_d00_p00_primal_strong_cochain_3d_d00_p00_primal_strong_cochain_brick_3d_2_forman_temperature.txt\
 
-build/$(MODE)/demo/diffusion/3d_transient_continuous_primal_strong_cochain_p6_brick_3d_2_forman_temperature.txt:\
+build/$(MODE)/demo/diffusion/transient_continuous_3d_d00_p00_primal_strong_cochain_brick_3d_2_forman_temperature.txt:\
   build/$(MODE)/bin/diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_3d_2_forman.txt\
   build/$(MODE)/demo/mesh/mesh_brick_3d_2_forman_cbd.txt\
@@ -558,7 +555,7 @@ build/$(MODE)/demo/diffusion/3d_transient_continuous_primal_strong_cochain_p6_br
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_3d_d00_p00 0.001 1000 > $@
 
-build/$(MODE)/demo/diffusion/3d_steady_state_continuous_primal_strong_cochain_p6_brick_3d_2_forman_temperature.txt:\
+build/$(MODE)/demo/diffusion/transient_continuous_3d_d00_p00_primal_strong_cochain_3d_d00_p00_primal_strong_cochain_brick_3d_2_forman_temperature.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_primal_strong_cochain_solve$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_3d_2_forman.txt\
   build/$(MODE)/demo/mesh/mesh_brick_3d_2_forman_cbd.txt\
@@ -568,11 +565,10 @@ build/$(MODE)/demo/diffusion/3d_steady_state_continuous_primal_strong_cochain_p6
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_steady_state_continuous_3d_d00_p00 > $@
 
-
 _demo_diffusion_brick_3d_10 :=\
-  build/$(MODE)/demo/diffusion/3d_steady_state_continuous_primal_strong_cochain_p6_brick_3d_10_forman_temperature.txt\
+  build/$(MODE)/demo/diffusion/transient_continuous_3d_d00_p00_primal_strong_cochain_3d_d00_p00_primal_strong_cochain_brick_3d_10_forman_temperature.txt\
 
-build/$(MODE)/demo/diffusion/3d_steady_state_continuous_primal_strong_cochain_p6_brick_3d_10_forman_temperature.txt:\
+build/$(MODE)/demo/diffusion/transient_continuous_3d_d00_p00_primal_strong_cochain_3d_d00_p00_primal_strong_cochain_brick_3d_10_forman_temperature.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_primal_strong_cochain_solve$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_3d_10_forman.txt\
   build/$(MODE)/demo/mesh/mesh_brick_3d_10_forman_cbd.txt\
@@ -583,9 +579,9 @@ build/$(MODE)/demo/diffusion/3d_steady_state_continuous_primal_strong_cochain_p6
 	  diffusion_steady_state_continuous_3d_d00_p00 > $@
 
 _demo_diffusion_brick_3d_25 :=\
-  build/$(MODE)/demo/diffusion/3d_steady_state_continuous_primal_strong_cochain_p6_brick_3d_25_forman_temperature.txt\
+  build/$(MODE)/demo/diffusion/transient_continuous_3d_d00_p00_primal_strong_cochain_3d_d00_p00_primal_strong_cochain_brick_3d_25_forman_temperature.txt\
 
-build/$(MODE)/demo/diffusion/3d_steady_state_continuous_primal_strong_cochain_p6_brick_3d_25_forman_temperature.txt:\
+build/$(MODE)/demo/diffusion/transient_continuous_3d_d00_p00_primal_strong_cochain_3d_d00_p00_primal_strong_cochain_brick_3d_25_forman_temperature.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_primal_strong_cochain_solve$(.EXE)\
   build/$(MODE)/demo/mesh/mesh_brick_3d_25_forman.txt\
   build/$(MODE)/demo/mesh/mesh_brick_3d_25_forman_cbd.txt\
