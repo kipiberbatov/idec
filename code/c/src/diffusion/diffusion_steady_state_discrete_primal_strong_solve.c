@@ -37,7 +37,6 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
     goto lhs_free;
   }
   memcpy(result, data->source, sizeof(double) * n);
-  double_array_multiply_with(result, n, -1);
 
   /* apply Dirichlet boundary conditions */
   matrix_sparse_set_identity_rows(lhs, data->boundary_dirichlet);

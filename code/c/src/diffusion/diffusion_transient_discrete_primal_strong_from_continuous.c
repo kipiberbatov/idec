@@ -56,8 +56,9 @@ diffusion_transient_discrete_primal_strong_from_continuous(
     data_discrete->boundary_dirichlet,
     data_continuous->g_dirichlet);
 
-  data_discrete->boundary_neumann
-  = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_neumann);
+  data_discrete->boundary_neumann =
+  mesh_boundary_neumann_minus_dirichlet_nodes(
+    m, data_continuous->boundary_neumann, data_discrete->boundary_dirichlet);
   if (errno)
     goto data_discrete_g_dirichlet_free;
 

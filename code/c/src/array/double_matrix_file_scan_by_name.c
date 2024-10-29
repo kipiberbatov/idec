@@ -1,4 +1,6 @@
 #include <errno.h>
+
+#include "color.h"
 #include "double.h"
 
 double * double_matrix_file_scan_by_name(
@@ -9,10 +11,10 @@ double * double_matrix_file_scan_by_name(
   a = double_array_file_scan_by_name(name, m * n, format);
   if (errno)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-    "Error during execution of function %s in file %s on line %d: "
-    "cannot allocate memory for result matrix\n",
-    __func__, __FILE__, __LINE__);
+      "cannot scan matrix of size %d * %d from file %s in format %s\n",
+      m, n, name, format);
   }
   return a;
 }

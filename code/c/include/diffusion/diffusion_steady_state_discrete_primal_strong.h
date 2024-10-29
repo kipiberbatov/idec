@@ -5,7 +5,8 @@
 
 typedef struct diffusion_steady_state_discrete_primal_strong
 {
-  double  * pi_0;
+  int number_of_cells_1;
+  int number_of_cells_0;
   double  * pi_1;
   double  * source;
   jagged1 * boundary_dirichlet;
@@ -27,5 +28,12 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
   const matrix_sparse * m_cbd_0,
   const matrix_sparse * m_cbd_star_1,
   const diffusion_steady_state_discrete_primal_strong * data);
+
+void diffusion_steady_state_discrete_primal_strong_file_print_raw(
+  FILE * out,
+  const diffusion_steady_state_discrete_primal_strong * data);
+
+diffusion_steady_state_discrete_primal_strong *
+diffusion_steady_state_discrete_primal_strong_file_scan_raw(FILE * in);
 
 #endif /* _diffusion_steady_state_discrete_primal_strong_h */

@@ -47,6 +47,9 @@ void jagged1_delete(jagged1 * result, const jagged1 * arr, int element);
 int jagged1_relative_sign(const jagged1 * cell_nodes,
                           const jagged1 * hyperface_nodes);
 
+/* calculate y \ x */
+jagged1 * jagged1_difference(const jagged1 * y, const jagged1 * x);
+
 /********************************** jagged2 ***********************************/
 typedef struct jagged2
 {

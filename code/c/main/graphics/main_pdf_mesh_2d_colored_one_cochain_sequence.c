@@ -11,6 +11,7 @@
 #include <cairo-pdf.h>
 
 /* internal headers */
+#include "color.h"
 #include "double.h"
 #include "frame.h"
 #include "int.h"
@@ -37,10 +38,9 @@ int main(int argc, char ** argv)
 
   if (argc != 7)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "number of command-line arguments must be 6\n",
-      __func__, __FILE__,__LINE__);
+      "number of command-line arguments must be 6; instead it is %d\n", argc);
     errno = EINVAL;
     goto end;
   }
@@ -52,20 +52,19 @@ int main(int argc, char ** argv)
   m = mesh_file_scan_by_name(m_filename, m_format);
   if (errno)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate input mesh\n",
-      __func__, __FILE__,__LINE__);
+      "cannot scan mesh m from file %s in format %s\n",
+      m_filename, m_format);
     goto end;
   }
 
   steps = int_string_scan(argv[3]);
   if (errno)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "unable to scan number of time steps\n",
-       __func__, __FILE__,__LINE__);
+      "cannot scan number of time steps from input %s\n", argv[3]);
     goto m_free;
   }
   n = steps + 1;
@@ -75,20 +74,20 @@ int main(int argc, char ** argv)
   u = double_matrix_file_scan_by_name(u_filename, n, m->cn[1], u_format);
   if (errno)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate values\n",
-       __func__, __FILE__,__LINE__);
+      "cannot scan u from file %s in format %s\n",
+       u_filename, u_format);
     goto m_free;
   }
 
   new_coordinates = (double *) malloc(sizeof(double) * 2 * m->cn[0]);
   if (errno)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate values\n",
-       __func__, __FILE__,__LINE__);
+      "cannot allocate %ld bytes of memory for new_coordinates\n",
+       sizeof(double) * 2 * m->cn[0]);
     goto u_free;
   }
 

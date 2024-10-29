@@ -2,6 +2,7 @@
 
 #include "diffusion_steady_state_discrete_mixed_weak.h"
 #include "double.h"
+#include "int.h"
 
 diffusion_steady_state_discrete_mixed_weak *
 diffusion_steady_state_discrete_mixed_weak_file_scan_raw(FILE * in)
@@ -11,9 +12,9 @@ diffusion_steady_state_discrete_mixed_weak_file_scan_raw(FILE * in)
   data = (diffusion_steady_state_discrete_mixed_weak *) malloc(
     sizeof(diffusion_steady_state_discrete_mixed_weak));
 
-  data->number_of_cells_dm1 = double_file_scan(in);
+  data->number_of_cells_dm1 = int_file_scan(in);
 
-  data->number_of_cells_d = double_file_scan(in);
+  data->number_of_cells_d = int_file_scan(in);
 
   data->pi_dm1 = double_array_file_scan(in, data->number_of_cells_dm1, "--raw");
 

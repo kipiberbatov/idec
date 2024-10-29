@@ -107,6 +107,11 @@ jagged1 * mesh_boundary_hyperfaces_from_constraint(
   const mesh * m,
   int (*constraint)(const double *));
 
+jagged1 * mesh_boundary_neumann_minus_dirichlet_nodes(
+  const mesh * m,
+  int (*boundary_neumann_continuous)(const double *),
+  const jagged1 * boundary_dirichlet);
+
 jagged1 * mesh_neighboring_nodes(const mesh * m, int i);
 
 double * mesh_boundary_node_vectors_matrix(const mesh * m, int i);
