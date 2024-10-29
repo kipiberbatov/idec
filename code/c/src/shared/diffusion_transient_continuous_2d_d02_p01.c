@@ -39,7 +39,7 @@ static double g_dirichlet(const double * x)
 
 static int boundary_neumann(const double * x)
 {
-  return ((x[1] == 0. || x[1] == 15.) && (0. < x[0] && x[0] < 20.));
+  return ((x[1] == 0. || x[1] == 15.) && (0. <= x[0] && x[0] <= 20.));
 }
 
 static double g_neumann(const double * x)

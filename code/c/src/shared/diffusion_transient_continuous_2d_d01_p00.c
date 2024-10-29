@@ -43,8 +43,8 @@ static double g_dirichlet(const double * x)
 
 static int boundary_neumann(const double * x)
 {
-  return (fabs(x[1] - x[0] - A) < 0.0001 && -A < x[0] && x[0] < 0.)
-    || (fabs(x[1] - x[0] + A) < 0.0001 && 0. < x[0] && x[0] < A);
+  return (fabs(x[1] - x[0] - A) < 0.0001 && -A <= x[0] && x[0] <= 0.)
+    || (fabs(x[1] - x[0] + A) < 0.0001 && 0. <= x[0] && x[0] <= A);
 }
 
 static double g_neumann(const double * x)
