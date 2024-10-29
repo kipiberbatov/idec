@@ -78,24 +78,24 @@ _obj_src_graphics := $(patsubst code/c/src/graphics/%.c,\
   build/$(MODE)/obj/src/%$(.OBJ), $(_src_graphics))
 
 ########################## names of main object files ##########################
-_obj_main_array := $(patsubst code/c/main/array/main_%.c,\
+_obj_main_array := $(patsubst code/c/main/array/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_array))
 
-_obj_main_algebra := $(patsubst code/c/main/algebra/main_%.c,\
+_obj_main_algebra := $(patsubst code/c/main/algebra/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_algebra))
 
-_obj_main_region := $(patsubst code/c/main/region/main_%.c,\
+_obj_main_region := $(patsubst code/c/main/region/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_region))
 
-_obj_main_mesh := $(patsubst code/c/main/mesh/main_%.c,\
+_obj_main_mesh := $(patsubst code/c/main/mesh/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_mesh))
 
-_obj_main_diffusion := $(patsubst code/c/main/diffusion/main_%.c,\
+_obj_main_diffusion := $(patsubst code/c/main/diffusion/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_diffusion))
 
 _obj_main_shared :=
 
-_obj_main_graphics := $(patsubst code/c/main/graphics/main_%.c,\
+_obj_main_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_graphics))
 
 ################### names of source header dependency files ####################
@@ -121,45 +121,45 @@ _dep_src_graphics := $(patsubst code/c/src/graphics/%.c,\
   build/$(MODE)/dep/src/%$(.DEP), $(_src_graphics))
 
 #################### names of main header dependency files #####################
-_dep_main_array := $(patsubst code/c/main/array/main_%.c,\
+_dep_main_array := $(patsubst code/c/main/array/%.c,\
   build/$(MODE)/dep/main/%$(.DEP), $(_main_array))
 
-_dep_main_algebra := $(patsubst code/c/main/algebra/main_%.c,\
+_dep_main_algebra := $(patsubst code/c/main/algebra/%.c,\
   build/$(MODE)/dep/main/%$(.DEP), $(_main_algebra))
 
-_dep_main_region := $(patsubst code/c/main/region/main_%.c,\
+_dep_main_region := $(patsubst code/c/main/region/%.c,\
   build/$(MODE)/dep/main/%$(.DEP), $(_main_region))
 
-_dep_main_mesh := $(patsubst code/c/main/mesh/main_%.c,\
+_dep_main_mesh := $(patsubst code/c/main/mesh/%.c,\
   build/$(MODE)/dep/main/%$(.DEP), $(_main_mesh))
 
-_dep_main_diffusion := $(patsubst code/c/main/diffusion/main_%.c,\
+_dep_main_diffusion := $(patsubst code/c/main/diffusion/%.c,\
   build/$(MODE)/dep/main/%$(.DEP), $(_main_diffusion))
 
 _dep_main_shared :=
 
-_dep_main_graphics := $(patsubst code/c/main/graphics/main_%.c,\
+_dep_main_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/dep/main/%$(.DEP), $(_main_graphics))
 
 ########################## names of executable files ###########################
-_bin_array := $(patsubst code/c/main/array/main_%.c,\
+_bin_array := $(patsubst code/c/main/array/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_array))
 
-_bin_algebra := $(patsubst code/c/main/algebra/main_%.c,\
+_bin_algebra := $(patsubst code/c/main/algebra/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_algebra))
 
-_bin_region := $(patsubst code/c/main/region/main_%.c,\
+_bin_region := $(patsubst code/c/main/region/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_region))
 
-_bin_mesh := $(patsubst code/c/main/mesh/main_%.c,\
+_bin_mesh := $(patsubst code/c/main/mesh/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_mesh))
 
-_bin_diffusion := $(patsubst code/c/main/diffusion/main_%.c,\
+_bin_diffusion := $(patsubst code/c/main/diffusion/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_diffusion))
 
 _bin_shared :=
 
-_bin_graphics := $(patsubst code/c/main/graphics/main_%.c,\
+_bin_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_graphics))
 
 ################# include directories for compiling main files #################
@@ -216,8 +216,8 @@ obj_src_shared: $(_obj_src_shared)
 obj_src_graphics: $(_obj_src_graphics)
 
 # object files from main files
-.PHONY: $(patsubst %, obj_main_%, $(MODULES))
-obj_main: $(patsubst %, obj_main_%, $(MODULES))
+.PHONY: $(patsubst %, obj_%, $(MODULES))
+obj_main: $(patsubst %, obj_%, $(MODULES))
 obj_main_array: $(_obj_main_array)
 obj_main_algebra: $(_obj_main_algebra)
 obj_main_region: $(_obj_main_region)
@@ -242,8 +242,8 @@ dep_src_shared: $(_dep_src_shared)
 dep_src_graphics: $(_dep_src_graphics)
 
 # header dependencies of main files
-.PHONY: $(patsubst %, dep_main_%, $(MODULES))
-dep_main: $(patsubst %, dep_main_%, $(MODULES))
+.PHONY: $(patsubst %, dep_%, $(MODULES))
+dep_main: $(patsubst %, dep_%, $(MODULES))
 dep_main_array: $(_dep_main_array)
 dep_main_algebra: $(_dep_main_algebra)
 dep_main_region: $(_dep_main_region)
@@ -335,28 +335,28 @@ $(_obj_src_graphics): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/graphics/%.c\
 build/$(MODE)/obj/main: | build/$(MODE)/obj
 	mkdir -p $@
 
-$(_obj_main_array): build/$(MODE)/obj/main/%$(.OBJ): code/c/main/array/main_%.c\
+$(_obj_main_array): build/$(MODE)/obj/main/%$(.OBJ): code/c/main/array/%.c\
   | build/$(MODE)/obj/main
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_array) -c $<
 
 $(_obj_main_algebra): build/$(MODE)/obj/main/%$(.OBJ):\
-   code/c/main/algebra/main_%.c | build/$(MODE)/obj/main
+   code/c/main/algebra/%.c | build/$(MODE)/obj/main
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_algebra) -c $<
 
 $(_obj_main_region): build/$(MODE)/obj/main/%$(.OBJ):\
-   code/c/main/region/main_%.c | build/$(MODE)/obj/main
+   code/c/main/region/%.c | build/$(MODE)/obj/main
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_region) -c $<
 
-$(_obj_main_mesh): build/$(MODE)/obj/main/%$(.OBJ): code/c/main/mesh/main_%.c\
+$(_obj_main_mesh): build/$(MODE)/obj/main/%$(.OBJ): code/c/main/mesh/%.c\
   | build/$(MODE)/obj/main
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_mesh) -c $<
 
 $(_obj_main_diffusion): build/$(MODE)/obj/main/%$(.OBJ):\
-  code/c/main/diffusion/main_%.c | build/$(MODE)/obj/main
+  code/c/main/diffusion/%.c | build/$(MODE)/obj/main
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_diffusion) -c $<
 
 $(_obj_main_graphics): build/$(MODE)/obj/main/%$(.OBJ):\
-   code/c/main/graphics/main_%.c | build/$(MODE)/obj/main
+   code/c/main/graphics/%.c | build/$(MODE)/obj/main
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_graphics)\
 	  $(shell pkg-config --cflags gtk+-3.0) -c $<
 
