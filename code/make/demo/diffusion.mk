@@ -475,7 +475,7 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p03_primal_strong_co
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
-  --steady-state-primal-weak-raw $(word 4, $^)\
+  --steady-state-primal-strong-raw $(word 4, $^)\
   --raw $(word 5, $^)\
   --raw > $@
 
