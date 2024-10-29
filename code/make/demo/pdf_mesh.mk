@@ -10,8 +10,6 @@ _demo_pdf_mesh :=\
   build/$(MODE)/demo/pdf/mesh/circular_17_10_forman_edge_skeleton.pdf\
   build/$(MODE)/demo/pdf/mesh/pentagon_edge_skeleton.pdf\
   build/$(MODE)/demo/pdf/mesh/pentagon_forman_edge_skeleton.pdf\
-  build/$(MODE)/demo/pdf/mesh/brick_2d_1_forman_edge_skeleton.pdf\
-  build/$(MODE)/demo/pdf/mesh/brick_2d_10_forman_edge_skeleton.pdf\
   build/$(MODE)/demo/pdf/mesh/2d_10_grains_edge_skeleton.pdf\
   build/$(MODE)/demo/pdf/mesh/2d_10_grains_forman_edge_skeleton.pdf\
 
@@ -60,18 +58,6 @@ build/$(MODE)/demo/pdf/mesh/pentagon_edge_skeleton.pdf:\
 build/$(MODE)/demo/pdf/mesh/pentagon_forman_edge_skeleton.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\
   build/$(MODE)/demo/mesh/pentagon_forman.txt\
-  | build/$(MODE)/demo/pdf/mesh
-	$< --raw $(word 2, $^) $@
-
-build/$(MODE)/demo/pdf/mesh/brick_2d_1_forman_edge_skeleton.pdf:\
-  build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\
-  build/$(MODE)/demo/mesh/brick_2d_1_forman.txt\
-  | build/$(MODE)/demo/pdf/mesh
-	$< --raw $(word 2, $^) $@
-
-build/$(MODE)/demo/pdf/mesh/brick_2d_10_forman_edge_skeleton.pdf:\
-  build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\
-  build/$(MODE)/demo/mesh/brick_2d_10_forman.txt\
   | build/$(MODE)/demo/pdf/mesh
 	$< --raw $(word 2, $^) $@
 

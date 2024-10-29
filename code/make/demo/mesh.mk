@@ -857,6 +857,8 @@ _demo_mesh_brick_regular_2d_10 := \
   build/$(MODE)/demo/mesh/brick_2d_10_forman_inner.txt\
   build/$(MODE)/demo/mesh/brick_2d_10_forman_cbd_star.txt\
   build/$(MODE)/demo/mesh/brick_2d_10_forman_laplacian.txt\
+  build/$(MODE)/demo/mesh/brick_2d_10_forman_hodge_coeff.txt\
+  build/$(MODE)/demo/mesh/brick_2d_10_forman_hodge.txt\
 
 .PHONY: demo_mesh_brick_regular_2d_10
 demo_mesh_brick_regular_2d_10: $(_demo_mesh_brick_regular_2d_10)\
@@ -922,6 +924,20 @@ build/$(MODE)/demo/mesh/brick_2d_10_forman_laplacian.txt:\
   build/$(MODE)/bin/mesh_qc_laplacian$(.EXE)\
   build/$(MODE)/demo/mesh/brick_2d_10_forman.txt\
   build/$(MODE)/demo/mesh/brick_2d_10_forman_cbd_star.txt\
+  | build/$(MODE)/demo/mesh
+	$^ > $@
+
+build/$(MODE)/demo/mesh/brick_2d_10_forman_hodge_coeff.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge_coeff$(.EXE)\
+  build/$(MODE)/demo/mesh/brick_2d_10_forman.txt\
+  | build/$(MODE)/demo/mesh
+	$< < $(word 2, $^) > $@
+
+build/$(MODE)/demo/mesh/brick_2d_10_forman_hodge.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge$(.EXE)\
+  build/$(MODE)/demo/mesh/brick_2d_10_forman.txt\
+  build/$(MODE)/demo/mesh/brick_2d_10_forman_inner.txt\
+  build/$(MODE)/demo/mesh/brick_2d_10_forman_hodge_coeff.txt\
   | build/$(MODE)/demo/mesh
 	$^ > $@
 
@@ -1346,6 +1362,8 @@ _demo_mesh_2d_10_grains :=\
   build/$(MODE)/demo/mesh/2d_10_grains_forman_vol.txt\
   build/$(MODE)/demo/mesh/2d_10_grains_forman_inner.txt\
   build/$(MODE)/demo/mesh/2d_10_grains_forman_cbd_star.txt\
+  build/$(MODE)/demo/mesh/2d_10_grains_forman_hodge_coeff.txt\
+  build/$(MODE)/demo/mesh/2d_10_grains_forman_hodge.txt\
 
 .PHONY: demo_mesh_2d_10_grains
 demo_mesh_2d_10_grains: $(_demo_mesh_2d_10_grains)\
@@ -1389,15 +1407,37 @@ build/$(MODE)/demo/mesh/2d_10_grains_forman_cbd_star.txt:\
   | build/$(MODE)/demo/mesh
 	$^ > $@
 
+build/$(MODE)/demo/mesh/2d_10_grains_forman_hodge_coeff.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge_coeff$(.EXE)\
+  build/$(MODE)/demo/mesh/2d_10_grains_forman.txt\
+  | build/$(MODE)/demo/mesh
+	$< < $(word 2, $^) > $@
+
+build/$(MODE)/demo/mesh/2d_10_grains_forman_hodge.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge$(.EXE)\
+  build/$(MODE)/demo/mesh/2d_10_grains_forman.txt\
+  build/$(MODE)/demo/mesh/2d_10_grains_forman_inner.txt\
+  build/$(MODE)/demo/mesh/2d_10_grains_forman_hodge_coeff.txt\
+  | build/$(MODE)/demo/mesh
+	$^ > $@
+
 _demo_mesh_circular :=\
   build/$(MODE)/demo/mesh/circular_4_3.txt\
   build/$(MODE)/demo/mesh/circular_4_3_forman.txt\
+  build/$(MODE)/demo/mesh/circular_4_3_forman_cbd.txt\
   build/$(MODE)/demo/mesh/circular_4_3_forman_vol.txt\
   build/$(MODE)/demo/mesh/circular_4_3_forman_inner.txt\
+  build/$(MODE)/demo/mesh/circular_4_3_forman_inner.txt\
+  build/$(MODE)/demo/mesh/circular_4_3_forman_hodge_coeff.txt\
+  build/$(MODE)/demo/mesh/circular_4_3_forman_cbd_star.txt\
   build/$(MODE)/demo/mesh/circular_17_10.txt\
   build/$(MODE)/demo/mesh/circular_17_10_forman.txt\
+  build/$(MODE)/demo/mesh/circular_17_10_forman_cbd.txt\
   build/$(MODE)/demo/mesh/circular_17_10_forman_vol.txt\
   build/$(MODE)/demo/mesh/circular_17_10_forman_inner.txt\
+  build/$(MODE)/demo/mesh/circular_17_10_forman_inner.txt\
+  build/$(MODE)/demo/mesh/circular_17_10_forman_hodge_coeff.txt\
+  build/$(MODE)/demo/mesh/circular_17_10_forman_cbd_star.txt\
 
 .PHONY: demo_mesh_circular
 demo_mesh_circular: $(_demo_mesh_circular) | build/$(MODE)/demo/mesh
@@ -1412,6 +1452,12 @@ build/$(MODE)/demo/mesh/circular_4_3_forman.txt:\
   | build/$(MODE)/demo/mesh
 	$< --raw $(word 2, $^) --circular --raw > $@
 
+build/$(MODE)/demo/mesh/circular_4_3_forman_cbd.txt:\
+  build/$(MODE)/bin/mesh_coboundary$(.EXE)\
+  build/$(MODE)/demo/mesh/circular_4_3_forman.txt\
+  | build/$(MODE)/demo/mesh
+	$< --raw < $(word 2, $^) > $@
+
 build/$(MODE)/demo/mesh/circular_4_3_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
   build/$(MODE)/demo/mesh/circular_4_3_forman.txt\
@@ -1425,6 +1471,27 @@ build/$(MODE)/demo/mesh/circular_4_3_forman_inner.txt:\
   | build/$(MODE)/demo/mesh
 	$^ > $@
 
+build/$(MODE)/demo/mesh/circular_4_3_forman_cbd_star.txt:\
+  build/$(MODE)/bin/mesh_qc_coboundary_star$(.EXE)\
+  build/$(MODE)/demo/mesh/circular_4_3_forman.txt\
+  build/$(MODE)/demo/mesh/circular_4_3_forman_inner.txt\
+  | build/$(MODE)/demo/mesh
+	$^ > $@
+
+build/$(MODE)/demo/mesh/circular_4_3_forman_hodge_coeff.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge_coeff$(.EXE)\
+  build/$(MODE)/demo/mesh/circular_4_3_forman.txt\
+  | build/$(MODE)/demo/mesh
+	$< < $(word 2, $^) > $@
+
+build/$(MODE)/demo/mesh/circular_4_3_forman_hodge.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge$(.EXE)\
+  build/$(MODE)/demo/mesh/circular_4_3_forman.txt\
+  build/$(MODE)/demo/mesh/circular_4_3_forman_inner.txt\
+  build/$(MODE)/demo/mesh/circular_4_3_forman_hodge_coeff.txt\
+  | build/$(MODE)/demo/mesh
+	$^ > $@
+
 build/$(MODE)/demo/mesh/circular_17_10.txt:\
   build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/demo/mesh
 	$< 17 10 > $@
@@ -1434,6 +1501,12 @@ build/$(MODE)/demo/mesh/circular_17_10_forman.txt:\
   build/$(MODE)/demo/mesh/circular_17_10.txt\
   | build/$(MODE)/demo/mesh
 	$< --raw $(word 2, $^) --circular --raw > $@
+
+build/$(MODE)/demo/mesh/circular_17_10_forman_cbd.txt:\
+  build/$(MODE)/bin/mesh_coboundary$(.EXE)\
+  build/$(MODE)/demo/mesh/circular_17_10_forman.txt\
+  | build/$(MODE)/demo/mesh
+	$< --raw < $(word 2, $^) > $@
 
 build/$(MODE)/demo/mesh/circular_17_10_forman_vol.txt:\
   build/$(MODE)/bin/mesh_qc_vol$(.EXE)\
@@ -1448,6 +1521,27 @@ build/$(MODE)/demo/mesh/circular_17_10_forman_inner.txt:\
   | build/$(MODE)/demo/mesh
 	$^ > $@
 
+build/$(MODE)/demo/mesh/circular_17_10_forman_cbd_star.txt:\
+  build/$(MODE)/bin/mesh_qc_coboundary_star$(.EXE)\
+  build/$(MODE)/demo/mesh/circular_17_10_forman.txt\
+  build/$(MODE)/demo/mesh/circular_17_10_forman_inner.txt\
+  | build/$(MODE)/demo/mesh
+	$^ > $@
+
+build/$(MODE)/demo/mesh/circular_17_10_forman_hodge_coeff.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge_coeff$(.EXE)\
+  build/$(MODE)/demo/mesh/circular_17_10_forman.txt\
+  | build/$(MODE)/demo/mesh
+	$< < $(word 2, $^) > $@
+
+build/$(MODE)/demo/mesh/circular_17_10_forman_hodge.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge$(.EXE)\
+  build/$(MODE)/demo/mesh/circular_17_10_forman.txt\
+  build/$(MODE)/demo/mesh/circular_17_10_forman_inner.txt\
+  build/$(MODE)/demo/mesh/circular_17_10_forman_hodge_coeff.txt\
+  | build/$(MODE)/demo/mesh
+	$^ > $@
+
 _demo_mesh_square := \
   build/$(MODE)/demo/mesh/square_2.txt\
   build/$(MODE)/demo/mesh/square_4.txt\
@@ -1456,6 +1550,8 @@ _demo_mesh_square := \
   build/$(MODE)/demo/mesh/square_8_vol.txt\
   build/$(MODE)/demo/mesh/square_8_inner.txt\
   build/$(MODE)/demo/mesh/square_8_cbd_star.txt\
+  build/$(MODE)/demo/mesh/square_8_hodge_coeff.txt\
+  build/$(MODE)/demo/mesh/square_8_hodge.txt\
 
 .PHONY: demo_mesh_square
 demo_mesh_square: $(_demo_mesh_square)\
@@ -1502,6 +1598,20 @@ build/$(MODE)/demo/mesh/square_8_cbd_star.txt:\
   build/$(MODE)/bin/mesh_qc_coboundary_star$(.EXE)\
   build/$(MODE)/demo/mesh/square_8.txt\
   build/$(MODE)/demo/mesh/square_8_inner.txt\
+  | build/$(MODE)/demo/mesh
+	$^ > $@
+
+build/$(MODE)/demo/mesh/square_8_hodge_coeff.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge_coeff$(.EXE)\
+  build/$(MODE)/demo/mesh/square_8.txt\
+  | build/$(MODE)/demo/mesh
+	$< < $(word 2, $^) > $@
+
+build/$(MODE)/demo/mesh/square_8_hodge.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge$(.EXE)\
+  build/$(MODE)/demo/mesh/square_8.txt\
+  build/$(MODE)/demo/mesh/square_8_inner.txt\
+  build/$(MODE)/demo/mesh/square_8_hodge_coeff.txt\
   | build/$(MODE)/demo/mesh
 	$^ > $@
 
