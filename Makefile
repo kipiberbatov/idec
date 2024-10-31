@@ -454,7 +454,8 @@ build/$(MODE)/lib/libgraphics$(.LIB): $(_obj_src_graphics) | build/$(MODE)/lib
 	$(AR) $(ARFLAGS) $@ $^
 
 build/$(MODE)/lib/libshared$(.DLL):\
-  $(_obj_src_shared) $(_obj_src_algebra) $(_obj_src_array) | build/$(MODE)/lib
+  $(_obj_src_shared) $(_obj_src_mesh) $(_obj_src_region) $(_obj_src_algebra) $(_obj_src_array)\
+  | build/$(MODE)/lib
 	$(CC) -o $@ -fPIC -shared $^
 
 ################################### linking ####################################

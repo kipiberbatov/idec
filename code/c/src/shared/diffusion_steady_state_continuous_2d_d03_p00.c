@@ -1,24 +1,30 @@
+#include <math.h>
+
+#include "de_rham.h"
 #include "diffusion_steady_state_continuous.h"
 
 /*
-We solve the heat equation for (u, q):
-. q = - * pi_1 d u
-. d q = -f 
-. tr_{G_D} u = g_D
-. tr_{G_N} q = g_N
+[Example of diffusion in 2D via exterior calculus]
 
-with the following data
-. M = "unit circle"
-. pi_1 = 1
-. f = -4 dx /\ dy
-. G_D := {x in M | x[0] >= 0}
-. G_N := {x in M | x[0] <= 0}
-. g_D = 1
-. g_N = 2 t dt (with respect to the (x[0], x[1]) = (cos(t), sin(t)) coordinates)
+Let
+  . M = {(x, y) in R | x^2 + y^2 = 1}
+  . pi_1 = 1
+  . f = -4 dx /\ dy
+  . G be the boundary of M
+  . G_D := G
+  . G_N := {}
+  . g_D = 1
+  . g_N = 2 t dt (with respect to the (x, y) = (cos(t), sin(t)) coordinates)
+
+The potential 0-form u and flow 1-form q are solutions to the problem
+  . q = - *_1 pi_1 d_0 u
+  . d q = -f 
+  . tr_{G_D, 0} u = g_D
+  . tr_{G_N, 1} q = g_N
 
 This problem has exact solution
-. u(x, y) = x^2 + y^2
-. q(x, y) = - 2 y dx + 2 x dy
+  . u(x, y) = x^2 + y^2
+  . q(x, y) = - 2 y dx + 2 x dy
 */
 
 #define EPSILON 0.000001
@@ -41,30 +47,15 @@ static double source(const double * x)
   return -4.;
 }
 
-// static int boundary_dirichlet(const double * x)
-// {
-//   return (on_unit_circle(x) && x[0] > -EPSILON );
-// }
-
-/* in pure Dirichlet problem */
-
 static int boundary_dirichlet(const double * x)
 {
   return (on_unit_circle(x));
 }
 
-
 static double g_dirichlet(const double * x)
 {
   return 1.;
 }
-
-// static int boundary_neumann(const double * x)
-// {
-//   return (on_unit_circle(x) && x[0] < EPSILON);
-// }
-
-/* in pure Dirichlet problem */
 
 static int boundary_neumann(const double * x)
 {
@@ -87,3 +78,44 @@ diffusion_steady_state_continuous_2d_d03_p00 =
   boundary_neumann,
   g_neumann
 };
+
+static double norm_2d_squared(const double * point)
+{
+  double x, y;
+
+  x = point[0];
+  y = point[1];
+  return x * x + y * y;
+}
+
+void diffusion_steady_state_continuous_2d_d03_p00_exact_potential_circular(
+  double * potential, const mesh * m)
+{
+  de_rham_0(potential, m, norm_2d_squared);
+}
+
+void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
+  double * flow, const mesh * m)
+{
+  int i, j0, j1, m_cn_1;
+  double difference, r0_squared, r1_squared; 
+  double * m_coord;
+  jagged2 m_cf_1_0;
+
+  m_cn_1 = m->cn[1];
+  m_coord = m->coord;
+  mesh_cf_part2(&m_cf_1_0, m, 1, 0);
+
+  for (i = 0; i < m_cn_1; ++i)
+  {
+    j0 = m_cf_1_0.a2[2 * i];
+    j1 = m_cf_1_0.a2[2 * i + 1];
+    r0_squared = norm_2d_squared(m_coord + 2 * j0);
+    r1_squared = norm_2d_squared(m_coord + 2 * j1);
+    difference = r1_squared - r0_squared;
+    if (fabs(difference) < EPSILON)
+      flow[i] = 4 * M_PI * r0_squared;
+    else
+      flow[i] = difference;
+  }
+}
