@@ -97,25 +97,57 @@ void diffusion_steady_state_continuous_2d_d03_p00_exact_potential_circular(
 void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
   double * flow, const mesh * m)
 {
-  int i, j0, j1, m_cn_1;
-  double difference, r0_squared, r1_squared; 
-  double * m_coord;
-  jagged2 m_cf_1_0;
+  int i, index, j, na, nd;
+  int * topology;
+  double angle, coefficient, r0, value;
 
-  m_cn_1 = m->cn[1];
-  m_coord = m->coord;
-  mesh_cf_part2(&m_cf_1_0, m, 1, 0);
+  topology = m->cf->a4;
+  i = 0;
+  while (topology[i] == 0)
+    i += 4;
+  na = i / 2;
+  nd = (m->cn[2] + na / 2) / na;
+  r0 = 1. / (double) nd;
+  angle = 2. * M_PI / (double) na;coefficient = 2 * r0 * r0 * angle;
 
-  for (i = 0; i < m_cn_1; ++i)
+  index = 0;
+  /* edges to nodes */
+  for (i = 1; i <= nd / 2; ++i)
   {
-    j0 = m_cf_1_0.a2[2 * i];
-    j1 = m_cf_1_0.a2[2 * i + 1];
-    r0_squared = norm_2d_squared(m_coord + 2 * j0);
-    r1_squared = norm_2d_squared(m_coord + 2 * j1);
-    difference = r1_squared - r0_squared;
-    if (fabs(difference) < EPSILON)
-      flow[i] = 4 * M_PI * r0_squared;
-    else
-      flow[i] = difference;
+    /* rays */
+    for (j = 0; j < na; ++j)
+    {
+      flow[index] = 0;
+      ++index;
+    }
+    /* arcs */
+    value = coefficient * (double) (4 * i * i);
+    for (j = 0; j < na; ++j)
+    {
+      flow[index] = value;
+      ++index;
+    }
+  }
+  /* inner faces to edges */
+  value = coefficient;
+  for (j = 0; j < na / 2; ++j)
+  {
+    flow[index + 0] = value; /* arc */
+    flow[index + 1] = 0;     /* ray */
+    flow[index + 2] = value; /* arc */
+    index += 3;
+  }
+  /* outer faces to edges */
+  for (i = 2; i <= nd / 2; ++i)
+  {
+    value = coefficient * (double) ((2 * i - 1) * (2 * i - 1));
+    for (j = 0; j < na / 2; ++j)
+    {
+      flow[index + 0] = 0;     /* ray */
+      flow[index + 1] = value; /* arc */
+      flow[index + 2] = 0;     /* ray */
+      flow[index + 3] = value; /* arc */
+      index += 4;
+    }
   }
 }

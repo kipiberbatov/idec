@@ -10,6 +10,7 @@ include code/make/demo/diffusion_steady_state_continuous_2d_d01_p00.mk
 include code/make/demo/diffusion_steady_state_continuous_2d_d02_p00.mk
 include code/make/demo/diffusion_steady_state_continuous_2d_d02_p01.mk
 include code/make/demo/diffusion_steady_state_continuous_2d_d03_p00.mk
+include code/make/demo/diffusion_steady_state_continuous_2d_d03_p01.mk
 include code/make/demo/diffusion_steady_state_continuous_3d_d00_p00.mk
 
 _demo_diffusion_steady_state :=\
@@ -21,6 +22,7 @@ _demo_diffusion_steady_state :=\
   $(_demo_diffusion_steady_state_continuous_2d_d01_p00)\
   $(_demo_diffusion_steady_state_continuous_2d_d02_p00)\
   $(_demo_diffusion_steady_state_continuous_2d_d03_p00)\
+  $(_demo_diffusion_steady_state_continuous_2d_d03_p01)\
   $(_demo_diffusion_steady_state_continuous_3d_d00_p00)\
 
 _demo_diffusion_transient_continuous_2d :=\
