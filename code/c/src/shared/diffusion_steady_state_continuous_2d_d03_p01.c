@@ -15,7 +15,7 @@ Let
 
 The potential 0-form u and flow 1-form q are solutions to the problem
   . q = - *_1 pi_1 d_0 u
-  . d q = -f 
+  . d q = -f
   . tr_{G_D, 0} u = g_D
   . tr_{G_N, 1} q = g_N
 
@@ -23,7 +23,6 @@ This problem has exact solution
   . u(x, y) = x^2 + y^2
   . q(x, y) = - 2 y dx + 2 x dy
 */
-
 
 #define EPSILON 0.000001
 

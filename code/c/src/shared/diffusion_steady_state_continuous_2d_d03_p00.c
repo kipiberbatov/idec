@@ -18,7 +18,7 @@ Let
 
 The potential 0-form u and flow 1-form q are solutions to the problem
   . q = - *_1 pi_1 d_0 u
-  . d q = -f 
+  . d q = -f
   . tr_{G_D, 0} u = g_D
   . tr_{G_N, 1} q = g_N
 
@@ -61,7 +61,6 @@ static int boundary_neumann(const double * x)
 {
   return 0;
 }
-
 
 static double g_neumann(const double * x)
 {
@@ -108,7 +107,8 @@ void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
   na = i / 2;
   nd = (m->cn[2] + na / 2) / na;
   r0 = 1. / (double) nd;
-  angle = 2. * M_PI / (double) na;coefficient = 2 * r0 * r0 * angle;
+  angle = 2. * M_PI / (double) na;
+  coefficient = 2 * r0 * r0 * angle;
 
   index = 0;
   /* edges to nodes */

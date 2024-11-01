@@ -25,7 +25,7 @@ double * double_array_file_scan_steady_state_primal_weak_raw(FILE * in, int n)
     fputs("cannot scan number_of_cells_d\n", stderr);
     return NULL;
   }
-  
+
   a = double_array_file_scan_raw(in, n);
   if (a == NULL)
   {

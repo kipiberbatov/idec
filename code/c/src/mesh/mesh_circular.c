@@ -26,7 +26,7 @@ static void mesh_circular_cells_to_faces_a3(int * m_cf_a3, int na, int nd)
 
   int_array_assign_constant(m_cf_a3, 2 * na * nd, 2);
   index = 2 * na * nd;
-  
+
   int_array_assign_constant(m_cf_a3 + index, na, 3);
   index += na;
 
@@ -43,34 +43,34 @@ static void mesh_circular_cells_to_faces_a3(int * m_cf_a3, int na, int nd)
 (1, 0):
   j = 0 : na - 1
     j -> (0, j + 1)
-  
+
   j = 0 : na - 2
     na + j -> (j + 1, j + 2)
   2 * na - 1 -> (na, 1)
-  
+
   i = 1 : nd - 1
     j = 1 : na
       2 * i * na + j  -> (na * (i - 1) + j, na * i + j)
-    
+
     j = 1 : na - 1
       (2 * i + 1) * na + j -> (na * i + j, na * i + j + 1)
     2 * (i + 1) * na - 1 -> (na * (i + 1), na * i + 1)
-  
+
 (2, 0):
   j = 0 : na - 2
     j -> (0, j + 1, j + 2)
   na - 1 -> (0, na, 1)
-  
+
   i = 1 : nd - 1
     j = 0 : na - 2
       na * i + j -> (1, na + 1, na + 2, 2) + j + (i - 1) * na
     na * (i + 1) - 1 -> (2 * na, na + 1, 1, na) + (i - 1) * na
-  
+
 (2, 1):
   j = 0 : na - 2
     j -> (j, j + na, j + 1)
   na - 1 -> (na - 1, 2 * na - 1, 0)
-  
+
   i = 1 : nd - 1
     j = 0 : na - 2
       na * i + j -> (na, 2 * na, 3 * na, 2 * na + 1) + j + 2 * (i - 1) * na

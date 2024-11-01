@@ -21,7 +21,7 @@ int main(int argc, char ** argv)
   m_name = argv[2];
   new_coordinates_format = argv[3];
   output_format = argv[4];
-  
+
   m = mesh_file_scan_by_name(m_name, m_format);
   if (m == NULL)
   {

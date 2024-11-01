@@ -3,7 +3,7 @@
 /*
 We solve the following continuous steady state diffusion problem for (u^0, q^1):
 . q^1 = *_1 pi_1 d_0 u^0
-. d_1 q^1 = -f^0 
+. d_1 q^1 = -f^0
 . tr_{G_D, 0} u^0 = g_D^0
 . tr_{G_N, 1} q^1 = g_N^1
 

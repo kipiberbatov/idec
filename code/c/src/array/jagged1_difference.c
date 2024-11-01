@@ -45,7 +45,7 @@ jagged1 * jagged1_difference(const jagged1 * y, const jagged1 * x)
       ++index;
     }
   }
-  
+
   z->a0 = z_a0;
   z->a1 = z_a1;
   return z;
