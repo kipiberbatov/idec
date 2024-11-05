@@ -8,7 +8,8 @@
 
 int main(int argc, char ** argv)
 {
-  int m_bd_values_size, na, nd;
+  int i, index, j;
+  int m_bd_values_size, m_cn_1, na, nd;
   double * m_bd_values;
   mesh * m;
 
@@ -45,7 +46,8 @@ int main(int argc, char ** argv)
     goto end;
   }
 
-  m_bd_values_size = 2 * m->cn[1] + na * (3 + 4 * (nd - 1));
+  m_cn_1 = m->cn[1];
+  m_bd_values_size = 2 * m_cn_1 + na * (3 + 4 * (nd - 1));
   m_bd_values = (double *) malloc(sizeof(double) * m_bd_values_size);
   if (m_bd_values == NULL)
   {
@@ -55,7 +57,31 @@ int main(int argc, char ** argv)
       sizeof(double) * m_bd_values_size);
     goto m_free;
   }
-  double_array_assign_constant(m_bd_values, m_bd_values_size, 1.);
+  index = 0;
+  for (i = 0; i < m_cn_1; ++i)
+  {
+    m_bd_values[index + 0] = - 1;
+    m_bd_values[index + 1] = 1;
+    index += 2;
+  }
+  for (j = 0; j < na; ++j)
+  {
+    m_bd_values[index + 0] = 1;
+    m_bd_values[index + 1] = 1;
+    m_bd_values[index + 2] = -1;
+    index += 3;
+  }
+  for (i = 1; i < nd; ++i)
+  {
+    for (j = 0; j < na; ++j)
+    {
+      m_bd_values[index + 0] = -1;
+      m_bd_values[index + 1] = 1;
+      m_bd_values[index + 2] = 1;
+      m_bd_values[index + 3] = -1;
+      index += 4;
+    }
+  }
 
   mesh_file_print(stdout, m, "--raw");
   double_array_file_print(stdout, m_bd_values_size, m_bd_values, "--raw");

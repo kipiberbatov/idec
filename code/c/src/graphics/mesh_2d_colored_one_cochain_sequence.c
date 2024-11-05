@@ -31,11 +31,14 @@ void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
   m = a->m;
   i = a->index;
 
+  c.is_mesh_edge_skeleton = a->is_mesh_edge_skeleton;
+  c.total_colors = a->total_colors;
   mesh_cf_part2(&c_cf_1_0, m, 1, 0);
   c.cf_1_0 = &c_cf_1_0;
-  c.total_colors = a->total_colors;
+  c.bd_1 = a->bd_1;
   c.coordinates = a->new_coordinates;
   c.values = a->values + m->cn[1] * i;
+  c.point_size = a->point_size;
   c.line_width = a->line_width;
   c.min_value = a->min_value;
   c.max_value = a->max_value;

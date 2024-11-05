@@ -22,7 +22,10 @@ void mesh_2d_colored_zero_cochain_cairo_draw(
   for (j = 0; j < c_number_of_nodes; ++j)
   {
     node.coordinates = c_coordinates + 2 * j;
-    node.relative_value = (c_values[j] - c_min) / denominator;
+    if (denominator == 0.)
+      node.relative_value = 0.;
+    else
+      node.relative_value = (c_values[j] - c_min) / denominator;
     // fprintf(stderr, "node.relative_value = %g\n", node.relative_value);
     mesh_2d_colored_node_cairo_draw(cr, &node);
   }

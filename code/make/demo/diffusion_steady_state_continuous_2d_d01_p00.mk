@@ -1,4 +1,6 @@
 _demo_diffusion_steady_state_continuous_2d_d01_p00 :=\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_exact_square_8_potential.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_exact_square_8_flow.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_primal_strong_cochain_square_8_input.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_primal_strong_cochain_square_8_potential.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_primal_strong_cochain_square_8_flow.txt\
@@ -8,6 +10,28 @@ _demo_diffusion_steady_state_continuous_2d_d01_p00 :=\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_mixed_weak_cochain_square_8_input.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_mixed_weak_cochain_square_8_solution.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_mixed_weak_cochain_square_8_potential.txt\
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_exact_square_8_potential.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_potential$(.EXE)\
+  build/$(MODE)/demo/mesh/square_8.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d01_p00$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$<\
+  --raw $(word 2, $^)\
+  $(word 2, $|)\
+  diffusion_steady_state_continuous_2d_d01_p00_potential\
+  --raw > $@
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_exact_square_8_flow.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow$(.EXE)\
+  build/$(MODE)/demo/mesh/square_8.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d01_p00$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$<\
+  --raw $(word 2, $^)\
+  $(word 2, $|)\
+  diffusion_steady_state_continuous_2d_d01_p00_flow\
+  --raw > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d01_p00_primal_strong_cochain_square_8_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_strong_from_continuous$(.EXE)\

@@ -97,13 +97,16 @@ int main(int argc, char ** argv)
 
   total_colors = 10;
 
+  a.is_mesh_edge_skeleton = 1;
   a.index = i;
   a.total_steps = 1;
   a.m = m;
+  a.bd_1 = NULL;
   a.values = u;
 
   a.total_colors = total_colors;
   a.new_coordinates = new_coordinates;
+  a.point_size = -1;
   a.line_width = data.line_width;
   a.min_value = -1;
   a.max_value = 1;

@@ -1,7 +1,7 @@
 build/$(MODE)/demo/pdf/diffusion: | build/$(MODE)/demo/pdf
 	mkdir -p $@
 
-# include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p00.mk
+include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p00.mk
 include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p01.mk
 include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p02.mk
 include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p03.mk
@@ -83,7 +83,7 @@ _demo_pdf_diffusion :=\
   $(_demo_pdf_diffusion_steady_state_continuous_2d_d02_p01)\
   $(_demo_pdf_diffusion_steady_state_continuous_2d_d03_p00)\
   $(_demo_pdf_diffusion_steady_state_continuous_2d_d03_p01)\
-  $(_demo_pdf_diffusion_transient)
+#   $(_demo_pdf_diffusion_transient)\
 
 demo_pdf_diffusion: $(_demo_pdf_diffusion)
 

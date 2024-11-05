@@ -7,8 +7,9 @@
 typedef struct mesh_2d_colored_edge
 {
   int total_colors;
-  double * coordinates_0;
-  double * coordinates_1;
+  double coordinates_0[2];
+  double coordinates_1[2];
+  double point_size;
   double width;
   double relative_value;
   painter paint;

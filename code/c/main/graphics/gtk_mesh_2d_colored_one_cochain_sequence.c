@@ -1,16 +1,13 @@
 /* system headers */
-#include <alloca.h>
 #include <errno.h>
-#include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* external headers */
-#include <cairo.h>
 #include <gtk/gtk.h>
 
 /* internal headers */
+#include "color.h"
 #include "double.h"
 #include "graphics_log.h"
 #include "gtk_draw.h"
@@ -20,7 +17,7 @@
 #include "mesh.h"
 #include "mesh_2d_colored_one_cochain_sequence.h"
 #include "paint_rgb.h"
-#include "pdf_write_to_file.h"
+#include "points_array_minimal_distance.h"
 
 static int gtk_draw_one_cochain(GtkWidget * widget, cairo_t * cr, void * data)
 {
@@ -39,14 +36,16 @@ static int gtk_draw_one_cochain(GtkWidget * widget, cairo_t * cr, void * data)
 int main(int argc, char ** argv)
 {
   char * m_format, * u_format;
-  char * m_filename, * u_filename;
+  char * m_name, * u_filename;
+  char * title;
   int i, n, steps, total_colors;
   unsigned int speed;
   double height, width;
   double * new_coordinates, * u;
+  FILE * m_file;
+  matrix_sparse * m_bd_1;
   mesh * m;
   mesh_2d_colored_one_cochain_sequence a;
-  char * title;
   margin window_margin;
   frame_mesh_data data;
   frame window_frame;
@@ -55,10 +54,9 @@ int main(int argc, char ** argv)
 
   if (argc != 6)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "number of command-line arguments must be 6\n",
-      __func__, __FILE__,__LINE__);
+      "number of command-line arguments must be 6 instead it is %d\n", argc);
     errno = EINVAL;
     goto end;
   }
@@ -66,25 +64,42 @@ int main(int argc, char ** argv)
   i = 0;
 
   m_format = argv[1];
-  m_filename = argv[2];
-  m = mesh_file_scan_by_name(m_filename, m_format);
-  if (errno)
+  m_name = argv[2];
+
+  m_file = fopen(m_name, "r");
+  if (m_file == NULL)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate input mesh\n",
-      __func__, __FILE__,__LINE__);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open mesh file %s: %s\n", m_name, strerror(errno));
     goto end;
   }
+  m = mesh_file_scan(m_file, m_format);
+  if (m == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan mesh m from file %s in format %s\n",
+      m_name, m_format);
+    fclose(m_file);
+    goto end;
+  }
+
+  m_bd_1 = mesh_file_scan_boundary_p(m_file, m, 1);
+  if (m_bd_1 == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan m_bd_1 m from file %s\n", m_name);
+    fclose(m_file);
+    goto m_free;
+  }
+  fclose(m_file);
 
   steps = int_string_scan(argv[3]);
   if (errno)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "unable to scan number of time steps\n",
-       __func__, __FILE__,__LINE__);
-    goto m_free;
+      "cannot scan number of time steps from string %s\n", argv[3]);
+    goto m_bd_1_free;
   }
   n = steps + 1;
 
@@ -93,20 +108,18 @@ int main(int argc, char ** argv)
   u = double_matrix_file_scan_by_name(u_filename, n, m->cn[1], u_format);
   if (errno)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate values\n",
-       __func__, __FILE__,__LINE__);
-    goto m_free;
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan sequence of cochain values\n");
+    goto m_bd_1_free;
   }
 
   new_coordinates = (double *) malloc(sizeof(double) * 2 * m->cn[0]);
   if (errno)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate values\n",
-       __func__, __FILE__,__LINE__);
+      "cannot allocate %ld bytes of memory for new_coordinate\n",
+       sizeof(double) * 2 * m->cn[0]);
     goto u_free;
   }
 
@@ -128,16 +141,19 @@ int main(int argc, char ** argv)
 
   total_colors = 1000;
 
+  a.is_mesh_edge_skeleton = 0;
   a.index = i;
   a.total_steps = n;
   a.m = m;
+  a.bd_1 = m_bd_1->values;
   a.values = u;
 
   a.total_colors = total_colors;
   a.new_coordinates = new_coordinates;
+  a.point_size = points_array_minimal_distance(m->cn[0], new_coordinates);
   a.line_width = data.line_width;
-  a.min_value = double_array_min(n * m->cn[1], u);
-  a.max_value = double_array_max(n * m->cn[1], u);
+  a.min_value = double_array_absolute_min(n * m->cn[1], u);
+  a.max_value = double_array_absolute_max(n * m->cn[1], u);
   a.paint = paint_rgb;
 
   speed = 100;
@@ -158,6 +174,8 @@ int main(int argc, char ** argv)
   free(new_coordinates);
 u_free:
   free(u);
+m_bd_1_free:
+  matrix_sparse_free(m_bd_1);
 m_free:
   mesh_free(m);
 end:

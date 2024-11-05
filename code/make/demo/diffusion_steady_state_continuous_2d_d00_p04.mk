@@ -1,4 +1,6 @@
 _demo_diffusion_steady_state_continuous_2d_d00_p04 :=\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_exact_brick_2d_5_forman_potential.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_exact_brick_2d_5_forman_flow.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_primal_strong_cochain_brick_2d_5_forman_input.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_primal_strong_cochain_brick_2d_5_forman_potential.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_primal_strong_cochain_brick_2d_5_forman_flow.txt\
@@ -8,6 +10,28 @@ _demo_diffusion_steady_state_continuous_2d_d00_p04 :=\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_input.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_solution.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_potential.txt\
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_exact_brick_2d_5_forman_potential.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_potential$(.EXE)\
+  build/$(MODE)/demo/mesh/brick_2d_5_forman.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d00_p04$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$<\
+  --raw $(word 2, $^)\
+  $(word 2, $|)\
+  diffusion_steady_state_continuous_2d_d00_p04_potential\
+  --raw > $@
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_exact_brick_2d_5_forman_flow.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow$(.EXE)\
+  build/$(MODE)/demo/mesh/brick_2d_5_forman.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d00_p04$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$<\
+  --raw $(word 2, $^)\
+  $(word 2, $|)\
+  diffusion_steady_state_continuous_2d_d00_p04_flow\
+  --raw > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_primal_strong_cochain_brick_2d_5_forman_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_strong_from_continuous$(.EXE)\

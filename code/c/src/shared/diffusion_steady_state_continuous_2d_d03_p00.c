@@ -93,13 +93,16 @@ void diffusion_steady_state_continuous_2d_d03_p00_exact_potential_circular(
   de_rham_0(potential, m, norm_2d_squared);
 }
 
+/* Exact flow on the Forman subdivision */
 void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
-  double * flow, const mesh * m)
+  double * flow, const mesh * m, const matrix_sparse * m_bd_1)
 {
   int i, index, j, na, nd;
   int * topology;
   double angle, coefficient, r0, value;
+  double * m_bd_1_values;
 
+  m_bd_1_values = m_bd_1->values;
   topology = m->cf->a4;
   i = 0;
   while (topology[i] == 0)
@@ -122,19 +125,20 @@ void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
     }
     /* arcs */
     value = coefficient * (double) (4 * i * i);
-    for (j = 0; j < na; ++j)
+    for (j = 0; j < na / 2; ++j)
     {
-      flow[index] = value;
-      ++index;
+      flow[index + 0] = - value * m_bd_1_values[2 * index];
+      flow[index + 1] =   value * m_bd_1_values[2 * index + 2];
+      index += 2;
     }
   }
   /* inner faces to edges */
   value = coefficient;
   for (j = 0; j < na / 2; ++j)
   {
-    flow[index + 0] = value; /* arc */
-    flow[index + 1] = 0;     /* ray */
-    flow[index + 2] = value; /* arc */
+    flow[index + 0] = - value * m_bd_1_values[2 * index + 0]; /* arc */
+    flow[index + 1] = 0;                                      /* ray */
+    flow[index + 2] =   value * m_bd_1_values[2 * index + 4]; /* arc */
     index += 3;
   }
   /* outer faces to edges */
@@ -143,10 +147,10 @@ void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
     value = coefficient * (double) ((2 * i - 1) * (2 * i - 1));
     for (j = 0; j < na / 2; ++j)
     {
-      flow[index + 0] = 0;     /* ray */
-      flow[index + 1] = value; /* arc */
-      flow[index + 2] = 0;     /* ray */
-      flow[index + 3] = value; /* arc */
+      flow[index + 0] = 0;                                      /* ray */
+      flow[index + 1] = - value * m_bd_1_values[2 * index + 2]; /* arc */
+      flow[index + 2] = 0;                                      /* ray */
+      flow[index + 3] =   value * m_bd_1_values[2 * index + 6]; /* arc */
       index += 4;
     }
   }

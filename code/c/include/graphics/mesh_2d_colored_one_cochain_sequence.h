@@ -6,13 +6,16 @@
 
 typedef struct mesh_2d_colored_one_cochain_sequence
 {
+  int is_mesh_edge_skeleton;
   int index;
   int total_steps;
   mesh * m;
+  double * bd_1;
   double * values;
 
   int total_colors;
   double * new_coordinates;
+  double point_size;
   double line_width;
   double min_value;
   double max_value;
