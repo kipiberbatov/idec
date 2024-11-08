@@ -6,6 +6,7 @@ include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p01.mk
 include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p02.mk
 include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p03.mk
 include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p04.mk
+include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d00_p05.mk
 include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d01_p00.mk
 include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d02_p00.mk
 include code/make/demo/pdf_diffusion_steady_state_continuous_2d_d02_p01.mk
@@ -78,6 +79,7 @@ _demo_pdf_diffusion :=\
   $(_demo_pdf_diffusion_steady_state_continuous_2d_d00_p02)\
   $(_demo_pdf_diffusion_steady_state_continuous_2d_d00_p03)\
   $(_demo_pdf_diffusion_steady_state_continuous_2d_d00_p04)\
+  $(_demo_pdf_diffusion_steady_state_continuous_2d_d00_p05)\
   $(_demo_pdf_diffusion_steady_state_continuous_2d_d01_p00)\
   $(_demo_pdf_diffusion_steady_state_continuous_2d_d02_p00)\
   $(_demo_pdf_diffusion_steady_state_continuous_2d_d02_p01)\
