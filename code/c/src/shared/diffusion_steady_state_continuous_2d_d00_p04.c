@@ -11,7 +11,7 @@ Let
   . G be the boundary of M
   . G_D := {0, 1} x [0, 1]
   . G_N := [0, 1] x {0, 1}
-  . g_D = x * (x - 1)
+  . g_D = y * (y - 1)
   . g_N = (1 - 2 x) dx
 
 The potential 0-form u and flow 1-form q are solutions to the problem
@@ -22,7 +22,7 @@ The potential 0-form u and flow 1-form q are solutions to the problem
 
 This problem has exact solution
 . u(x, y) = x (x - 1) + y * y (y - 1)
-. q(x, y) = (1 - 2 x) dx + (2 x - 1) dy
+. q(x, y) = (1 - 2 y) dx + (2 x - 1) dy
 */
 
 static double pi_1(const double * x)
