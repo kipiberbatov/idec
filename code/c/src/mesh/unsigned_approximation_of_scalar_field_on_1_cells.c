@@ -22,6 +22,6 @@ void unsigned_approximation_of_scalar_field_on_1_cells(
     x0 = f(m_coord + m_dim_embedded * i0);
     x1 = f(m_coord + m_dim_embedded * i1);
     x[i] = (x0 + x1) / 2;
-    m_cf_1_0_i += m_cf_1_0.a1[i];
+    m_cf_1_0_i += 2;
   }
 }

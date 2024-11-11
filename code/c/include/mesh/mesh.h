@@ -146,13 +146,4 @@ void mesh_node_normal(
 /********************************* mesh_size **********************************/
 double mesh_size(const mesh * m);
 
-// void mesh_boundary_node_vectors_matrix(
-//   double * result, int * size, const mesh * m, int i);
-
-/*
-Let $m be a mesh and $i is an index of a boundary node.
-$normal holds coordinates of the exterior to that node.*/
-// void mesh_point_normal(double * normal, const mesh * m, int i,
-//   const jagged1 * m_nodes_bd);
-
 #endif /* _mesh_h */
