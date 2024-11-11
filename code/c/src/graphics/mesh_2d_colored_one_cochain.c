@@ -10,9 +10,9 @@ void mesh_2d_colored_one_cochain_cairo_draw(
   const mesh_2d_colored_one_cochain * c)
 {
   int c_number_of_edges, i, ind;
+  int * cf_1_0_a1, * cf_1_0_i;
   double c_max, c_min, denominator, v0, v1, v_norm, z0, z1;
   double * bd_1, * c_coordinates, * c_values, * e0, * e1;
-  jagged1 cf_1_0_i;
   jagged2 * cf_1_0;
   mesh_2d_colored_edge edge;
 
@@ -28,11 +28,12 @@ void mesh_2d_colored_one_cochain_cairo_draw(
   cf_1_0 = c->cf_1_0;
   bd_1 = c->bd_1;
   c_number_of_edges = cf_1_0->a0;
+  cf_1_0_i = cf_1_0->a2;
+  cf_1_0_a1 = cf_1_0->a1;
   for (i = 0; i < c_number_of_edges; ++i)
   {
-    jagged2_part1(&cf_1_0_i, cf_1_0, i);
-    e0 = c_coordinates + 2 * cf_1_0_i.a1[0];
-    e1 = c_coordinates + 2 * cf_1_0_i.a1[1];
+    e0 = c_coordinates + 2 * cf_1_0_i[0];
+    e1 = c_coordinates + 2 * cf_1_0_i[1];
     cairo_set_source_rgb(cr, 0, 0, 0);
     cairo_set_line_width(cr, edge.width);
     cairo_move_to(cr, e0[0], e0[1]);
@@ -74,5 +75,6 @@ void mesh_2d_colored_one_cochain_cairo_draw(
         edge.point_size / 4, 0, 2 * M_PI);
       cairo_stroke(cr);
     }
+    cf_1_0_i += cf_1_0_a1[i];
   }
 }
