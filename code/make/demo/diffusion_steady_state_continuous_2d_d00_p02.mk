@@ -134,8 +134,7 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p02_mixed_weak_cocha
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
   $(word 4, $^)\
-  > $@ \
-  2> /dev/null
+  > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p02_mixed_weak_cochain_brick_2d_10_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\

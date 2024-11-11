@@ -6,6 +6,8 @@
 #include "double.h"
 #include "matrix_sparse.h"
 
+#define progress 0
+
 void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   double * q,
   double * u,
@@ -22,9 +24,11 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   n = b->rows;
   b_nonzero_max = b->cols_total[b->cols];
 
+#if progress
   fprintf(stderr, "\n%sa:%s\n", color_red, color_none);
   double_array_file_print(stderr, m, a, "--curly");
   fputc('\n', stderr);
+#endif
 
   matrix_sparse_copy_topology(&b_times_inverse_a, b);
   b_times_inverse_a.values = (double *) malloc(sizeof(double) * b_nonzero_max);
@@ -36,8 +40,11 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   }
   memcpy(b_times_inverse_a.values, b->values, sizeof(double) * b_nonzero_max);
   matrix_sparse_multiply_with_inverse_of_diagonal(&b_times_inverse_a, a);
+
+#if progress  
   fprintf(stderr, "\n%sb a^{-1}:%s\n", color_red, color_none);
   matrix_sparse_file_print(stderr, &b_times_inverse_a, "--matrix-form-curly");
+#endif
 
   b_transpose = matrix_sparse_transpose(b);
   if (b_transpose == NULL)
@@ -46,8 +53,11 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
     fputs("cannot calculate b_transpose = b^T\n", stderr);
     goto b_times_inverse_a_values_free;
   }
+
+#if progress  
   fprintf(stderr, "\n%sb^T:%s\n", color_red, color_none);
   matrix_sparse_file_print(stderr, b_transpose, "--matrix-form-curly");
+#endif
 
   c = matrix_sparse_product(&b_times_inverse_a, b_transpose);
   if (c == NULL)
@@ -56,18 +66,27 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
     fputs("cannot calculate c = b a^{-1} b^T\n", stderr);
     goto b_transpose_free;
   }
+
+#if progress  
   fprintf(stderr, "\n%sb a^{-1} b^T:%s\n", color_red, color_none);
   matrix_sparse_file_print(stderr, c, "--matrix-form-curly");
+#endif
 
   double_array_negate(u, n, f);
+
+#if progress 
   fprintf(stderr, "\n%s-f:%s\n", color_red, color_none);
   double_array_file_print(stderr, n, u, "--curly");
   fputc('\n', stderr);
+#endif
 
   matrix_sparse_vector_multiply_add(u, &b_times_inverse_a, g);
+
+#if progress 
   fprintf(stderr, "\n%sb a^{-1} g - f:%s\n", color_red, color_none);
   double_array_file_print(stderr, n, u, "--curly");
   fputc('\n', stderr);
+#endif
 
   matrix_sparse_linear_solve(c, u, "--cholesky");
   if (errno)
@@ -76,29 +95,41 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
     fputs("cannot calculate variable u\n", stderr);
     goto c_free;
   }
+
+#if progress  
   fprintf(stderr, "\n%su:%s\n", color_red, color_none);
   double_array_file_print(stderr, n, u, "--curly");
   fputc('\n', stderr);
+#endif
 
   memcpy(q, g, sizeof(double) * m);
+
+#if progress  
   fprintf(stderr, "\n%sg:%s\n", color_red, color_none);
   double_array_file_print(stderr, m, q, "--curly");
   fputc('\n', stderr);
+#endif
 
   matrix_sparse_vector_subtract_product(q, b_transpose, u);
+
+#if progress  
   fprintf(stderr, "\n%sg - b^T u:%s\n", color_red, color_none);
   double_array_file_print(stderr, m, q, "--curly");
   fputc('\n', stderr);
+#endif
 
   double_array_pointwise_divide(q, m, a);
+
+#if progress  
   fprintf(stderr, "\n%sq = a^{-1} (g - b^t u):%s\n", color_red, color_none);
   double_array_file_print(stderr, m, q, "--curly");
   fputc('\n', stderr);
+#endif
 
+#if progress
   {
     int i;
     double * h = (double *) malloc(sizeof(double) * m);
-    // double_array_pointwise_divide(h, a, q);
     for (i = 0; i < m; ++i)
       h[i] = a[i] * q[i];
     matrix_sparse_vector_multiply_add(h, b_transpose, u);
@@ -110,6 +141,7 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
     fputc('\n', stderr);
     free(h);
   }
+#endif
 
 c_free:
   matrix_sparse_free(c);

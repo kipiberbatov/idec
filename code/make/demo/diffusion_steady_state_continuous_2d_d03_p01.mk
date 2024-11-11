@@ -100,8 +100,7 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_mixed_weak_cocha
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
   $(word 4, $^)\
-  > $@ \
-  2> /dev/null
+  > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_mixed_weak_cochain_circular_4_3_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
@@ -201,8 +200,7 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_mixed_weak_cocha
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
   $(word 4, $^)\
-  > $@ \
-  2> /dev/null
+  > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_mixed_weak_cochain_circular_17_10_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\

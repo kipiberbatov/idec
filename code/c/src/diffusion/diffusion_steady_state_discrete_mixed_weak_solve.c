@@ -7,7 +7,7 @@
 #include "double.h"
 #include "mesh_qc.h"
 
-#define progress 1
+#define progress 0
 
 void diffusion_steady_state_discrete_mixed_weak_solve(
   double * flux,
@@ -122,6 +122,16 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   double_array_file_print(stderr, m->cn[d], f, "--curly");
   fputc('\n', stderr);
 #endif
+  
+  int i, i_local, index;
+  double sign;
+  for (i_local = 0; i_local < data->boundary_neumann_dm1->a0; ++i_local)
+  {
+    i = data->boundary_neumann_dm1->a1[i_local];
+    index = m_cbd_dm1->cols_total[i];
+    sign = m_cbd_dm1->values[index];
+    data->g_neumann_dm1[i_local] *= sign;
+  }
 
   matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     flux, temperature_on_cells,
