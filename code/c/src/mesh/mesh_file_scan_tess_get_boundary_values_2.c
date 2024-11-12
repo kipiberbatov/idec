@@ -24,10 +24,11 @@ void mesh_file_scan_tess_get_boundary_values(double * bd_values_2,
     faces_number_of_sides_i = int_file_scan(in);
     for (j = 0; j < faces_number_of_sides_i; ++j)
     {
+      /* tess meshes come with clock-wise orientation */
       if (int_file_scan(in) > 0)
-        bd_values_2[index] = 1;
-      else
         bd_values_2[index] = -1;
+      else
+        bd_values_2[index] = 1;
       ++index;
     }
 
