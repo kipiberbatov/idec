@@ -10,7 +10,7 @@ Let
   . f = 0
   . G_D := {0, 20} x [0, 15]
   . G_N := [0, 20] x {0, 15}
-  . g_D = {(0, y) |-> 100, (20, y) |-> -100}
+  . g_D = {(0, y) |-> 100, (20, y) |-> 0}
   . g_N = 0
 
 The potential 0-form u and flow 1-form q are solutions to the problem
