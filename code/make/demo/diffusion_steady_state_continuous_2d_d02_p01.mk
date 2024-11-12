@@ -1,4 +1,6 @@
 _demo_diffusion_steady_state_continuous_2d_d02_p01 :=\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_exact_2d_10_grains_forman_potential.txt\
+  build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_exact_2d_10_grains_forman_flow.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_input.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_potential.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_flow.txt\
@@ -8,6 +10,28 @@ _demo_diffusion_steady_state_continuous_2d_d02_p01 :=\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_input.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_solution.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_potential.txt\
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_exact_2d_10_grains_forman_potential.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_potential$(.EXE)\
+  build/$(MODE)/demo/mesh/2d_10_grains_forman.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d02_p01$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$<\
+  --raw $(word 2, $^)\
+  $(word 2, $|)\
+  diffusion_steady_state_continuous_2d_d02_p01_potential\
+  --raw > $@
+
+build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_exact_2d_10_grains_forman_flow.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow$(.EXE)\
+  build/$(MODE)/demo/mesh/2d_10_grains_forman.txt\
+  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d02_p01$(.OBJ)\
+  | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
+	$<\
+  --raw $(word 2, $^)\
+  $(word 2, $|)\
+  diffusion_steady_state_continuous_2d_d02_p01_flow\
+  --raw > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_strong_from_continuous$(.EXE)\
