@@ -14,38 +14,38 @@
     \item
       $u_0 [\Theta] \in \Omega^0 X$ be the initial temperature;
     \item
-      $f [E L^{-D} T^{-1}] \in \Omega^0 X$ be the heat source density;
+      $f [E T^{-1}] \in \Omega^D X$ be the heat source;
     \item
-      $\Gamma_D, \Gamma_N$ form a partition of $(\partial X)_0$;
+      $\Gamma_D, \Gamma_N$ form a partition of $\partial X$;
     \item
       $g_D^0 [\Theta] \colon I \to \Omega^0 \Gamma_D$
       be the prescribed temperature on the Dirchlet boundary.
     \item
-      $\tilde{g_N}^0 [E L^{1 - D} T^{-1}] \colon I \to \Omega^0 \Gamma_N$
-      be the prescribed flux through the Neumann boundary;
+      $g_N^{D - 1} [E T^{-1}] \colon I \to \Omega^{D - 1} \Gamma_N$
+      be the prescribed flow through the Neumann boundary;
     \item
       $\pi_0 [E L^{-D} \Theta^{-1}] \colon \Omega^0 X \to \Omega^0 X$
       be the volumetric heat capacity;
     \item
       $\tilde{\kappa}_1 [E L^{-1} T^{-1} \Theta^{-1}]
       \colon \Omega^1 X \to \Omega^1 X$
-      be the thermal conductivity.
+      be the ``dual'' thermal conductivity.
   \end{itemize}
-  Our unknown is temperature $u [\Theta] \colon I \to \Omega^0 X$.
-  We are solving the following problem for $u$:
+  We are solving the following problem for the unknown temperature
+  $u [\Theta] \colon I \to \Omega^0 X$.
   \begin{subequations}
     \begin{alignat}{3}
       & \pi_0 \frac{\partial u^0}{\partial t}
-      && = - (d_1^\star \circ \tilde{\kappa}_1 \circ d_0) u + f \qquad
+      && = - (d_1^\star \circ \tilde{\kappa}_1 \circ d_0) u + \star_D f^D \qquad
       && [E L^{-D} T^{-1}], \\
 %
       & \tr_{\Gamma_D, 0} u^0
       && = g_D^0 \qquad
       && [\Theta], \\
 %
-      & - (\star_{\Gamma_N, D - 1} \circ \tr_{\Gamma_N, D - 1} \circ \star_1
-        \circ \pi_1 \circ d_0) u^0
-      && = \widetilde{g_N}^0 \qquad
+      & (-1)^{D - 1} (\star_{\Gamma_N, D - 1} \circ \tr_{\Gamma_N, D - 1}
+        \circ \star_1 \circ \tilde{\kappa}_1 \circ d_0) u^0
+      && = \star_{\Gamma_N, D - 1} g_N^{D - 1} \qquad
       && [E L^{1 - D} T^{-1}], \\
 %
       & u^0(t_0, \cdot)

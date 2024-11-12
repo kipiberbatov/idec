@@ -44,7 +44,7 @@
   We will also need the dual variables of heat energy, temperature and flow.
   \begin{itemize}
     \item
-      temperature-volume $\tilde{u}^D [\Theta L^D] \colon I \to \Omega^D X$
+      dual temperature $\tilde{u}^D [\Theta L^D] \colon I \to \Omega^D X$
       defined by
       \begin{equation}
         \tilde{u}^D := \star_0 u^0
@@ -59,11 +59,11 @@
         \tilde{Q}^0 := \star_D Q^D;
       \end{equation}
     \item
-      orthogonal (edge) flux
+      dual flow
       $\tilde{q}^1 [E T L^{2 - D}] \colon I \to \Omega^1 X$
       defined by
       \begin{equation}
-        \tilde{q} := \star_{D - 1} q;
+        \tilde{q} := \star_{D - 1} q^{D - 1};
       \end{equation}
   \end{itemize}
   The governing laws are formulated as follows.
@@ -91,7 +91,7 @@
       \end{equation}
       In symbolic terms, the last equation is written as
       \begin{equation}
-        \int_{V_D} (Q^D(t_2) - Q^d(t_1))
+        \int_{V_D} (Q^D(t_2) - Q^D(t_1))
         = \int_{t_1}^{t_2}
           \left(\int_{\partial V_D} q^{D - 1}(t) \right)\, d t
         + \int_{t_1}^{t_2} \left(\int_{V_D} f^D(t) \right)\, d t.
@@ -99,7 +99,7 @@
       Using Stokes' theorem twice, we get the equation
       \begin{equation}
         \int_{t_1}^{t_2}
-          \left(\int_{V_D} \frac{\partial Q^d}{\partial t}\right)\, d t =
+          \left(\int_{V_D} \frac{\partial Q^D}{\partial t}\right)\, d t =
           \int_{t_1}^{t_2} \left(\int_{V_D} d_{D - 1} q^{D - 1} \right)\, d t
         + \int_{t_1}^{t_2} \left(\int_{V_D} f^D \right)\, d t.
       \end{equation}
@@ -122,7 +122,7 @@
       is given by
       \begin{equation}
         \frac{\partial Q^D}{\partial t}
-        = \star_0 \left(\frac{\partial \tilde{Q}^0}{\partial t}\right).
+        = \star_0 \left(\frac{\partial \tilde{Q}^0}{\partial t}\right)
         = \star_0 \left(\pi_0 \frac{\partial u^0}{\partial t}\right).
       \end{equation}
     \item
@@ -144,16 +144,30 @@
       as a proportionality factor:
       \begin{equation}
         q^{D - 1}
-        = - \kappa_{D - 1} \delta_D^\star \tilde{u}^D
-        = - \kappa_{D - 1} \delta_D^\star \star_0 u^0
-        = (-1)^{D - 1} \kappa_{D - 1} \star_1 \delta_0 u^0
-        = (-1)^{D - 1} \star_1 \tilde{\kappa}_1 \delta_0 u,
+        = - \kappa_{D - 1} d_D^\star \tilde{u}^D
+        = - \kappa_{D - 1} d_D^\star \star_0 u^0
+        = (-1)^{D - 1} \kappa_{D - 1} \star_1 d_0 u^0
+        = (-1)^{D - 1} \star_1 \tilde{\kappa}_1 d_0 u^0,
       \end{equation}
       where we have denoted
       \begin{equation}
         \tilde{\kappa}_1
-        :=\star_1^{-1} \kappa_2 \star_1 [E L^{2 - D} T^{-1} \Theta^{-1}]
+        :=\star_1^{-1} \kappa_{D - 1} \star_1 [E L^{2 - D} T^{-1} \Theta^{-1}]
         \colon \Omega^1 X \to \Omega^1 X.
+      \end{equation}
+      This leads to
+      \begin{equation}
+        \tilde{q}^1 
+        = \star_{D - 1} q^{D - 1}
+        = (-1)^{D - 1} \star_{D - 1} \star_1 \tilde{\kappa}_1 d_0 u^0
+        = (-1)^{D - 1} (-1)^{D - 1} \tilde{\kappa}_1 d_0 u^0
+        = \tilde{\kappa}_1 d_0 u^0.
+      \end{equation}
+      This leads to
+      \begin{equation}
+        \star_D d_{D - 1} q^{D - 1}
+        = (-1)^{D - 1} \star_D d_{D - 1} \star_1 \tilde{\kappa}_1 d_0 u^0
+        = - d^\star_1 \tilde{\kappa}_1 d_0 u^0.
       \end{equation}
   \end{itemize}
   We complete our model with boundary conditions.
