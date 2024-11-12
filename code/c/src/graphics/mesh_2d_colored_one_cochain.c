@@ -39,8 +39,21 @@ void mesh_2d_colored_one_cochain_cairo_draw(
     cairo_move_to(cr, e0[0], e0[1]);
     cairo_line_to(cr, e1[0], e1[1]);
     cairo_stroke(cr);
-    if (!(c->is_mesh_edge_skeleton))
+    cf_1_0_i += cf_1_0_a1[i];
+  }
+  if (!(c->is_mesh_edge_skeleton))
+  {
+    /* temporary hack to show flows on bad meshes */
+    if (edge.width < 2.5)
     {
+      edge.width = 2.5;
+      edge.point_size = 5;
+    }
+    cf_1_0_i = cf_1_0->a2;
+    for (i = 0; i < c_number_of_edges; ++i)
+    {
+      e0 = c_coordinates + 2 * cf_1_0_i[0];
+      e1 = c_coordinates + 2 * cf_1_0_i[1];
       v0 = e1[1] - e0[1];
       v1 = e0[0] - e1[0];
       v_norm = sqrt(v0 * v0 + v1 * v1);
@@ -67,14 +80,17 @@ void mesh_2d_colored_one_cochain_cairo_draw(
       else
         edge.relative_value = (fabs(c_values[i]) - c_min) / denominator;
       ind = (int) (edge.relative_value * ((double) (edge.total_colors - 1)));
+      if (ind < 0)
+        return;
       edge.paint(cr, ind, edge.total_colors);
       cairo_set_line_width(cr, edge.width);
       cairo_move_to(cr, edge.coordinates_0[0], edge.coordinates_0[1]);
       cairo_line_to(cr, edge.coordinates_1[0], edge.coordinates_1[1]);
+      cairo_stroke(cr);
       cairo_arc(cr, edge.coordinates_1[0], edge.coordinates_1[1],
         edge.point_size / 4, 0, 2 * M_PI);
       cairo_stroke(cr);
+      cf_1_0_i += cf_1_0_a1[i];
     }
-    cf_1_0_i += cf_1_0_a1[i];
   }
 }
