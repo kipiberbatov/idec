@@ -22,7 +22,7 @@ The potential 0-form u and flow 1-form q are solutions to the problem
 
 This problem has exact solution
   . u(x, y) = 100 (2 x - 1)
-  . q(x, y) = -200 dy
+  . q(x, y) = 200 dy
 */
 
 static double pi_1(const double * x)
@@ -99,6 +99,6 @@ void diffusion_steady_state_continuous_2d_d00_p01_flow(
     j1 = m_cf_1_0[2 * i + 1];
     y0 = m_coord[2 * j0 + 1];
     y1 = m_coord[2 * j1 + 1];
-    flow[i] = 200. * m_bd_1_values[2 * i] * (y0 - y1);
+    flow[i] = 200. * (y1 - y0) * m_bd_1_values[2 * i + 1];
   }
 }
