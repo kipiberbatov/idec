@@ -10,7 +10,7 @@ static int mesh_boundary_hyperfaces_from_constraint_size(
   const jagged2 * m_cf_dm1_0,
   int (*constraint)(const double *))
 {
-  int flag, i, j, j_local, size;
+  int flag = 0, i, j, j_local, size;
   jagged1 m_cf_dm1_0_i;
 
   size = 0;
@@ -41,7 +41,7 @@ static void mesh_boundary_hyperfaces_from_constraint_values(
   const jagged2 * m_cf_dm1_0,
   int (*constraint)(const double *))
 {
-  int flag, i, index, j, j_local;
+  int flag = 0, i, index, j, j_local;
   jagged1 m_cf_dm1_0_i;
 
   index = 0;
