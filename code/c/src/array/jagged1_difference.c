@@ -21,7 +21,7 @@ jagged1 * jagged1_difference(const jagged1 * y, const jagged1 * x)
     return NULL;
   }
 
-  z_a0 = x->a0;
+  z_a0 = y->a0;
   for (i = 0; i < y_a0; ++i)
     if (jagged1_member(x, y_a1[i]))
       --z_a0;
