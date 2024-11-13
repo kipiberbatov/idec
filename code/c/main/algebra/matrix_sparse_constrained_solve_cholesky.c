@@ -20,9 +20,9 @@ static void matrix_sparse_constrained_solve_cholesky_file_print(
   free(x);
 }
 
-int main()
+int main(void)
 {
-  int b_m;
+  int b_m, status;
   double * b;
   jagged1 * rows;
   matrix_sparse * a;
@@ -30,7 +30,9 @@ int main()
 
   out = stdout;
   in = stdin;
-  fscanf(in, "%d", &b_m);
+  status = fscanf(in, "%d", &b_m);
+  if (status != 1)
+    return EINVAL;
 
   b = double_array_file_scan(in, b_m, "--raw");
   if (errno)
