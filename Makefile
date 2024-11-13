@@ -216,8 +216,8 @@ obj_src_shared: $(_obj_src_shared)
 obj_src_graphics: $(_obj_src_graphics)
 
 # object files from main files
-.PHONY: $(patsubst %, obj_%, $(MODULES))
-obj_main: $(patsubst %, obj_%, $(MODULES))
+.PHONY: $(patsubst %, obj_main_%, $(MODULES))
+obj_main: $(patsubst %, obj_main_%, $(MODULES))
 obj_main_array: $(_obj_main_array)
 obj_main_algebra: $(_obj_main_algebra)
 obj_main_region: $(_obj_main_region)
@@ -242,8 +242,8 @@ dep_src_shared: $(_dep_src_shared)
 dep_src_graphics: $(_dep_src_graphics)
 
 # header dependencies of main files
-.PHONY: $(patsubst %, dep_%, $(MODULES))
-dep_main: $(patsubst %, dep_%, $(MODULES))
+.PHONY: $(patsubst %, dep_main_%, $(MODULES))
+dep_main: $(patsubst %, dep_main_%, $(MODULES))
 dep_main_array: $(_dep_main_array)
 dep_main_algebra: $(_dep_main_algebra)
 dep_main_region: $(_dep_main_region)
