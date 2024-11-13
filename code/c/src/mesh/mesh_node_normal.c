@@ -174,7 +174,7 @@ static void mesh_node_normal_exterior(
   double * m_coord_i)
 {
   int j, m_cn_0, p, t;
-  double free_coefficient, normal_point_value, other_point_value;
+  double free_coefficient, normal_point_value = 0., other_point_value = 0.;
   double nearby_point[3];
   double * m_coord, * m_coord_j, * hyperface_normal_t;
 
