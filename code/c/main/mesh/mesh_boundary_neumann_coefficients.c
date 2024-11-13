@@ -1,11 +1,12 @@
 #include <errno.h>
 #include <stdlib.h>
 
+#include "color.h"
 #include "double.h"
 #include "matrix.h"
 #include "mesh.h"
 
-int x1_axis_constant(const double * x)
+static int x1_axis_constant(const double * x)
 {
   return (x[1] == 0. || x[1] == 1) && (0. < x[0] && x[0] < 1.);
 }
@@ -20,24 +21,27 @@ int main(void)
   double * result;
 
   m = mesh_file_scan(stdin, "--raw");
-  if (errno)
+  if (m == NULL)
   {
-    fputs("Error: cannot scan input mesh\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan input mesh m from stdin in format '--raw'\n", stderr);
     goto end;
   }
 
   m->fc = mesh_fc(m);
-  if (errno)
+  if (m->fc == NULL)
   {
-    fputs("Error: cannot calculate reverse face lattice\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
   mesh_fc_part2(&m_fc_0_1, m, 0, 1);
 
   m_boundary_nodes = mesh_boundary_nodes_from_constraint(m, x1_axis_constant);
-  if (errno)
+  if (m_boundary_nodes == NULL)
   {
-    fputs("Error: cannot calculate m_boundary_nodes\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_boundary_nodes\n", stderr);
     goto m_free;
   }
 
@@ -47,16 +51,18 @@ int main(void)
     jagged2_part1(&m_fc_0_1_i, &m_fc_0_1, i);
     size = m_fc_0_1_i.a0;
     result = mesh_boundary_neumann_coefficients(m, i);
-    if (errno)
+    if (result == NULL)
     {
-      fprintf(stderr, "Error: cannot calculate the neighbors of N_%d \n", i);
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot calculate the Neumann coefficients of N_%d\n", i);
       goto m_boundary_nodes_free;
     }
-    printf("%d\n", size);
+    fprintf(stdout, "%d\n", size);
     double_array_file_print(stdout, size, result, "--raw");
-    puts("");
-    //free(result);
+    fputs("\n", stdout);
+    free(result);
   }
+  errno = 0;
 
 m_boundary_nodes_free:
   jagged1_free(m_boundary_nodes);

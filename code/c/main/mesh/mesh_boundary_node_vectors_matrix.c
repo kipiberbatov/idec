@@ -1,17 +1,18 @@
 #include <errno.h>
 #include <stdlib.h>
 
+#include "color.h"
 #include "matrix.h"
 #include "mesh.h"
 
-int x1_axis_constant(const double * x)
+static int x1_axis_constant(const double * x)
 {
   return (x[1] == 0. || x[1] == 1) && (0. < x[0] && x[0] < 1.);
 }
 
 int main(void)
 {
-  int i, i_local, m_dim_embedded, size;
+  int d, i, i_local, size;
   mesh * m;
   jagged1 * m_boundary_nodes;
   jagged1 m_fc_0_1_i;
@@ -19,25 +20,28 @@ int main(void)
   double * result;
 
   m = mesh_file_scan(stdin, "--raw");
-  if (errno)
+  if (m == NULL)
   {
-    fputs("Error: cannot scan input mesh\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan input mesh m from stdin in format '--raw'\n", stderr);
     goto end;
   }
-  m_dim_embedded = m->dim_embedded;
+  d = m->dim_embedded;
 
   m->fc = mesh_fc(m);
-  if (errno)
+  if (m->fc == NULL)
   {
-    fputs("Error: cannot calculate reverse face lattice\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
   mesh_fc_part2(&m_fc_0_1, m, 0, 1);
 
   m_boundary_nodes = mesh_boundary_nodes_from_constraint(m, x1_axis_constant);
-  if (errno)
+  if (m_boundary_nodes == NULL)
   {
-    fputs("Error: cannot calculate m_boundary_nodes\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_boundary_nodes\n", stderr);
     goto m_free;
   }
 
@@ -47,16 +51,18 @@ int main(void)
     jagged2_part1(&m_fc_0_1_i, &m_fc_0_1, i);
     size = m_fc_0_1_i.a0;
     result = mesh_boundary_node_vectors_matrix(m, i);
-    if (errno)
+    if (result == NULL)
     {
-      fprintf(stderr, "Error: cannot calculate the neighbors of N_%d \n", i);
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot calculate the neighbors of N_%d\n", i);
       goto m_boundary_nodes_free;
     }
-    printf("%d\n%d\n", m_dim_embedded, size);
-    matrix_file_print(stdout, m_dim_embedded, size, result);
-    puts("");
-    //free(result);
+    fprintf(stdout, "%d\n%d\n", d, size);
+    matrix_file_print(stdout, d, size, result);
+    fputs("\n", stdout);
+    free(result);
   }
+  errno = 0;
 
 m_boundary_nodes_free:
   jagged1_free(m_boundary_nodes);
