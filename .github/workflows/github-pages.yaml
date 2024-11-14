@@ -2,11 +2,13 @@
 name: Github Pages
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: [release]
+    types:
+      - completed
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -17,6 +19,7 @@ concurrency:
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -24,14 +27,24 @@ jobs:
       - name: Update apt-get
         run: sudo apt-get update
 
-      - name: Install TeX Live and most used packages
-        run: sudo apt-get install -y texlive-latex-extra
-
       - name: Set up Git repository
         uses: actions/checkout@v4
 
-      - name: Build website
-        run: make website
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-release
+
+      - name: Move PDF images of meshes to the appropriate directory
+        run: |
+          mkdir -p build/release/demo/pdf
+          mv linux-release/demo/pdf/mesh build/release/demo/pdf
+
+      - name: Install TeX Live and most used packages
+        run: sudo apt-get install -y texlive-latex-extra
+      
+      - name: Build website (do not build already downloaded PDF meshes)
+        run: make website -o demo_pdf_mesh
 
       - name: Upload website
         uses: actions/upload-pages-artifact@v3

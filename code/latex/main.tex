@@ -20,6 +20,9 @@
   bookmarksnumbered = true
 }
 \usepackage{cleveref}
+\usepackage{graphicx}
+\graphicspath{{build/release/demo/pdf/mesh/}}
+\usepackage{subcaption}
 \usepackage[most]{tcolorbox}
 \newcommand\coloredcomponent[2]
 {
@@ -121,7 +124,7 @@
 
 \title{Intrinsic discrete exterior calculus (IDEC)}
 \author{Kiprian Berbatov}
-\date{12 November 2024}
+\date{14 November 2024}
 
 \begin{document}
 
@@ -172,6 +175,8 @@
 \input{mesh/combinatorial_differential_form/is_cochain_complex-proposition.tex}
 \input{mesh/combinatorial_differential_form/is_cochain_complex-proof.tex}
 \input{mesh/forman_subdivision/concept-definition.tex}
+\input{mesh/forman_subdivision/concept-example.tex}
+\input{mesh/forman_subdivision/concept-figure.tex}
 \input{mesh/forman_subdivision/relative_orientation-definition.tex}
 \input{mesh/forman_subdivision/cochains_isomorphic_to_original_forms-theorem.tex}
 \input{quasi_cube/concept-definition.tex}
