@@ -18,6 +18,6 @@ website_fast: docs_fast build/website/index.html build/website/style.css\
   | build/docs build/website
 	cp $(word 1, $|)/main.pdf $(word 2, $|)
 
-.PHONY: site_clean
+.PHONY: website_clean
 website_clean:
 	-$(RM) -r build/website
