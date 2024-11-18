@@ -6,7 +6,7 @@
 #define A 5.
 
 /*
-[Example of diffusion in 2D via exterior calculus]
+[Example of steady-state diffusion in 2D via exterior calculus]
 
 Let
   . A be a positive real number

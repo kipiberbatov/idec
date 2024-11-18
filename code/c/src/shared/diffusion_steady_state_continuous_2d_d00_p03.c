@@ -2,7 +2,7 @@
 #include "diffusion_steady_state_continuous.h"
 
 /*
-[Example of diffusion in 2D via exterior calculus]
+[Example of steady-state diffusion in 2D via exterior calculus]
 
 Let
   . M = [0, 1]^2
