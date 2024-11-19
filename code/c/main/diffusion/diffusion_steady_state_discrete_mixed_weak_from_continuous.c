@@ -85,7 +85,7 @@ int main(int argc, char ** argv)
   if (data_discrete == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot open dynamic library %s\n", lib_name);
+    fputs("cannot discretize continuous data %s\n", stderr);
     goto lib_close;
   }
 
