@@ -14,7 +14,12 @@ _demo_gtk_diffusion :=\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d01_p00_primal_strong_cochain_square_8_temperature.log\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p01_primal_weak_cochain_brick_2d_2_forman_temperature.log
 
-_demo_gtk := build/$(MODE)/demo/gtk/fill.log $(_demo_gtk_diffusion)
+include code/make/demo/gtk_diffusion_transient_continuous_2d_d00_p00.mk
+
+_demo_gtk :=\
+  build/$(MODE)/demo/gtk/fill.log\
+  $(_demo_gtk_diffusion_transient_continuous_2d_d00_p00)\
+  $(_demo_gtk_diffusion)
 
 .PHONY: demo_gtk
 demo_gtk: bin $(_demo_gtk)\

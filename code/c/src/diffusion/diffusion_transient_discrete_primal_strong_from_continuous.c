@@ -19,6 +19,9 @@ diffusion_transient_discrete_primal_strong_from_continuous(
   if (errno)
     goto end;
 
+  data_discrete->number_of_cells_1 = m->cn[1];
+  data_discrete->number_of_cells_0 = m->cn[0];
+
   data_discrete->pi_0 = (double *) malloc(sizeof(double) * m->cn[0]);
   if (errno)
     goto data_discrete_free;

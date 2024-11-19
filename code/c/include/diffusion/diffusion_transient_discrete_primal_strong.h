@@ -6,6 +6,8 @@
 
 typedef struct diffusion_transient_discrete_primal_strong
 {
+  int number_of_cells_0;
+  int number_of_cells_1;
   double  * pi_0;
   double  * pi_1;
   double  * initial;
@@ -40,5 +42,12 @@ diffusion_transient_discrete_primal_strong_solve_trapezoidal_to_steady_state(
   const diffusion_transient_discrete_primal_strong * data,
   double time_step,
   double tolerance);
+
+void diffusion_transient_discrete_primal_strong_file_print_raw(
+  FILE * out,
+  const diffusion_transient_discrete_primal_strong * data);
+
+diffusion_transient_discrete_primal_strong *
+diffusion_transient_discrete_primal_strong_file_scan_raw(FILE * in);
 
 #endif /* _diffusion_transient_discrete_primal_strong_h */
