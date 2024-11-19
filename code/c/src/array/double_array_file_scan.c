@@ -22,6 +22,8 @@ double * double_array_file_scan(FILE * in, int n, const char * format)
     a = double_array_file_scan_steady_state_primal_weak_raw(in, n);
   else if (!strcmp(format, "--transient-primal-strong-raw"))
     a = double_array_file_scan_transient_primal_strong_raw(in, n);
+  else if (!strcmp(format, "--transient-primal-weak-raw"))
+    a = double_array_file_scan_transient_primal_weak_raw(in, n);
   else
   {
     errno = EINVAL;

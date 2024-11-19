@@ -14,13 +14,20 @@ diffusion_transient_discrete_primal_weak_from_continuous(
   const double * m_vol_d,
   const diffusion_transient_continuous * data_continuous)
 {
+  int d;
   diffusion_transient_discrete_primal_weak * data_discrete;
+
+  d = m->dim;
 
   data_discrete
   = (diffusion_transient_discrete_primal_weak *)
     malloc(sizeof(diffusion_transient_discrete_primal_weak));
   if (errno)
     goto end;
+
+  data_discrete->number_of_cells_0 = m->cn[0];
+  data_discrete->number_of_cells_1 = m->cn[1];
+  data_discrete->number_of_cells_d = m->cn[d];
 
   data_discrete->pi_0 = (double *) malloc(sizeof(double) * m->cn[0]);
   if (errno)
@@ -38,7 +45,7 @@ diffusion_transient_discrete_primal_weak_from_continuous(
     goto data_discrete_pi_1_free;
   de_rham_0(data_discrete->initial, m, data_continuous->initial);
 
-  data_discrete->source = (double *) malloc(sizeof(double) * m->cn[m->dim]);
+  data_discrete->source = (double *) malloc(sizeof(double) * m->cn[d]);
   if (errno)
     goto data_discrete_initial_free;
   de_rham_nonzero(
