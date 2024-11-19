@@ -85,12 +85,14 @@ build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d01_p00_primal_strong_c
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) $@
 
 include code/make/demo/pdf_diffusion_transient_continuous_2d_d00_p00.mk
+include code/make/demo/pdf_diffusion_transient_continuous_2d_d00_p01.mk
 
 .PHONY: demo_pdf_diffusion demo_pdf_diffusion_clean demo_pdf_diffusion_distclean
 
 _demo_pdf_diffusion :=\
   $(_demo_pdf_diffusion_steady_state)\
   $(_demo_pdf_diffusion_transient_continuous_2d_d00_p00)\
+  $(_demo_pdf_diffusion_transient_continuous_2d_d00_p01)\
 #   $(_demo_pdf_diffusion_transient)\
 
 demo_pdf_diffusion: $(_demo_pdf_diffusion)

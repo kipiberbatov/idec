@@ -15,10 +15,11 @@ _demo_gtk_diffusion :=\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p01_primal_weak_cochain_brick_2d_2_forman_temperature.log
 
 include code/make/demo/gtk_diffusion_transient_continuous_2d_d00_p00.mk
+include code/make/demo/gtk_diffusion_transient_continuous_2d_d00_p01.mk
 
 _demo_gtk :=\
   build/$(MODE)/demo/gtk/fill.log\
-  $(_demo_gtk_diffusion_transient_continuous_2d_d00_p00)\
+  $(_demo_gtk_diffusion_transient_continuous_2d_d00_p01)\
   $(_demo_gtk_diffusion)
 
 .PHONY: demo_gtk

@@ -28,6 +28,7 @@ _demo_diffusion_steady_state :=\
   $(_demo_diffusion_steady_state_continuous_3d_d00_p00)\
 
 include code/make/demo/diffusion_transient_continuous_2d_d00_p00.mk
+include code/make/demo/diffusion_transient_continuous_2d_d00_p01.mk
 
 _demo_diffusion_transient_continuous_2d :=\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_temperature.txt\
@@ -246,6 +247,7 @@ demo_diffusion_transient_continuous_3d: $(_demo_diffusion_transient_continuous_3
 
 _demo_diffusion_transient :=\
   $(_demo_diffusion_transient_continuous_2d_d00_p00)\
+  $(_demo_diffusion_transient_continuous_2d_d00_p01)\
   $(_demo_diffusion_transient_continuous_2d)\
   $(_demo_diffusion_transient_continuous_3d)\
 

@@ -1,5 +1,33 @@
 #include "diffusion_transient_continuous.h"
 
+/*
+[Example of transient diffusion in 2D via exterior calculus]
+
+Let
+  . M = [0, 1]^2
+  . pi_0 = 4
+  . pi_1 = 1
+  . u_0 = {(0, y) |-> 100, (x, y) |-> 0 for x > 0}
+  . f = 0
+  . G be the boundary of M
+  . G_D := {0, 1} x [0, 1]
+  . G_N := [0, 1] x {0, 1}
+  . g_D = {(0, y) |-> 100, (1, y) |-> 1}
+  . g_N = 0
+
+The potential 0-form u and flow 1-form q are solutions to the problem
+  . q = - *_1 pi_1 d_0 u
+  . D_t Q = d q + f
+  . D_t Q = *_0 (D_t (pi_0 u))
+  . tr_{G_D, 0} u = g_D
+  . tr_{G_N, 1} q = g_N
+  . u(t, x, y) = u_0(x, y)
+
+The steady-state version of this problem has exact solution
+  . u(x, y) = 100 (2 x - 1)
+  . q(x, y) = 200 dy
+*/
+
 static double pi_0(const double * x)
 {
   return 4.;
@@ -7,15 +35,15 @@ static double pi_0(const double * x)
 
 static double pi_1(const double * x)
 {
-  return 6.;
+  return 1.;
 }
 
 static double initial(const double * x)
 {
-  if (x[0] == 0. && (0. <= x[1] && x[1] <= 1.))
+  if (x[0] == 1. && (0. <= x[1] && x[1] <= 1.))
     return 100.;
   else
-    return 0.;
+    return -100.;
 }
 
 static double source(const double * x)
@@ -30,10 +58,10 @@ static int boundary_dirichlet(const double * x)
 
 static double g_dirichlet(const double * x)
 {
-  if (x[0] == 0.)
+  if (x[0] == 1.)
     return 100.;
   else /* x[0] == 1. */
-    return 0.;
+    return -100.;
 }
 
 static int boundary_neumann(const double * x)
