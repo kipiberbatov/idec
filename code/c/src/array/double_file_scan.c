@@ -1,5 +1,7 @@
 #include <errno.h>
-#include <stdlib.h>
+#include <string.h>
+
+#include "color.h"
 #include "double.h"
 
 double double_file_scan(FILE * in)
@@ -12,9 +14,19 @@ double double_file_scan(FILE * in)
   {
     errno = EINVAL;
     if (correct == 0)
-      perror("double_file_scan - not a valid floating point number");
+    {
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr,
+        "input is not a valid floating point number: %s\n",
+        strerror(errno));
+    }
     else
-      perror("double_file_scan - there is no number to scan");
+    {
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr,
+        "there is no number to scan: %s\n",
+        strerror(errno));
+    }
     return -1;
   }
   return a;
