@@ -12,4 +12,12 @@ void de_rham_nonzero(
   const double * m_vol_p,
   double (*f)(const double *));
 
+void de_rham_sequence_0(
+  double * w,
+  const mesh * m,
+  double start,
+  double step,
+  int number_of_steps,
+  double (*f)(double, const double *));
+
 #endif /* _de_rham_h */
