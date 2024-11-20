@@ -32,7 +32,7 @@ double * diffusion_steady_state_continuous_primal_weak_cochain_solve(
 
 /******************************** mixed weak *********************************/
 void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
-  double * flux,
+  double * flow,
   double * dual_potential,
   const mesh * m,
   const matrix_sparse * m_bd_d,

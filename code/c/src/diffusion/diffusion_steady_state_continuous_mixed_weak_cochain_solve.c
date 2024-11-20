@@ -8,7 +8,7 @@
 #include "mesh_qc.h"
 
 void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
-  double * flux,
+  double * flow,
   double * dual_potential,
   const mesh * m,
   const matrix_sparse * m_cbd_dm1,
@@ -30,7 +30,7 @@ void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
   }
 
   diffusion_steady_state_discrete_mixed_weak_solve(
-    flux,
+    flow,
     dual_potential,
     m,
     m_cbd_dm1,

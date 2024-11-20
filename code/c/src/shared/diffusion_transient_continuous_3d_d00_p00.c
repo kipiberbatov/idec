@@ -10,7 +10,7 @@ In this example:
   . the initial potential at the left face (x[0] = 0) is 100 degrees
     the initial potential at the right face (x[0] = 1) is 0 degrees
   . we maintain constant potential at those two face
-  . on the other 4 faces we maintain constant zero flux
+  . on the other 4 faces we maintain constant zero flow
 After a finite amount of time the potential will be distributed linearly.
 */
 

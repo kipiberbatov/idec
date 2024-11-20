@@ -157,7 +157,7 @@ int main(int argc, char ** argv)
   a.paint = paint_rgb;
 
   speed = 100;
-  title = "Heat flux in 2D";
+  title = "Heat flow in 2D";
 
   gtk_init(&argc, &argv);
 

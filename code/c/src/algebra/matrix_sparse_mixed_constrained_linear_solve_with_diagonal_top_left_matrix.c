@@ -38,7 +38,7 @@ static void set_f_new(
 }
 
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
-  double * flux,
+  double * flow,
   double * dual_potential,
   const double * a,
   const matrix_sparse * b,
@@ -48,7 +48,7 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   const double * g_neumann)
 {
   int restrict_size;
-  double * a_restrict, * flux_restrict, * f_new, * g_new_restrict;
+  double * a_restrict, * flow_restrict, * f_new, * g_new_restrict;
   jagged1 * boundary_neumann_complement;
   matrix_sparse * b_restrict;
 
@@ -98,30 +98,30 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   }
   set_f_new(f_new, f, b, boundary_neumann, g_neumann);
 
-  flux_restrict = (double *) malloc(sizeof(double) * restrict_size);
-  if (flux_restrict == NULL)
+  flow_restrict = (double *) malloc(sizeof(double) * restrict_size);
+  if (flow_restrict == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for flux_restrict\n", stderr);
+    fputs("cannot allocate memory for flow_restrict\n", stderr);
     goto f_new_free;
   }
 
   matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
-    flux_restrict, dual_potential,
+    flow_restrict, dual_potential,
     a_restrict, b_restrict, g_new_restrict, f_new);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot solve restricted mixed linear system\n", stderr);
-    goto flux_restrict_free;
+    goto flow_restrict_free;
   }
 
   double_array_assemble_from_sparse_array(
-    flux, boundary_neumann_complement, flux_restrict);
-  double_array_assemble_from_sparse_array(flux, boundary_neumann, g_neumann);
+    flow, boundary_neumann_complement, flow_restrict);
+  double_array_assemble_from_sparse_array(flow, boundary_neumann, g_neumann);
 
-flux_restrict_free:
-  free(flux_restrict);
+flow_restrict_free:
+  free(flow_restrict);
 f_new_free:
   free(f_new);
 g_new_restrict_free:

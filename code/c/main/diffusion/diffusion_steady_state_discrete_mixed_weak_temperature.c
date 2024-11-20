@@ -14,7 +14,7 @@ int main(int argc, char ** argv)
        * solution_name;
   int d, m_cn_dm1, m_cn_d;
   int * m_cn;
-  double * flux, * potential, * dual_potential;
+  double * flow, * potential, * dual_potential;
   double ** m_vol;
   FILE * data_file, * m_file, * solution_file;
   mesh * m;
@@ -107,12 +107,12 @@ int main(int argc, char ** argv)
   m_cn_dm1 = int_file_scan(solution_file);
   m_cn_d = int_file_scan(solution_file);
 
-  flux = double_array_file_scan(solution_file, m_cn_dm1, "--raw");
-  if (flux == NULL)
+  flow = double_array_file_scan(solution_file, m_cn_dm1, "--raw");
+  if (flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan flux from file in format 'raw' %s\n", solution_name);
+      "cannot scan flow from file in format 'raw' %s\n", solution_name);
     fclose(solution_file);
     goto data_free;
   }
@@ -125,7 +125,7 @@ int main(int argc, char ** argv)
       "cannot scan dual_potential from file in format 'raw' %s\n",
       solution_name);
     fclose(solution_file);
-    goto flux_free;
+    goto flow_free;
   }
   fclose(solution_file);
 
@@ -146,8 +146,8 @@ int main(int argc, char ** argv)
   free(potential);
 dual_potential_free:
   free(dual_potential);
-flux_free:
-  free(flux);
+flow_free:
+  free(flow);
 data_free:
   diffusion_steady_state_discrete_mixed_weak_free(data);
 m_vol_free:

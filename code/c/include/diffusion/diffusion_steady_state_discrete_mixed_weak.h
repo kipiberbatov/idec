@@ -28,7 +28,7 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
   const diffusion_steady_state_continuous * data_continuous);
 
 void diffusion_steady_state_discrete_mixed_weak_solve(
-  double * flux,
+  double * flow,
   double * dual_potential,
   const mesh * m,
   const matrix_sparse * m_bd_d,

@@ -61,7 +61,7 @@ diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal_to_steady_s
 
 /******************************** mixed weak *********************************/
 void diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal(
-  double * flux,
+  double * flow,
   double * potential,
   const mesh * m,
   const matrix_sparse * m_bd_d,
@@ -75,7 +75,7 @@ void diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal(
 
 void
 diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal_to_steady_state(
-  double_array_sequence_dynamic * flux,
+  double_array_sequence_dynamic * flow,
   double_array_sequence_dynamic * potential,
   const mesh * m,
   const double * m_vol_dm1,

@@ -14,7 +14,7 @@ int main(int argc, char ** argv)
   char * error, * data_name, * lib_name, * m_inner_name, * m_name, * m_vol_name;
   int d;
   int * m_cn;
-  double * flux, * dual_potential;
+  double * flow, * dual_potential;
   double ** m_inner, ** m_vol;
   FILE * m_file;
   matrix_sparse * m_cbd_dm1;
@@ -122,11 +122,11 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  flux = (double *) malloc(sizeof(double) * m->cn[d - 1]);
-  if (flux == NULL)
+  flow = (double *) malloc(sizeof(double) * m->cn[d - 1]);
+  if (flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for flux\n", stderr);
+    fputs("cannot allocate memory for flow\n", stderr);
     goto lib_close;
   }
 
@@ -135,23 +135,23 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot allocate memory for dual_potential\n", stderr);
-    goto flux_free;
+    goto flow_free;
   }
 
   diffusion_steady_state_continuous_mixed_weak_cochain_solve(
-    flux, dual_potential,
+    flow, dual_potential,
     m, m_cbd_dm1, m_vol[d - 1], m_vol[d], m_inner[d - 1], m_inner[d], data);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot find flux and potential\n", stderr);
+    fputs("cannot find flow and potential\n", stderr);
     goto dual_potential_free;
   }
 
 dual_potential_free:
   free(dual_potential);
-flux_free:
-  free(flux);
+flow_free:
+  free(flow);
 lib_close:
   dlclose(lib_name);
 m_inner_free:
