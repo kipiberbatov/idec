@@ -7,7 +7,7 @@ build/docs: | build
 LATEX_COMPILER := TEXINPUTS=./code/latex/src: pdflatex -halt-on-error
 
 build/docs/main.pdf: code/latex/main.tex $(shell find code/latex -name "*.tex")\
-  demo_pdf_mesh | build/docs
+  demo_pdf | build/docs
 	$(LATEX_COMPILER) -output-directory=$| $<
 	$(LATEX_COMPILER) -output-directory=$| $<
 
