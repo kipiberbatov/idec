@@ -14,7 +14,7 @@ int main(int argc, char ** argv)
        * solution_name;
   int d, m_cn_dm1, m_cn_d;
   int * m_cn;
-  double * flux, * potential, * potential_on_cells;
+  double * flux, * potential, * dual_potential;
   double ** m_vol;
   FILE * data_file, * m_file, * solution_file;
   mesh * m;
@@ -117,12 +117,12 @@ int main(int argc, char ** argv)
     goto data_free;
   }
 
-  potential_on_cells = double_array_file_scan(solution_file, m_cn_d, "--raw");
-  if (potential_on_cells == NULL)
+  dual_potential = double_array_file_scan(solution_file, m_cn_d, "--raw");
+  if (dual_potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan potential_on_cells from file in format 'raw' %s\n",
+      "cannot scan dual_potential from file in format 'raw' %s\n",
       solution_name);
     fclose(solution_file);
     goto flux_free;
@@ -134,18 +134,18 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot allocate memory for potential\n", stderr);
-    goto potential_on_cells_free;
+    goto dual_potential_free;
   }
 
-  mesh_qc_hodge_star_d(potential, m, m_vol[d], potential_on_cells);
+  mesh_qc_hodge_star_d(potential, m, m_vol[d], dual_potential);
   double_array_assemble_from_sparse_array(
     potential, data->boundary_dirichlet_0, data->g_dirichlet_0);
 
   double_array_file_print(stdout, m->cn[0], potential, "--raw");
 
   free(potential);
-potential_on_cells_free:
-  free(potential_on_cells);
+dual_potential_free:
+  free(dual_potential);
 flux_free:
   free(flux);
 data_free:

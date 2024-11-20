@@ -9,7 +9,7 @@
 
 void diffusion_steady_state_discrete_mixed_weak_solve(
   double * flux,
-  double * potential_on_cells,
+  double * dual_potential,
   const mesh * m,
   const matrix_sparse * m_cbd_dm1,
   const double * m_inner_dm1,
@@ -84,7 +84,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   }
 
   matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
-    flux, potential_on_cells,
+    flux, dual_potential,
     a, b, g, f, data->boundary_neumann_dm1, data->g_neumann_dm1);
   if (errno)
   {

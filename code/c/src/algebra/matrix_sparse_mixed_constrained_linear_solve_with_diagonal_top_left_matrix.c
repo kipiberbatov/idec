@@ -39,7 +39,7 @@ static void set_f_new(
 
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double * flux,
-  double * potential_on_cells,
+  double * dual_potential,
   const double * a,
   const matrix_sparse * b,
   const double * g,
@@ -107,7 +107,7 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   }
 
   matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
-    flux_restrict, potential_on_cells,
+    flux_restrict, dual_potential,
     a_restrict, b_restrict, g_new_restrict, f_new);
   if (errno)
   {

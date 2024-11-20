@@ -272,7 +272,7 @@ $
 for $q = fluxe$ and $u = potential$ */
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double * flux,
-  double * potential_on_cells,
+  double * dual_potential,
   const double * a,
   const matrix_sparse * b,
   const double * g,
