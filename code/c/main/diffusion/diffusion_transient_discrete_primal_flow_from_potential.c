@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
   char * flow_format, * m_format, * m_name, * m_hodge_format, * m_hodge_name,
        * number_of_steps_name, * pi_1_format, * pi_1_name, * potential_format,
       * potential_name;
-  int number_of_steps;
+  int d, number_of_steps;
   double * flow, * pi_1, * potential;
   mesh * m;
   matrix_sparse * m_bd_1;
@@ -59,6 +59,7 @@ int main(int argc, char ** argv)
     fclose(m_file);
     goto end;
   }
+  d = m->dim;
 
   m_bd_1 = mesh_file_scan_boundary_p(m_file, m, 1);
   if (m_bd_1 == NULL)
@@ -118,14 +119,14 @@ int main(int argc, char ** argv)
     goto pi_1_free;
   }
 
-  flow = (double *) calloc(
-    m->cn[m->dim - 1] * (number_of_steps + 1), sizeof(double));
+  flow = (double *) calloc(m->cn[d - 1] * (number_of_steps + 1),
+                           sizeof(double));
   if (flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
       "cannot allocate allocate %ld bytes of memory for flow\n",
-      sizeof(double) * m->cn[m->dim - 1] * (number_of_steps + 1));
+      sizeof(double) * m->cn[d - 1] * (number_of_steps + 1));
     goto potential_free;
   }
 
@@ -139,7 +140,7 @@ int main(int argc, char ** argv)
   }
 
   double_matrix_file_print(
-    stdout, number_of_steps + 1, m->cn[m->dim - 1],flow, flow_format);
+    stdout, number_of_steps + 1, m->cn[d - 1], flow, flow_format);
 
 flow_free:
   free(flow);
@@ -148,7 +149,7 @@ potential_free:
 pi_1_free:
   free(pi_1);
 m_hodge_free:
-  matrix_sparse_array_free(m_hodge, m->dim + 1);
+  matrix_sparse_array_free(m_hodge, d + 1);
 m_bd_1_free:
   matrix_sparse_free(m_bd_1);
 m_free:
