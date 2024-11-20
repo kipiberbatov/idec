@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "color.h"
 #include "diffusion_discrete_set_neumann_rows.h"
 #include "diffusion_transient_discrete_primal_strong_solve_trapezoidal_next.h"
 
@@ -37,9 +38,6 @@ static void loop(
   }
 }
 
-#define FUNCTION "diffusion_transient_discrete_primal_strong_solve_trapezoidal"
-#define START_ERROR_MESSAGE fprintf(stderr,"  %s: ", FUNCTION)
-
 double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   const mesh * m,
   const matrix_sparse * m_cbd_0,
@@ -61,7 +59,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   b = matrix_sparse_material_product(m_cbd_0, data->pi_1, m_cbd_star_1);
   if (errno)
   {
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fputs("cannot calculate b\n", stderr);
     goto end;
   }
@@ -70,7 +68,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   lhs = matrix_sparse_copy(b);
   if (errno)
   {
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fputs("cannot calculate matrix lhs\n", stderr);
     goto b_free;
   }
@@ -81,7 +79,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   rhs = matrix_sparse_copy(b);
   if (errno)
   {
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fputs("cannot calculate matrix lhs\n", stderr);
     goto lhs_free;
   }
@@ -93,7 +91,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   if (errno)
   {
     fputs("Runtime error stack trace:\n", stderr);
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fputs("cannot allocate memory for free_part\n", stderr);
     goto rhs_free;
   }
@@ -108,7 +106,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
     lhs, m, data->boundary_neumann, data->pi_1);
   if (errno)
   {
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fputs("cannot apply Neumann boundary condition\n", stderr);
     goto free_part_free;
   }
@@ -118,7 +116,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   if (errno)
   {
     fputs("Runtime error stack trace:\n", stderr);
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fputs("cannot allocate memory for rhs_final\n", stderr);
     goto free_part_free;
   }
@@ -128,7 +126,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   if (errno)
   {
     fputs("Runtime error stack trace:\n", stderr);
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fputs("cannot allocate memory for result\n", stderr);
     goto rhs_final_free;
   }
@@ -142,7 +140,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   loop(result, rhs_final, lhs, rhs, free_part, data, number_of_steps);
   if (errno)
   {
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fputs("error in loop calculating final result\n", stderr);
     free(result);
     goto rhs_final_free;

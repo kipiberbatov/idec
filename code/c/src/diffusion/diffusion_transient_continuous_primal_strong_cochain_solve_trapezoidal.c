@@ -1,10 +1,8 @@
 #include <errno.h>
 
+#include "color.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_primal_strong.h"
-
-#define FUNCTION "diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal"
-#define START_ERROR_MESSAGE fprintf(stderr,"  %s: ", FUNCTION)
 
 double * diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
   const mesh * m,
@@ -21,7 +19,7 @@ double * diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
     m, data_continuous);
   if (errno)
   {
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fprintf(stderr, "cannot discretize continuous data\n");
     goto end;
   }
@@ -36,7 +34,7 @@ double * diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
   );
   if (errno)
   {
-    START_ERROR_MESSAGE;
+    color_error_position(__FILE__, __LINE__);;
     fprintf(stderr, "cannot find discretized result\n");
     goto data_discrete_free;
   }
