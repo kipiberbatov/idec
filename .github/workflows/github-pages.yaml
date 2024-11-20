@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-pdf-mesh:
+  build-pdf:
     runs-on: ubuntu-latest
     steps:
       - name: Update apt-get
@@ -35,19 +35,19 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v4
 
-      - name: Produce PDF images of 2D meshes
-        run: make demo_pdf_mesh
+      - name: Produce PDF images
+        run: make demo_pdf
 
-      - name: Upload PDF images of 2D meshes
+      - name: Upload PDF images
         uses: actions/upload-artifact@v4
         with:
-          name: pdf-mesh
-          path: build/release/demo/pdf/mesh
+          name: pdf
+          path: build/release/demo/pdf
           retention-days: 7
   
   build-latex-website:
     runs-on: ubuntu-latest
-    needs: build-pdf-mesh
+    needs: build-pdf
     steps:
       - name: Update apt-get
         run: sudo apt-get update
@@ -57,22 +57,22 @@ jobs:
       
       - name: Prepare directory for downloading
         run: |
-          mkdir -p build/release/demo/pdf/mesh
-          cd build/release/demo/pdf/mesh
+          mkdir -p build/release/demo/pdf
+          cd build/release/demo/pdf
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: pdf-mesh
+          name: pdf
 
       - name: Go back to home directory
-        run: cd ../../../../..
+        run: cd ../../../..
 
       - name: Install TeX Live and most used packages
         run: sudo apt-get install -y texlive-latex-extra
       
-      - name: Build website (do not build already downloaded PDF meshes)
-        run: make website -o demo_pdf_mesh
+      - name: Build website (do not build already downloaded PDF images)
+        run: make website -o demo_pdf_mesh -o demo_pdf_diffusion
 
       - name: Upload website
         uses: actions/upload-pages-artifact@v3

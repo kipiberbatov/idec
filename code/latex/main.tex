@@ -21,8 +21,9 @@
 }
 \usepackage{cleveref}
 \usepackage{graphicx}
-\graphicspath{{build/release/demo/pdf/mesh/}}
+\graphicspath{{build/release/demo/pdf/mesh/}{build/release/demo/pdf/diffusion/}}
 \usepackage{subcaption}
+\usepackage{cprotect}
 \usepackage[most]{tcolorbox}
 \newcommand\coloredcomponent[2]
 {
@@ -250,6 +251,15 @@
 \phantom{T}
 \input{heat_transport/discrete/mixed_weak_transient-formulation.tex}
 \input{heat_transport/discrete/mixed_weak_steady_state-formulation.tex}
+
+\section{Examples of transport phenomena (e.g., heat transport)}
+\label{section:examples_of_transport_phenomena}
+\input{heat_transport/continuous/2d_d00_p01-example.tex}
+\input{heat_transport/continuous/2d_d00_p01-figure.tex}
+\input{heat_transport/continuous/2d_d00_p02-example.tex}
+\input{heat_transport/continuous/2d_d00_p02-figure.tex}
+\input{heat_transport/continuous/2d_d02_p00-example.tex}
+\input{heat_transport/continuous/2d_d02_p00-figure.tex}
 
 \section{Discrete elasticity}
 \label{section:discrete_elasticity}
