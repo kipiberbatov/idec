@@ -148,14 +148,6 @@ int main(int argc, char ** argv)
     goto temperature_on_cells_free;
   }
 
-  fprintf(stderr, "\n%sflux:%s\n", color_red, color_none);
-  double_array_file_print(stderr, m->cn[d - 1], flux, "--curly");
-  fputc('\n', stderr);
-
-  fprintf(stderr, "\n%stemperature on cells:%s\n", color_red, color_none);
-  double_array_file_print(stderr, m->cn[d], temperature_on_cells, "--curly");
-  fputc('\n', stderr);
-
 temperature_on_cells_free:
   free(temperature_on_cells);
 flux_free:
