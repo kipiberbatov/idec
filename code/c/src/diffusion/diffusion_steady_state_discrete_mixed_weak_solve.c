@@ -7,8 +7,6 @@
 #include "double.h"
 #include "mesh_qc.h"
 
-#define progress 0
-
 void diffusion_steady_state_discrete_mixed_weak_solve(
   double * flux,
   double * temperature_on_cells,
@@ -25,18 +23,6 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
 
   d = m->dim;
 
-#if progress
-  fprintf(stderr, "\n%sm_inner_%d:%s\n", color_red, d - 1, color_none);
-  double_array_file_print(stderr, m->cn[d - 1], m_inner_dm1, "--curly");
-  fputc('\n', stderr);
-#endif
-
-#if progress
-  fprintf(stderr, "\n%spi_%d:%s\n", color_red, d - 1, color_none);
-  double_array_file_print(stderr, m->cn[d - 1], data->pi_dm1, "--curly");
-  fputc('\n', stderr);
-#endif
-
   a = (double *) malloc(sizeof(double) * m->cn[d - 1]);
   if (a == NULL)
   {
@@ -47,18 +33,6 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   mesh_qc_matrix_diagonal_from_inner_of_basis_dm1_cup_inverse_pi_2_basis_dm1(
     a, m, m_inner_dm1, data->pi_dm1);
 
-#if progress
-  fprintf(stderr, "\n%sa_original:%s\n", color_red, color_none);
-  double_array_file_print(stderr, m->cn[d - 1], a, "--curly");
-  fputc('\n', stderr);
-#endif
-
-#if progress
-  fprintf(stderr, "\n%sm_inner_%d:%s\n", color_red, d, color_none);
-  double_array_file_print(stderr, m->cn[d], m_inner_d, "--curly");
-  fputc('\n', stderr);
-#endif
-
   b = mesh_qc_matrix_sparse_from_inner_of_basis_d_cup_delta_basis_dm1(
     m_cbd_dm1, m_inner_d);
   if (b == NULL)
@@ -67,10 +41,6 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
     fputs("cannot calculate b\n", stderr);
     goto a_free;
   }
-#if progress
-  fprintf(stderr, "\n%sb_original:%s\n", color_red, color_none);
-  matrix_sparse_file_print(stderr, b, "--matrix-form-curly");
-#endif
 
   g_dirichlet_0_big = (double *) calloc(m->cn[0], sizeof(double));
   if (g_dirichlet_0_big == NULL)
@@ -82,12 +52,6 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   double_array_assemble_from_sparse_array(
     g_dirichlet_0_big, data->boundary_dirichlet_0, data->g_dirichlet_0);
 
-#if progress
-  fprintf(stderr, "\n%sg_dirichlet_0_big:%s\n", color_red, color_none);
-  double_array_file_print(stderr, m->cn[0], g_dirichlet_0_big, "--curly");
-  fputc('\n', stderr);
-#endif
-
   g = (double *) calloc(m->cn[d - 1], sizeof(double));
   if (g == NULL)
   {
@@ -98,14 +62,6 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
     g, m, m_cbd_dm1, data->boundary_dirichlet_dm1, g_dirichlet_0_big);
 
-#if progress
-  fprintf(stderr,
-    "\n%sg = {(g_d \\_/ c^{%d, i})}_{i = 0}^{%d}:%s\n",
-    color_red, d - 1, m->cn[d - 1] - 1, color_none);
-  double_array_file_print(stderr, m->cn[d - 1], g, "--curly");
-  fputc('\n', stderr);
-
-#endif
   f = (double *) malloc(sizeof(double) * m->cn[d]);
   if (f == NULL)
   {
@@ -116,12 +72,6 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   mesh_qc_vector_from_inner_of_basis_d_cup_d_cochain(
     f, m, m_inner_d, data->source_d);
   double_array_multiply_with(f, m->cn[d], -1.);
-
-#if progress
-  fprintf(stderr, "\n%sf^%d:%s\n", color_red, d, color_none);
-  double_array_file_print(stderr, m->cn[d], f, "--curly");
-  fputc('\n', stderr);
-#endif
 
   int i, i_local, index;
   double sign;

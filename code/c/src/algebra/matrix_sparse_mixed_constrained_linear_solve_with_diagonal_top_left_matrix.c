@@ -37,8 +37,6 @@ static void set_f_new(
   }
 }
 
-#define progress 0
-
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double * flux,
   double * temperature_on_cells,
@@ -63,12 +61,6 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   }
   restrict_size = boundary_neumann_complement->a0;
 
-#if progress
-  fprintf(stderr,
-    "\n%sboundary_neumann_complement:%s\n", color_red, color_none);
-  jagged1_file_print(stderr, boundary_neumann_complement, "--curly");
-#endif
-
   a_restrict = (double *) malloc(sizeof(double) * restrict_size);
   if (a == NULL)
   {
@@ -79,12 +71,6 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double_array_compress_to_sparse_array(
     a_restrict, boundary_neumann_complement, a);
 
-#if progress
-  fprintf(stderr, "\n%sa_restrict (diagonal):%s\n", color_red, color_none);
-  double_array_file_print(stderr, restrict_size, a_restrict, "--curly");
-  fputc('\n', stderr);
-#endif
-
   b_restrict = matrix_sparse_columns_restrict(b, boundary_neumann_complement);
   if (b_restrict == NULL)
   {
@@ -92,11 +78,6 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     fputs("cannot allocate memory for b_restrict\n", stderr);
     goto a_restrict_free;
   }
-
-#if progress
-  fprintf(stderr, "\n%sb_restrict:%s\n", color_red, color_none);
-  matrix_sparse_file_print(stderr, b_restrict, "--matrix-form-curly");
-#endif
 
   g_new_restrict = (double *) malloc(sizeof(double) * restrict_size);
   if (g_new_restrict == NULL)
@@ -108,12 +89,6 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double_array_compress_to_sparse_array(
     g_new_restrict, boundary_neumann_complement, g);
 
-#if progress
-  fprintf(stderr, "\n%sg_new_restrict:%s\n", color_red, color_none);
-  double_array_file_print(stderr, restrict_size, g_new_restrict, "--curly");
-  fputc('\n', stderr);
-#endif
-
   f_new = (double *) malloc(sizeof(double) * b->rows);
   if (f_new == NULL)
   {
@@ -122,12 +97,6 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
     goto g_new_restrict_free;
   }
   set_f_new(f_new, f, b, boundary_neumann, g_neumann);
-
-#if progress
-  fprintf(stderr, "\n%sf_new:%s\n", color_red, color_none);
-  double_array_file_print(stderr, b->rows, f_new, "--curly");
-  fputc('\n', stderr);
-#endif
 
   flux_restrict = (double *) malloc(sizeof(double) * restrict_size);
   if (flux_restrict == NULL)
