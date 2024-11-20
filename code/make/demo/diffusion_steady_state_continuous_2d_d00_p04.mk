@@ -137,7 +137,7 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_mixed_weak_cocha
   > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_potential.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_potential$(.EXE)\
   build/$(MODE)/demo/mesh/brick_2d_5_forman.txt\
   build/$(MODE)/demo/mesh/brick_2d_5_forman_vol.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_input.txt\

@@ -103,7 +103,7 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p00_mixed_weak_cocha
   > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p00_mixed_weak_cochain_circular_4_3_forman_potential.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_potential$(.EXE)\
   build/$(MODE)/demo/mesh/circular_4_3_forman.txt\
   build/$(MODE)/demo/mesh/circular_4_3_forman_vol.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p00_mixed_weak_cochain_circular_4_3_forman_input.txt\
@@ -203,7 +203,7 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p00_mixed_weak_cocha
   > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p00_mixed_weak_cochain_circular_17_10_forman_potential.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_temperature$(.EXE)\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_potential$(.EXE)\
   build/$(MODE)/demo/mesh/circular_17_10_forman.txt\
   build/$(MODE)/demo/mesh/circular_17_10_forman_vol.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p00_mixed_weak_cochain_circular_17_10_forman_input.txt\
