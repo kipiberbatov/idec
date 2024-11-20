@@ -14,7 +14,7 @@ int main(int argc, char ** argv)
   char * error, * data_name, * lib_name, * m_inner_name, * m_name, * m_vol_name;
   int d;
   int * m_cn;
-  double * flux, * temperature_on_cells;
+  double * flux, * potential_on_cells;
   double ** m_inner, ** m_vol;
   FILE * m_file;
   matrix_sparse * m_cbd_dm1;
@@ -130,26 +130,26 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  temperature_on_cells = (double *) malloc(sizeof(double) * m->cn[d]);
-  if (temperature_on_cells == NULL)
+  potential_on_cells = (double *) malloc(sizeof(double) * m->cn[d]);
+  if (potential_on_cells == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for temperature_on_cells\n", stderr);
+    fputs("cannot allocate memory for potential_on_cells\n", stderr);
     goto flux_free;
   }
 
   diffusion_steady_state_continuous_mixed_weak_cochain_solve(
-    flux, temperature_on_cells,
+    flux, potential_on_cells,
     m, m_cbd_dm1, m_vol[d - 1], m_vol[d], m_inner[d - 1], m_inner[d], data);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot find flux and temperature\n", stderr);
-    goto temperature_on_cells_free;
+    fputs("cannot find flux and potential\n", stderr);
+    goto potential_on_cells_free;
   }
 
-temperature_on_cells_free:
-  free(temperature_on_cells);
+potential_on_cells_free:
+  free(potential_on_cells);
 flux_free:
   free(flux);
 lib_close:

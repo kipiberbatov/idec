@@ -14,7 +14,7 @@ int main(int argc, char ** argv)
        * solution_name;
   int d, m_cn_dm1, m_cn_d;
   int * m_cn;
-  double * flux, * temperature, * temperature_on_cells;
+  double * flux, * potential, * potential_on_cells;
   double ** m_vol;
   FILE * data_file, * m_file, * solution_file;
   mesh * m;
@@ -117,35 +117,35 @@ int main(int argc, char ** argv)
     goto data_free;
   }
 
-  temperature_on_cells = double_array_file_scan(solution_file, m_cn_d, "--raw");
-  if (temperature_on_cells == NULL)
+  potential_on_cells = double_array_file_scan(solution_file, m_cn_d, "--raw");
+  if (potential_on_cells == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan temperature_on_cells from file in format 'raw' %s\n",
+      "cannot scan potential_on_cells from file in format 'raw' %s\n",
       solution_name);
     fclose(solution_file);
     goto flux_free;
   }
   fclose(solution_file);
 
-  temperature = (double *) malloc(sizeof(double) * m->cn[0]);
-  if (temperature == NULL)
+  potential = (double *) malloc(sizeof(double) * m->cn[0]);
+  if (potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for temperature\n", stderr);
-    goto temperature_on_cells_free;
+    fputs("cannot allocate memory for potential\n", stderr);
+    goto potential_on_cells_free;
   }
 
-  mesh_qc_hodge_star_d(temperature, m, m_vol[d], temperature_on_cells);
+  mesh_qc_hodge_star_d(potential, m, m_vol[d], potential_on_cells);
   double_array_assemble_from_sparse_array(
-    temperature, data->boundary_dirichlet_0, data->g_dirichlet_0);
+    potential, data->boundary_dirichlet_0, data->g_dirichlet_0);
 
-  double_array_file_print(stdout, m->cn[0], temperature, "--raw");
+  double_array_file_print(stdout, m->cn[0], potential, "--raw");
 
-  free(temperature);
-temperature_on_cells_free:
-  free(temperature_on_cells);
+  free(potential);
+potential_on_cells_free:
+  free(potential_on_cells);
 flux_free:
   free(flux);
 data_free:

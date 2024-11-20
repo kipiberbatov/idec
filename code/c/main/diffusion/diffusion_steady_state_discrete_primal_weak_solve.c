@@ -13,7 +13,7 @@ int main(int argc, char ** argv)
   char * data_name, * m_inner_format, * m_inner_name, * m_format, * m_name;
   int d;
   int * m_cn;
-  double * temperature;
+  double * potential;
   double ** m_inner;
   FILE * data_file;
   mesh * m;
@@ -85,18 +85,18 @@ int main(int argc, char ** argv)
   }
   fclose(data_file);
 
-  temperature = diffusion_steady_state_discrete_primal_weak_solve(
+  potential = diffusion_steady_state_discrete_primal_weak_solve(
     m, m_inner[1], data);
-  if (temperature == NULL)
+  if (potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot find temperature\n", stderr);
+    fputs("cannot find potential\n", stderr);
     goto data_free;
   }
 
-  double_array_file_print(stdout, m_cn[0], temperature, "--raw");
+  double_array_file_print(stdout, m_cn[0], potential, "--raw");
 
-  free(temperature);
+  free(potential);
 data_free:
   diffusion_steady_state_discrete_primal_weak_free(data);
 m_inner_free:

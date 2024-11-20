@@ -9,7 +9,7 @@
 
 void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
   double * flux,
-  double * temperature_on_cells,
+  double * potential_on_cells,
   const mesh * m,
   const matrix_sparse * m_cbd_dm1,
   const double * m_vol_dm1,
@@ -31,7 +31,7 @@ void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
 
   diffusion_steady_state_discrete_mixed_weak_solve(
     flux,
-    temperature_on_cells,
+    potential_on_cells,
     m,
     m_cbd_dm1,
     m_inner_dm1,

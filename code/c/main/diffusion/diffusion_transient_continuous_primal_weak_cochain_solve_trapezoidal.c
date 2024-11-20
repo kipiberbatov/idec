@@ -14,7 +14,7 @@ int main(int argc, char ** argv)
 {
   char * data_name, * error, * lib_name, * m_format, * m_inner_format,
        * m_inner_name, * m_name, * m_vol_format, * m_vol_name,
-       * number_of_steps_name, * time_step_name, * temperature_format;
+       * number_of_steps_name, * time_step_name, * potential_format;
   int d, i, number_of_steps;
   double time_step;
   double * result;
@@ -45,7 +45,7 @@ int main(int argc, char ** argv)
   data_name = argv[8];
   time_step_name = argv[9];
   number_of_steps_name = argv[10];
-  temperature_format = argv[11];
+  potential_format = argv[11];
 
   m = mesh_file_scan_by_name(m_name, m_format);
   if (errno)
@@ -130,7 +130,7 @@ int main(int argc, char ** argv)
   }
 
   double_matrix_file_print(
-    stdout, number_of_steps + 1, m->cn[0], result, temperature_format);
+    stdout, number_of_steps + 1, m->cn[0], result, potential_format);
 
   free(result);
 lib_close:

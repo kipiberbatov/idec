@@ -12,10 +12,10 @@
 int main(int argc, char ** argv)
 {
   char * data_name, * error, * flux_format, * lib_name, * m_format, * m_name,
-       * m_bd_1_name, * number_of_steps_name, * temperature_format,
-       * temperature_name;
+       * m_bd_1_name, * number_of_steps_name, * potential_format,
+       * potential_name;
   int i, number_of_steps;
-  double * flux, * pi_1, * temperature;
+  double * flux, * pi_1, * potential;
   void * lib_handle;
   const diffusion_transient_continuous * data;
   mesh * m;
@@ -113,19 +113,19 @@ int main(int argc, char ** argv)
     goto m_free;
   }
 
-  temperature_format = argv[7];
-  temperature_name = argv[8];
-  temperature = double_array_file_scan_by_name(
-    temperature_name, m->cn[0] * (number_of_steps + 1), temperature_format);
+  potential_format = argv[7];
+  potential_name = argv[8];
+  potential = double_array_file_scan_by_name(
+    potential_name, m->cn[0] * (number_of_steps + 1), potential_format);
   if (errno)
   {
-    fprintf(stderr, "%s:%d: cannot scan temperature\n", __FILE__, __LINE__);
+    fprintf(stderr, "%s:%d: cannot scan potential\n", __FILE__, __LINE__);
     goto lib_close;
   }
 
   pi_1 = (double *) malloc(sizeof(double) * m->cn[1]);
   if (errno)
-    goto temperature_free;
+    goto potential_free;
   unsigned_approximation_of_scalar_field_on_1_cells(pi_1, m, data->pi_1);
 
   flux = (double *) malloc(sizeof(double) * m->cn[1] * (number_of_steps + 1));
@@ -137,7 +137,7 @@ int main(int argc, char ** argv)
   }
 
   diffusion_transient_discrete_primal_edge_flux(
-    flux, m, m_bd_1, pi_1, number_of_steps, temperature);
+    flux, m, m_bd_1, pi_1, number_of_steps, potential);
 
   flux_format = argv[9];
   double_matrix_file_print(
@@ -146,8 +146,8 @@ int main(int argc, char ** argv)
   free(flux);
 pi_1_free:
   free(pi_1);
-temperature_free:
-  free(temperature);
+potential_free:
+  free(potential);
 lib_close:
   dlclose(lib_handle);
 m_bd_1_free:

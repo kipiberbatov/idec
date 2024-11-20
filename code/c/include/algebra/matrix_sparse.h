@@ -269,10 +269,10 @@ $
   (b q)[k] = f[k],              text{for all $k$};
   q[boundary_neumann->a1[i_local]] = g_neumann[i_local]
 $
-for $q = fluxe$ and $u = temperature$ */
+for $q = fluxe$ and $u = potential$ */
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   double * flux,
-  double * temperature_on_cells,
+  double * potential_on_cells,
   const double * a,
   const matrix_sparse * b,
   const double * g,

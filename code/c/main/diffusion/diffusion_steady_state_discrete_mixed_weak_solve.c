@@ -13,7 +13,7 @@ int main(int argc, char ** argv)
   char * data_name, * m_inner_format, * m_inner_name, * m_format, * m_name;
   int d;
   int * m_cn;
-  double * flux, * temperature_on_cells;
+  double * flux, * potential_on_cells;
   double ** m_inner;
   FILE * data_file, * m_file;
   matrix_sparse * m_cbd_dm1;
@@ -123,30 +123,30 @@ int main(int argc, char ** argv)
     goto data_free;
   }
 
-  temperature_on_cells = (double *) malloc(sizeof(double) * m->cn[d]);
-  if (temperature_on_cells == NULL)
+  potential_on_cells = (double *) malloc(sizeof(double) * m->cn[d]);
+  if (potential_on_cells == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for temperature_on_cells\n", stderr);
+    fputs("cannot allocate memory for potential_on_cells\n", stderr);
     goto flux_free;
   }
 
   diffusion_steady_state_discrete_mixed_weak_solve(
-    flux, temperature_on_cells, m, m_cbd_dm1, m_inner[d - 1], m_inner[d], data);
+    flux, potential_on_cells, m, m_cbd_dm1, m_inner[d - 1], m_inner[d], data);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot find flux and temperature\n", stderr);
-    goto temperature_on_cells_free;
+    fputs("cannot find flux and potential\n", stderr);
+    goto potential_on_cells_free;
   }
 
   fprintf(stdout, "%d\n", m->cn[d - 1]);
   fprintf(stdout, "%d\n", m->cn[d]);
   double_array_file_print(stdout, m->cn[d - 1], flux, "--raw");
-  double_array_file_print(stdout, m->cn[d], temperature_on_cells, "--raw");
+  double_array_file_print(stdout, m->cn[d], potential_on_cells, "--raw");
 
-temperature_on_cells_free:
-  free(temperature_on_cells);
+potential_on_cells_free:
+  free(potential_on_cells);
 flux_free:
   free(flux);
 data_free:
