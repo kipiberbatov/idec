@@ -18,7 +18,7 @@ void unsigned_approximation_of_scalar_field_on_hyperfaces(
   m_dim_embedded = m->dim_embedded;
   m_coord = m->coord;
   mesh_cf_part2(&m_cf_dm1_0, m, dm1, 0);
-  m_cf_dm1_0_i.a1 = m_cf_dm1_0.a2; 
+  m_cf_dm1_0_i.a1 = m_cf_dm1_0.a2;
 
   for (i = 0; i < m_cn_dm1; ++i)
   {

@@ -122,7 +122,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   double_array_file_print(stderr, m->cn[d], f, "--curly");
   fputc('\n', stderr);
 #endif
-  
+
   int i, i_local, index;
   double sign;
   for (i_local = 0; i_local < data->boundary_neumann_dm1->a0; ++i_local)
