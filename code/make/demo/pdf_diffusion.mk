@@ -28,11 +28,11 @@ _demo_pdf_diffusion_steady_state :=\
 
 _demo_pdf_diffusion_transient :=\
   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_temperature.pdf\
-  build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_flux.pdf\
+  build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_dual_flow.pdf\
   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_5_forman_temperature.pdf\
   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_temperature.pdf\
   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_temperature.pdf\
-  build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_flux.pdf\
+  build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_dual_flow.pdf\
   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d01_p00_primal_strong_cochain_square_8_temperature.pdf\
 
 build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_temperature.pdf:\
@@ -42,10 +42,10 @@ build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p02_primal_strong_c
   | build/$(MODE)/demo/pdf/diffusion
 	$< --raw $(word 2, $^) 20 --raw $(word 3, $^) $@
 
-build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_flux.pdf:\
+build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_dual_flow.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_one_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/brick_2d_2_forman.txt\
-  build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_flux.txt\
+  build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_dual_flow.txt\
   | build/$(MODE)/demo/pdf/diffusion
 	$< --raw $(word 2, $^) 20 --raw $(word 3, $^) $@
 
@@ -70,10 +70,10 @@ build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_c
   | build/$(MODE)/demo/pdf/diffusion
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) $@
 
-build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_flux.pdf:\
+build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_dual_flow.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_one_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/brick_2d_10_forman.txt\
-  build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_flux.txt\
+  build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_dual_flow.txt\
   | build/$(MODE)/demo/pdf/diffusion
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) $@
 

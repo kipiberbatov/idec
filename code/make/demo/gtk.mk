@@ -4,11 +4,11 @@ _demo_gtk_diffusion :=\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_5_forman_temperature.log\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_temperature.log\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_temperature.log\
-  build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_flux.log\
+  build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_dual_flow.log\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_temperature.log\
-  build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_flux.log\
+  build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_dual_flow.log\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_temperature.log\
-  build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_flux.log\
+  build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_dual_flow.log\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_weak_to_steady_state_cochain_2d_10_grains_forman_temperature.log\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_temperature.log\
   build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d01_p00_primal_strong_cochain_square_8_temperature.log\
@@ -73,10 +73,10 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p01_primal_strong_c
   | build/$(MODE)/demo/gtk/diffusion
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) > $@
 
-build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_flux.log:\
+build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_dual_flow.log:\
   build/$(MODE)/bin/gtk_mesh_2d_colored_one_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/brick_2d_10_forman.txt\
-  build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_flux.txt\
+  build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_dual_flow.txt\
   | build/$(MODE)/demo/gtk/diffusion
 	$< --raw $(word 2, $^) 4000 --raw $(word 3, $^) > $@
 
@@ -87,10 +87,10 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_strong_c
   | build/$(MODE)/demo/gtk/diffusion
 	$< --raw $(word 2, $^) 1000 --raw $(word 3, $^) > $@
 
-build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_flux.log:\
+build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_dual_flow.log:\
   build/$(MODE)/bin/gtk_mesh_2d_colored_one_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/2d_10_grains_forman.txt\
-  build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_flux.txt\
+  build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_dual_flow.txt\
   | build/$(MODE)/demo/gtk/diffusion
 	$< --raw $(word 2, $^) 1000 --raw $(word 3, $^) > $@
 
@@ -101,10 +101,10 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_weak_coc
   | build/$(MODE)/demo/gtk/diffusion
 	$< --raw $(word 2, $^) 2000 --raw $(word 3, $^) > $@
 
-build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_flux.log:\
+build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_dual_flow.log:\
   build/$(MODE)/bin/gtk_mesh_2d_colored_one_cochain_sequence$(.EXE)\
   build/$(MODE)/demo/mesh/2d_10_grains_forman.txt\
-  build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_flux.txt\
+  build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_dual_flow.txt\
   | build/$(MODE)/demo/gtk/diffusion
 	$< --raw $(word 2, $^) 2000 --raw $(word 3, $^) > $@
 

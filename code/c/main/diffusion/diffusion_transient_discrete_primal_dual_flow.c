@@ -5,17 +5,17 @@
 
 #include "double.h"
 #include "diffusion_transient_continuous.h"
-#include "diffusion_transient_discrete_primal_edge_flux.h"
+#include "diffusion_transient_discrete_primal_dual_flow.h"
 #include "int.h"
 #include "unsigned_approximation.h"
 
 int main(int argc, char ** argv)
 {
-  char * data_name, * error, * flux_format, * lib_name, * m_format, * m_name,
+  char * data_name, * error, * dual_flow_format, * lib_name, * m_format, * m_name,
        * m_bd_1_name, * number_of_steps_name, * potential_format,
        * potential_name;
   int i, number_of_steps;
-  double * flux, * pi_1, * potential;
+  double * dual_flow, * pi_1, * potential;
   void * lib_handle;
   const diffusion_transient_continuous * data;
   mesh * m;
@@ -128,22 +128,22 @@ int main(int argc, char ** argv)
     goto potential_free;
   unsigned_approximation_of_scalar_field_on_1_cells(pi_1, m, data->pi_1);
 
-  flux = (double *) malloc(sizeof(double) * m->cn[1] * (number_of_steps + 1));
+  dual_flow = (double *) malloc(sizeof(double) * m->cn[1] * (number_of_steps + 1));
   if (errno)
   {
     fprintf(stderr,
-      "%s:%d: cannot allocate memory for flux\n", __FILE__, __LINE__);
+      "%s:%d: cannot allocate memory for dual_flow\n", __FILE__, __LINE__);
     goto pi_1_free;
   }
 
-  diffusion_transient_discrete_primal_edge_flux(
-    flux, m, m_bd_1, pi_1, number_of_steps, potential);
+  diffusion_transient_discrete_primal_dual_flow(
+    dual_flow, m, m_bd_1, pi_1, number_of_steps, potential);
 
-  flux_format = argv[9];
+  dual_flow_format = argv[9];
   double_matrix_file_print(
-    stdout, number_of_steps + 1, m->cn[1], flux, flux_format);
+    stdout, number_of_steps + 1, m->cn[1], dual_flow, dual_flow_format);
 
-  free(flux);
+  free(dual_flow);
 pi_1_free:
   free(pi_1);
 potential_free:
