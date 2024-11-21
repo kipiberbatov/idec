@@ -1,14 +1,10 @@
 #include <errno.h>
 #include <stdlib.h>
 
-#include <dlfcn.h>
-
 #include "color.h"
 #include "double.h"
-#include "diffusion_steady_state_continuous.h"
 #include "diffusion_steady_state_discrete_flow_from_potential.h"
 #include "int.h"
-#include "unsigned_approximation.h"
 
 int main(int argc, char ** argv)
 {

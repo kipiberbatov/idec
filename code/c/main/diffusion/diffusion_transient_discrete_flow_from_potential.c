@@ -1,20 +1,16 @@
 #include <errno.h>
 #include <stdlib.h>
 
-#include <dlfcn.h>
-
 #include "color.h"
 #include "double.h"
-#include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_flow_from_potential.h"
 #include "int.h"
-#include "unsigned_approximation.h"
 
 int main(int argc, char ** argv)
 {
   char * flow_format, * m_format, * m_name, * m_hodge_format, * m_hodge_name,
        * number_of_steps_name, * pi_1_format, * pi_1_name, * potential_format,
-      * potential_name;
+       * potential_name;
   int d, number_of_steps;
   double * flow, * pi_1, * potential;
   mesh * m;
