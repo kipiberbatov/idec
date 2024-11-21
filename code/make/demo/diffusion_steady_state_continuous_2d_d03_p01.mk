@@ -64,7 +64,7 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_primal_weak_coch
   > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_primal_weak_cochain_circular_4_3_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_discrete_primal_flow_from_potential$(.EXE)\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_from_potential$(.EXE)\
   build/$(MODE)/demo/mesh/circular_4_3_forman.txt\
   build/$(MODE)/demo/mesh/circular_4_3_forman_hodge.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_primal_weak_cochain_circular_4_3_forman_input.txt\
@@ -164,7 +164,7 @@ build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_primal_weak_coch
   > $@
 
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_primal_weak_cochain_circular_17_10_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_discrete_primal_flow_from_potential$(.EXE)\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_from_potential$(.EXE)\
   build/$(MODE)/demo/mesh/circular_17_10_forman.txt\
   build/$(MODE)/demo/mesh/circular_17_10_forman_hodge.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d03_p01_primal_weak_cochain_circular_17_10_forman_input.txt\

@@ -61,7 +61,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p02_primal_strong_cocha
 	  diffusion_transient_continuous_2d_d00_p02 0.05 100 > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_dual_flow.txt:\
-  build/$(MODE)/bin/diffusion_transient_discrete_primal_dual_flow$(.EXE)\
+  build/$(MODE)/bin/diffusion_transient_discrete_dual_flow_from_potential$(.EXE)\
   build/$(MODE)/demo/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_potential.txt\
   build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p02$(.OBJ)\
@@ -150,7 +150,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cocha
 	  diffusion_transient_continuous_2d_d00_p01 0.0001 4000 > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_dual_flow.txt:\
-  build/$(MODE)/bin/diffusion_transient_discrete_primal_dual_flow$(.EXE)\
+  build/$(MODE)/bin/diffusion_transient_discrete_dual_flow_from_potential$(.EXE)\
   build/$(MODE)/demo/mesh/brick_2d_10_forman.txt\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_potential.txt\
   build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d00_p01$(.OBJ)\
@@ -169,7 +169,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_strong_cocha
 	  diffusion_transient_continuous_2d_d02_p00 0.0001 1000 > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_dual_flow.txt:\
-  build/$(MODE)/bin/diffusion_transient_discrete_primal_dual_flow$(.EXE)\
+  build/$(MODE)/bin/diffusion_transient_discrete_dual_flow_from_potential$(.EXE)\
   build/$(MODE)/demo/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_potential.txt\
   build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
@@ -188,7 +188,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain
 	  $(word 2, $|) diffusion_transient_continuous_2d_d02_p00 0.01 2000 --raw > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_dual_flow.txt:\
-  build/$(MODE)/bin/diffusion_transient_discrete_primal_dual_flow$(.EXE)\
+  build/$(MODE)/bin/diffusion_transient_discrete_dual_flow_from_potential$(.EXE)\
   build/$(MODE)/demo/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_potential.txt\
   build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\

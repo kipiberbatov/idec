@@ -5,7 +5,7 @@
 
 #include "double.h"
 #include "diffusion_transient_continuous.h"
-#include "diffusion_transient_discrete_primal_dual_flow.h"
+#include "diffusion_transient_discrete_dual_flow_from_potential.h"
 #include "int.h"
 #include "unsigned_approximation.h"
 
@@ -136,7 +136,7 @@ int main(int argc, char ** argv)
     goto pi_1_free;
   }
 
-  diffusion_transient_discrete_primal_dual_flow(
+  diffusion_transient_discrete_dual_flow_from_potential(
     dual_flow, m, m_bd_1, pi_1, number_of_steps, potential);
 
   dual_flow_format = argv[9];

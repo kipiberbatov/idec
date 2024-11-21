@@ -1,10 +1,10 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "diffusion_steady_state_discrete_primal_flow_from_potential.h"
-#include "diffusion_steady_state_discrete_primal_dual_flow.h"
+#include "diffusion_steady_state_discrete_flow_from_potential.h"
+#include "diffusion_steady_state_discrete_dual_flow_from_potential.h"
 
-void diffusion_steady_state_discrete_primal_flow_from_potential(
+void diffusion_steady_state_discrete_flow_from_potential(
   double * flow,
   const mesh * m,
   const matrix_sparse * m_bd_1,
@@ -24,7 +24,7 @@ void diffusion_steady_state_discrete_primal_flow_from_potential(
     return;
   }
 
-  diffusion_steady_state_discrete_primal_dual_flow(
+  diffusion_steady_state_discrete_dual_flow_from_potential(
     dual_flow, m, m_bd_1, pi_1, potential);
 
   matrix_sparse_vector_multiply_add(flow, m_hodge_1, dual_flow);

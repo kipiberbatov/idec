@@ -6,7 +6,7 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_steady_state_continuous.h"
-#include "diffusion_steady_state_discrete_primal_flow_from_potential.h"
+#include "diffusion_steady_state_discrete_flow_from_potential.h"
 #include "int.h"
 #include "unsigned_approximation.h"
 
@@ -109,7 +109,7 @@ int main(int argc, char ** argv)
     goto potential_free;
   }
 
-  diffusion_steady_state_discrete_primal_flow_from_potential(
+  diffusion_steady_state_discrete_flow_from_potential(
     flow, m, m_bd_1, pi_1, potential, m_hodge[1]);
   if (errno)
   {

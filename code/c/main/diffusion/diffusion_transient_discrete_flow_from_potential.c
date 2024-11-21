@@ -6,7 +6,7 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_transient_continuous.h"
-#include "diffusion_transient_discrete_primal_flow_from_potential.h"
+#include "diffusion_transient_discrete_flow_from_potential.h"
 #include "int.h"
 #include "unsigned_approximation.h"
 
@@ -130,7 +130,7 @@ int main(int argc, char ** argv)
     goto potential_free;
   }
 
-  diffusion_transient_discrete_primal_flow_from_potential(
+  diffusion_transient_discrete_flow_from_potential(
     flow, m, m_bd_1, pi_1, potential, m_hodge[1], number_of_steps);
   if (errno)
   {

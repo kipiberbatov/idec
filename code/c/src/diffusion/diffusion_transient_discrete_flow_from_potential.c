@@ -2,10 +2,10 @@
 
 #include "color.h"
 #include "double.h"
-#include "diffusion_steady_state_discrete_primal_flow_from_potential.h"
-#include "diffusion_transient_discrete_primal_flow_from_potential.h"
+#include "diffusion_steady_state_discrete_flow_from_potential.h"
+#include "diffusion_transient_discrete_flow_from_potential.h"
 
-void diffusion_transient_discrete_primal_flow_from_potential(
+void diffusion_transient_discrete_flow_from_potential(
   double * flow,
   const mesh * m,
   const matrix_sparse * m_bd_1,
@@ -20,7 +20,7 @@ void diffusion_transient_discrete_primal_flow_from_potential(
   m_cn_dm1 = m->cn[m->dim - 1];
   for (i = 0; i <= number_of_steps; ++i)
   {
-    diffusion_steady_state_discrete_primal_flow_from_potential(
+    diffusion_steady_state_discrete_flow_from_potential(
       flow + m_cn_dm1 * i, m, m_bd_1, pi_1, potential + m_cn_0 * i, m_hodge_1);
     if (errno)
     {

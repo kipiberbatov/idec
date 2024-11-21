@@ -1,6 +1,6 @@
-#include "diffusion_steady_state_discrete_primal_dual_flow.h"
+#include "diffusion_steady_state_discrete_dual_flow_from_potential.h"
 
-void diffusion_steady_state_discrete_primal_dual_flow(
+void diffusion_steady_state_discrete_dual_flow_from_potential(
   double * dual_flow,
   const mesh * m,
   const matrix_sparse * m_bd_1,
