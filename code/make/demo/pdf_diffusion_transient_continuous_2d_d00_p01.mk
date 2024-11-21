@@ -1,12 +1,8 @@
-# _demo_pdf_diffusion_transient_continuous_2d_d00_p01 :=\
-#   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.pdf\
-#   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.pdf\
-#   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.pdf\
-#   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.pdf\
-
 _demo_pdf_diffusion_transient_continuous_2d_d00_p01 :=\
   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.pdf\
+  build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.pdf\
   build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.pdf\
+  build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.pdf\
 
 build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_zero_cochain_sequence$(.EXE)\
