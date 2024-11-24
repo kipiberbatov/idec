@@ -656,7 +656,7 @@ bin_clean:
 
 # demo_<module>_clean is found in -include demo/<module>/demo_<module>.mk
 .PHONY: demo_clean
-demo_clean: 
+demo_clean:
 	-$(RM) -r build/$(MODE)/demo
 
 .PHONY: clean
