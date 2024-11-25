@@ -1,35 +1,34 @@
 #include <errno.h>
 #include <string.h>
 
+#include "color.h"
 #include "diffusion_transient_discrete_primal_strong_solve_trapezoidal_next.h"
 
 void diffusion_transient_discrete_primal_strong_solve_trapezoidal_next(
-  double * next,
+  double * potential_next,
   double * rhs_final,
-  const double * current,
-  const matrix_sparse * lhs,
-  const matrix_sparse * rhs,
-  const double * free_part,
-  const diffusion_transient_discrete_primal_strong * data)
+  const double * potential_current,
+  const diffusion_transient_discrete_primal_strong_trapezoidal_loop_data *input)
 {
-  /* $rhs_final = free_part + rhs * current$ */
-  memcpy(rhs_final, free_part, sizeof(double) * rhs->rows);
-  matrix_sparse_vector_multiply_add(rhs_final, rhs, current);
+  /* $rhs_final = free_part + rhs * potential_current$ */
+  memcpy(rhs_final, input->free_part, sizeof(double) * input->rhs->rows);
+  matrix_sparse_vector_multiply_add(rhs_final, input->rhs, potential_current);
 
   /* update Dirichlet rows of rhs_final by Dirichlet boundary conditions */
   double_array_assemble_from_sparse_array(
-    rhs_final, data->boundary_dirichlet, data->g_dirichlet);
+    rhs_final, input->data->boundary_dirichlet, input->data->g_dirichlet);
 
   /* update Neumann rows of rhs_final by Neumann boundary conditions */
   double_array_assemble_from_sparse_array(
-    rhs_final, data->boundary_neumann, data->g_neumann);
+    rhs_final, input->data->boundary_neumann, input->data->g_neumann);
 
-  memcpy(next, rhs_final, sizeof(double) * rhs->rows);
+  memcpy(potential_next, rhs_final, sizeof(double) * input->rhs->rows);
 
-  matrix_sparse_linear_solve(lhs, next, "--lu");
+  matrix_sparse_linear_solve(input->lhs, potential_next, "--lu");
   if (errno)
   {
-    fprintf(stderr, "%s:%d: cannot solve linear system\n", __FILE__, __LINE__);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot solve linear system using LU decomposition\n", stderr);
     return;
   }
 }
