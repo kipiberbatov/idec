@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "double.h"
+#include "color.h"
 #include "diffusion_steady_state_discrete_primal_weak.h"
+#include "double.h"
 #include "mesh_qc.h"
 
 static double * matrix_sparse_symmetric_constrained_solve(
@@ -24,13 +25,27 @@ static double * matrix_sparse_symmetric_constrained_solve(
     i = rows_a1[i_local];
     f[i] = values[i_local];
   }
+
   u = (double *) malloc(sizeof(double) * a->cols);
   if (u == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for u\n",
+      sizeof(double) * a->cols);
     return NULL;
+  }
   memcpy(u, f, sizeof(double) * a->cols);
-  matrix_sparse_linear_solve(a, u, "--lu");
+  
+  matrix_sparse_linear_solve(a, u, "--cholesky");
   if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot solve linear system using Cholesky decomposition\n", stderr);
+    free(u);
     return NULL;
+  }
+  
   return u;
 }
 
@@ -48,19 +63,38 @@ double * diffusion_steady_state_discrete_primal_weak_solve(
   a = mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(
     m, m_inner_1, data->pi_1);
   if (a == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate a\n", stderr);
     goto end;
+  }
 
   f = (double *) malloc(sizeof(double) * m_cn_0);
   if (f == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for f\n",
+      sizeof(double) * m_cn_0);
     goto a_free;
+  }
+
   mesh_qc_vector_from_integral_of_basis_0_cup_d_cochain(f, m, data->source);
+
   /* add contributions from Neumann boundary condition */
   mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
     f, m, data->boundary_neumann, data->g_neumann);
 
   u = matrix_sparse_symmetric_constrained_solve(
     a, f, data->boundary_dirichlet, data->g_dirichlet);
+  if (u == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot solve constrained system\n", stderr);
+    goto f_free;
+  }
 
+f_free:
   free(f);
 a_free:
   matrix_sparse_free(a);

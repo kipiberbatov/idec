@@ -20,7 +20,7 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
   lhs = matrix_sparse_material_product(m_cbd_0, data->pi_1, m_cbd_star_1);
   if (errno)
   {
-    color_error_position(__FILE__, __LINE__);;
+    color_error_position(__FILE__, __LINE__);
     fputs("cannot calculate lhs\n", stderr);
     goto end;
   }
@@ -29,8 +29,7 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
   result = (double *) malloc(sizeof(double) * n);
   if (errno)
   {
-    fputs("Runtime error stack trace:\n", stderr);
-    color_error_position(__FILE__, __LINE__);;
+    color_error_position(__FILE__, __LINE__);
     fputs("cannot allocate memory for result\n", stderr);
     goto lhs_free;
   }
@@ -46,7 +45,7 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
     lhs, m, data->boundary_neumann, data->pi_1);
   if (errno)
   {
-    color_error_position(__FILE__, __LINE__);;
+    color_error_position(__FILE__, __LINE__);
     fputs("cannot apply Neumann boundary condition\n", stderr);
     goto lhs_free;
   }
@@ -56,8 +55,8 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
   matrix_sparse_linear_solve(lhs, result, "--lu");
   if (errno)
   {
-    color_error_position(__FILE__, __LINE__);;
-    fputs("  cannot solve linear system\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot solve linear system using LU decomposition\n", stderr);
     goto lhs_free;
   }
 
