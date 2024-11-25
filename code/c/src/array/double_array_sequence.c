@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "color.h"
 #include "double.h"
 #include "int.h"
 
@@ -47,30 +48,36 @@ double_array_sequence_dynamic_file_scan(FILE * in)
 
   type_size = sizeof(double_array_sequence_dynamic);
   a = (double_array_sequence_dynamic *) malloc(type_size);
-  if (errno)
+  if (a == NULL)
   {
-    fputs("Cannot allocate memory for final result\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot allocate %ld bytes of memory for a\n", type_size);
     goto end;
   }
 
   length = int_file_scan(in);
   if (errno)
   {
-    fputs("Cannot scan length\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan length\n", stderr);
     goto a_free;
   }
 
   dimension = int_file_scan(in);
   if (errno)
   {
-    fputs("Cannot scan dimension\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan dimension\n", stderr);
     goto a_free;
   }
 
   values = malloc(sizeof(double) * length);
-  if (errno)
+  if (values == NULL)
   {
-    fputs("Cannot allocate memory for values\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for values\n",
+      sizeof(double) * length);
     goto a_free;
   }
 
@@ -79,7 +86,8 @@ double_array_sequence_dynamic_file_scan(FILE * in)
     values[i] = double_array_file_scan(in, dimension, "--raw");
     if (errno)
     {
-      fprintf(stderr, "Cannot scan values[%d]\n", i);
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot scan values[%d]\n", i);
       goto values_free;
     }
   }
@@ -89,7 +97,7 @@ double_array_sequence_dynamic_file_scan(FILE * in)
   a->values = values;
   return a;
 
-  /* Cleaning if an error occurs */
+  /* cleaning if an error occurs */
 values_free:
   for (j = i - 1; j >= 0; --j)
     free(values[j]);
@@ -107,16 +115,18 @@ double_array_sequence_dynamic_file_scan_by_name(const char * name)
   double_array_sequence_dynamic * a;
 
   in = fopen(name, "r");
-  if (errno)
+  if (in == NULL)
   {
-    fprintf(stderr, "Cannot open file %s: %s\n", name, strerror(errno));
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open file %s: %s\n", name, strerror(errno));
     return NULL;
   }
 
   a = double_array_sequence_dynamic_file_scan(in);
-  if (errno)
+  if (a == NULL)
   {
-    fprintf(stderr, "Cannot scan file %s\n", name);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan file %s\n", name);
     goto in_close;
   }
 
@@ -130,9 +140,12 @@ void double_array_sequence_dynamic_resize(double_array_sequence_dynamic * a)
   double ** tmp;
 
   tmp = (double **) realloc(a->values, sizeof(double *) * 2 * a->capacity);
-  if (errno)
+  if (tmp == NULL)
   {
-    fprintf(stderr, "Cannot allocate memory for temporary array\n");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot reallocate %ld bytes of memory for tmp\n",
+      sizeof(double *) * 2 * a->capacity);
     return;
   }
   a->values = tmp;
@@ -146,13 +159,43 @@ double_array_sequence_dynamic * double_array_sequence_dynamic_initialize(int n)
 
   type_size = sizeof(double_array_sequence_dynamic);
   a = (double_array_sequence_dynamic *) malloc(type_size);
-  /* NULL pointer checking */
+  if (a == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot allocate %ld bytes of memory for a\n", type_size);
+    goto end;
+  }
+
   a->capacity = 8;
   a->length = 1;
   a->dimension = n;
+
   a->values = malloc(sizeof(double *) * a->capacity);
-  /* NULL pointer checking */
+  if (a->values == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for a->values\n",
+      sizeof(double *) * a->capacity);
+    goto a_free;
+  }
+
   a->values[0] = (double *) malloc(sizeof(double) * n);
-  /* NULL pointer checking */
+  if (a->values[0] == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for a->values\n",
+      sizeof(double) * n);
+    goto a_values_free;
+  }
   return a;
+
+  /* cleaning if an error occurs */
+a_values_free:
+  free(a->values);
+a_free:
+  free(a);
+end:
+  return NULL;
 }
