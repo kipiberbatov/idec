@@ -18,7 +18,7 @@ build/website/main.pdf: build/docs/main.pdf | build/website
 website_fast: build/.website_fast
 
 build/.website_fast: build/website/index.html build/website/style.css\
-  | build/docs build/website build/.docs_fast
+  build/.docs_fast | build/docs build/website
 	cp $(word 1, $|)/main.pdf $(word 2, $|)
 	touch $@
 
