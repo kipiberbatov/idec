@@ -8,7 +8,7 @@ typedef struct diffusion_steady_state_discrete_mixed_weak
 {
   int number_of_cells_dm1;
   int number_of_cells_d;
-  double  * pi_dm1;
+  double  * kappa_dm1;
   double  * source_d;
   jagged1 * boundary_dirichlet_dm1;
   jagged1 * boundary_dirichlet_0;

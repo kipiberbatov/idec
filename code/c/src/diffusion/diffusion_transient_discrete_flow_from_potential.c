@@ -9,7 +9,7 @@ void diffusion_transient_discrete_flow_from_potential(
   double * flow,
   const mesh * m,
   const matrix_sparse * m_bd_1,
-  const double * pi_1,
+  const double * kappa_1,
   const double * potential,
   const matrix_sparse * m_hodge_1,
   int number_of_steps)
@@ -35,7 +35,7 @@ void diffusion_transient_discrete_flow_from_potential(
     potential_i = potential + m_cn_0 * i;
     flow_i = flow + m_cn_dm1 * i;
     diffusion_steady_state_discrete_dual_flow_from_potential(
-      dual_flow_i, m, m_bd_1, pi_1, potential_i);
+      dual_flow_i, m, m_bd_1, kappa_1, potential_i);
     matrix_sparse_vector_multiply_add(flow_i, m_hodge_1, dual_flow_i);
   }
 

@@ -2,10 +2,10 @@
 
 /*
 Given a mesh M for the unit cube, and the discrete Laplacian, solve:
-  . d(pi_0 u)/dt = -d_0^* pi_1 d_0 u + f   in the interior nodes of M
-  . u = g_d                                at the Dirichlet boundary nodes of M
-  . (L^* u). (hat (d u)) = g_n             at the Neumann boundary nodes of M
-  . u(0) = initial                         at all nodes of M
+  . d(pi_0 u)/dt = -d_0^* kappa_1 d_0 u + f in the interior nodes of M
+  . u = g_d                                 at the Dirichlet boundary nodes of M
+  . (L^* u). (hat (d u)) = g_n              at the Neumann boundary nodes of M
+  . u(0) = initial                          at all nodes of M
 In this example:
   . the initial potential at the left face (x[0] = 0) is 100 degrees
     the initial potential at the right face (x[0] = 1) is 0 degrees
@@ -19,7 +19,7 @@ static double pi_0(const double * x)
   return 1.;
 }
 
-static double pi_1(const double * x)
+static double kappa_1(const double * x)
 {
   return 1.;
 }
@@ -71,7 +71,7 @@ const diffusion_transient_continuous
 diffusion_transient_continuous_3d_d00_p00 =
 {
   pi_0,
-  pi_1,
+  kappa_1,
   initial,
   source,
   boundary_dirichlet,

@@ -11,7 +11,7 @@
 Let
   . A be a positive real number
   . M = "square with nodes {(-A, 0), (0, - A), (A, 0), (0, A)}"
-  . pi_1 = 6
+  . kappa_1 = 6
   . f = 0
   . G be the boundary of M
   . G_D := "sides ((-A, 0), (0, - A)) and ((A, 0), (0, A))"
@@ -20,7 +20,7 @@ Let
   . g_N = 0
 
 The potential 0-form u and flow 1-form q are solutions to the problem
-  . q = - *_1 pi_1 d_0 u
+  . q = - *_1 kappa_1 d_0 u
   . d q = -f
   . tr_{G_D, 0} u = g_D
   . tr_{G_N, 1} q = g_N
@@ -30,7 +30,7 @@ This problem has exact solution
 . q(x, y) = (300 / A) (dx - dy)
 */
 
-static double pi_1(const double * x)
+static double kappa_1(const double * x)
 {
   return 6.;
 }
@@ -68,7 +68,7 @@ static double g_neumann(const double * x)
 const diffusion_steady_state_continuous
 diffusion_steady_state_continuous_2d_d01_p00 =
 {
-  pi_1,
+  kappa_1,
   source,
   boundary_dirichlet,
   g_dirichlet,

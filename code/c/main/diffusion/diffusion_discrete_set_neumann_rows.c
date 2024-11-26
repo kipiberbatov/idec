@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
   mesh * m;
   jagged1 * neumann_nodes;
   matrix_sparse * m_laplacian_0;
-  double * pi_1;
+  double * kappa_1;
 
   if (argc != 5)
   {
@@ -58,25 +58,25 @@ int main(int argc, char ** argv)
     goto m_laplacian_0_free;
   }
 
-  pi_1 = malloc(sizeof(double) * m_laplacian_0->cols);
+  kappa_1 = malloc(sizeof(double) * m_laplacian_0->cols);
   if (errno)
   {
-    fputs("main - cannot calculate false pi_1\n", stderr);
+    fputs("main - cannot calculate false kappa_1\n", stderr);
     goto neumann_node_free;
   }
-  double_array_assign_constant(pi_1, m_laplacian_0->cols, 1);
+  double_array_assign_constant(kappa_1, m_laplacian_0->cols, 1);
 
-  diffusion_discrete_set_neumann_rows(m_laplacian_0, m, neumann_nodes, pi_1);
+  diffusion_discrete_set_neumann_rows(m_laplacian_0, m, neumann_nodes, kappa_1);
   if (errno)
   {
     fputs("main - cannot apply diffusion_discrete_set_neumann_rows\n", stderr);
-    goto pi_1_free;
+    goto kappa_1_free;
   }
 
   matrix_sparse_file_print(stdout, m_laplacian_0, "--raw");
 
-pi_1_free:
-  free(pi_1);
+kappa_1_free:
+  free(kappa_1);
 neumann_node_free:
   free(neumann_nodes);
 m_laplacian_0_free:

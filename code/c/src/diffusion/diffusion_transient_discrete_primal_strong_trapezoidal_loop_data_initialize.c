@@ -34,7 +34,7 @@ diffusion_transient_discrete_primal_strong_trapezoidal_loop_data_initialize(
   n = m->cn[0];
   a = data->pi_0;
 
-  b = matrix_sparse_material_product(m_cbd_0, data->pi_1, m_cbd_star_1);
+  b = matrix_sparse_material_product(m_cbd_0, data->kappa_1, m_cbd_star_1);
   if (b == NULL)
   {
     color_error_position(__FILE__, __LINE__);
@@ -76,7 +76,7 @@ diffusion_transient_discrete_primal_strong_trapezoidal_loop_data_initialize(
 
   /* apply Neumann boundary condition on matrix $lhs$ */
   diffusion_discrete_set_neumann_rows(
-    lhs, m, data->boundary_neumann, data->pi_1);
+    lhs, m, data->boundary_neumann, data->kappa_1);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);

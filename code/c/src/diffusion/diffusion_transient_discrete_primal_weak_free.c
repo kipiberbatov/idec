@@ -11,7 +11,7 @@ void diffusion_transient_discrete_primal_weak_free(
   jagged1_free(data->boundary_dirichlet);
   free(data->source);
   free(data->initial);
-  free(data->pi_1);
+  free(data->kappa_1);
   free(data->pi_0);
   free(data);
 }

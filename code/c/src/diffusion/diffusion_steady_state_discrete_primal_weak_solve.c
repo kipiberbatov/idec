@@ -60,8 +60,9 @@ double * diffusion_steady_state_discrete_primal_weak_solve(
 
   m_cn_0 = m->cn[0];
 
-  a = mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_pi_1_delta_basis_0(
-    m, m_inner_1, data->pi_1);
+  a =
+  mesh_qc_matrix_sparse_from_inner_of_delta_basis_0_cup_kappa_1_delta_basis_0(
+    m, m_inner_1, data->kappa_1);
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);

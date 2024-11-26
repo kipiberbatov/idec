@@ -31,7 +31,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
     return;
   }
   mesh_qc_matrix_diagonal_from_inner_of_basis_dm1_cup_inverse_pi_2_basis_dm1(
-    a, m, m_inner_dm1, data->pi_dm1);
+    a, m, m_inner_dm1, data->kappa_dm1);
 
   b = mesh_qc_matrix_sparse_from_inner_of_basis_d_cup_delta_basis_dm1(
     m_cbd_dm1, m_inner_d);

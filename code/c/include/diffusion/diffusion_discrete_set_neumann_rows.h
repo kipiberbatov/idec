@@ -7,6 +7,6 @@ void diffusion_discrete_set_neumann_rows(
   matrix_sparse * lhs,
   const mesh * m,
   const jagged1 * boundary_neumann_discrete,
-  const double * pi_1);
+  const double * kappa_1);
 
 #endif /* _diffusion_discrete_set_neumann_rows_h */

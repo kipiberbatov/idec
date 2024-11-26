@@ -17,7 +17,7 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
   double * result = NULL;
   matrix_sparse * lhs;
 
-  lhs = matrix_sparse_material_product(m_cbd_0, data->pi_1, m_cbd_star_1);
+  lhs = matrix_sparse_material_product(m_cbd_0, data->kappa_1, m_cbd_star_1);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
@@ -42,7 +42,7 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
 
   /* apply Neumann boundary conditions */
   diffusion_discrete_set_neumann_rows(
-    lhs, m, data->boundary_neumann, data->pi_1);
+    lhs, m, data->boundary_neumann, data->kappa_1);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);

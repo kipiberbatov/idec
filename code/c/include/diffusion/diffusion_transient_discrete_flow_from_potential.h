@@ -7,7 +7,7 @@ void diffusion_transient_discrete_flow_from_potential(
   double * flow,
   const mesh * m,
   const matrix_sparse * m_bd_1,
-  const double * pi_1,
+  const double * kappa_1,
   const double * potential,
   const matrix_sparse * m_hodge_1,
   int number_of_steps);

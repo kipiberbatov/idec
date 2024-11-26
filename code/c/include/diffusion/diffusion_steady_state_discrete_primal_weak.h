@@ -8,7 +8,7 @@ typedef struct diffusion_steady_state_discrete_primal_weak
 {
   int number_of_cells_1;
   int number_of_cells_d;
-  double  * pi_1;
+  double  * kappa_1;
   double  * source;
   jagged1 * boundary_dirichlet;
   double  * g_dirichlet;

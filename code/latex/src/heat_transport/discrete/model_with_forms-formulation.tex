@@ -30,9 +30,9 @@
       (its matrix in the standard basis is diagonal),
       $\pi_0\ [E L^{-3} \Theta^{-1}]$;
     \item
-      $\pi_1 \colon C^1 K \to C^1 K$ be the thermal conductivity
+      $\kappa_1 \colon C^1 K \to C^1 K$ be the thermal conductivity
       (its matrix in the standard basis is diagonal),
-      $\pi_1\ [E L^{-1} T^{-1} \Theta^{-1}]$.
+      $\kappa_1\ [E L^{-1} T^{-1} \Theta^{-1}]$.
   \end{itemize}
   We are solving the following problem:
   \begin{equation}
@@ -43,7 +43,7 @@
         \forall v \in \Ker \tr_{\Gamma_D},\
           \frac{\partial}{\partial t} \inner{v}{\pi_0 u}_{X, 0} =
             \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{\Gamma_N, 0}
-          - \inner{\delta_0 v}{\pi_1 \delta_0 u}_{X, 1}
+          - \inner{\delta_0 v}{\kappa_1 \delta_0 u}_{X, 1}
           + \inner{v}{\tilde{f}}_{X, 0}
         & [E T^{-1} \Theta], \\
         u(t_0, \cdot) = u_0 & [\Theta], \\
@@ -58,7 +58,7 @@
       &
       \begin{cases}
         \forall v \in \Ker \tr_{\Gamma_D},\
-          \inner{\delta_0 v}{\pi_1 \delta_0 u}_{X, 1}
+          \inner{\delta_0 v}{\kappa_1 \delta_0 u}_{X, 1}
           = \inner{\tr_{\Gamma_N} v}{\widetilde{g_N}}_{\Gamma_N, 0}
           + \inner{v}{\tilde{f}}_{X, 0}
       & [E T^{-1} \Theta], \\
@@ -69,7 +69,7 @@
   In both cases in the post-processing phase we have:
   \begin{subequations}
     \begin{alignat}{2}
-      & \tilde{q} && := \pi_1 \delta_0 u, \\
+      & \tilde{q} && := \kappa_1 \delta_0 u, \\
       & q && \approx \star_1 \tilde{q}, \\
       & \tilde{Q} && := \pi_0 u, \\
       & Q && \approx \star_0 \tilde{Q}.

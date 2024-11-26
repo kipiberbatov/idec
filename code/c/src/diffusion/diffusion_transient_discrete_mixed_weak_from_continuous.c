@@ -30,15 +30,15 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
     goto data_discrete_free;
   de_rham_0(data_discrete->pi_0, m, data_continuous->pi_0);
 
-  data_discrete->pi_dm1 = (double *) malloc(sizeof(double) * m->cn[d - 1]);
+  data_discrete->kappa_dm1 = (double *) malloc(sizeof(double) * m->cn[d - 1]);
   if (errno)
     goto data_discrete_pi_0_free;
   unsigned_approximation_of_scalar_field_on_hyperfaces(
-    data_discrete->pi_dm1, m, data_continuous->pi_1);
+    data_discrete->kappa_dm1, m, data_continuous->kappa_1);
 
   data_discrete->initial = (double *) malloc(sizeof(double) * m->cn[0]);
   if (errno)
-    goto data_discrete_pi_dm1_free;
+    goto data_discrete_kappa_dm1_free;
   de_rham_0(data_discrete->initial, m, data_continuous->initial);
 
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[d]);
@@ -93,8 +93,8 @@ data_discrete_source_free:
   free(data_discrete->source);
 data_discrete_initial_free:
   free(data_discrete->initial);
-data_discrete_pi_dm1_free:
-  free(data_discrete->pi_dm1);
+data_discrete_kappa_dm1_free:
+  free(data_discrete->kappa_dm1);
 data_discrete_pi_0_free:
   free(data_discrete->pi_0);
 data_discrete_free:

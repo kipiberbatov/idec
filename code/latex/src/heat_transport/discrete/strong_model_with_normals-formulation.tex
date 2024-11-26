@@ -1,6 +1,6 @@
 \begin{formulation}
   \label{idec/discrete_heat_transport/phenomenon-formulation}
-  By substituting $q$ with $\pi_1 \delta_0 u$ and $Q$ with $\pi_0 u$,
+  By substituting $q$ with $\kappa_1 \delta_0 u$ and $Q$ with $\pi_0 u$,
   we arrive at the following formulation with only one unknown
   (the temperature $u$).
   Let:
@@ -35,9 +35,9 @@
       (its matrix in the standard basis is diagonal),
       $\pi_0\ [E L^{-3} \Theta^{-1}]$;
     \item
-      $\pi_1 \colon C^1 K \to C^1 K$ be a material property of the edges of $K$
-      (its matrix in the standard basis is diagonal),
-      $\pi_1\ [E L^{-1} T^{-1} \Theta^{-1}]$.
+      $\kappa_1 \colon C^1 K \to C^1 K$ be a material property of the edges of
+      $K$ (its matrix in the standard basis is diagonal),
+      $\kappa_1\ [E L^{-1} T^{-1} \Theta^{-1}]$.
   \end{itemize}
   We are solving the following problem.
   \begin{equation}
@@ -46,7 +46,7 @@
       &
       \begin{cases}
         \restrict{\frac{\partial (\pi_0 u)}{\partial t}}{K'_0} =
-        \restrict{((\delta_1^\star \circ \pi_1 \circ \delta_0) u)}{K'_0} + f
+        \restrict{((\delta_1^\star \circ \kappa_1 \circ \delta_0) u)}{K'_0} + f
         & (\text{conservation of heat energy},\ [E L^{-3} T^{-1}]), \\
 %
         u(t_0, \cdot) = u_0
@@ -55,7 +55,7 @@
         \restrict{u}{\Gamma_D} = g_D
         & (\text{Dirichlet boundary condition},\ [\Theta]), \\
 %
-        \restrict{\overline{(\pi_1 \circ \delta_0) u}}{\Gamma_N}
+        \restrict{\overline{(\kappa_1 \circ \delta_0) u}}{\Gamma_N}
         \cdot {\bf n} = g_N
         & (\text{Neumann boundary condition},\ [E L^{-1} T^{-1}]).
       \end{cases}

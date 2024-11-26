@@ -6,7 +6,7 @@
 typedef struct diffusion_transient_discrete_mixed_weak
 {
   double  * pi_0;
-  double  * pi_dm1;
+  double  * kappa_dm1;
   double  * initial;
   double  * source;
   jagged1 * boundary_dirichlet;

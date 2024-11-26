@@ -22,15 +22,15 @@ diffusion_steady_state_discrete_primal_strong_from_continuous(
   data_discrete->number_of_cells_1 = m->cn[1];
   data_discrete->number_of_cells_0 = m->cn[0];
 
-  data_discrete->pi_1 = (double *) malloc(sizeof(double) * m->cn[1]);
+  data_discrete->kappa_1 = (double *) malloc(sizeof(double) * m->cn[1]);
   if (errno)
     goto data_discrete_free;
   unsigned_approximation_of_scalar_field_on_1_cells(
-    data_discrete->pi_1, m, data_continuous->pi_1);
+    data_discrete->kappa_1, m, data_continuous->kappa_1);
 
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[0]);
   if (errno)
-    goto data_discrete_pi_1_free;
+    goto data_discrete_kappa_1_free;
   de_rham_0(data_discrete->source, m, data_continuous->source);
 
   data_discrete->boundary_dirichlet
@@ -78,8 +78,8 @@ data_discrete_boundary_dirichlet_free:
   jagged1_free(data_discrete->boundary_dirichlet);
 data_discrete_source_free:
   free(data_discrete->source);
-data_discrete_pi_1_free:
-  free(data_discrete->pi_1);
+data_discrete_kappa_1_free:
+  free(data_discrete->kappa_1);
 data_discrete_free:
   free(data_discrete);
 end:

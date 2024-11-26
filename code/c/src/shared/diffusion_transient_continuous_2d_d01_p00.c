@@ -9,7 +9,7 @@ static double pi_0(const double * x)
   return 4.;
 }
 
-static double pi_1(const double * x)
+static double kappa_1(const double * x)
 {
   return 6.;
 }
@@ -56,7 +56,7 @@ const diffusion_transient_continuous
 diffusion_transient_continuous_2d_d01_p00 =
 {
   pi_0,
-  pi_1,
+  kappa_1,
   initial,
   source,
   boundary_dirichlet,

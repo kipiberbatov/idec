@@ -9,7 +9,7 @@ typedef struct diffusion_transient_discrete_primal_weak
   int number_of_cells_1;
   int number_of_cells_d;
   double  * pi_0;
-  double  * pi_1;
+  double  * kappa_1;
   double  * initial;
   double  * source;
   jagged1 * boundary_dirichlet;

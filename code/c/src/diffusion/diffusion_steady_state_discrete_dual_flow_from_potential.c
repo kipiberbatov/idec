@@ -4,7 +4,7 @@ void diffusion_steady_state_discrete_dual_flow_from_potential(
   double * dual_flow,
   const mesh * m,
   const matrix_sparse * m_bd_1,
-  const double * pi_1,
+  const double * kappa_1,
   const double * potential)
 {
   int i, j0, j1, m_cn_1;
@@ -24,7 +24,7 @@ void diffusion_steady_state_discrete_dual_flow_from_potential(
     sign = m_bd_1_values[m_bd_1_cols_total[i]];
     j0 = m_cf_1_0_i[0];
     j1 = m_cf_1_0_i[1];
-    dual_flow[i] = sign * pi_1[i] * (potential[j0] - potential[j1]);
+    dual_flow[i] = sign * kappa_1[i] * (potential[j0] - potential[j1]);
     m_cf_1_0_i += m_cf_1_0.a1[i];
   }
 }

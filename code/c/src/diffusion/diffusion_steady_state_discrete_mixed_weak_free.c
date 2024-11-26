@@ -10,6 +10,6 @@ void diffusion_steady_state_discrete_mixed_weak_free(
   jagged1_free(data->boundary_dirichlet_0);
   jagged1_free(data->boundary_dirichlet_dm1);
   free(data->source_d);
-  free(data->pi_dm1);
+  free(data->kappa_dm1);
   free(data);
 }

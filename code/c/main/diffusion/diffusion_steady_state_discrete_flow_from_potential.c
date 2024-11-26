@@ -8,9 +8,9 @@
 
 int main(int argc, char ** argv)
 {
-  char * flow_format, * m_format, * m_name, * m_hodge_format, * m_hodge_name,
-       * pi_1_format, * pi_1_name, * potential_format, * potential_name;
-  double * flow, * pi_1, * potential;
+  char * flow_format, * kappa_1_format, * kappa_1_name, * m_format, * m_name,
+       * m_hodge_format, * m_hodge_name, * potential_format, * potential_name;
+  double * flow, * kappa_1, * potential;
   mesh * m;
   matrix_sparse * m_bd_1;
   matrix_sparse ** m_hodge;
@@ -29,8 +29,8 @@ int main(int argc, char ** argv)
   m_name = argv[2];
   m_hodge_format = argv[3];
   m_hodge_name = argv[4];
-  pi_1_format = argv[5];
-  pi_1_name = argv[6];
+  kappa_1_format = argv[5];
+  kappa_1_name = argv[6];
   potential_format = argv[7];
   potential_name = argv[8];
   flow_format = argv[9];
@@ -74,13 +74,14 @@ int main(int argc, char ** argv)
     goto m_bd_1_free;
   }
 
-  pi_1 = double_array_file_scan_by_name(pi_1_name, m->cn[1], pi_1_format);
-  if (pi_1 == NULL)
+  kappa_1 = double_array_file_scan_by_name(
+    kappa_1_name, m->cn[1], kappa_1_format);
+  if (kappa_1 == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan pi_1 form file %s in format %s\n",
-      pi_1_name, pi_1_format);
+      "cannot scan kappa_1 form file %s in format %s\n",
+      kappa_1_name, kappa_1_format);
     goto m_hodge_free;
   }
 
@@ -92,7 +93,7 @@ int main(int argc, char ** argv)
     fprintf(stderr,
       "cannot scan potential form file %s in format %s\n",
       potential_name, potential_format);
-    goto pi_1_free;
+    goto kappa_1_free;
   }
 
   flow = (double *) calloc(m->cn[m->dim - 1], sizeof(double));
@@ -106,7 +107,7 @@ int main(int argc, char ** argv)
   }
 
   diffusion_steady_state_discrete_flow_from_potential(
-    flow, m, m_bd_1, pi_1, potential, m_hodge[1]);
+    flow, m, m_bd_1, kappa_1, potential, m_hodge[1]);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
@@ -120,8 +121,8 @@ flow_free:
   free(flow);
 potential_free:
   free(potential);
-pi_1_free:
-  free(pi_1);
+kappa_1_free:
+  free(kappa_1);
 m_hodge_free:
   matrix_sparse_array_free(m_hodge, m->dim + 1);
 m_bd_1_free:

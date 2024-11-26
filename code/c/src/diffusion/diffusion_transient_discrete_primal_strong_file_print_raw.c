@@ -8,7 +8,7 @@ void diffusion_transient_discrete_primal_strong_file_print_raw(
   fprintf(out, "%d\n", data->number_of_cells_0);
   fprintf(out, "%d\n", data->number_of_cells_1);
   double_array_file_print(out, data->number_of_cells_0, data->pi_0, "--raw");
-  double_array_file_print(out, data->number_of_cells_1, data->pi_1, "--raw");
+  double_array_file_print(out, data->number_of_cells_1, data->kappa_1, "--raw");
   double_array_file_print(out, data->number_of_cells_0, data->initial, "--raw");
   double_array_file_print(out, data->number_of_cells_0, data->source, "--raw");
   jagged1_file_print(out, data->boundary_dirichlet, "--raw");

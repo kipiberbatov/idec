@@ -7,7 +7,7 @@ typedef int region_implicit(const double *);
 
 typedef struct diffusion_steady_state_continuous
 {
-  scalar_field pi_1;
+  scalar_field kappa_1;
   scalar_field source;
   region_implicit * boundary_dirichlet;
   scalar_field g_dirichlet;

@@ -11,11 +11,11 @@
 
 int main(int argc, char ** argv)
 {
-  char * data_name, * error, * dual_flow_format, * lib_name, * m_format, * m_name,
-       * m_bd_1_name, * number_of_steps_name, * potential_format,
+  char * data_name, * error, * dual_flow_format, * lib_name, * m_format,
+       * m_name, * m_bd_1_name, * number_of_steps_name, * potential_format,
        * potential_name;
   int i, number_of_steps;
-  double * dual_flow, * pi_1, * potential;
+  double * dual_flow, * kappa_1, * potential;
   void * lib_handle;
   const diffusion_transient_continuous * data;
   mesh * m;
@@ -123,29 +123,30 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  pi_1 = (double *) malloc(sizeof(double) * m->cn[1]);
+  kappa_1 = (double *) malloc(sizeof(double) * m->cn[1]);
   if (errno)
     goto potential_free;
-  unsigned_approximation_of_scalar_field_on_1_cells(pi_1, m, data->pi_1);
+  unsigned_approximation_of_scalar_field_on_1_cells(kappa_1, m, data->kappa_1);
 
-  dual_flow = (double *) malloc(sizeof(double) * m->cn[1] * (number_of_steps + 1));
+  dual_flow = (double *) malloc(
+    sizeof(double) * m->cn[1] * (number_of_steps + 1));
   if (errno)
   {
     fprintf(stderr,
       "%s:%d: cannot allocate memory for dual_flow\n", __FILE__, __LINE__);
-    goto pi_1_free;
+    goto kappa_1_free;
   }
 
   diffusion_transient_discrete_dual_flow_from_potential(
-    dual_flow, m, m_bd_1, pi_1, number_of_steps, potential);
+    dual_flow, m, m_bd_1, kappa_1, number_of_steps, potential);
 
   dual_flow_format = argv[9];
   double_matrix_file_print(
     stdout, number_of_steps + 1, m->cn[1], dual_flow, dual_flow_format);
 
   free(dual_flow);
-pi_1_free:
-  free(pi_1);
+kappa_1_free:
+  free(kappa_1);
 potential_free:
   free(potential);
 lib_close:

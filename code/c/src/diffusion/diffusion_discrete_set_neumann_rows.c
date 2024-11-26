@@ -13,7 +13,7 @@ void diffusion_discrete_set_neumann_rows(
   matrix_sparse * lhs,
   const mesh * m,
   const jagged1 * boundary_neumann_discrete,
-  const double * pi_1)
+  const double * kappa_1)
 {
   int d, i, i_local, m_dim_embedded, neumann_size, size_i, size_max,
       size_max_dm1;
@@ -65,11 +65,11 @@ void diffusion_discrete_set_neumann_rows(
     mesh_node_normal(normal, hyperface_normals,
       m, boundary_hyperfaces, &m_cf_dm1_0, &m_fc_0_dm1, m_size, i);
 
-    /* $coefficients = pi_1[i] * (l_inverse . normal)$ */
+    /* $coefficients = kappa_1[i] * (l_inverse . normal)$ */
     memset(coefficients, 0, sizeof(double) * size_i);
     matrix_times_vector(
       coefficients, size_i, m_dim_embedded, l_inverse, normal);
-    double_array_multiply_with(coefficients, size_i, pi_1[i]);
+    double_array_multiply_with(coefficients, size_i, kappa_1[i]);
 
     /*
     fputs("x = ", stderr);

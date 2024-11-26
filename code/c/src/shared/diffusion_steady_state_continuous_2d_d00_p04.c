@@ -6,7 +6,7 @@
 
 Let
   . M = [0, 1]^2
-  . pi_1 = 1
+  . kappa_1 = 1
   . f = -4 dx /\ dy
   . G be the boundary of M
   . G_D := {0, 1} x [0, 1]
@@ -15,7 +15,7 @@ Let
   . g_N = (1 - 2 x) dx
 
 The potential 0-form u and flow 1-form q are solutions to the problem
-  . q = - *_1 pi_1 d_0 u
+  . q = - *_1 kappa_1 d_0 u
   . d q = -f
   . tr_{G_D, 0} u = g_D
   . tr_{G_N, 1} q = g_N
@@ -25,7 +25,7 @@ This problem has exact solution
 . q(x, y) = (1 - 2 y) dx + (2 x - 1) dy
 */
 
-static double pi_1(const double * x)
+static double kappa_1(const double * x)
 {
   return 1.;
 }
@@ -58,7 +58,7 @@ static double g_neumann(const double * x)
 const diffusion_steady_state_continuous
 diffusion_steady_state_continuous_2d_d00_p04 =
 {
-  pi_1,
+  kappa_1,
   source,
   boundary_dirichlet,
   g_dirichlet,

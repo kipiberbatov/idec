@@ -9,7 +9,7 @@
     $i \in \N$,
     $t_i := t_0 + i \tau$,
     $y_i := u(t_i, \cdot) \in C^0 K$ of physical dimension $[\Theta]$,
-    $\rho_0 := \delta_1^\star \circ \pi_1 \circ \delta_0$
+    $\rho_0 := \delta_1^\star \circ \kappa_1 \circ \delta_0$
       of physical dimension $[E L^{-3} T^{-1} \Theta^{-1}]$.
   Integrating the conservation of heat energy in $[t_i, t_{i + 1}]$, we get
   \begin{equation}
@@ -41,7 +41,7 @@
         \begin{cases}
           \restrict{(A y_i)}{K'_0} = \restrict{(B y_{i - 1})}{K'_0} + \tau f, \\
           \restrict{y_i}{\Gamma_D} = g_D, \\
-          \restrict{\overline{(\pi_1 \circ \delta_0) y_i}}{\Gamma_N}
+          \restrict{\overline{(\kappa_1 \circ \delta_0) y_i}}{\Gamma_N}
             \cdot {\bf n} = g_N.
         \end{cases}
       \end{cases}
@@ -50,7 +50,7 @@
   Of course, in practice we solve it for a finite number of time steps.
   Usually, we compare tho adjacent solutions $y_i$ and $y_{i + 1}$ and stop when
   the relative error is sufficiently small (we have reached a steady state).
-  % Moreover, if $\pi_0$ and $\pi_1$ are constants, and $K$ has mesh size $h$,
-  % then $h^2 / \tau$ should be close to the thermal diffusivity $\pi_1 / \pi_0$
-  % (both of physical dimension $[L^2 T^{-1}]$).
+  % Moreover, if $\pi_0$ and $\kappa_1$ are constants, and $K$ has mesh size
+  % $h$, then $h^2 / \tau$ should be close to the thermal diffusivity
+  % $\kappa_1 / \pi_0$ (both of physical dimension $[L^2 T^{-1}]$).
 \end{discussion}

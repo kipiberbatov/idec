@@ -6,7 +6,7 @@
 Let
   . M = [0, 1]^2
   . pi_0 = 4
-  . pi_1 = 1
+  . kappa_1 = 1
   . u_0 = {(0, y) |-> 100, (x, y) |-> 0 for x > 0}
   . f = 0
   . G be the boundary of M
@@ -16,7 +16,7 @@ Let
   . g_N = 0
 
 The potential 0-form u and flow 1-form q are solutions to the problem
-  . q = - *_1 pi_1 d_0 u
+  . q = - *_1 kappa_1 d_0 u
   . D_t Q = d q + f
   . D_t Q = *_0 (D_t (pi_0 u))
   . tr_{G_D, 0} u = g_D
@@ -33,7 +33,7 @@ static double pi_0(const double * x)
   return 4.;
 }
 
-static double pi_1(const double * x)
+static double kappa_1(const double * x)
 {
   return 1.;
 }
@@ -78,7 +78,7 @@ const diffusion_transient_continuous
 diffusion_transient_continuous_2d_d00_p01 =
 {
   pi_0,
-  pi_1,
+  kappa_1,
   initial,
   source,
   boundary_dirichlet,

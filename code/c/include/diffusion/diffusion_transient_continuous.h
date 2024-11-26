@@ -10,7 +10,7 @@ typedef int region_implicit(const double *);
 typedef struct diffusion_transient_continuous
 {
   scalar_field pi_0;
-  scalar_field pi_1;
+  scalar_field kappa_1;
   scalar_field initial;
   scalar_field source;
   region_implicit * boundary_dirichlet;

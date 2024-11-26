@@ -29,7 +29,7 @@ void matrix_sparse_free(matrix_sparse * a);
 /* deallocate heap-allocated sparse matrix a without topology information */
 void matrix_sparse_free_shared(matrix_sparse * a);
 
-/**************************** matrix_sparse_file_scan *****************************/
+/************************** matrix_sparse_file_scan ***************************/
 /* Supported formats for "matrix_sparse_file_scan":
  * --raw
  */
@@ -43,7 +43,7 @@ matrix_sparse * matrix_sparse_file_scan_by_name(
   const char * format);
 
 
-/**************************** matrix_sparse_file_print ****************************/
+/************************** matrix_sparse_file_print **************************/
 /* Supported formats for "matrix_sparse_file_print":
  * --only-values
  * --raw
@@ -227,7 +227,7 @@ double * matrix_sparse_heat_conduction_solve_non_grid(
 
 matrix_sparse * matrix_sparse_material_product(
   const matrix_sparse * m_cbd_0,
-  const double * pi_1,
+  const double * kappa_1,
   const matrix_sparse * m_cbd_star_1);
 
 void matrix_sparse_neumann_modify(
@@ -237,7 +237,7 @@ void matrix_sparse_neumann_modify(
   const int * neighbors,
   const double * coefficients);
 
-/* $b := b a^{-1}$, where $a$ pints to the diagonal values of a diagonal matrix */
+/* $b := b a^{-1}$, $a$ points to the diagonal values of a diagonal matrix */
 void matrix_sparse_multiply_with_inverse_of_diagonal(
   matrix_sparse * b,
   const double * a);

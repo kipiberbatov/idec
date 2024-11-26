@@ -16,7 +16,8 @@ diffusion_steady_state_discrete_mixed_weak_file_scan_raw(FILE * in)
 
   data->number_of_cells_d = int_file_scan(in);
 
-  data->pi_dm1 = double_array_file_scan(in, data->number_of_cells_dm1, "--raw");
+  data->kappa_dm1 = double_array_file_scan(
+    in, data->number_of_cells_dm1, "--raw");
 
   data->source_d = double_array_file_scan(in, data->number_of_cells_d, "--raw");
 
