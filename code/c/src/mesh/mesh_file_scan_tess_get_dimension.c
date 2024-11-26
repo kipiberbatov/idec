@@ -1,5 +1,6 @@
 #include <string.h>
 
+#include "color.h"
 #include "mesh_file_scan_tess_private.h"
 #include "string_private.h"
 
@@ -17,8 +18,9 @@ int mesh_file_scan_tess_get_dimension(FILE * in, int * error)
     d = 3;
   else
   {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan dimension: it should be 1, 2, or 3\n", stderr);
     *error = 1;
-    fputs("Cannot scan dimension: it should be 1, 2, or 3\n", stderr);
     return -1;
   }
   return d;

@@ -1,5 +1,6 @@
 #include <errno.h>
 
+#include "color.h"
 #include "int.h"
 #include "mesh_file_scan_tess_private.h"
 
@@ -11,6 +12,7 @@ int mesh_file_scan_tess_get_number_of_maximal_cells(FILE * in, int * error)
   *error = errno;
   if (*error)
   {
+    color_error_position(__FILE__, __LINE__);
     fputs("Cannot scan maximal dimension\n", stderr);
     return -1;
   }

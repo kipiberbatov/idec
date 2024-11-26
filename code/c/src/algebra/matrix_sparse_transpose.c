@@ -1,4 +1,4 @@
-#include <errno.h>
+#include "color.h"
 #include "matrix_sparse_private.h"
 
 matrix_sparse * matrix_sparse_transpose(const matrix_sparse * a)
@@ -9,15 +9,19 @@ matrix_sparse * matrix_sparse_transpose(const matrix_sparse * a)
 
   matrix_sparse_to_cs(&a0, a);
   b0 = cs_transpose(&a0, 1);
-  if (errno)
+  if (b0 == NULL)
   {
-    perror("Cannot find transpose via cs_transpose");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot find transpose matrix b0 of a0", stderr);
     goto end;
   }
   b = (matrix_sparse *) malloc(sizeof(matrix_sparse));
-  if (errno)
+  if (b == NULL)
   {
-    perror("Cannot allocate memory for a matrix_sparse object");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for b\n",
+      sizeof(matrix_sparse));
     goto b0_free;
   }
   matrix_sparse_from_cs(b, b0);

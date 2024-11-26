@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "color.h"
 #include "double.h"
@@ -19,6 +20,7 @@ int main(int argc, char ** argv)
 #define ARGC 10
   if (argc != ARGC)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
       "number of command line arguments should be %d; instead it is %d\n",
       ARGC, argc);
@@ -36,10 +38,12 @@ int main(int argc, char ** argv)
   flow_format = argv[9];
 
   m_file = fopen(m_name, "r");
-  if (errno)
+  if (m_file == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot open mesh file %s\n", m_name);
+    fprintf(stderr,
+      "cannot open mesh file %s for reading: %s\n",
+      m_name, strerror(errno));
     goto end;
   }
   m = mesh_file_scan(m_file, m_format);

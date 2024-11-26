@@ -27,7 +27,9 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for a\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for a\n",
+      sizeof(double) * m->cn[d - 1]);
     return;
   }
   mesh_qc_matrix_diagonal_from_inner_of_basis_dm1_cup_inverse_pi_2_basis_dm1(
@@ -46,7 +48,9 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   if (g_dirichlet_0_big == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for g_dirichlet_0_big\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for g_dirichlet_0_big\n",
+      sizeof(double) * m->cn[0]);
     goto b_free;
   }
   double_array_assemble_from_sparse_array(
@@ -56,7 +60,9 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   if (g == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for g\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for g\n",
+      sizeof(double) * m->cn[d - 1]);
     goto g_dirichlet_0_big_free;
   }
   mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
@@ -66,7 +72,9 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   if (f == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for f\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for f\n",
+      sizeof(double) * m->cn[d]);
     goto g_free;
   }
   mesh_qc_vector_from_inner_of_basis_d_cup_d_cochain(

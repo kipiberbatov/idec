@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
+#include "color.h"
 #include "double.h"
 #include "diffusion_discrete_set_neumann_rows.h"
 
@@ -17,51 +18,65 @@ int main(int argc, char ** argv)
   matrix_sparse * m_laplacian_0;
   double * kappa_1;
 
-  if (argc != 5)
+#define ARGC 5
+  if (argc != ARGC)
   {
-    errno = EINVAL;
-    fputs("main - the number of command-line arguments must be 6\n", stderr);
-    goto end;
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "number of command line arguments should be %d; instead it is %d\n",
+      ARGC, argc);
+    return EINVAL;
   }
 
   m_format = argv[1];
   m_name = argv[2];
+  m_laplacian_0_format = argv[3];
+  m_laplacian_0_name = argv[4];
+
   m = mesh_file_scan_by_name(m_name, m_format);
-  if (errno)
+  if (m == NULL)
   {
-    fputs("main - cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan mesh m from file %s in format %s\n",
+      m_name, m_format);
     goto end;
   }
 
   m->fc = mesh_fc(m);
-  if (errno)
+  if (m->fc == NULL)
   {
-    fputs("main - cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
-  m_laplacian_0_format = argv[3];
-  m_laplacian_0_name = argv[4];
-
-  m_laplacian_0 =
-    matrix_sparse_file_scan_by_name(m_laplacian_0_name, m_laplacian_0_format);
-  if (errno)
+  m_laplacian_0 = matrix_sparse_file_scan_by_name(
+    m_laplacian_0_name, m_laplacian_0_format);
+  if (m_laplacian_0 == NULL)
   {
-    fputs("main - cannot calculate m_laplacian[0]\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan m_laplacian[0] from file %s in format %s\n",
+      m_laplacian_0_name, m_laplacian_0_format);
     goto m_free;
   }
 
   neumann_nodes = mesh_boundary_nodes_from_constraint(m, x1_axis_constant);
-  if (errno)
+  if (neumann_nodes == NULL)
   {
-    fputs("main - cannot calculate neumann_nodes\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate neumann_nodes\n", stderr);
     goto m_laplacian_0_free;
   }
 
   kappa_1 = malloc(sizeof(double) * m_laplacian_0->cols);
   if (errno)
   {
-    fputs("main - cannot calculate false kappa_1\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for kappa_1\n",
+      sizeof(double) * m_laplacian_0->cols);
     goto neumann_node_free;
   }
   double_array_assign_constant(kappa_1, m_laplacian_0->cols, 1);
@@ -69,7 +84,8 @@ int main(int argc, char ** argv)
   diffusion_discrete_set_neumann_rows(m_laplacian_0, m, neumann_nodes, kappa_1);
   if (errno)
   {
-    fputs("main - cannot apply diffusion_discrete_set_neumann_rows\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_laplacian_0\n", stderr);
     goto kappa_1_free;
   }
 

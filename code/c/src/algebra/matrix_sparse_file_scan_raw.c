@@ -1,5 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
 #include "int.h"
 #include "matrix_sparse_private.h"
@@ -65,67 +67,79 @@ matrix_sparse * matrix_sparse_file_scan_raw(FILE * in)
   a = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   if (errno)
   {
-    perror("matrix_sparse_file_scan_raw - cannot allocate memory for a");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for a\n",
+      sizeof(matrix_sparse));
     goto end;
   }
 
   a->rows = int_file_scan(in);
   if (errno)
   {
-    perror("matrix_sparse_file_scan_raw - cannot scan a->rows");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan a->rows\n", stderr);
     goto a_free;
   }
   if (a->rows <= 0)
   {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "a->rows = %d but it must be positive\n", a->rows);
     errno = EINVAL;
-    perror("matrix_sparse_file_scan_raw - a->rows is nonpositive");
     goto a_free;
   }
 
   a->cols = int_file_scan(in);
   if (errno)
   {
-    perror("matrix_sparse_file_scan_raw - cannot scan a->cols");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan a->cols\n", stderr);
     goto a_free;
   }
   if (a->cols <= 0)
   {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "a->cols = %d but it must be positive\n", a->cols);
     errno = EINVAL;
-    perror("matrix_sparse_file_scan_raw - a->cols is nonpositive");
     goto a_free;
   }
 
   a->cols_total = int_array_file_scan(in, a->cols + 1, "--raw");
-  if (errno)
+  if (a->cols_total == NULL)
   {
-    perror("matrix_sparse_file_scan_raw - cannot scan a->cols_total");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan a->cols_total in format --raw\n", stderr);
     goto a_free;
   }
   if(!matrix_sparse_cols_total_possible(a->rows, a->cols, a->cols_total))
   {
+    color_error_position(__FILE__, __LINE__);
+    fputs("the value of a->cols_total is impossible\n", stderr);
     errno = EINVAL;
-    perror("matrix_sparse_file_scan_raw - a->cols_total is impossible");
     goto a_cols_total_free;
   }
 
   a->row_indices = int_array_file_scan(in, a->cols_total[a->cols], "--raw");
-  if (errno)
+  if (a->row_indices == NULL)
   {
-    perror("matrix_sparse_file_scan_raw - cannot scan a->row_indices");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan a->row_indices in format --raw\n", stderr);
     goto a_cols_total_free;
   }
   if (!matrix_sparse_row_indices_possible(
     a->rows, a->cols, a->cols_total, a->row_indices))
   {
+    color_error_position(__FILE__, __LINE__);
+    fputs("the value of a->row_indices is impossible\n", stderr);
     errno = EINVAL;
-    perror("matrix_sparse_file_scan_raw - a->row_indices is impossible");
     goto a_row_indices_free;
   }
 
   a->values = double_array_file_scan(in, a->cols_total[a->cols], "--raw");
-  if (errno)
+  if (a->values == NULL)
   {
-    perror("matrix_sparse_file_scan_raw - cannot scan a->values");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan a->values in format --raw\n", stderr);
     goto a_row_indices_free;
   }
   /* there are no constraints on a->values */

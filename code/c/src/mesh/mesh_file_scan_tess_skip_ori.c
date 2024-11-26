@@ -1,5 +1,6 @@
 #include <errno.h>
 
+#include "color.h"
 #include "double.h"
 #include "mesh_file_scan_tess_private.h"
 
@@ -12,11 +13,11 @@ void mesh_file_scan_tess_skip_ori(FILE * in, int * error, int cn_d)
     for (j = 0; j < 4; ++j)
     {
       double_file_scan(in);
-      *error = errno;
-      if (*error)
+      if (errno)
       {
-        fprintf(stderr,
-          "mesh_file_scan_tess_skip_ori: missing value (%d, %d)\n", i, j);
+        color_error_position(__FILE__, __LINE__);
+        fprintf(stderr, "missing value (%d, %d)\n", i, j);
+          *error = errno;
         return;
       }
     }

@@ -1,31 +1,11 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
 #include "mesh.h"
 
-// static void mesh_measure_file_print_raw(FILE * out, const mesh * m)
-// {
-//   int m_dim, p;
-//   int * m_cn;
-//   double * m_vol_p;
-//
-//   m_dim = m->dim;
-//   m_cn = m->cn;
-//   for(p = 0; p <= m_dim; ++p)
-//   {
-//     m_vol_p = mesh_measure_p(m, p);
-//     if (errno)
-//     {
-//       fprintf(stderr,
-//               "mesh_measure_file_print_raw - cannot calculate m_vol[%d]\n", p);
-//       return;
-//     }
-//     double_array_file_print(out, m_cn[p], m_vol_p, "--raw");
-//     free(m_vol_p);
-//   }
-// }
-
-int main()
+int main(void)
 {
   int ind, m_dim, p;
   int * m_cn;
@@ -37,9 +17,10 @@ int main()
   in = stdin;
 
   m = mesh_file_scan(in, "--raw");
-  if (errno)
+  if (m == NULL)
   {
-    fputs("main - cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan mesh m in format --raw\n", stderr);
     goto end;
   }
 
@@ -47,9 +28,10 @@ int main()
   m_cn = m->cn;
 
   m_vol = mesh_measure(m);
-  if (errno)
+  if (m_vol == NULL)
   {
-    fputs("main - cannot find m_vol\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot find m_vol\n", stderr);
     goto m_free;
   }
 

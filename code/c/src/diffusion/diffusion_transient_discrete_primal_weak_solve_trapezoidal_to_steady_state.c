@@ -39,7 +39,7 @@ static void loop(
     }
 
     potential->values[i + 1] = (double *) malloc(sizeof(double) * m_cn_0);
-    if (errno)
+    if (potential->values[i + 1] == NULL)
     {
       color_error_position(__FILE__, __LINE__);
       fprintf(stderr,
@@ -93,7 +93,7 @@ diffusion_transient_discrete_primal_weak_solve_trapezoidal_to_steady_state(
 
   /* allocate memory for $rhs_final$ -> uppdated at each step of the loop */
   rhs_final = (double *) malloc(sizeof(double) * m_cn_0);
-  if (errno)
+  if (rhs_final == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
@@ -103,7 +103,7 @@ diffusion_transient_discrete_primal_weak_solve_trapezoidal_to_steady_state(
   }
 
   potential = double_array_sequence_dynamic_initialize(m_cn_0);
-  if (errno)
+  if (potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr, "cannot initialize potential with size %d\n", m_cn_0);

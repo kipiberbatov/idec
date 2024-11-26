@@ -1,24 +1,28 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
 #include "mesh_private.h"
 #include "mesh_qc.h"
 #include "mesh_qc_private.h"
 
-static double * mesh_qc_inner_direct_d(
-  const mesh_qc * m,
-  const double * m_vol_d
-)
+static double *
+mesh_qc_inner_direct_d(const mesh_qc * m, const double * m_vol_d)
 {
-  int i, m_cn_d;
+  int d, i, m_cn_d;
   double * m_inner_d;
 
-  m_cn_d = m->cn[m->dim];
+  d = m->dim;
+  m_cn_d = m->cn[d];
 
   m_inner_d = (double *) malloc(sizeof(double) * m_cn_d);
   if (errno)
   {
-    fputs("Cannot allocate memory for m_inner_d\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_inner[%d]\n",
+      sizeof(double) * m_cn_d, d);
     return NULL;
   }
   for (i = 0; i < m_cn_d; ++i)
@@ -26,36 +30,38 @@ static double * mesh_qc_inner_direct_d(
   return m_inner_d;
 }
 
-static double * mesh_qc_inner_direct_0(
-  const mesh_qc * m,
-  const double * m_vol_d
-)
+static double *
+mesh_qc_inner_direct_0(const mesh_qc * m, const double * m_vol_d)
 {
   int i, k, k_loc, m_cn_0;
+  int * m_fc_0_d_i;
   double d_exp;
   double * m_inner_0;
-  jagged1 m_fc_0_d_i;
   jagged2 m_fc_0_d;
 
   d_exp = (double) (1 << m->dim);
   m_cn_0 = m->cn[0];
   mesh_fc_part2(&m_fc_0_d, m, 0, m->dim);
+  m_fc_0_d_i = m_fc_0_d.a2;
 
   m_inner_0 = (double *) calloc(m_cn_0, sizeof(double));
-  if (errno)
+  if (m_inner_0 == NULL)
   {
-    fputs("Cannot allocate memory for m_inner_0\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_inner[0]\n",
+      sizeof(double) * m_cn_0);
     return NULL;
   }
   for (i = 0; i < m_cn_0; ++i)
   {
-    jagged2_part1(&m_fc_0_d_i, &m_fc_0_d, i);
-    for (k_loc = 0; k_loc < m_fc_0_d_i.a0; ++k_loc)
+    for (k_loc = 0; k_loc < m_fc_0_d.a1[i]; ++k_loc)
     {
-      k = m_fc_0_d_i.a1[k_loc];
+      k = m_fc_0_d_i[k_loc];
       m_inner_0[i] += m_vol_d[k];
     }
     m_inner_0[i] /= d_exp;
+    m_fc_0_d_i += m_fc_0_d.a1[i];
   }
   return m_inner_0;
 }
@@ -64,8 +70,7 @@ static double * mesh_qc_inner_direct_nontrivial(
   const mesh_qc * m,
   int p,
   const double * m_vol_p,
-  const double * m_vol_q
-)
+  const double * m_vol_q)
 {
   int i, j, j_loc, k, k_loc, m_cn_p, m_dim, p_exp, q;
   double d_exp, denominator;
@@ -85,9 +90,12 @@ static double * mesh_qc_inner_direct_nontrivial(
   mesh_cf_part2(&m_cf_q_0, m, q, 0);
 
   m_inner_p = (double *) calloc(m_cn_p, sizeof(double));
-  if (errno)
+  if (m_inner_p == NULL)
   {
-    fputs("Cannot allocate memory for m_inner_p\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_inner[%d]\n",
+      sizeof(double) * m_cn_p, p);
     return NULL;
   }
 
@@ -114,8 +122,7 @@ double * mesh_qc_inner_direct_p(
   const mesh_qc * m,
   int p,
   const double * m_vol_p,
-  const double * m_vol_q
-)
+  const double * m_vol_q)
 {
   if (p == 0)
     return mesh_qc_inner_direct_0(m, m_vol_q);
@@ -124,36 +131,47 @@ double * mesh_qc_inner_direct_p(
   return mesh_qc_inner_direct_nontrivial(m, p, m_vol_p, m_vol_q);
 }
 
-// finds all inner products
+/* finds all inner products */
 double ** mesh_qc_inner_direct(const mesh_qc * m)
 {
-  int d = m->dim, p;
-  double ** m_inner, ** m_vol;
+  int d, p;
+  double ** m_inner = NULL, ** m_vol;
+
+  d = m->dim;
 
   m_vol = mesh_qc_vol(m);
-  if (errno)
+  if (m_vol == NULL)
   {
-    fputs("Cannot calculate m_vol\n", stderr);
-    return NULL;
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_vol\n", stderr);
+    goto end;
   }
 
   m_inner = (double **) malloc(sizeof(double *) * (d + 1));
-  if (errno)
+  if (m_inner == NULL)
   {
-    fputs("Cannot allocate memory for m_inner\n", stderr);
-    return NULL;
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_inner\n",
+      sizeof(double *) * (d + 1));
+    goto m_vol_free;
   }
 
   for (p = 0; p <= d; ++p)
   {
     m_inner[p] = mesh_qc_inner_direct_p(m, p, m_vol[p], m_vol[d - p]);
-    if (errno)
+    if (m_inner[p] == NULL)
     {
-      fputs("Cannot calculate m->fc\n", stderr);
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot calculate m_inner[%d]\n", p);
       double_array2_free(m_inner, p);
-      free(m->fc);
+      goto m_vol_free;
       return NULL;
     }
   }
+
+m_vol_free:
+  double_array2_free(m_vol, d + 1);
+end:
   return m_inner;
 }

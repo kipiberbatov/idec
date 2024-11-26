@@ -1,11 +1,13 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "array_indexed.h"
+#include "color.h"
 #include "int.h"
 #include "jagged.h"
 
-int main()
+int main(void)
 {
   int n;
   jagged1 * arr = NULL;
@@ -16,26 +18,33 @@ int main()
   in = stdin;
 
   arr = jagged1_file_scan(in, "--raw");
-  if (errno)
+  if (arr == NULL)
   {
-    fputs("main - cannot scan arr\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan arr in format --raw\n", stderr);
     goto end;
   }
 
   n = arr->a0;
 
   a.positions = (int *) malloc(sizeof(int) * n);
-  if (errno)
+  if (a.positions == NULL)
   {
-    fputs("main - cannot allocate memory for a.positions\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for a.positions\n",
+      sizeof(int) * n);
     goto arr_free;
   }
   int_array_assign_identity(a.positions, n);
 
   a.values = (int *) malloc(sizeof(int) * n);
-  if (errno)
+  if (a.values == NULL)
   {
-    fputs("main - cannot allocate memory for a.values\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for a.positions\n",
+      sizeof(int) * n);
     goto a_positions_free;
   }
   memcpy(a.values, arr->a1, sizeof(int) * n);
@@ -43,7 +52,8 @@ int main()
   array_indexed_merge_sort(&a, n);
   if (errno)
   {
-    fputs("main - cannot merge sort a\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot merge sort a\n", stderr);
     goto a_values_free;
   }
 

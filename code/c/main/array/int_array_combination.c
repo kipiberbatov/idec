@@ -1,6 +1,7 @@
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "int.h"
 
 static void int_array_combination_file_print(FILE * out, int m, int n)
@@ -9,10 +10,13 @@ static void int_array_combination_file_print(FILE * out, int m, int n)
   int * a;
 
   prod = int_binomial(m, n);
-  a = (int *) malloc(n * sizeof(int));
-  if (errno)
+  a = (int *) malloc(sizeof(int) * n);
+  if (a == NULL)
   {
-    perror("int_array_combination_file_print - cannot allocate memory for a");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for a\n",
+      sizeof(int) * n);
     return;
   }
   int_array_assign_identity(a, n);
@@ -31,12 +35,55 @@ int main(int argc, char ** argv)
 {
   int m, n;
 
-  m = atoi(argv[1]);
-  n = atoi(argv[2]);
+#define ARGC 3
+  if (argc != ARGC)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "number of command line arguments should be %d; instead it is %d\n",
+      ARGC, argc);
+    return EINVAL;
+  }
+
+  m = int_string_scan(argv[1]);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan total number of elements m from string %s\n",
+      argv[1]);
+    goto end;
+  }
+  if (m < 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "total number of elements %d is negative\n", m);
+    errno = EINVAL;
+    goto end;
+  }
+
+  n = int_string_scan(argv[2]);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan subsets size n from string %s\n", argv[2]);
+    goto end;
+  }
+  if (n < 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "subsets size %d is negative\n", n);
+    errno = EINVAL;
+    goto end;
+  }
+  
   int_array_combination_file_print(stdout, m, n);
   if (errno)
   {
-    perror("main - printing error");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot print %d-element combinations of the set {0, ..., %d}\n",
+      n, m - 1);
     goto end;
   }
 end:

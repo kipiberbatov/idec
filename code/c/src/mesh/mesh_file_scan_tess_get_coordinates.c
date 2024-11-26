@@ -1,5 +1,6 @@
 #include <errno.h>
 
+#include "color.h"
 #include "double.h"
 #include "int.h"
 #include "mesh_file_scan_tess_private.h"
@@ -15,25 +16,28 @@ void mesh_file_scan_tess_get_coordinates(double * coordinates, FILE * in,
   for (i = 0; i < cn_0; ++i)
   {
     c_i = int_file_scan(in);
-    *error = errno;
-    if (*error)
+    if (errno)
     {
-      fprintf(stderr, "Cannot scan %d-th 0-cell id\n", i);
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot scan %d-th 0-cell id\n", i);
+      *error = errno;
       return;
     }
     if (c_i != (i + 1))
     {
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "invalid vertex index: %d != %d\n", c_i, i + 1);
       *error = 1;
-      fprintf(stderr, "Invalid vertex index\n");
       return;
     }
     for (j = 0; j < d; ++j)
     {
       x = double_file_scan(in);
-      *error = errno;
-      if (*error)
+      if (errno)
       {
-        fprintf(stderr, "Unable to scan a coordinate (%d, %d)\n", i, j);
+        color_error_position(__FILE__, __LINE__);
+        fprintf(stderr, "unable to scan coordinate (%d, %d)\n", i, j);
+        *error = errno;
         return;
       }
       if (x < EPSILON && -x < EPSILON)
@@ -44,18 +48,20 @@ void mesh_file_scan_tess_get_coordinates(double * coordinates, FILE * in,
     for (j = d; j < 4; ++j)
     {
       x = double_file_scan(in);
-      *error = errno;
-      if (*error)
+      if (errno)
       {
-        fprintf(stderr, "Missing value\n");
+        color_error_position(__FILE__, __LINE__);
+        fprintf(stderr, "missing value\n");
+        *error = errno;
         return;
       }
       if (x != 0)
       {
+        color_error_position(__FILE__, __LINE__);
+        fprintf(stderr,
+          "i = %d, last values must be zeroes; instead we have %g\n",
+          i, x);
         *error = 1;
-        fprintf(stderr, "mesh_file_scan_tess_get_edges_to_nodes: "
-        "i = %d, last values must be zeroes\n", i);
-        fprintf(stderr, "Instead, we have %g\n", x);
         return;
       }
     }

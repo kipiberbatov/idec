@@ -1,4 +1,6 @@
 #include <errno.h>
+
+#include "color.h"
 #include "double.h"
 #include "simplex.h"
 
@@ -20,7 +22,7 @@ static void simplex_centroid_file_print(FILE * out, const simplex * r)
   fputc('\n', out);
 }
 
-int main()
+int main(void)
 {
   simplex * r;
   FILE * in, * out;
@@ -28,10 +30,10 @@ int main()
   out = stdout;
   in = stdin;
   r = simplex_file_scan(in);
-  if (errno)
+  if (r == NULL)
   {
-    perror("Problem in simplex scanning");
-    simplex_free(r);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan simplex r\n", stderr);
     return errno;
   }
   simplex_measure_file_print(out, r);

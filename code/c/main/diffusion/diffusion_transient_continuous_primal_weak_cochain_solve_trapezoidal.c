@@ -1,10 +1,9 @@
 #include <errno.h>
-#include <math.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include <dlfcn.h>
 
+#include "color.h"
 #include "double.h"
 #include "diffusion_transient_continuous.h"
 #include "int.h"
@@ -15,9 +14,9 @@ int main(int argc, char ** argv)
   char * data_name, * error, * lib_name, * m_format, * m_inner_format,
        * m_inner_name, * m_name, * m_vol_format, * m_vol_name,
        * number_of_steps_name, * time_step_name, * potential_format;
-  int d, i, number_of_steps;
+  int d, number_of_steps;
   double time_step;
-  double * result;
+  double * potential;
   double ** m_inner, ** m_vol;
   void * lib_handle;
   mesh * m;
@@ -26,12 +25,10 @@ int main(int argc, char ** argv)
 #define ARGC 12
   if (argc != ARGC)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "%s:%d: number of command line arguments should be %d, not %d\n",
-      __FILE__, __LINE__, ARGC, argc);
-    fputs("Your command line arguments:\n", stderr);
-    for (i = 0; i < argc; ++i)
-      fprintf(stderr, "%d: %s\n", i, argv[i]);
+      "number of command line arguments should be %d; instead it is %d\n",
+      ARGC, argc);
     return EINVAL;
   }
 
@@ -48,43 +45,50 @@ int main(int argc, char ** argv)
   potential_format = argv[11];
 
   m = mesh_file_scan_by_name(m_name, m_format);
-  if (errno)
+  if (m == NULL)
   {
-    fputs("  main: cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan mesh m from file %s in format %s\n",
+      m_name, m_format);
     goto end;
   }
   d = m->dim;
 
   m->fc = mesh_fc(m);
-  if (errno)
+  if (m->fc == NULL)
   {
-    fputs("  main: cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
   m_vol = double_array2_file_scan_by_name(
     m_vol_name, d + 1, m->cn, m_vol_format);
-  if (errno)
+  if (m_vol == NULL)
   {
-    fprintf(stderr, "%s:%d: cannot scan m_vol from file %s in format %s\n",
-      __FILE__, __LINE__, m_vol_name, m_vol_format);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan m_vol from file %s in format %s\n",
+      m_vol_name, m_vol_format);
     goto m_free;
   }
 
   m_inner = double_array2_file_scan_by_name(
     m_inner_name, d + 1, m->cn, m_inner_format);
-  if (errno)
+  if (m_inner == NULL)
   {
-    fprintf(stderr, "%s:%d: cannot scan m_inner from file %s in format %s\n",
-      __FILE__, __LINE__, m_inner_name, m_inner_format);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan m_inner from file %s in format %s\n",
+      m_inner_name, m_inner_format);
     goto m_vol_free;
   }
 
   lib_handle = dlopen(lib_name, RTLD_LAZY);
-  if (!lib_handle)
+  if (lib_handle == NULL)
   {
-    fputs("Runtime error stack trace:\n", stderr);
-    fputs("  main: cannot open libshared\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open dynamic library %s\n", lib_name);
     goto m_inner_free;
   }
   /* clear any existing errors */
@@ -94,26 +98,29 @@ int main(int argc, char ** argv)
   error = dlerror();
   if (error)
   {
-    fputs(error, stderr);
-    fputs("\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "%s\n", error);
     goto lib_close;
   }
 
   time_step = double_string_scan(time_step_name);
   if (errno)
   {
-    fputs("  main: cannot scan time_step\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan time_step from string %s\n", time_step_name);
     goto lib_close;
   }
 
   number_of_steps = int_string_scan(number_of_steps_name);
   if (errno)
   {
-    fputs("  main: cannot scan number_of_steps\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan number_of_steps from string %s\n", number_of_steps_name);
     goto lib_close;
   }
 
-  result
+  potential
   = diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal(
     m,
     m_vol[d - 1],
@@ -123,16 +130,24 @@ int main(int argc, char ** argv)
     data,
     time_step,
     number_of_steps);
-  if (errno)
+  if (potential == NULL)
   {
-    fputs("  main: cannot calculate result\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate potential\n", stderr);
     goto lib_close;
   }
 
   double_matrix_file_print(
-    stdout, number_of_steps + 1, m->cn[0], result, potential_format);
+    stdout, number_of_steps + 1, m->cn[0], potential, potential_format);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot print potential in format %s\n", potential_format);
+    goto potential_free;
+  }
 
-  free(result);
+potential_free:
+  free(potential);
 lib_close:
   dlclose(lib_name);
 m_inner_free:

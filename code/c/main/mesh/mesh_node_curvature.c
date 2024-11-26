@@ -1,31 +1,58 @@
+#include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
 #include "mesh.h"
 
 static void mesh_node_curvature_file_print_raw(FILE * out, const mesh * m)
 {
-  double * res;
+  double * result;
 
-  res = mesh_node_curvature(m);
-  /* NULL pointer check */
-  double_array_file_print(out, m->cn[0], res, "--raw");
-  /* NULL pointer check */
-  free(res);
+  result = mesh_node_curvature(m);
+  if (result == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate result\n", stderr);
+    return;
+  }
+  double_array_file_print(out, m->cn[0], result, "--raw");
+  free(result);
 }
 
-int main()
+int main(void)
 {
   mesh * m;
   FILE * in, * out;
 
   out = stdout;
   in = stdin;
+
   m = mesh_file_scan(in, "--raw");
-  /* NULL pointer and successfull reading check */
+  if (m == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan mesh m in format --raw\n", stderr);
+    goto end;
+  }
+
   m->fc = mesh_fc(m);
-  /* NULL pointer check */
+  if (m->fc == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
+    goto m_free;
+  }
   mesh_node_curvature_file_print_raw(out, m);
-  /* NULL pointer check */
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate and print node curvature\n", stderr);
+    goto m_free;
+  }
+
+m_free:
   mesh_free(m);
-  return 0;
+end:
+  return errno;
 }

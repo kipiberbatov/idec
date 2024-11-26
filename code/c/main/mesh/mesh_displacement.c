@@ -1,4 +1,7 @@
+#include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
 #include "mesh_qc.h"
 
@@ -11,7 +14,12 @@ static void mesh_displacement_file_print_raw(
 
   m_dim_embedded = m->dim_embedded;
   m_displacement = mesh_displacement(m, m_bd_0, u);
-  /* NULL pointer check */
+  if (m_displacement == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_displacement\n", stderr);
+    return;
+  }
   for (i = 0; i < m->cn[0]; ++i)
   {
     m_displacement_i = m_displacement[i];
@@ -19,32 +27,69 @@ static void mesh_displacement_file_print_raw(
   }
 }
 
-static void mesh_displacement_unit_cochain_file_print_file_scan(FILE * out, FILE * in)
+static void
+mesh_displacement_unit_cochain_file_print_file_scan(FILE * out, FILE * in)
 {
-  int i;
   mesh * m;
   matrix_sparse ** m_bd;
   double * u;
 
   m = mesh_file_scan(in, "--raw");
-  /* NULL pointer check */
+  if (m == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan mesh m in format --raw\n", stderr);
+    return;
+  }
+
   m->fc = mesh_fc(m);
-  /* NULL pointer check */
+  if (m->fc == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
+    goto m_free;
+  }
+
   m_bd = mesh_file_scan_boundary(in, m);
-  /* NULL pointer check */
+  if (m_bd == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan boundary matrices m_bd from mesh file\n", stderr);
+    goto m_free;
+  }
+
   u = (double *) malloc(sizeof(double) * m->cn[1]);
-  for (i = 0; i < m->cn[1]; ++i)
-    u[i] = 1;
-  // double_array_assign_integer(u, m->cn[1], 1);
+  if (u == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate memory %ld bytes of memory for 1-cochain u\n",
+      sizeof(double) * m->cn[1]);
+    goto m_bd_free;
+  }
+  double_array_assign_constant(u, m->cn[1], 1.);
+
   mesh_displacement_file_print_raw(out, m, m_bd[0], u);
-  /* NULL pointer check */
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_displacement\n", stderr);
+  }
+
   free(u);
+m_bd_free:
   matrix_sparse_array_free(m_bd, m->dim);
+m_free:
   mesh_free(m);
 }
 
-int main()
+int main(void)
 {
   mesh_displacement_unit_cochain_file_print_file_scan(stdout, stdin);
-  return 0;
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("unsuccessful run\n", stderr);
+  }
+  return errno;
 }

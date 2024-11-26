@@ -1,3 +1,6 @@
+#include <errno.h>
+
+#include "color.h"
 #include "mesh_qc.h"
 
 static void mesh_qc_hodge_coeff_file_print_raw(FILE * out, const mesh * m)
@@ -15,7 +18,7 @@ static void mesh_qc_hodge_coeff_file_print_raw(FILE * out, const mesh * m)
   }
 }
 
-int main()
+int main(void)
 {
   mesh_qc * m;
   FILE * in, * out;
@@ -23,9 +26,13 @@ int main()
   out = stdout;
   in = stdin;
   m = mesh_file_scan(in, "--raw");
-  /* NULL pointer and successfull reading check */
+  if (m == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan mesh m in format --raw\n", stderr);
+    return errno;
+  }
   mesh_qc_hodge_coeff_file_print_raw(out, m);
-  /* successfull writing check */
   mesh_free(m);
   return 0;
 }

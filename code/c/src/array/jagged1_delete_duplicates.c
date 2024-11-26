@@ -1,6 +1,6 @@
-#include <errno.h>
 #include <stdlib.h>
 
+#include "color.h"
 #include "jagged.h"
 
 static int int_compare(const void * a, const void * b)
@@ -23,7 +23,15 @@ jagged1 * jagged1_delete_duplicates(jagged1 * arr)
   arr_a0 = arr->a0;
   arr_a1 = arr->a1;
   result = (jagged1 *) malloc(sizeof(jagged1));
-  /* NULL pointer check */
+  if (result == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for result\n",
+      sizeof(jagged1));
+    return NULL;
+  }
+  
   result_a0 = 1;
   qsort(arr_a1, arr_a0, sizeof(int), int_compare);
   for (i = 0; i < arr_a0 - 1; ++i)
@@ -31,8 +39,16 @@ jagged1 * jagged1_delete_duplicates(jagged1 * arr)
       ++result_a0;
   result->a0 = result_a0;
 
-  result_a1 = (int *) malloc(result_a0 * sizeof(int));
-  /* NULL pointer check */
+  result_a1 = (int *) malloc(sizeof(int) * result_a0);
+  if (result_a1 == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for result_a1\n",
+      sizeof(int) * result_a0);
+    free(result);
+    return NULL;
+  }
   result_a1[0] = arr_a1[0];
   ind = 1;
   for (i = 0; i < arr_a0 - 1; ++i)

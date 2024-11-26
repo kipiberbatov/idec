@@ -26,9 +26,9 @@ double * double_array_file_scan(FILE * in, int n, const char * format)
     a = double_array_file_scan_transient_primal_weak_raw(in, n);
   else
   {
-    errno = EINVAL;
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr, "format %s is not supported\n", format);
+    errno = EINVAL;
     return NULL;
   }
 

@@ -1,6 +1,8 @@
 #include <errno.h>
 #include <math.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
 #include "matrix_sparse_private.h"
 
@@ -58,8 +60,10 @@ double * matrix_sparse_laplace_equation_solve_non_grid(
   b_bd = (double *) malloc(sizeof(double) * m_nodes_bd->a0);
   if (errno)
   {
-    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
-          "b_bd\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for b_bd\n",
+      sizeof(double) * m_nodes_bd->a0);
     goto end;
   }
   dirichlet_bc_apply(b_bd, m_dim_embedded, m_coord, m_inner, m_nodes_bd, g_d);
@@ -67,16 +71,18 @@ double * matrix_sparse_laplace_equation_solve_non_grid(
   m_nodes_in = jagged1_complement(m_laplacian->cols, m_nodes_bd);
   if (errno)
   {
-    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
-          "m_nodes_in\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_nodes_in\n", stderr);
     goto b_bd_free;
   }
 
   b_in = (double *) malloc(sizeof(double) * m_nodes_in->a0);
   if (errno)
   {
-    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
-          "b_in\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for b_in\n",
+      sizeof(double) * m_nodes_in->a0);
     goto m_nodes_in_free;
   }
   rhs_vector_initialise(b_in, m_dim_embedded, m_coord, m_inner, m_nodes_in, f);
@@ -86,24 +92,28 @@ double * matrix_sparse_laplace_equation_solve_non_grid(
   m_laplacian_in = matrix_sparse_restrict_symmetric(m_laplacian, m_nodes_in);
   if (errno)
   {
-    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
-          "m_laplacian_in\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_laplacian_in\n", stderr);
     goto b_in_free;
   }
 
   matrix_sparse_linear_solve(m_laplacian_in, b_in, "--cholesky");
   if (errno)
   {
-    fputs("matrix_sparse_laplace_equation_solve - cannot solve the reduced "
-          "linear system\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs(
+      "cannot solve the reduced linear system using Cholesky decomposition\n",
+      stderr);
     goto m_laplacian_in_free;
   }
 
   x = (double *) malloc(sizeof(double) * m_laplacian->rows);
   if (errno)
   {
-    fputs("matrix_sparse_laplace_equation_solve - cannot allocate memory for "
-          "x\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for x\n",
+      sizeof(double) * m_laplacian->rows);
     goto m_laplacian_in_free;
   }
   double_array_assemble_from_sparse_array(x, m_nodes_in, b_in);

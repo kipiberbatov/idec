@@ -1,4 +1,6 @@
 #include <errno.h>
+
+#include "color.h"
 #include "double.h"
 #include "quasi_cube.h"
 
@@ -20,7 +22,7 @@ static void quasi_cube_centroid_file_print(FILE * out, const quasi_cube * r)
   fputc('\n', out);
 }
 
-int main()
+int main(void)
 {
   quasi_cube * r;
   FILE * in, * out;
@@ -28,10 +30,10 @@ int main()
   out = stdout;
   in = stdin;
   r = quasi_cube_file_scan(in);
-  if (errno)
+  if (r == NULL)
   {
-    perror("Problem in quasi-cube scanning");
-    quasi_cube_free(r);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan quasi-cube r\n", stderr);
     return errno;
   }
   quasi_cube_measure_file_print(out, r);

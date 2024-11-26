@@ -1,5 +1,4 @@
-#include <errno.h>
-#include <stdio.h>
+#include "color.h"
 #include "matrix_sparse.h"
 
 matrix_sparse * matrix_sparse_add(
@@ -8,10 +7,10 @@ matrix_sparse * matrix_sparse_add(
   matrix_sparse * c;
 
   c = matrix_sparse_linear_combination(a, b, 1., 1.);
-  if (errno)
+  if (c == NULL)
   {
-    perror("Cannot add matrices");
-    return NULL;
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot add matrices\n", stderr);
   }
   return c;
 }

@@ -5,6 +5,7 @@
 
 #include <dlfcn.h>
 
+#include "color.h"
 #include "double.h"
 #include "diffusion_transient_continuous.h"
 #include "mesh.h"
@@ -14,9 +15,9 @@ int main(int argc, char ** argv)
   char * data_name, * error, * lib_name, * m_format, * m_inner_format,
        * m_inner_name, * m_name, * m_vol_format, * m_vol_name,
        * tolerance_name, * time_step_name;
-  int d, i;
+  int d;
   double time_step, tolerance;
-  double_array_sequence_dynamic * result;
+  double_array_sequence_dynamic * potential;
   double ** m_inner, ** m_vol;
   void * lib_handle;
   mesh * m;
@@ -25,12 +26,10 @@ int main(int argc, char ** argv)
 #define ARGC 11
   if (argc != ARGC)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "%s:%d: number of command line arguments should be %d, not %d\n",
-      __FILE__, __LINE__, ARGC, argc);
-    fputs("Your command line arguments:\n", stderr);
-    for (i = 0; i < argc; ++i)
-      fprintf(stderr, "%d: %s\n", i, argv[i]);
+      "number of command line arguments should be %d, not %d\n",
+      ARGC, argc);
     return EINVAL;
   }
 
@@ -46,17 +45,21 @@ int main(int argc, char ** argv)
   tolerance_name = argv[10];
 
   m = mesh_file_scan_by_name(m_name, m_format);
-  if (errno)
+  if (m == NULL)
   {
-    fputs("  main: cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan mesh m from file %s in format %s\n",
+      m_name, m_format);
     goto end;
   }
   d = m->dim;
 
   m->fc = mesh_fc(m);
-  if (errno)
+  if (m->fc == NULL)
   {
-    fputs("  main: cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
@@ -64,8 +67,10 @@ int main(int argc, char ** argv)
     m_vol_name, d + 1, m->cn, m_vol_format);
   if (errno)
   {
-    fprintf(stderr, "%s:%d: cannot scan m_vol from file %s in format %s\n",
-      __FILE__, __LINE__, m_vol_name, m_vol_format);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan m_vol from file %s in format %s\n",
+      m_vol_name, m_vol_format);
     goto m_free;
   }
 
@@ -73,16 +78,18 @@ int main(int argc, char ** argv)
     m_inner_name, d + 1, m->cn, m_inner_format);
   if (errno)
   {
-    fprintf(stderr, "%s:%d: cannot scan m_inner from file %s in format %s\n",
-      __FILE__, __LINE__, m_inner_name, m_inner_format);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan m_inner from file %s in format %s\n",
+      m_inner_name, m_inner_format);
     goto m_vol_free;
   }
 
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
   {
-    fputs("Runtime error stack trace:\n", stderr);
-    fputs("  main: cannot open libshared\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open dynamic library %s\n", lib_name);
     goto m_inner_free;
   }
   /* clear any existing errors */
@@ -92,39 +99,45 @@ int main(int argc, char ** argv)
   error = dlerror();
   if (error)
   {
-    fputs(error, stderr);
-    fputs("\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "%s\n", error);
     goto lib_close;
   }
 
   time_step = double_string_scan(time_step_name);
   if (errno)
   {
-    fputs("  main: cannot scan time_step\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan time_step from string %s\n", time_step_name);
     goto lib_close;
   }
-
   if (time_step <= 0)
   {
-    fputs("  main: error: time step must be a positive real number\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "time step must be a positive real number; instead it is %g\n",
+      time_step);
     goto lib_close;
   }
 
   tolerance = double_string_scan(tolerance_name);
   if (errno)
   {
-    fputs("  main: cannot scan tolerance\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan tolerance from string %s\n", tolerance_name);
     goto lib_close;
   }
-
   if (tolerance <= 0)
   {
-    fputs("  main: error: tolerance must be a positive real number\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "tolerance must be a positive real number; instead it is %g\n",
+      tolerance);
     goto lib_close;
   }
 
 
-  result
+  potential
   = diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal_to_steady_state(
     m,
     m_vol[d - 1],
@@ -136,13 +149,14 @@ int main(int argc, char ** argv)
     tolerance);
   if (errno)
   {
-    fputs("  main: cannot calculate result\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate potential\n", stderr);
     goto lib_close;
   }
 
-  double_array_sequence_dynamic_file_print(stdout, result);
+  double_array_sequence_dynamic_file_print(stdout, potential);
 
-  double_array_sequence_dynamic_free(result);
+  double_array_sequence_dynamic_free(potential);
 lib_close:
   dlclose(lib_name);
 m_inner_free:

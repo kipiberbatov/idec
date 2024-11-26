@@ -1,6 +1,8 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "color.h"
 #include "double.h"
 #include "int.h"
 #include "matrix_sparse.h"
@@ -15,42 +17,54 @@ int main(int argc, char ** argv)
   matrix_sparse ** m_laplacian;
   FILE * m_laplacian_file, * m_inner_file;
 
-  if (argc != 7)
+#define ARGC 7
+  if (argc != ARGC)
   {
-    fputs("main - the number of command-line arguments must be 7\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of command-line arguments must be %d; instead it is %d\n",
+      ARGC, argc);
+    errno = EIO;
     goto end;
   }
 
   d = int_string_scan(argv[1]);
   if (errno)
   {
-    fputs("main - cannot scan d\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan dimension d from string %s\n", argv[1]);
     goto end;
   }
 
   m_laplacian_name = argv[2];
   m_laplacian_format = argv[3];
   m_laplacian_file = fopen(m_laplacian_name, "r");
-  if (errno)
+  if (m_laplacian_file == NULL)
   {
-    fputs("main - cannot open file containing m_laplacian\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot open file %s for reading: %s\n",
+      m_laplacian_name, strerror(errno));
     goto end;
   }
   m_laplacian = matrix_sparse_array_file_scan(
-    m_laplacian_file,
-    d + 1,
-    m_laplacian_format
-  );
-  if (errno)
+    m_laplacian_file, d + 1, m_laplacian_format);
+  if (m_laplacian == NULL)
   {
-    fputs("main - cannot scan for m_laplacian\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan m_laplacian from file %s in format %s\n",
+      m_laplacian_name, m_laplacian_format);
     goto m_laplacian_file_close;
   }
 
   m_cn = (int *) malloc(sizeof(int) * (d + 1));
-  if (errno)
+  if (m_cn == NULL)
   {
-    fputs("main - cannot allocate memmory for m_cn\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memmory for m_cn\n",
+      sizeof(int) * (d + 1));
     goto m_laplacian_free;
   }
   for (p = 0; p <= d; ++p)
@@ -59,20 +73,21 @@ int main(int argc, char ** argv)
   m_inner_name = argv[4];
   m_inner_format = argv[5];
   m_inner_file = fopen(m_inner_name, "r");
-  if (errno)
+  if (m_inner_file == NULL)
   {
-    fputs("main - cannot open file containing m_inner\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot open file %s for reading: %s\n",
+      m_inner_name, strerror(errno));
     goto m_cn_free;
   }
-  m_inner = double_array2_file_scan(
-    m_inner_file,
-    d + 1,
-    m_cn,
-    m_inner_format
-  );
-  if (errno)
+  m_inner = double_array2_file_scan(m_inner_file, d + 1, m_cn, m_inner_format);
+  if (m_inner == NULL)
   {
-    fputs("main - cannot scan m_inner\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan m_inner from file %s in format %s\n",
+      m_inner_name, m_inner_format);
     goto m_inner_file_close;
   }
 

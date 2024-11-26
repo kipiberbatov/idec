@@ -1,31 +1,36 @@
 #include <errno.h>
-#include <stdlib.h>
 #include <string.h>
+
+#include "color.h"
 #include "mesh.h"
 
 mesh * mesh_file_scan_by_name(const char * name, const char * format)
 {
   FILE * in;
-  mesh * a = NULL;
+  mesh * m = NULL;
 
   in = fopen(name, "r");
-  if (errno)
+  if (in == NULL)
   {
-    fprintf(stderr, "mesh_file_scan_by_name: cannot open file %s: %s\n",
-            name, strerror(errno));
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot open file %s for reading: %s\n",
+      name, strerror(errno));
     goto end;
   }
 
-  a = mesh_file_scan(in, format);
-  if (errno)
+  m = mesh_file_scan(in, format);
+  if (m == NULL)
   {
-    fprintf(stderr, "mesh_file_scan_by_name: cannot scan a ");
-    fprintf(stderr, "in format %s: %s\n", format, strerror(errno));
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan mesh m from file %s in format %s\n",
+      name, format);
     goto in_close;
   }
 
 in_close:
   fclose(in);
 end:
-  return a;
+  return m;
 }

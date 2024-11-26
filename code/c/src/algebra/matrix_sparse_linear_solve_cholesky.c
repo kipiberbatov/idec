@@ -14,7 +14,7 @@ void matrix_sparse_linear_solve_cholesky(const matrix_sparse * a, double * b)
   if (!correct)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot solve linear system\n", stderr);
+    fputs("cannot solve linear system using Cholesky decomposition\n", stderr);
     errno = EINVAL;
     return;
   }

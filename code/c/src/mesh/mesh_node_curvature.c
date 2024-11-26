@@ -1,6 +1,7 @@
-#include <errno.h>
 #include <math.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
 #include "mesh.h"
 
@@ -184,10 +185,12 @@ double * mesh_node_curvature(const mesh * m)
   mesh_fc_part2(&m_fc_0_d, m, 0, d);
 
   m_node_curvatures = (double *) malloc(sizeof(double) * m_cn_0);
-  if (errno)
+  if (m_node_curvatures == NULL)
   {
-    fputs("mesh_node_curvature - cannot allocate memory for "
-          "m_node_curvatures\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_node_curvatures\n",
+      sizeof(double) * m_cn_0);
     return NULL;
   }
   for (i = 0; i < m_cn_0; ++i)

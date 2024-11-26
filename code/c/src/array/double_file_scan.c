@@ -12,21 +12,12 @@ double double_file_scan(FILE * in)
   correct = fscanf(in, "%lf", &a);
   if (correct <= 0)
   {
-    errno = EINVAL;
+    color_error_position(__FILE__, __LINE__);
     if (correct == 0)
-    {
-      color_error_position(__FILE__, __LINE__);
-      fprintf(stderr,
-        "input is not a valid floating point number: %s\n",
-        strerror(errno));
-    }
+      fputs("input is not a valid 64-bit floating point number: %s\n", stderr);
     else
-    {
-      color_error_position(__FILE__, __LINE__);
-      fprintf(stderr,
-        "there is no number to scan: %s\n",
-        strerror(errno));
-    }
+      fputs("there is no number to scan\n", stderr);
+    errno = EINVAL;
     return -1;
   }
   return a;

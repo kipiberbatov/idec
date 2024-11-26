@@ -21,6 +21,7 @@ int main(int argc, char ** argv)
 #define ARGC 11
   if (argc != ARGC)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
       "number of command line arguments should be %d; instead it is %d\n",
       ARGC, argc);

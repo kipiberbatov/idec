@@ -18,7 +18,7 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
   matrix_sparse * lhs;
 
   lhs = matrix_sparse_material_product(m_cbd_0, data->kappa_1, m_cbd_star_1);
-  if (errno)
+  if (lhs == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot calculate lhs\n", stderr);
@@ -27,10 +27,12 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
 
   n = m->cn[0];
   result = (double *) malloc(sizeof(double) * n);
-  if (errno)
+  if (result == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for result\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for result\n",
+      sizeof(double) * n);
     goto lhs_free;
   }
   memcpy(result, data->source, sizeof(double) * n);

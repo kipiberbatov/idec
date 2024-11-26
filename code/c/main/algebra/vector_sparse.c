@@ -1,6 +1,6 @@
 #include "vector_sparse.h"
 
-int main()
+int main(void)
 {
   return 0;
 }

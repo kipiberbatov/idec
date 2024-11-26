@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "int.h"
+#include "color.h"
+#include "double.h"
 
 double double_string_scan(const char * s)
 {
@@ -12,11 +13,9 @@ double double_string_scan(const char * s)
   a = strtod(s, &ptr);
   if (strlen(ptr))
   {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "%s is not a valid 64-bit float\n", s);
     errno = EINVAL;
-    fprintf(stderr,
-    "Error during execution of function %s in file %s on line %d: "
-    "%s is not a valid floating point number\n",
-    __func__, __FILE__, __LINE__, s);
   }
   return a;
 }

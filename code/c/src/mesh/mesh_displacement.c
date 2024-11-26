@@ -1,7 +1,6 @@
-#include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 
+#include "color.h"
 #include "double.h"
 #include "mesh.h"
 
@@ -49,19 +48,24 @@ double ** mesh_displacement(
   m_cn_0 = m->cn[0];
 
   result = (double **) calloc(m_cn_0, sizeof(double *));
-  if (errno)
+  if (result == NULL)
   {
-    fprintf(stderr, "mesh_displacement: cannot allocate memory for result\n");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for result\n",
+      sizeof(double *) * m_cn_0);
     return NULL;
   }
 
   for (i = 0; i < m_cn_0; ++i)
   {
     result[i] = (double *) calloc(m_dim_embedded, sizeof(double));
-    if (errno)
+    if (result[i] == NULL)
     {
+      color_error_position(__FILE__, __LINE__);
       fprintf(stderr,
-        "mesh_displacement: cannot allocate memory for result[%d]\n", i);
+        "cannot allocate %ld bytes of memory for result[%d]\n",
+        sizeof(double) * m_dim_embedded, i);
       double_array2_free(result, i);
       return NULL;
     }

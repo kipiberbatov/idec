@@ -1,18 +1,23 @@
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "int.h"
 
-static void int_array_cartesian_product_file_print(FILE * out, int d, const int * n)
+static void
+int_array_cartesian_product_file_print(FILE * out, int d, const int * n)
 {
   int prod, i;
   int * a;
 
   prod = int_array_total_product(d, n);
   a = (int *) calloc(d, sizeof(int));
-  if (errno)
+  if (a == NULL)
   {
-    perror("int_array_cartesian_product_file_print - cannot allocate memory for a");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for a\n",
+      sizeof(int) * d);
     return;
   }
   i = 0;
@@ -31,19 +36,34 @@ int main(int argc, char ** argv)
   int d, p;
   int * n;
 
+  if (argc == 1)
+    return 0;
+
   d = argc - 1;
   n = (int *) malloc(sizeof(int) * d);
-  if (errno)
+  if (n == NULL)
   {
-    perror("main - Cannot allocate memory for n");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for n\n",
+      sizeof(int) * d);
     goto end;
   }
   for (p = 0; p < d; ++p)
-    n[p] = atoi(argv[1 + p]);
+  {
+    n[p] = int_string_scan(argv[1 + p]);
+    if (errno)
+    {
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot scan n[%d] from string %s\n", p, argv[1 + p]);
+      goto n_free;
+    }
+  }
   int_array_cartesian_product_file_print(stdout, d, n);
   if (errno)
   {
-    perror("main - printing error");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot print Cartesian products\n", stderr);
     goto n_free;
   }
 n_free:

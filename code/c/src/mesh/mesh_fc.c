@@ -1,5 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "int.h"
 #include "mesh.h"
 
@@ -75,9 +77,12 @@ static void mesh_fc_a4(int * m_fc_a4, const mesh * m, int * m_fc_a3)
     for (p = q + 1; p <= m_dim; ++p)
     {
       ind_current = (int *) calloc(m_cn_q, sizeof(int));
-      if (errno)
+      if (ind_current == NULL)
       {
-        fputs("mesh_fc_a4 - cannot allocate memory for ind_current\n", stderr);
+        color_error_position(__FILE__, __LINE__);
+        fprintf(stderr,
+          "cannot allocate %ld bytes of memory for ind_current\n",
+          sizeof(int) * m_cn_q);
         return;
       }
       mesh_cf_part2(&m_cf_p_q, m, p, q);
@@ -107,50 +112,66 @@ jagged4 * mesh_fc(const mesh * m)
   jagged4 * m_fc;
 
   m_fc = (jagged4 *) malloc(sizeof(jagged4));
-  if (errno)
+  if (m_fc == NULL)
   {
-    fputs("mesh_fc - cannot allocate memory for m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_fc\n",
+      sizeof(jagged4));
     goto end;
   }
 
   m_fc->a0 = m->dim;
   m_fc->a1 = (int *) malloc(sizeof(int) * m->dim);
-  if (errno)
+  if (m_fc->a1 == NULL)
   {
-    fputs("mesh_fc - cannot allocate memory for m->fc->a1\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_fc->a1\n",
+      sizeof(int) * m->dim);
     goto m_fc_free;
   }
   mesh_fc_a1(m_fc->a1, m->dim);
 
   m_fc_a2_size = int_array_total_sum(m->dim, m_fc->a1);
   m_fc->a2 = (int *) malloc(sizeof(int) * m_fc_a2_size);
-  if (errno)
+  if (m_fc->a2 == NULL)
   {
-    fputs("mesh_fc - cannot allocate memory for m->fc->a2\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_fc->a2\n",
+      sizeof(int) *  m_fc_a2_size);
     goto m_fc_a1_free;
   }
   mesh_fc_a2(m_fc->a2, m->dim, m->cn);
 
   m_fc_a3_size = int_array_total_sum(m_fc_a2_size, m_fc->a2);
   m_fc->a3 = (int *) calloc(m_fc_a3_size, sizeof(int));
-  if (errno)
+  if (m_fc->a3 == NULL)
   {
-    fputs("mesh_fc - cannot allocate memory for m->fc->a3\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_fc->a3\n",
+      sizeof(int) *  m_fc_a3_size);
     goto m_fc_a2_free;
   }
   mesh_fc_a3(m_fc->a3, m);
 
   m_fc_a4_size = int_array_total_sum(m_fc_a3_size, m_fc->a3);
   m_fc->a4 = (int *) malloc(sizeof(int) * m_fc_a4_size);
-  if (errno)
+  if (m_fc->a4 == NULL)
   {
-    fputs("mesh_fc - cannot allocate memory for m->fc->a4\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_fc->a4\n",
+      sizeof(int) *  m_fc_a4_size);
     goto m_fc_a3_free;
   }
   mesh_fc_a4(m_fc->a4, m, m_fc->a3);
   if (errno)
   {
-    fputs("mesh_fc - cannot calculate for m->fc->a4\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate for m->fc->a4\n", stderr);
     goto m_fc_a4_free;
   }
 

@@ -1,14 +1,17 @@
 #include <errno.h>
+
+#include "color.h"
 #include "jagged.h"
 
-int main()
+int main(void)
 {
   jagged4 * arr;
 
   arr = jagged4_file_scan(stdin, "--raw");
   if (errno)
   {
-    fputs("main - cannot scan arr\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan arr in format --raw\n", stderr);
     return errno;
   }
   jagged4_file_print(stdout, arr, "--curly");

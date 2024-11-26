@@ -202,13 +202,8 @@ static void mesh_node_normal_exterior(
       if (other_point_value >= EPSILON || other_point_value <= -EPSILON)
         break;
     }
-    // fprintf(stderr,
-      // "  t = %d, normal_point_value = %g, other_point_value = %g\n",
-      // t, normal_point_value, other_point_value);
     if (normal_point_value * other_point_value > 0)
-    {
       double_array_multiply_with(hyperface_normal_t, d, -1.);
-    }
   }
 }
 

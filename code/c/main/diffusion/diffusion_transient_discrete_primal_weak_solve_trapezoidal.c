@@ -44,7 +44,8 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan mesh m from file %s in format %s\n", m_name, m_format);
+      "cannot scan mesh m from file %s in format %s\n",
+      m_name, m_format);
     goto end;
   }
 
@@ -75,7 +76,8 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot open problem data file %s: %s\n", data_name, strerror(errno));
+      "cannot open problem data file %s for reading: %s\n",
+      data_name, strerror(errno));
     goto m_inner_free;
   }
   data = diffusion_transient_discrete_primal_weak_file_scan_raw(data_file);
@@ -93,7 +95,8 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan time step from string %s\n", number_of_steps_name);
+      "cannot scan time step from string %s\n",
+      number_of_steps_name);
     goto data_free;
   }
   if (time_step <= 0.)
@@ -108,14 +111,16 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan number of steps from string %s\n", number_of_steps_name);
+      "cannot scan number of steps from string %s\n",
+      number_of_steps_name);
     goto data_free;
   }
   if (number_of_steps < 0)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "the number of steps is %d but it must be at least 0\n", number_of_steps);
+      "the number of steps is %d but it must be at least 0\n",
+      number_of_steps);
     goto data_free;
   }
 

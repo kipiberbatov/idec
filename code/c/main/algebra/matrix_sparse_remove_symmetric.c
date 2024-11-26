@@ -1,4 +1,7 @@
 #include <errno.h>
+#include <string.h>
+
+#include "color.h"
 #include "jagged.h"
 #include "matrix_sparse.h"
 
@@ -9,10 +12,14 @@ int main(int argc, char ** argv)
   matrix_sparse * a, * b;
   jagged1 * rows;
 
-  if (argc != 6)
+#define ARGC 6
+  if (argc != ARGC)
   {
-    errno = EINVAL;
-    fputs("main - the number of command-line arguments must be 6\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of command-line arguments must be %d; instead it is %d\n",
+      ARGC, argc);
+    errno = EIO;
     goto end;
   }
 
@@ -20,9 +27,12 @@ int main(int argc, char ** argv)
   a_name = argv[1];
   a_format = argv[2];
   a = matrix_sparse_file_scan_by_name(a_name, a_format);
-  if (errno)
+  if (a == NULL)
   {
-    fputs("main - cannot scan matrix a\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan matrix a from file %s in format %s\n",
+      a_name, a_format);
     goto end;
   }
 
@@ -31,10 +41,21 @@ int main(int argc, char ** argv)
   rows_format = argv[4];
 
   rows_file = fopen(rows_name, "r");
-  rows = jagged1_file_scan(rows_file, rows_format);
-  if (errno)
+  if (rows_file == NULL)
   {
-    fputs("main - cannot scan rows\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan open file %s for reading: %s\n",
+      rows_name, strerror(errno));
+    goto end;
+  }
+  rows = jagged1_file_scan(rows_file, rows_format);
+  if (rows == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan rows from file %s in format %s\n",
+      rows_name, rows_format);
     fclose(rows_file);
     goto a_free;
   }
@@ -43,7 +64,8 @@ int main(int argc, char ** argv)
   b = matrix_sparse_remove_symmetric(a, rows);
   if (errno)
   {
-    fputs("main - cannot calculate restricted matrix b\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate restricted matrix b\n", stderr);
     goto rows_free;
   }
 

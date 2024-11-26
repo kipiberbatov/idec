@@ -1,6 +1,4 @@
-#include "region.h"
-
-int main()
+int main(void)
 {
   return 0;
 }

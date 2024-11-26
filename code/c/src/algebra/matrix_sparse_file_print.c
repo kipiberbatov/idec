@@ -1,5 +1,7 @@
 #include <errno.h>
 #include <string.h>
+
+#include "color.h"
 #include "matrix_sparse_private.h"
 
 void matrix_sparse_file_print(
@@ -19,8 +21,8 @@ void matrix_sparse_file_print(
     matrix_sparse_file_print_mathematica_sparse(out, a);
   else
   {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "format %s is not supported\n", format);
     errno = EINVAL;
-    fprintf(stderr,
-      "matrix_sparse_file_print - format %s is not supported\n", format);
   }
 }

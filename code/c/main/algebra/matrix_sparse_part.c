@@ -1,4 +1,6 @@
 #include <errno.h>
+
+#include "color.h"
 #include "matrix_sparse.h"
 
 static void matrix_sparse_part_file_print(FILE * out, const matrix_sparse * a)
@@ -18,7 +20,7 @@ static void matrix_sparse_part_file_print(FILE * out, const matrix_sparse * a)
   }
 }
 
-int main()
+int main(void)
 {
   matrix_sparse * a;
   FILE * in, * out;
@@ -26,13 +28,13 @@ int main()
   out = stdout;
   in = stdin;
   a = matrix_sparse_file_scan(in, "--raw");
-  if (errno)
+  if (a == NULL)
   {
-    perror("Problem in matrix_sparse scanning");
-    goto a_free;
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan matrix a in format --raw\n", stderr);
+    return errno;
   }
   matrix_sparse_part_file_print(out, a);
-a_free:
   matrix_sparse_free(a);
   return errno;
 }

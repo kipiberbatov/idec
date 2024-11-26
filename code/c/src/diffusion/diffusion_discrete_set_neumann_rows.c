@@ -3,12 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "color.h"
 #include "double.h"
 #include "diffusion_discrete_set_neumann_rows.h"
 #include "matrix.h"
 #include "mesh.h"
 
-/* TODO: memory allocation checks */
 void diffusion_discrete_set_neumann_rows(
   matrix_sparse * lhs,
   const mesh * m,
@@ -36,16 +36,66 @@ void diffusion_discrete_set_neumann_rows(
   m_size = mesh_size(m);
 
   boundary_hyperfaces = mesh_boundary_hyperfaces(m);
+  if (boundary_hyperfaces == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate oundary_hyperfaces\n", stderr);
+    goto end;
+  }
 
   size_max_dm1 = jagged2_subset_maximal_size(
     boundary_neumann_discrete, &m_fc_0_dm1);
+
   hyperface_normals = (double *) malloc(sizeof(double) * d * size_max_dm1);
+  if (hyperface_normals == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for hyperface_normals\n",
+      sizeof(double) * d * size_max_dm1);
+    goto boundary_hyperfaces_free;
+  }
 
   size_max = jagged2_subset_maximal_size(boundary_neumann_discrete, &m_fc_0_1);
   l = (double *) malloc(sizeof(double) * m_dim_embedded * size_max);
+  if (l == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for l\n",
+      sizeof(double) * m_dim_embedded * size_max);
+    goto hyperface_normals_free;
+  }
+
   l_inverse = (double *) malloc(sizeof(double) * size_max * m_dim_embedded);
+  if (l_inverse == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for l_inverse\n",
+      sizeof(double) * size_max * m_dim_embedded);
+    goto l_free;
+  }
+
   coefficients = (double *) malloc(sizeof(double) * size_max);
+  if (coefficients == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for coefficients\n",
+      sizeof(double) * size_max);
+    goto l_inverse_free;
+  }
+
   neighbors = (int *) malloc(sizeof(int) * size_max);
+  if (neighbors == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for neighbors\n",
+      sizeof(int) * size_max);
+    goto coefficients_free;
+  }
 
   neumann_size = boundary_neumann_discrete->a0;
   neumann_nodes = boundary_neumann_discrete->a1;
@@ -70,24 +120,20 @@ void diffusion_discrete_set_neumann_rows(
     matrix_times_vector(
       coefficients, size_i, m_dim_embedded, l_inverse, normal);
     double_array_multiply_with(coefficients, size_i, kappa_1[i]);
-
-    /*
-    fputs("x = ", stderr);
-    double_array_file_print(stderr, d, m->coord + d * i, "--curly");
-    fputs(", n = ", stderr);
-    double_array_file_print(stderr, d, normal, "--curly");
-    fputs(", c = ", stderr);
-    double_array_file_print(stderr, size_i, coefficients, "--curly");
-    putc('\n', stderr);
-    */
-
     matrix_sparse_neumann_modify(lhs, i, size_i, neighbors, coefficients);
   }
 
-  jagged1_free(boundary_hyperfaces);
-  free(hyperface_normals);
   free(neighbors);
+coefficients_free:
   free(coefficients);
+l_inverse_free:
   free(l_inverse);
+l_free:
   free(l);
+hyperface_normals_free:
+  free(hyperface_normals);
+boundary_hyperfaces_free:
+  jagged1_free(boundary_hyperfaces);
+end:
+  return;
 }

@@ -1,5 +1,6 @@
 #include <errno.h>
 
+#include "color.h"
 #include "double.h"
 #include "int.h"
 #include "mesh_file_scan_tess_private.h"
@@ -12,28 +13,28 @@ void mesh_file_scan_tess_skip_seed(FILE * in, int * error, int cn_d,
   for (i = 0; i < cn_d; ++i)
   {
     c_i = int_file_scan(in) - 1;
-    *error = errno;
-    if (*error)
+    if (errno)
     {
-      fprintf(stderr, "mesh_file_scan_tess_skip_seed: "
-        "cannot scan %d-th cell id dimension\n", i);
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot scan %d-th cell id dimension\n", i);
+      *error = errno;
       return;
     }
     if (c_i != c[i])
     {
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "id of cell[%d] does differs from data from seed",c_i);
       *error = 1;
-      fprintf(stderr, "mesh_file_scan_tess_skip_seed: "
-        "id of cell[%d] does not correspond with data from seed", c_i);
       return;
     }
     for (j = 0; j < 4; ++j)
     {
       double_file_scan(in);
-      *error = errno;
-      if (*error)
+      if (errno)
       {
-        fprintf(stderr,
-          "mesh_file_scan_tess_skip_seed: missing value (%d, %d)\n", i, j);
+        color_error_position(__FILE__, __LINE__);
+        fprintf(stderr, "missing value (%d, %d)\n", i, j);
+        *error = errno;
         return;
       }
     }

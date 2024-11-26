@@ -1,8 +1,10 @@
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <dlfcn.h>
 
+#include "color.h"
 #include "double.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_dual_flow_from_potential.h"
@@ -14,7 +16,7 @@ int main(int argc, char ** argv)
   char * data_name, * error, * dual_flow_format, * lib_name, * m_format,
        * m_name, * m_bd_1_name, * number_of_steps_name, * potential_format,
        * potential_name;
-  int i, number_of_steps;
+  int number_of_steps;
   double * dual_flow, * kappa_1, * potential;
   void * lib_handle;
   const diffusion_transient_continuous * data;
@@ -25,40 +27,52 @@ int main(int argc, char ** argv)
 #define ARGC 10
   if (argc != ARGC)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "%s:%d: number of command line arguments should be %d, not %d\n",
-      __FILE__, __LINE__, ARGC, argc);
-    for (i = 0; i < argc; ++i)
-      fprintf(stderr, "%d: %s\n", i, argv[i]);
+      "number of command line arguments should be %d; instead it is %d\n",
+      ARGC, argc);
     return EINVAL;
   }
 
   m_format = argv[1];
   m_name = argv[2];
+  m_bd_1_name = argv[3];
+  lib_name = argv[4];
+  data_name = argv[5];
+  number_of_steps_name = argv[6];
+  potential_format = argv[7];
+  potential_name = argv[8];
+  dual_flow_format = argv[9];
+  
   m_file = fopen(m_name, "r");
-  if (errno)
+  if (m_file == NULL)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "%s:%d: cannot open file %s\n", __FILE__, __LINE__, m_name);
+      "cannot open mesh file %s for reading: %s\n",
+      m_name, strerror(errno));
     goto end;
   }
   m = mesh_file_scan(m_file, m_format);
-  if (errno)
+  if (m == NULL)
   {
-    fprintf(stderr, "%s:%d: cannot scan mesh m\n", __FILE__, __LINE__);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan mesh m from file %s in format %s\n",
+      m_name, m_format);
     fclose(m_file);
     goto end;
   }
 
-
-  m_bd_1_name = argv[3];
   if (m_bd_1_name[1] == 0 && m_bd_1_name[0] == '-')
   {
     m_bd_1 = mesh_file_scan_boundary_p(m_file, m, 1);
-    if (errno)
+    if (m_bd_1 == NULL)
     {
+      color_error_position(__FILE__, __LINE__);
       fprintf(stderr,
-        "%s:%d: cannot scan m_bd_1 from file %s\n",__FILE__, __LINE__, m_name);
+        "cannot scan boundary matrix m_bd_1 from mesh file %s\n",
+        m_name);
       goto m_free;
     }
     fclose(m_file);
@@ -67,82 +81,95 @@ int main(int argc, char ** argv)
   {
     fclose(m_file);
     m_bd_1_file = fopen(m_bd_1_name, "r");
-    if (errno)
+    if (m_bd_1_file == NULL)
     {
+      color_error_position(__FILE__, __LINE__);
       fprintf(stderr,
-        "%s:%d: cannot open file %s\n", __FILE__, __LINE__, m_bd_1_name);
+        "cannot open mesh file %s for reading: %s\n",
+        m_bd_1_name, strerror(errno));
       goto m_free;
     }
     m_bd_1 = mesh_file_scan_boundary_p(m_bd_1_file, m, 1);
-    if (errno)
+    if (m_bd_1)
     {
-      fprintf(stderr,
-        "%s:%d: cannot scan sparse matrix m_bd_1\n", __FILE__, __LINE__);
+      color_error_position(__FILE__, __LINE__);
+      fputs("cannot scan sparse matrix m_bd_1\n", stderr);
       fclose(m_bd_1_file);
       goto m_free;
     }
     fclose(m_bd_1_file);
   }
 
-  lib_name = argv[4];
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
   {
-    fprintf(stderr,
-      "%s:%d: cannot open library %s\n", __FILE__, __LINE__, lib_name);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open library %s\n", lib_name);
     goto m_bd_1_free;
   }
   /* clear any existing errors */
   dlerror();
 
-  data_name = argv[5];
   data = (const diffusion_transient_continuous *) dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
   {
-    fprintf(stderr,
-      "%s:%d: cannot read %s: %s\n", __FILE__, __LINE__, data_name, error);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot read %s: %s\n", data_name, error);
     goto lib_close;
   }
 
-  number_of_steps_name = argv[6];
   number_of_steps = int_string_scan(number_of_steps_name);
   if (errno)
   {
-    fprintf(stderr, "%s:%d: cannot scan number_of_steps\n", __FILE__, __LINE__);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan number_of_steps\n", stderr);
     goto m_free;
   }
 
-  potential_format = argv[7];
-  potential_name = argv[8];
   potential = double_array_file_scan_by_name(
     potential_name, m->cn[0] * (number_of_steps + 1), potential_format);
-  if (errno)
+  if (potential == NULL)
   {
-    fprintf(stderr, "%s:%d: cannot scan potential\n", __FILE__, __LINE__);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan potential from file %s in format %s\n",
+      potential_name, potential_format);
     goto lib_close;
   }
 
   kappa_1 = (double *) malloc(sizeof(double) * m->cn[1]);
-  if (errno)
+  if (kappa_1 == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for kappa_1",
+      sizeof(double) * m->cn[1]);
     goto potential_free;
+  }
   unsigned_approximation_of_scalar_field_on_1_cells(kappa_1, m, data->kappa_1);
 
   dual_flow = (double *) malloc(
     sizeof(double) * m->cn[1] * (number_of_steps + 1));
-  if (errno)
+  if (dual_flow == NULL)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "%s:%d: cannot allocate memory for dual_flow\n", __FILE__, __LINE__);
+      "cannot allocate %ld bytes of memory for dual_flow",
+      sizeof(double) * m->cn[1] * (number_of_steps + 1));
     goto kappa_1_free;
   }
 
   diffusion_transient_discrete_dual_flow_from_potential(
     dual_flow, m, m_bd_1, kappa_1, number_of_steps, potential);
 
-  dual_flow_format = argv[9];
   double_matrix_file_print(
     stdout, number_of_steps + 1, m->cn[1], dual_flow, dual_flow_format);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot print dual_flow in format %s\n", dual_flow_format);
+  }
 
   free(dual_flow);
 kappa_1_free:

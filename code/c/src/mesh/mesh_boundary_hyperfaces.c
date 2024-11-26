@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
+#include "color.h"
 #include "mesh.h"
 
 /* p = d - 1 */
@@ -52,17 +53,23 @@ jagged1 * mesh_boundary_hyperfaces(const mesh * m)
   jagged1 * result;
 
   result = (jagged1 *) malloc(sizeof(jagged1));
-  if (errno)
+  if (result == NULL)
   {
-    fprintf(stderr, "Error in %s: cannot allocate memory", __func__);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for result\n",
+      sizeof(jagged1));
     return NULL;
   }
   result->a0 = mesh_boundary_hyperfaces_size(m);
 
   result->a1 = (int *) malloc(sizeof(int) * result->a0);
-  if (errno)
+  if (result->a1 == NULL)
   {
-    fprintf(stderr, "Error in %s: cannot allocate memory", __func__);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for result->a1\n",
+      sizeof(int) * result->a0);
     free(result);
     return NULL;
   }

@@ -1,8 +1,9 @@
-#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "array_indexed.h"
+#include "color.h"
 
 static void update(array_indexed * b, int * i, int * k, const array_indexed * a)
 {
@@ -59,18 +60,22 @@ void array_indexed_merge_sort(array_indexed * a, int n)
   array_indexed b;
 
   b.positions = (int *) malloc(sizeof(int) * n);
-  if (errno)
+  if (b.positions == NULL)
   {
-    fputs("array_indexed_merge_sort - cannot allocate memory for b.positions\n",
-          stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for b.positions\n",
+      sizeof(int) * n);
     goto end;
   }
 
   b.values = (int *) malloc(sizeof(int) * n);
-  if (errno)
+  if (b.values == NULL)
   {
-    fputs("array_indexed_merge_sort - cannot allocate memory for b.values\n",
-          stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for b.values\n",
+      sizeof(int) * n);
     goto b_positions_free;
   }
 

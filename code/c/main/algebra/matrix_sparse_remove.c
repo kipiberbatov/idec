@@ -1,4 +1,6 @@
 #include <errno.h>
+
+#include "color.h"
 #include "jagged.h"
 #include "matrix_sparse.h"
 
@@ -9,16 +11,17 @@ static void matrix_sparse_remove_file_print(
   matrix_sparse * b;
 
   b = matrix_sparse_remove(a, rows, cols);
-  if (errno)
+  if (b == NULL)
   {
-    perror("Problem in matrix_sparse scanning");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot remove rows and cols from a\n", stderr);
     return;
   }
   matrix_sparse_file_print(out, b, "--raw");
   matrix_sparse_free(b);
 }
 
-int main()
+int main(void)
 {
   matrix_sparse * a;
   jagged1 * rows, * cols;
@@ -28,30 +31,34 @@ int main()
   in = stdin;
 
   a = matrix_sparse_file_scan(in, "--raw");
-  if (errno)
+  if (a == NULL)
   {
-    fputs("main - cannot scan matrix a\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan matrix a in format --raw\n", stderr);
     goto end;
   }
 
   rows = jagged1_file_scan(in, "--raw");
-  if (errno)
+  if (rows == NULL)
   {
-    fputs("main - cannot scan rows\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan rows in format --raw\n", stderr);
     goto a_free;
   }
 
   cols = jagged1_file_scan(in, "--raw");
-  if (errno)
+  if (cols == NULL)
   {
-    fputs("main - cannot scan cols a\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan cols in format --raw\n", stderr);
     goto rows_free;
   }
 
   matrix_sparse_remove_file_print(out, a, rows, cols);
   if (errno)
   {
-    fputs("main - cannot remove rows and cols from a and print\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot remove rows and cols from a and print\n", stderr);
     goto cols_free;
   }
 

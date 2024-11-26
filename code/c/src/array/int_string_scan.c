@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "color.h"
 #include "int.h"
 
 int int_string_scan(const char * s)
@@ -12,11 +13,9 @@ int int_string_scan(const char * s)
   a = (int) strtol(s, &ptr, 10);
   if (strlen(ptr))
   {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "%s is not a valid integer\n", s);
     errno = EINVAL;
-    fprintf(stderr,
-    "Error during execution of function %s in file %s on line %d: "
-    "%s is not a valid integer\n",
-    __func__, __FILE__, __LINE__, s);
   }
   return a;
 }

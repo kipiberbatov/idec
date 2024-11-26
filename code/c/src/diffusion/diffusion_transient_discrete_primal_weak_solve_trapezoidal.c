@@ -59,7 +59,7 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
 
   /* allocate memory for $rhs_final$ -> uppdated at each step of the loop */
   rhs_final = (double *) malloc(sizeof(double) * m_cn_0);
-  if (errno)
+  if (rhs_final == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
@@ -70,7 +70,7 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
 
   /* allocate memory for $potential$ -> $n$ elements filled at each step */
   potential = (double*) malloc(sizeof(double) * (number_of_steps + 1) * m_cn_0);
-  if (errno)
+  if (potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,

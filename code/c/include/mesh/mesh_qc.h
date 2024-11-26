@@ -43,7 +43,6 @@ double ** mesh_qc_inner(const mesh_qc * m, const double * m_vol_d,
 double * mesh_qc_inner_direct_p(
   const mesh_qc * m,
   int p,
-  // int i,
   const double * m_vol_p,
   const double * m_vol_q
 );

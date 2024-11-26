@@ -1,5 +1,6 @@
-#include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
 #include "mesh_private.h"
 #include "mesh_qc.h"
@@ -35,10 +36,12 @@ double * mesh_qc_vol_p(const mesh_qc * m, int p)
   double * m_vol_p;
 
   m_vol_p = (double *) malloc(sizeof(double) * m->cn[p]);
-  if (errno)
+  if (m_vol_p == NULL)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-            "mesh_qc_vol_p - cannot allocate memory for m_vol[%d]\n", p);
+      "cannot allocate %ld bytes of memory for m_vol[%d]\n",
+      sizeof(double) * m->cn[p], p);
     return NULL;
   }
 
@@ -52,24 +55,28 @@ double * mesh_qc_vol_p(const mesh_qc * m, int p)
 
 double ** mesh_qc_vol(const mesh_qc * m)
 {
-  int m_dim, p;
+  int d, p;
   double ** m_vol;
 
-  m_dim = m->dim;
+  d = m->dim;
 
-  m_vol = (double **) malloc(sizeof(double *) * (m_dim + 1));
-  if (errno)
+  m_vol = (double **) malloc(sizeof(double *) * (d + 1));
+  if (m_vol == NULL)
   {
-    fputs("mesh_qc_vol - cannot allocate memory for m_vol\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for m_vol\n",
+      sizeof(double *) * (d + 1));
     return NULL;
   }
 
-  for(p = 0; p <= m_dim; ++p)
+  for(p = 0; p <= d; ++p)
   {
     m_vol[p] = mesh_qc_vol_p(m, p);
-    if (errno)
+    if (m_vol[p] == NULL)
     {
-      fprintf(stderr, "mesh_qc_vol - cannot calculate m_vol[%d]\n", p);
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot calculate m_vol[%d]\n", p);
       double_array2_free(m_vol, p);
       return NULL;
     }
