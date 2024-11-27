@@ -20,11 +20,11 @@ void diffusion_transient_discrete_primal_weak_solve_trapezoidal_next(
 
   /* $potential_next = lhs^{-1} . rhs_final$ */
   memcpy(potential_next, rhs_final, sizeof(double) * input->lhs->rows);
-  matrix_sparse_linear_solve(input->lhs, potential_next, "--cholesky");
+  matrix_sparse_linear_solve(input->lhs, potential_next, "--lu");
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot solve linear system using Cholesky decomposition\n", stderr);
+    fputs("cannot solve linear system using LU decomposition\n", stderr);
     return;
   }
 }

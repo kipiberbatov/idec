@@ -37,11 +37,11 @@ static double * matrix_sparse_symmetric_constrained_solve(
   }
   memcpy(u, f, sizeof(double) * a->cols);
   
-  matrix_sparse_linear_solve(a, u, "--cholesky");
+  matrix_sparse_linear_solve(a, u, "--lu");
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot solve linear system using Cholesky decomposition\n", stderr);
+    fputs("cannot solve linear system using LU decomposition\n", stderr);
     free(u);
     return NULL;
   }
