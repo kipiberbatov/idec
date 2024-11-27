@@ -27,7 +27,9 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   if (b_times_inverse_a.values == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for b_times_inverse_a.values\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for b_times_inverse_a.values\n",
+      sizeof(double) * b_nonzero_max);
     return;
   }
   memcpy(b_times_inverse_a.values, b->values, sizeof(double) * b_nonzero_max);

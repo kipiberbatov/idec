@@ -7,6 +7,9 @@
 #include "double.h"
 #include "mesh_qc.h"
 
+/*
+
+*/
 void diffusion_steady_state_discrete_mixed_weak_solve(
   double * flow,
   double * dual_potential,
@@ -81,14 +84,19 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
     f, m, m_inner_d, data->source_d);
   double_array_multiply_with(f, m->cn[d], -1.);
 
-  int i, i_local, index;
-  double sign;
-  for (i_local = 0; i_local < data->boundary_neumann_dm1->a0; ++i_local)
+  /* temporary hack to patch the wrong orientation coming from discretizing
+   * the Neumann boundary condition
+   */
   {
-    i = data->boundary_neumann_dm1->a1[i_local];
-    index = m_cbd_dm1->cols_total[i];
-    sign = m_cbd_dm1->values[index];
-    data->g_neumann_dm1[i_local] *= sign;
+    int i, i_local, index;
+    double sign;
+    for (i_local = 0; i_local < data->boundary_neumann_dm1->a0; ++i_local)
+    {
+      i = data->boundary_neumann_dm1->a1[i_local];
+      index = m_cbd_dm1->cols_total[i];
+      sign = m_cbd_dm1->values[index];
+      data->g_neumann_dm1[i_local] *= sign;
+    }
   }
 
   matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(

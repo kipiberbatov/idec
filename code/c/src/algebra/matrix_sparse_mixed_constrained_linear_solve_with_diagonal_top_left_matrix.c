@@ -65,7 +65,9 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for a_restrict\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for a_restrict\n",
+      sizeof(double) * restrict_size);
     goto boundary_neumann_complement_free;
   }
   double_array_compress_to_sparse_array(
@@ -75,7 +77,7 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   if (b_restrict == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for b_restrict\n", stderr);
+    fputs("cannot calculate b_restrict\n", stderr);
     goto a_restrict_free;
   }
 
@@ -83,7 +85,9 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   if (g_new_restrict == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for g_new_restrict\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for g_new_restrict\n",
+      sizeof(double) * restrict_size);
     goto b_restrict_free;
   }
   double_array_compress_to_sparse_array(
@@ -93,7 +97,9 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   if (f_new == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for f_new\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for f_new\n",
+      sizeof(double) * b->rows);
     goto g_new_restrict_free;
   }
   set_f_new(f_new, f, b, boundary_neumann, g_neumann);
@@ -102,7 +108,9 @@ void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
   if (flow_restrict == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for flow_restrict\n", stderr);
+    fprintf(stderr,
+      "cannot allocate %ld bytes of memory for flow_restrict\n",
+      sizeof(double) * restrict_size);
     goto f_new_free;
   }
 
