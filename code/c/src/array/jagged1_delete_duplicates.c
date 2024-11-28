@@ -31,7 +31,7 @@ jagged1 * jagged1_delete_duplicates(jagged1 * arr)
       sizeof(jagged1));
     return NULL;
   }
-  
+
   result_a0 = 1;
   qsort(arr_a1, arr_a0, sizeof(int), int_compare);
   for (i = 0; i < arr_a0 - 1; ++i)

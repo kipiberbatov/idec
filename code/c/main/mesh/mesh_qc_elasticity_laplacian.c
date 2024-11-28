@@ -17,7 +17,7 @@ int main(void)
     fputs("cannot scan mesh m in format --raw\n", stderr);
     goto end;
   }
-  
+
   m_bd = mesh_file_scan_boundary(stdin, m);
   if (m_bd == NULL)
   {

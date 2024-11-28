@@ -49,7 +49,7 @@ int main(void)
     color_error_position(__FILE__, __LINE__);
     fputs("cannot calculate mesh measures and print them\n", stderr);
   }
-  
+
   mesh_free(m);
   return errno;
 }

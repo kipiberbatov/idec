@@ -43,7 +43,7 @@ int main(int argc, char ** argv)
   potential_format = argv[7];
   potential_name = argv[8];
   dual_flow_format = argv[9];
-  
+
   m_file = fopen(m_name, "r");
   if (m_file == NULL)
   {

@@ -36,7 +36,7 @@ static double * matrix_sparse_symmetric_constrained_solve(
     return NULL;
   }
   memcpy(u, f, sizeof(double) * a->cols);
-  
+
   matrix_sparse_linear_solve(a, u, "--lu");
   if (errno)
   {
@@ -45,7 +45,7 @@ static double * matrix_sparse_symmetric_constrained_solve(
     free(u);
     return NULL;
   }
-  
+
   return u;
 }
 

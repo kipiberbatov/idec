@@ -39,7 +39,7 @@ jagged1 * mesh_qc_boundary_layer_0_hyperfaces(const mesh * m)
     free(m_bd_layer_0_hyperfaces);
     return NULL;
   }
-  
+
   ind = 0;
   for (j = 0; j < m_hyperfaces_to_cells_sizes.a0; ++j)
     if (m_hyperfaces_to_cells_sizes.a1[j] == 1)

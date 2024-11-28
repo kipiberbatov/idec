@@ -34,7 +34,7 @@ void mesh_qc_boundary_layer_0_1_nodes_file_print_raw(FILE * out, const mesh * m)
     fputs("cannot calculate m_bd_layer_0_1_nodes\n", stderr);
     goto m_bd_layer_0_cells_free;
   }
-  
+
   jagged1_file_print(out, m_bd_layer_0_1_nodes, "--raw");
 
   jagged1_free(m_bd_layer_0_1_nodes);
