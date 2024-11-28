@@ -33,27 +33,29 @@
   Define the following operators:
   \begin{subequations}
     \begin{alignat}{3}
-      & A \colon \Omega^{D - 1} X \times (I \to \Omega^{D - 1} X) \to \R, \quad
+      & A \colon \Omega^{D - 1} X \times (I \to \Omega^{D - 1} X) \to \R,
+        \enspace
       && A(r^{D - 1}, s^{D - 1})
-        := \inner{r^{D - 1}}{\kappa_{D - 1}^{-1} s^{D - 1}}_{X, D - 1} \qquad
+        := \inner{r^{D - 1}}{\kappa_{D - 1}^{-1} s^{D - 1}}_{X, D - 1} \enspace
       && [E^{-1} T \Theta], \\
 %
-      & B \colon \Omega^D X \times (I \to \Omega^{D - 1} X) \to \R, \quad
+      & B \colon \Omega^D X \times (I \to \Omega^{D - 1} X) \to \R, \enspace
       && B(v^D, r^{D - 1})
-        := \inner{d_{D - 1} r^{D - 1}}{v^D}_{X, D} \qquad
+        := \inner{d_{D - 1} r^{D - 1}}{v^D}_{X, D} \enspace
       && [L^{-D}], \\
 %
-      & C \colon \Omega^D X \times (I \to \Omega^D X) \to \R, \quad
-      && C(v^D, w^D) := \inner{\tilde{\pi}_D w^D}{v^D}_{X, D} \qquad
+      & C \colon \Omega^D X \times (I \to \Omega^D X) \to \R, \enspace
+      && C(v^D, w^D) := \inner{\tilde{\pi}_D w^D}{v^D}_{X, D} \enspace
       && [E L^{_D} \Theta^{-1}], \\
 %
-      & G \colon \Omega^{D - 1} X \to \R, \quad
+      & G \colon \Omega^{D - 1} X \to \R, \enspace
       && G(r^{D - 1})
-        := \int_{\Gamma_D} (\tr_{\Gamma_D, D - 1} r^{D - 1} \wedge g_D^0) \qquad
+        := \int_{\Gamma_D} (\tr_{\Gamma_D, D - 1} r^{D - 1} \wedge g_D^0)
+        \enspace
       && [\Theta], \\
 %
-      & F \colon \Omega^D X \to \R, \quad
-      && F(v^D) := \inner{f^D}{v^D}_{X, D} \qquad
+      & F \colon \Omega^D X \to \R, \enspace
+      && F(v^D) := \inner{f^D}{v^D}_{X, D} \enspace
       && [E T^{-1} L^{-D}].
     \end{alignat}
   \end{subequations}
@@ -64,27 +66,27 @@
     \item
       $\tilde{u}^D [\Theta L^D] \colon I \to \Omega^D X$ (temperature-volume).
   \end{itemize}
-  We are solving the following problem for $q$ and $u$:
+  We are solving the following problem for $q^{D - 1}$ and $\tilde{u}^D$:
   \begin{subequations}
     \begin{alignat}{4}
-      & \forall r^{D - 1} [E T^{-1}] \in \Ker \tr_{\Gamma_N, D - 1}, \quad
+      & \forall r^{D - 1} [E T^{-1}] \in \Ker \tr_{\Gamma_N, D - 1}, \enspace
       && A(r^{D - 1}, q^{D - 1}) + B^T(r^{D - 1}, \tilde{u}^D)
-      && = G(r^{D - 1}) \qquad
+      && = G(r^{D - 1}) \enspace
       && [E T^{-1} \Theta], \\
 %
-      & \forall v^D [\Theta L^D] \in \Omega^D X, \quad
+      & \forall v^D [\Theta L^D] \in \Omega^D X, \enspace
       && B(v^D, q^{D - 1}) - C(v^D, \frac{\partial \tilde{u}^D}{\partial t})
-      && = - F(v^D) \qquad
+      && = - F(v^D) \enspace
       && [E T^{-1} \Theta], \\
 %
       &
       && \tr_{\Gamma_N, D - 1} q^{D - 1}
-      && = g_N^{D - 1} \qquad
+      && = g_N^{D - 1} \enspace
       && [E T^{-1}], \\
 %
       &
       && \tilde{u}^D(t_0)
-      && = \star_{X, 0} u_0 \qquad
+      && = \star_{X, 0} u_0 \enspace
       && [\Theta L^D].
     \end{alignat}
   \end{subequations}
