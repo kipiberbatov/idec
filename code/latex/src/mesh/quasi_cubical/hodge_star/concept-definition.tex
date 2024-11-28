@@ -1,0 +1,19 @@
+\begin{definition}
+  \label{idec/mesh/quasi_cubical/hodge_star/concept-definition}
+  Let
+    $d \in \N$,
+    $K$ be a compatibly oriented quasi-cubical
+    \hyperref[idec:mesh:definition]{mesh} of dimension $d$,
+    $[K] := \sum_{c_d \in K_d} c^d$ be the fundamental class of $K$
+    $\inner{\cdot}{\cdot}$ be an inner product on $K$,
+    $p \in \{0, ..., d\}$.
+  The \textbf{Hodge star operator on $p$-cochains}
+  $\star_p \colon C^p K \to C^{d - p} K$
+  is defined as the unique map satisfying the following equation:
+  for any $\pi^p \in C^p K$ and $\rho^{d - p} \in C^{d - p} K$,
+  \begin{equation}
+    \inner{\rho^{d - p}}{\star_p \pi^p}_{d - p}
+    = (\rho^{d - p} \smile \pi^p)[K].
+  \end{equation}
+  The operator $\star_p$ has physical dimension $[L^{d - 2 p}]$.
+\end{definition}
