@@ -1,0 +1,105 @@
+\begin{discussion}
+  \label{idec/heat_transport/discrete/primal_weak_transient_solve_trapezoidal-discussion}
+  We are going to derive a solution to
+  \Cref{idec/heat_transport/discrete/primal_weak_transient-formulation}
+  using the trapezoidal rule for time integration.
+  We will assume that the heat capacity $\pi_0$ is time-independent which will
+  allow us to rearrange the time derivative:
+  \begin{equation}
+    B(v^0, \frac{\partial u^0} {\partial t}) = \frac{d}{d t} B(v^0, u^0). 
+  \end{equation}
+  For further simplicity we will also assume that all the rest input data (heat
+  source, thermal conductivity, boundary conditions) are also time-independent.
+  Denote $H := F + G$. We can then integrate the equation
+  \begin{equation}
+    \frac{d}{d t} B(v^0, u^0) + A(v^0, u^0) = H(v^0)
+  \end{equation}
+  with respect to $t$ in the interval $[\alpha, \beta] \subset I$ to get
+  \begin{equation}
+    B(v^0, u^0(\beta)) - B(v^0, u^0(\alpha))
+    + A(v^0, \int_\alpha^\beta u^0\, d t)
+    = (\beta - \alpha) H(v^0).
+  \end{equation}
+  For an interval $[\alpha, \beta]$ the trapezoidal rule gives the approximation
+  \begin{equation}
+    A(v^0, \int_\alpha^\beta u^0\, d t)
+    \approx A(v^0, \frac{\beta - \alpha}{2} (u^0(\alpha) + u^0(\beta)))
+  \end{equation}
+  Hence, if we partition $I$ into segements with size $\tau$ with moments of
+  time $\{t_i := t_0 + \tau i\}_{i \geq 0}$, and if we denote
+  $\{y^i := u^0(t_i)\}_{i \geq 0}$, we get
+  \begin{equation}
+    B(v^0, y^{i + 1}) - B(v^0, y^i)
+    + \frac{\tau}{2} (A(v^0, y^i) + A(v^0, y^{i + 1}))
+    = \tau H(v^0).
+  \end{equation}
+  The above equation is restated as
+  \begin{equation}
+    (B - \frac{\tau}{2} A)(v^0, y^{i + 1})
+    = (B + \frac{\tau}{2} A)(v^0, y_i) + \tau H(v^0).
+  \end{equation}
+  Define the left-hand side and right-hand side operators
+  \begin{subequations}
+    \begin{alignat}{1}
+      & L_\tau := B - \frac{\tau}{2} A, \\
+      & R_\tau := B + \frac{\tau}{2} A.
+    \end{alignat}
+  \end{subequations}
+  We arrive at the following problem: find $\{y^i \in C^0 K\}_{i \geq 0}$
+  such that
+  \begin{subequations}
+    \begin{alignat}{4}
+      & \forall v^0 [\Theta] \in \Ker \tr_{\Gamma_D, 0}, \quad
+      && R_\tau(v^0, y^{i + 1})
+      && = S_\tau(v^0, y^i) + \tau H(v^0), \enspace
+      && i \geq 0, \\
+%
+      &
+      && \tr_{\Gamma_D, 0} y^i
+      && = g_D^0, \enspace
+      && i > 0, \\
+%
+      &
+      && y^0
+      && = u_0.
+      &&
+    \end{alignat}
+  \end{subequations}
+  As in the steady-state case
+  \Cref{idec/heat_transport/discrete/primal_weak_steady_state_solve-discussion},
+  let $I_D$ be the set of nodes on the Dirichlet
+  boundary $\Gamma_D$,
+  and $\overline{I_D} := \{0, ..., n_0 - 1\} \setminus I_D$.
+  Denote the unknown coefficients of $y^i$ as $\{x^i_j\}_{j = 0}^{n_0 - 1}$,
+  i.e.,
+  \begin{equation}
+    y^i = \sum_{j = 0}^{n_0 - 1} x^i_j N^j.
+  \end{equation}
+  In an analogous derivation to the one in
+  \Cref{idec/heat_transport/discrete/primal_weak_steady_state_solve-discussion},
+  let $R_\tau^{\overline{I_D}}$ be the matrix in the standard basis of the
+  restriction of $R_\tau$ to the rows and colums in $\overline{I_D}$,
+  $x^{\overline{I_D}, i}$ be the restriction of $x^i$ on $\overline{I_D}$,
+  and $b_\tau^{\overline{I_D}, i}$ be a vector with indices in $\overline{I_D}$,
+  defined by
+  \begin{equation}
+    {b_\tau^{\overline{I_D}, i}}_j := {(S_\tau y^i)}_j + \tau H_j -
+    \sum_{k \in I_D} (R_\tau)_{j, k} g_D^0(N_k).
+  \end{equation}
+  This vector can also be written as
+  \begin{equation}
+    \overline{b}_\tau^i := \overline{(S_\tau y^i)} + \overline{c_\tau},
+  \end{equation}
+  where $\overline{(S_\tau y^i)}$ is the restriction of $S_\tau y^i$ on
+  $\overline{I}$ and
+  \begin{equation}
+    \overline{c_\tau}
+    := \tau H_j - \sum_{k \in I_D} (R_\tau)_{j, k} g_D^0(N_k),\
+    j \in \overline{I}
+  \end{equation}
+  Hence, at each time step we get the equation
+  \begin{equation}
+    R_\tau^{\overline{I_D}} x^{\overline{I_D}, i} = b_\tau^{\overline{I_D}, i},
+  \end{equation}
+  This leads to the the following iterative process.
+\end{discussion}

@@ -80,6 +80,12 @@
 \newtheorem{remark}[theorem]{Remark}
 \coloredcomponent{remark}{orange}
 
+\newtheorem{algorithm}[theorem]{Algorithm}
+\coloredcomponent{algorithm}{cyan}
+
+\newtheorem{solution}[theorem]{Solution}
+\coloredcomponent{solution}{cyan}
+
 \coloredcomponent{proof}{cyan}
 
 \renewcommand{\thefootnote}{\arabic{footnote}}
@@ -251,6 +257,9 @@
 \phantom{T}
 \input{heat_transport/discrete/primal_weak_steady_state-formulation.tex}
 \input{heat_transport/discrete/primal_weak_steady_state_solve-discussion.tex}
+\input{heat_transport/discrete/primal_weak_transient-formulation.tex}
+\input{heat_transport/discrete/primal_weak_transient_solve_trapezoidal-discussion.tex}
+\input{heat_transport/discrete/primal_weak_transient_solve_trapezoidal-algorithm.tex}
 \subsection{Mixed weak formulation}
 \phantom{T}
 \input{heat_transport/discrete/mixed_weak_transient-formulation.tex}
