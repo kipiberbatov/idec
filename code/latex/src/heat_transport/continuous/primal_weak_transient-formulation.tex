@@ -1,4 +1,5 @@
 \begin{formulation}
+  \label{idec/heat_transport/continuous/primal_weak_transient-formulation}
   [Primal weak formulation for the transient continuous heat equation
     with differential forms]
   Let:
@@ -6,17 +7,17 @@
     \item
       Let $D$ be a positive integer (space dimension);
     \item
-      $X$ be an open region in $\R^D$, representing a material body;
+      $X$ be an open region in $\R^D$ representing the material body;
     \item
       $t_0 \in \R$ be the initial time;
     \item
       $I = [t_0, \infty)$;
     \item
-      $f^D [E T^{-1}] \colon I \to \Omega^D X$ be the heat source
+      $f^D [E T^{-1}] \colon I \to \Omega^D X$ be the heat source;
     \item
       $u_0 [\Theta] \in \Omega^0 X$ be the initial temperature;
     \item
-      $\pi_0 [E L^{-D} \Theta^{-1}] \colon \Omega^3 X \to \Omega^0 X$
+      $\pi_0 [E L^{-D} \Theta^{-1}] \colon \Omega^0 X \to \Omega^0 X$
       be the heat capacity of the material;
     \item
       $\tilde{\kappa}_1 [E L^{2 - D} T^{-1} \Theta^{-1}]
@@ -74,13 +75,13 @@
     \end{alignat}
   \end{subequations}
   The flow $q^{D - 1} [E T^{-1}] \colon I \to \Omega^{D - 1} X$
-  is calculated in the post-processing phase by the formula
+  is calculated by the formula
   \begin{equation}
-    q^{D - 1}(t, x) :=
+    q^{D - 1}(t, x) =
     \begin{cases}
       ((-1)^{D - 1} \star_1 \tilde{\kappa}_1 d_0 u^0)(t, x),
         & x \notin \Gamma_N \\
       g_N^{D - 1}(t, x), & x \in \Gamma_N
-    \end{cases}.
+    \end{cases},\ t \in I.
   \end{equation}
 \end{formulation}
