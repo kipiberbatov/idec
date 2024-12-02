@@ -1,5 +1,5 @@
 \begin{algorithm}[Algorithm for solving the transient primal weak formulation
-  for the discrete heat transpher phenomenon using trapezoidal rule for time
+  for the discrete heat transfer phenomenon using trapezoidal rule for time
   integration, assuming time-independent input data]
   \label{idec/heat_transport/discrete/primal_weak_transient_solve_trapezoidal-algorithm}
   Let:
@@ -117,13 +117,13 @@
       \begin{itemize}
         \item
           the time-dependent part $\overline{v_\tau}$ of the right-hand side
-          (allocated only once, no need to store it every step),
+          (allocated only once, there is no need to store it on every step),
           \begin{equation}
             \overline{v_\tau}^i := \overline{(R_\tau x^i)};
           \end{equation}
         \item
           the time-dependent part $\overline{v_\tau}$ of the solution
-          (allocated only once, no need to store it every step),
+          (allocated only once, there is no need to store it on every step),
           \begin{equation}
             \overline{w_\tau}^i :=
             \overline{S_\tau}^{-T} \overline{S_\tau}^{-1} \overline{v_\tau}
@@ -131,7 +131,7 @@
           (with forward and back substitution);
         \item
           the solution $\overline{x}^{i + 1}$ on the non-Dirichlet nodes
-          (allocated only once, no need to store it every step),
+          (allocated only once, there is no need to store it on every step),
           \begin{equation}
             \overline{x}^{i + 1} := \overline{w_\tau}^i + \overline{z_\tau};
           \end{equation}
