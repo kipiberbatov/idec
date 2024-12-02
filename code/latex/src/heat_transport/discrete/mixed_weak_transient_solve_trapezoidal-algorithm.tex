@@ -1,0 +1,228 @@
+\begin{algorithm}[Algorithm for solving the transient mixed weak formulation
+  for the discrete heat transfer phenomenon using trapezoidal rule for time
+  integration, assuming time-independent input data]
+  \label{idec/heat_transport/discrete/mixed_weak_transient_solve_trapezoidal-algorithm}
+  Let:
+  \begin{itemize}
+    \item
+      Let $d$ be a positive integer (space dimension);
+    \item
+      $K$ be an oriented quasi-cubical \hyperref[idec:mesh:definition]{mesh} of
+      dimension $d$ representing the material body;
+    \item
+      $[K]$ be the fundamental class of $K$;
+    \item
+      $t_0 [T] \in \R$ be the initial time;
+    \item
+      $\tau [T] \in \R^+$ be the time step;
+    \item
+      $f^d [E T^{-1}] \in C^d K$ be the heat source;
+    \item
+      $u_0 [\Theta] \in C^0 K$ be the initial temperature;
+    \item
+      $\tilde{\pi}_d [E L^{-d} \Theta^{-1}] \colon I \times C^d K \to C^d K$
+      be the heat capacity of the material;
+    \item
+      $\kappa_{d - 1} [E L^{2 - d} T^{-1} \Theta^{-1}]
+        \colon C^{d - 1} K \to C^{d - 1} K$
+      be the thermal conductivity of the material;
+    \item
+      $\partial K = \Gamma_D \cup \Gamma_N$ be the partition of the boundary of
+      $K$ into Dirichlet ($\Gamma_D$) and Neumann ($\Gamma_N$) regions;
+    \item
+      $[\Gamma_D]$ be the fundamental class of $\Gamma_D$, where $\Gamma_D$
+      has the boundary orientation induced from $K$;
+    \item
+      $g_D^0 [\Theta] \in C^0 \Gamma_D$
+      be the prescribed temperature on the Dirichlet boundary;
+    \item
+      $g_N^{d - 1} [E T^{-1}] \in C^{d - 1} \Gamma_N$
+      be the prescribed flow on the Neumann boundary.
+  \end{itemize}
+  Our algorithm has $3$ phases.
+  \begin{enumerate}
+    \item
+      \textbf{Time-independent phase.}
+      Calculate:
+      \begin{itemize}
+        \item
+          $n_p := \abs{K_p}$, $p = d - 1$ and $p = d$;
+        \item
+          the diagonal matrix ${\bf A} \in M_{n_{d - 1} \times n_{d - 1}}(\R)$,
+          \begin{equation}
+            {\bf A}_{i, j}
+            := \inner{c^{d - 1}, j}
+              {\kappa_{d - 1}^{-1} c^{d - 1, i}}_{K, d - 1},\
+            i, j = 0, ..., n_{d - 1} - 1;
+          \end{equation}
+        \item
+          the sparse matrix ${\bf B} \in M_{n_d \times n_{d - 1}}(\R)$,
+          \begin{equation}
+            {\bf B}_{k, i} := \inner{\delta_{d - 1} c^{d - 1, i}}{c^{d, k}}_{K, d},\
+            i = 0, ..., n_{d - 1} - 1, k = 0, ..., n_d - 1;
+          \end{equation}
+        \item
+          the diagonal matrix ${\bf C} \in M_{n_d \times n_d}(\R)$,
+          \begin{equation}
+            {\bf C}_{k, l} := \inner{\tilde{\pi}_d c^{d, l}}{c^{d, k}}_{K, d},\
+            k, l = 0, ..., n_d - 1;
+          \end{equation}
+        \item
+          the (sparse) vector ${\bf G} \in \R^{n_{d - 1}}$,
+          \begin{equation}
+            {\bf G}_i
+            :=(\tr_{\Gamma_D, d - 1} c^{d - 1, i} \smile g_D^0)[\Gamma_D],\
+            i = 0, ..., n_{d - 1} - 1;
+          \end{equation}
+        \item
+          the vector ${\bf F} \in \R^{n_d}$,
+          \begin{equation}
+            {\bf F}_k := \inner{f^d}{c^{d, k}}_{K, d},\ k = 0, ..., n_d - 1;
+          \end{equation}
+        \item
+          the sets
+          \begin{subequations}
+            \begin{alignat}{2}
+              & J
+              && := \set{i \in \{0, ..., n_{d - 1}\}}
+                {c_{d - 1, i} \in (\Gamma_N)_{d - 1}}, \\
+              %
+              & \overline{J}
+              && := \{0, ..., n_{d - 1}\} \setminus J;
+            \end{alignat}
+          \end{subequations}
+        \item
+          the restricted diagonal matrix
+          $\overline{\bf A} \in
+            M_{\abs{\overline{J}} \times \abs{\overline{J}}}(\R)$
+          constructed out of ${\bf A}$ with rows and columns in $J$ removed;
+        \item
+          the restricted sparse matrix
+          $\overline{\bf B} \in M_{n_d \times \abs{\overline{J}}}(\R)$
+          constructed out of ${\bf B}$ with columns in $J$ removed;
+        \item
+          the modified and restricted vector
+          $\overline{\bf G} \in \R^{\abs{\overline{J}}}$ calculated by
+          \begin{equation}
+            \overline{\bf G}_i :=
+            {\bf G}_i
+            - \sum_{j \in J} {\bf A}_{i, j} g_N^{d - 1}(c_{d - 1, j}),\
+            i \in \overline{J}
+          \end{equation}
+          (in our case with $A$ diagonal, for all $i \in \overline{J}$ we get
+          $\overline{\bf G}_i = {\bf G}_i$, i.e., no modification);
+        \item
+          the modified vector $\overline{\bf F} \in \R^{n_d}$
+          \begin{equation}
+            \overline{\bf F}_k
+            := {\bf F}_k
+              + \sum_{i \in J} {\bf B}_{k, i} g_N^{d - 1}(c_{d - 1, i}),\
+            k = 0, ..., n_d - 1;
+          \end{equation}
+        \item
+          the left-hand side matrix ${\bf N}_\tau \in M_{n_d \times n_d}(\R)$,
+          \begin{equation}
+            {\bf N}_\tau
+            := \overline{\bf B}\, \overline{\bf A}^{-1} \overline{\bf B}^T
+              + \frac{2}{\tau} {\bf C};
+          \end{equation}
+        \item
+          the lower-triangular positive-diagonal sparse matrix
+          ${\bf L}_\tau \in M_{n_d \times n_d}(\R)$
+          realising the Cholesky-decomposition
+          \begin{equation}
+            {\bf N}_\tau = {\bf L}_\tau {\bf L}^T_\tau;
+          \end{equation}
+        \item
+          the constant right-hand side vector ${\bf Z} \in \R^{n_d}$,
+          \begin{equation}
+            {\bf Z}
+            := \overline{\bf B} \overline{\bf A}^{-1} \overline{\bf G}
+              + \overline{\bf F}
+          \end{equation}
+        \item
+          the time-independent part of the heat flow
+          $\overline{\bf P} \in \R^{\abs{\overline{J}}}$,
+          \begin{equation}
+            \overline{\bf P} := \overline{\bf A}^{-1} (\overline{\bf G};
+          \end{equation}
+        \item
+          the time-independent part of the dual temperature
+          ${\bf V}_\tau \in \R^{n_d}$,
+          \begin{equation}
+            {\bf V}_\tau
+            := {\bf N}_\tau^{-1} {\bf Z}
+            = \overline{L_\tau}^{-T} \overline{L_\tau}^{-1} {\bf Z}
+          \end{equation}
+          (calculated with forward and back substitution);
+        \item
+          the initial coordinates
+          ${\bf U}^0 \in \R^{n_d}$ of the dual temperature,
+          and ${\bf Q}^0 \in \R^{n_{d - 1}}$ of the heat flow:
+          \begin{subequations}
+            \begin{alignat}{2}
+              & {\bf Q}^0_i := ({\rm flow} u_0)(c_{d - 1, i}),\
+              && i = 0, ..., n_{d - 1} - 1, \\
+              %
+              & {\bf U}^0_k := (\star_0 u_0)(c_{d, k}),\
+              && k = 0, ..., n_d - 1;
+            \end{alignat}
+          \end{subequations}
+      \end{itemize}
+    \item
+      \textbf{Time-dependent (loop) phase.}
+      For any $s \geq 0$ (until some predefined final moment is reached or some
+      condition for small error is fulfilled), calculate:
+      \begin{itemize}
+        \item
+          the time-dependent part ${{\bf Y}_\tau}^s$ of the right-hand side
+          (allocated only once, no need to store it on every step),
+          \begin{equation}
+            {\bf Y}_\tau^s
+            := {\bf B} {\bf Q}^s + \frac{2}{\tau} {\bf C} {\bf U}^s;
+          \end{equation}
+        \item
+          the time-dependent part $\overline{{\bf W}_\tau}^s$ of the solution
+          (allocated only once, there is no need to store it on every step),
+          \begin{equation}
+            \overline{{\bf W}_\tau}^s
+            := {\bf N}_\tau^{-1} {\bf Y}_\tau^s
+            = \overline{L_\tau}^{-T} \overline{L_\tau}^{-1} {\bf Y}_\tau^s
+          \end{equation}
+          (calculated with forward and back substitution);
+        \item
+          the coordinates of the dual temperature ${\bf U}^{s + 1}$,
+          \begin{equation}
+            {\bf U}^{s + 1} := {\bf V}_\tau + \overline{{\bf W}_\tau}^s;
+          \end{equation}
+        \item
+          the restricted coordinates $\overline{\bf Q}^{s + 1}$ of the flow
+          (allocated only once, there is no need to store it on every step),
+          \begin{equation}
+            \overline{\bf Q}^{s + 1}
+            := \overline{\bf P} - \overline{\bf B}^T {\bf U}^{s + 1};
+          \end{equation}
+        \item
+          the heat flow ${\bf Q}^{s + 1} \in \R^{n_{d - 1}}$,
+          \begin{equation}
+            {\bf Q}^{s + 1}_j :=
+            \begin{cases}
+              \overline{\bf Q}^{s + 1}_j, & j \in \overline{J} \\
+              g_N^{d - 1}(c_{d - 1, j}), & j \in J
+            \end{cases}.
+          \end{equation}
+      \end{itemize}
+    \item
+      \textbf{Post-processing.}
+      For each time moment $t_s$ the temperature $u^{0, s} \in C^0 K$
+      is calculated by the formula
+      \begin{equation}
+        u^{0, s}(c_0) :=
+        \begin{cases}
+          (\star_d \tilde{u}^{d, s})(c_0),
+            & c_0 \in K_0 \setminus (\Gamma_D)_0 \\
+          g_D^0(c_0), & c_0 \in (\Gamma_D)_0
+        \end{cases}.
+      \end{equation}
+  \end{enumerate}
+\end{algorithm}
