@@ -92,7 +92,7 @@
   \end{subequations}
   Initil conditions give us $Q^0$ and $U^0$.
   Denoting the matrices ${\bf A}$, ${\bf B}$, ${\bf C}$ and vectors
-  ${\bf Q}$, ${\bf U}$, ${\bf H}$, ${\bf F}$, ${\bf G}$
+  ${\bf Q}^s$, ${\bf U}^s$, ${\bf F}$, ${\bf G}$
   of the corresponding operators in standard bases, we get the system
   for ${\bf Q}^s$ and ${\bf U}^s$, $s > 0$.
   \begin{subequations}
@@ -104,11 +104,12 @@
 %
       & \sum_{i = 0}^{n_{d - 1} - 1} {\bf B}_{k, i} {\bf Q}^{s +1}
         -\frac{2}{\tau} {\bf C} {\bf U}^{s + 1}
-      && = - {\bf H}^s(v^d) - {\bf F}_k, \enspace
-      && i \in \overline{J} \\
+      && = (- {\bf B} {\bf Q}^s - \frac{2}{\tau} {\bf C} {\bf U}^s)_k
+        - {\bf F}_k, \enspace
+      && k \in \{0, ..., n_d - 1\}, \\
 %
       & x_i
-      && = g_N^{d - 1}(c{d - 1, i}), \enspace
+      && = g_N^{d - 1}(c_{d - 1, i}), \enspace
       && i \in J.
     \end{alignat}
   \end{subequations}
@@ -124,8 +125,9 @@
       & \sum_{i \in J} {\bf B}_{k, i} {\bf Q}^{s + 1}_i
         - \sum_{l = 0}^{n_d - 1}
           \frac{2}{\tau}{\bf C}_{k, l} {\bf U}^{s + 1}_l
-      && = - \overline{\bf H}({\bf U}^s, {\bf U}^s)_k - {\bf F}_k
-        - \sum_{i \in J} {\bf B}_{k, i} g_N^{d - 1}(c_{d - 1, i}), \enspace
+      && = (- {\bf B} {\bf Q}^s - \frac{2}{\tau} {\bf C} {\bf U}^s)_k
+        - {\bf F}_k - \sum_{i \in J} {\bf B}_{k, i} g_N^{d - 1}(c_{d - 1, i}),
+        \enspace
       && i \in \overline{J}.
     \end{alignat}
   \end{subequations}
@@ -141,7 +143,8 @@
 %
       & \overline{\bf B}\, \overline{\bf Q}^{s + 1}
         - \frac{2}{\tau} {\bf C} {\bf U}^{s + 1}
-      && = - {\bf H}({\bf Q}^s, {\bf U}^s) - \overline{\bf F}.
+      && = - {\bf B} {\bf Q}^s - \frac{2}{\tau} {\bf C} {\bf U}^s
+        - \overline{\bf F}.
     \end{alignat}
   \end{subequations}
   We can solve for $\overline{\bf Q}^{s + 1}$, $s \in \N$ as follows:
@@ -152,7 +155,7 @@
   \end{equation}
   Hence,
   \begin{equation}
-    - {\bf H}({\bf Q}^s, {\bf U}^s) - \overline{\bf F}
+    - {\bf B} {\bf Q}^s - \frac{2}{\tau} {\bf C} {\bf U}^s - \overline{\bf F}
     = \overline{\bf B}\, \overline{\bf Q}^{s + 1}
       - \frac{2}{\tau} {\bf C} {\bf U}^{s + 1}
     = \overline{\bf B}\, \overline{\bf A}^{-1}
@@ -164,19 +167,19 @@
     (\overline{\bf B}\, \overline{\bf A}^{-1} \overline{\bf B}^T
       + \frac{2}{\tau} {\bf C}) {\bf U}^{s + 1}
     = \overline{\bf B} \overline{\bf A}^{-1} \overline{\bf G}
-      + \overline{\bf F} + {\bf H}({\bf Q}^s, {\bf U}^s).
+      + \overline{\bf F} + {\bf B} {\bf Q}^s + \frac{2}{\tau} {\bf C} {\bf U}^s.
   \end{equation}
   Define the left-hand side matrix ${\bf N}_\tau \in M_{n_d \times n_d}(\R)$,
   \begin{equation}
     {\bf N}_\tau
     := \overline{\bf B}\, \overline{\bf A}^{-1} \overline{\bf B}^T
       + \frac{2}{\tau} {\bf C},
-  \end{equation},
+  \end{equation}
   and the constant right-hand side vector ${\bf Z} \in \R^{n_d}$,
   \begin{equation}
     {\bf Z}
     := \overline{\bf B} \overline{\bf A}^{-1} \overline{\bf G}
-      + \overline{\bf F}
+      + \overline{\bf F}.
   \end{equation}
   This leads to the following linear $n_d \times n_d$ system:
   \begin{equation}

@@ -102,7 +102,7 @@
           constructed out of ${\bf B}$ with columns in $J$ removed;
         \item
           the modified and restricted vector
-          $\overline{\bf G} \in \R^{\abs{\overline{J}}}$ calculated by
+          $\overline{\bf G} \in \R^{\abs{\overline{J}}}$,
           \begin{equation}
             \overline{\bf G}_i :=
             {\bf G}_i
@@ -112,7 +112,7 @@
           (in our case with $A$ diagonal, for all $i \in \overline{J}$ we get
           $\overline{\bf G}_i = {\bf G}_i$, i.e., no modification);
         \item
-          the modified vector $\overline{\bf F} \in \R^{n_d}$
+          the modified vector $\overline{\bf F} \in \R^{n_d}$,
           \begin{equation}
             \overline{\bf F}_k
             := {\bf F}_k
@@ -137,14 +137,14 @@
           the constant right-hand side vector ${\bf Z} \in \R^{n_d}$,
           \begin{equation}
             {\bf Z}
-            := \overline{\bf B} \overline{\bf A}^{-1} \overline{\bf G}
-              + \overline{\bf F}
+            := \overline{\bf B}\, \overline{\bf A}^{-1} \overline{\bf G}
+              + \overline{\bf F};
           \end{equation}
         \item
           the time-independent part of the heat flow
           $\overline{\bf P} \in \R^{\abs{\overline{J}}}$,
           \begin{equation}
-            \overline{\bf P} := \overline{\bf A}^{-1} (\overline{\bf G};
+            \overline{\bf P} := \overline{\bf A}^{-1} \overline{\bf G};
           \end{equation}
         \item
           the time-independent part of the dual temperature
@@ -152,7 +152,7 @@
           \begin{equation}
             {\bf V}_\tau
             := {\bf N}_\tau^{-1} {\bf Z}
-            = \overline{L_\tau}^{-T} \overline{L_\tau}^{-1} {\bf Z}
+            = \overline{{\bf L}_\tau}^{-T} \overline{{\bf L}_\tau}^{-1} {\bf Z}
           \end{equation}
           (calculated with forward and back substitution);
         \item
@@ -161,49 +161,75 @@
           and ${\bf Q}^0 \in \R^{n_{d - 1}}$ of the heat flow:
           \begin{subequations}
             \begin{alignat}{2}
-              & {\bf Q}^0_i := ({\rm flow} u_0)(c_{d - 1, i}),\
+              & {\bf Q}^0_i := ({\bf {\rm flow}}({\bf u}_0))_i,\
               && i = 0, ..., n_{d - 1} - 1, \\
               %
-              & {\bf U}^0_k := (\star_0 u_0)(c_{d, k}),\
-              && k = 0, ..., n_d - 1;
+              & {\bf U}^0_k := ({\bf \star}_0 {\bf u}_0)_k,\
+              && k = 0, ..., n_d - 1.
             \end{alignat}
           \end{subequations}
       \end{itemize}
+      Allocate memory for the following vectors, to be modified at each step in
+      the looping phase (superscript index $s$ only shows their time relevance):
+      \begin{itemize}
+        \item
+          time-dependent part of the right-hand side
+          ${\bf Y}_\tau^s \in \R^{n_d}$;
+        \item
+          time-dependent part of the solution
+          ${\bf W}_\tau^s \in \R^{n_d}$;
+        \item
+          the restricted coordinates
+          $\overline{\bf Q}^{s + 1} \in \R^{\abs{\overline{J}}}$.
+      \end{itemize}
     \item
       \textbf{Time-dependent (loop) phase.}
+      The constant input consists of
+      $g_N^{d - 1},\ {\bf B},\ \overline{\bf B},\ {\bf C},\ \tau,\
+      {\bf L}_\tau,\ {\bf V}_\tau,\ \overline{\bf P}$.
+      Temporary mutable variables include the vectors
+      ${\bf Y}_\tau^s,\ {\bf W}_\tau^s,\ \overline{\bf Q}^{s + 1}$.
+      The output consists of the coordinates ${\bf Q}$ of the heat flow,
+      and the coordinates ${\bf U}$ of dual temperature.
+      ${\bf Q}$ and ${\bf U}$ are either pre-allocated as arrays of size
+      $(\verb|number_of_time_steps| + 1) \times n_p$
+      (for $p = d - 1$ and $p = d$ respectively) and initialized,
+      or are only initialized, and memory is allocated at each step until some
+      error condition is satisfied
+      (e.g., the relative error between two consecutive steps becomes below some
+      $\varepsilon > 0$, in which case the system converges to steady-state).
+      
       For any $s \geq 0$ (until some predefined final moment is reached or some
       condition for small error is fulfilled), calculate:
       \begin{itemize}
         \item
-          the time-dependent part ${{\bf Y}_\tau}^s$ of the right-hand side
-          (allocated only once, no need to store it on every step),
-          \begin{equation}
-            {\bf Y}_\tau^s
-            := {\bf B} {\bf Q}^s + \frac{2}{\tau} {\bf C} {\bf U}^s;
-          \end{equation}
+          \qquad\;
+          $ {\bf Y}_\tau^s
+            := {\bf B} {\bf Q}^s + \frac{2}{\tau} {\bf C} {\bf U}^s$;
+          \hfill\refstepcounter{equation}\textup{(\theequation)}
         \item
-          the time-dependent part $\overline{{\bf W}_\tau}^s$ of the solution
-          (allocated only once, there is no need to store it on every step),
-          \begin{equation}
-            \overline{{\bf W}_\tau}^s
+          \qquad\;
+          $ {\bf W}_\tau^s
             := {\bf N}_\tau^{-1} {\bf Y}_\tau^s
-            = \overline{L_\tau}^{-T} \overline{L_\tau}^{-1} {\bf Y}_\tau^s
-          \end{equation}
+            = \overline{{\bf L}_\tau}^{-T} \overline{{\bf L}_\tau}^{-1}
+              {\bf Y}_\tau^s$;
+          \hfill\refstepcounter{equation}\textup{(\theequation)}
+          \newline
           (calculated with forward and back substitution);
         \item
-          the coordinates of the dual temperature ${\bf U}^{s + 1}$,
+          the coordinates of the dual temperature ${\bf U}^{s + 1}$
+          (stored for all $s$),
           \begin{equation}
-            {\bf U}^{s + 1} := {\bf V}_\tau + \overline{{\bf W}_\tau}^s;
+            {\bf U}^{s + 1} := {\bf V}_\tau + {\bf W}_\tau^s;
           \end{equation}
         \item
-          the restricted coordinates $\overline{\bf Q}^{s + 1}$ of the flow
-          (allocated only once, there is no need to store it on every step),
-          \begin{equation}
-            \overline{\bf Q}^{s + 1}
-            := \overline{\bf P} - \overline{\bf B}^T {\bf U}^{s + 1};
-          \end{equation}
+          \qquad\;
+          $ \overline{\bf Q}^{s + 1}
+            := \overline{\bf P} - \overline{\bf B}^T {\bf U}^{s + 1}$;
+          \hfill\refstepcounter{equation}\textup{(\theequation)}
         \item
-          the heat flow ${\bf Q}^{s + 1} \in \R^{n_{d - 1}}$,
+          the heat flow ${\bf Q}^{s + 1} \in \R^{n_{d - 1}}$
+          (stored for all $s$),
           \begin{equation}
             {\bf Q}^{s + 1}_j :=
             \begin{cases}
@@ -214,14 +240,24 @@
       \end{itemize}
     \item
       \textbf{Post-processing.}
-      For each time moment $t_s$ the temperature $u^{0, s} \in C^0 K$
-      is calculated by the formula
+      Define the sets
+      \begin{subequations}
+        \begin{alignat}{2}
+          & D_0
+          && := \set{i \in \{0, ..., n_0 - 1\}}{c_{0, i} \in (\Gamma_D)_0}, \\
+          %
+          & \overline{D_0}
+          && := \{0, ..., n_0 - 1\} \setminus D_0.
+        \end{alignat}
+      \end{subequations}
+      For each time moment $t_s$ the coordinates of the temperature
+      ${\bf u}^{0, s} \in \R^{n_0}$
+      in the standard basis are calculated by the formula
       \begin{equation}
-        u^{0, s}(c_0) :=
+        {\bf u}^{0, s}_i :=
         \begin{cases}
-          (\star_d \tilde{u}^{d, s})(c_0),
-            & c_0 \in K_0 \setminus (\Gamma_D)_0 \\
-          g_D^0(c_0), & c_0 \in (\Gamma_D)_0
+          ({\bf \star}_d {\bf U}^{d, s})_i, & i \in \overline{D_0} \\
+          g_D^0(c_{0, i}), & i \in D_0
         \end{cases}.
       \end{equation}
   \end{enumerate}
