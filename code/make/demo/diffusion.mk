@@ -23,12 +23,17 @@ _demo_diffusion_steady_state :=\
   $(_demo_diffusion_steady_state_continuous_2d_d00_p05)\
   $(_demo_diffusion_steady_state_continuous_2d_d01_p00)\
   $(_demo_diffusion_steady_state_continuous_2d_d02_p00)\
+  $(_demo_diffusion_steady_state_continuous_2d_d02_p01)\
   $(_demo_diffusion_steady_state_continuous_2d_d03_p00)\
   $(_demo_diffusion_steady_state_continuous_2d_d03_p01)\
   $(_demo_diffusion_steady_state_continuous_3d_d00_p00)\
 
+.PHONY: demo_diffusion_steady_state
+demo_diffusion_steady_state: $(_demo_diffusion_steady_state)
+
 include code/make/demo/diffusion_transient_continuous_2d_d00_p00.mk
 include code/make/demo/diffusion_transient_continuous_2d_d00_p01.mk
+# include code/make/demo/diffusion_transient_continuous_2d_d00_p04.mk
 
 _demo_diffusion_transient_continuous_2d :=\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_potential.txt\
@@ -248,14 +253,18 @@ demo_diffusion_transient_continuous_3d: $(_demo_diffusion_transient_continuous_3
 _demo_diffusion_transient :=\
   $(_demo_diffusion_transient_continuous_2d_d00_p00)\
   $(_demo_diffusion_transient_continuous_2d_d00_p01)\
-  $(_demo_diffusion_transient_continuous_2d)\
-  $(_demo_diffusion_transient_continuous_3d)\
+  $(_demo_diffusion_transient_continuous_2d_d00_p04)\
+#   $(_demo_diffusion_transient_continuous_2d)\
+#   $(_demo_diffusion_transient_continuous_3d)\
+
+.PHONY: demo_diffusion_transient
+demo_diffusion_transient: $(_demo_diffusion_transient)
 
 _demo_diffusion := $(_demo_diffusion_steady_state) $(_demo_diffusion_transient)
 
 .PHONY: demo_diffusion demo_diffusion_clean demo_diffusion_distclean
 
-demo_diffusion: $(_demo_diffusion)
+demo_diffusion: demo_diffusion_steady_state demo_diffusion_transient
 
 demo_diffusion_clean:
 	-$(RM) $(_demo_diffusion)

@@ -11,6 +11,10 @@ _demo_diffusion_steady_state_continuous_2d_d00_p04 :=\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_solution.txt\
   build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_potential.txt\
 
+.PHONY: demo_gtk_diffusion_transient_continuous_2d_d00_p04
+demo_gtk_diffusion_transient_continuous_2d_d00_p04:\
+  $(_demo_gtk_diffusion_transient_continuous_2d_d00_p04)
+
 build/$(MODE)/demo/diffusion/steady_state_continuous_2d_d00_p04_exact_brick_2d_5_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_exact_potential$(.EXE)\
   build/$(MODE)/demo/mesh/brick_2d_5_forman.txt\

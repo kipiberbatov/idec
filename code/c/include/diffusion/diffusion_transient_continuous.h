@@ -2,7 +2,7 @@
 #define _diffusion_transient_continuous_h
 
 #include "double.h"
-#include "mesh.h"
+#include "mesh_qc.h"
 
 /* typedef double scalar_field(const double *); */
 typedef int region_implicit(const double *);

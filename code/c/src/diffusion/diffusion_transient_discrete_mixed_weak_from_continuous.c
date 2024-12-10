@@ -3,16 +3,40 @@
 
 #include "boundary_scalar_field_discretize.h"
 #include "boundary_pseudoscalar_field_discretize.h"
+#include "color.h"
 #include "de_rham.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
+#include "idec_error_message.h"
 #include "unsigned_approximation.h"
+
+static void discrete_dual_potential_from_continuous_potential(
+  double * discrete_dual_potential,
+  const mesh * m,
+  const double * m_vol_d,
+  double (*continuous_potential)(const double *))
+{
+  double * discrete_potential;
+
+  discrete_potential = (double *) malloc(sizeof(double) * m->cn[0]);
+  if (discrete_potential == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m->cn[0], "discrete_potential");
+    return;
+  }
+  de_rham_0(discrete_potential, m, continuous_potential);
+  mesh_qc_hodge_star_0(discrete_dual_potential, m, m_vol_d, discrete_potential);
+  free(discrete_potential);
+  errno = 0;
+}
 
 diffusion_transient_discrete_mixed_weak *
 diffusion_transient_discrete_mixed_weak_from_continuous(
   const mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
+  const matrix_sparse * m_cbd_star_d,
   const diffusion_transient_continuous * data_continuous)
 {
   int d;
@@ -22,81 +46,170 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
 
   data_discrete = (diffusion_transient_discrete_mixed_weak *) malloc(
     sizeof(diffusion_transient_discrete_mixed_weak));
-  if (errno)
+  if (data_discrete == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(diffusion_transient_discrete_mixed_weak),
+      "data_discrete");
     goto end;
+  }
 
-  data_discrete->pi_0 = (double *) malloc(sizeof(double) * m->cn[0]);
-  if (errno)
+  data_discrete->number_of_cells_dm1 = m->cn[d - 1];
+  data_discrete->number_of_cells_d = m->cn[d];
+
+  data_discrete->pi_d = (double *) malloc(sizeof(double) * m->cn[d]);
+  if (data_discrete->pi_d == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m->cn[d], "data_discrete->pi_d");
     goto data_discrete_free;
-  de_rham_0(data_discrete->pi_0, m, data_continuous->pi_0);
+  }
+  unsigned_approximation_of_scalar_field_on_nonzero_cells(
+    data_discrete->pi_d, m, data_continuous->pi_0, d);
 
   data_discrete->kappa_dm1 = (double *) malloc(sizeof(double) * m->cn[d - 1]);
-  if (errno)
-    goto data_discrete_pi_0_free;
+  if (data_discrete->kappa_dm1 == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m->cn[d - 1],
+      "data_discrete->kappa_dm1");
+    goto data_discrete_pi_d_free;
+  }
   unsigned_approximation_of_scalar_field_on_hyperfaces(
     data_discrete->kappa_dm1, m, data_continuous->kappa_1);
 
-  data_discrete->initial = (double *) malloc(sizeof(double) * m->cn[0]);
-  if (errno)
+  data_discrete->initial_dual_potential = (double *) malloc(
+    sizeof(double) * m->cn[d]);
+  if (data_discrete->initial_dual_potential == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m->cn[d],
+      "data_discrete->initial_dual_potential");
     goto data_discrete_kappa_dm1_free;
-  de_rham_0(data_discrete->initial, m, data_continuous->initial);
+  }
+  discrete_dual_potential_from_continuous_potential(
+    data_discrete->initial_dual_potential,
+    m, m_vol_d, data_continuous->initial);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate data_discrete->initial_dual_potential\n", stderr);
+    goto data_discrete_initial_dual_potential_free;
+  }
+
+  data_discrete->initial_flow = (double *) calloc(m->cn[d - 1], sizeof(double));
+  if (data_discrete->initial_flow == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m->cn[d - 1],
+      "data_discrete->initial_flow");
+    goto data_discrete_initial_dual_potential_free;
+  }
+  matrix_sparse_vector_multiply_add(data_discrete->initial_flow,
+    m_cbd_star_d, data_discrete->initial_dual_potential);
+  double_array_pointwise_multiply(data_discrete->initial_flow,
+    m->cn[d - 1], data_discrete->kappa_dm1);
+  double_array_multiply_with(data_discrete->initial_flow, m->cn[d - 1], -1.);
 
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[d]);
-  if (errno)
-    goto data_discrete_initial_free;
+  if (data_discrete->source == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m->cn[d],
+      "data_discrete->source");
+    goto data_discrete_initial_flow_free;
+  }
   de_rham_nonzero(
     data_discrete->source, m, m->dim, m_vol_d, data_continuous->source);
 
-  data_discrete->boundary_dirichlet
-  = mesh_boundary_nodes_from_constraint(m, data_continuous->boundary_dirichlet);
-  if (errno)
+  data_discrete->boundary_dirichlet_dm1
+  = mesh_boundary_hyperfaces_from_constraint(
+    m, data_continuous->boundary_dirichlet);
+  if (data_discrete->boundary_dirichlet_dm1 == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot calculate data_discrete->boundary_dirichlet_dm1\n");
     goto data_discrete_source_free;
+  }
 
-  data_discrete->g_dirichlet
-  = (double *) malloc(sizeof(double) * (data_discrete->boundary_dirichlet->a0));
-  if (errno)
-    goto data_discrete_boundary_dirichlet_free;
+  data_discrete->boundary_dirichlet_0 = mesh_boundary_nodes_from_constraint(
+    m, data_continuous->boundary_dirichlet);
+  if (data_discrete->boundary_dirichlet_0 == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot calculate data_discrete->boundary_dirichlet_0\n");
+    goto data_discrete_boundary_dirichlet_dm1_free;
+  }
+
+  data_discrete->g_dirichlet_0 = (double *) malloc(
+    sizeof(double) * (data_discrete->boundary_dirichlet_0->a0));
+  if (data_discrete->g_dirichlet_0 == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(
+      sizeof(double) * data_discrete->boundary_dirichlet_0->a0,
+      "data_discrete->g_dirichlet_0");
+    goto data_discrete_boundary_dirichlet_0_free;
+  }
   boundary_scalar_field_discretize(
-    data_discrete->g_dirichlet,
+    data_discrete->g_dirichlet_0,
     m->dim_embedded,
     m->coord,
-    data_discrete->boundary_dirichlet,
+    data_discrete->boundary_dirichlet_0,
     data_continuous->g_dirichlet);
 
-  data_discrete->boundary_neumann = mesh_boundary_hyperfaces_from_constraint(
+  data_discrete->boundary_neumann_dm1
+  = mesh_boundary_hyperfaces_from_constraint(
     m, data_continuous->boundary_neumann);
-  if (errno)
-    goto data_discrete_g_dirichlet_free;
+  if (data_discrete->boundary_neumann_dm1 == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot calculate data_discrete->boundary_neumann_dm1\n");
+    goto data_discrete_g_dirichlet_0_free;
+  }
 
-  data_discrete->g_neumann
-  = (double *) malloc(sizeof(double) * (data_discrete->boundary_neumann->a0));
-  if (errno)
-    goto data_discrete_boundary_neumann_free;
+  data_discrete->g_neumann_dm1 = (double *) malloc(
+    sizeof(double) * (data_discrete->boundary_neumann_dm1->a0));
+  if (data_discrete->g_neumann_dm1 == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(
+      sizeof(double) * data_discrete->boundary_neumann_dm1->a0,
+      "data_discrete->g_neumann_dm1");
+    goto data_discrete_boundary_neumann_dm1_free;
+  }
   boundary_pseudoscalar_field_discretize(
-    data_discrete->g_neumann,
+    data_discrete->g_neumann_dm1,
     m,
     m_vol_dm1,
-    data_discrete->boundary_neumann,
+    data_discrete->boundary_neumann_dm1,
     data_continuous->g_neumann);
+
+  double_array_assemble_from_sparse_array(data_discrete->initial_flow,
+    data_discrete->boundary_neumann_dm1, data_discrete->g_neumann_dm1);
 
   return data_discrete;
 
   /* cleaning if an error occurs */
-  free(data_discrete->g_neumann);
-data_discrete_boundary_neumann_free:
-  jagged1_free(data_discrete->boundary_neumann);
-data_discrete_g_dirichlet_free:
-  free(data_discrete->g_dirichlet);
-data_discrete_boundary_dirichlet_free:
-  jagged1_free(data_discrete->boundary_dirichlet);
+  free(data_discrete->g_neumann_dm1);
+data_discrete_boundary_neumann_dm1_free:
+  jagged1_free(data_discrete->boundary_neumann_dm1);
+data_discrete_g_dirichlet_0_free:
+  free(data_discrete->g_dirichlet_0);
+data_discrete_boundary_dirichlet_0_free:
+  jagged1_free(data_discrete->boundary_dirichlet_0);
+data_discrete_boundary_dirichlet_dm1_free:
+  jagged1_free(data_discrete->boundary_dirichlet_dm1);
 data_discrete_source_free:
   free(data_discrete->source);
-data_discrete_initial_free:
-  free(data_discrete->initial);
+data_discrete_initial_flow_free:
+  free(data_discrete->initial_flow);
+data_discrete_initial_dual_potential_free:
+  free(data_discrete->initial_dual_potential);
 data_discrete_kappa_dm1_free:
   free(data_discrete->kappa_dm1);
-data_discrete_pi_0_free:
-  free(data_discrete->pi_0);
+data_discrete_pi_d_free:
+  free(data_discrete->pi_d);
 data_discrete_free:
   free(data_discrete);
 end:
