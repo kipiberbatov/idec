@@ -51,7 +51,7 @@
           the diagonal matrix ${\bf A} \in M_{n_{d - 1} \times n_{d - 1}}(\R)$,
           \begin{equation}
             {\bf A}_{i, j}
-            := \inner{c^{d - 1}, j}
+            := \inner{c^{d - 1, j}}
               {\kappa_{d - 1}^{-1} c^{d - 1, i}}_{K, d - 1},\
             i, j = 0, ..., n_{d - 1} - 1;
           \end{equation}
@@ -109,13 +109,13 @@
             - \sum_{j \in J} {\bf A}_{i, j} g_N^{d - 1}(c_{d - 1, j}),\
             i \in \overline{J}
           \end{equation}
-          (in our case with $A$ diagonal, for all $i \in \overline{J}$ we get
-          $\overline{\bf G}_i = {\bf G}_i$, i.e., no modification);
+          (in our case  $A$ is diagonal and so for all $i \in \overline{J}$
+          we get $\overline{\bf G}_i = {\bf G}_i$, i.e., no modification);
         \item
-          the modified vector $\overline{\bf F} \in \R^{n_d}$,
+          the modified vector $\widetilde{\bf F} \in \R^{n_d}$,
           \begin{equation}
-            \overline{\bf F}_k
-            := {\bf F}_k
+            \widetilde{\bf F}_k
+            := 2 {\bf F}_k
               + \sum_{i \in J} {\bf B}_{k, i} g_N^{d - 1}(c_{d - 1, i}),\
             k = 0, ..., n_d - 1;
           \end{equation}
@@ -138,7 +138,7 @@
           \begin{equation}
             {\bf Z}
             := \overline{\bf B}\, \overline{\bf A}^{-1} \overline{\bf G}
-              + \overline{\bf F};
+              + \widetilde{\bf F};
           \end{equation}
         \item
           the time-independent part of the heat flow
@@ -152,7 +152,7 @@
           \begin{equation}
             {\bf V}_\tau
             := {\bf N}_\tau^{-1} {\bf Z}
-            = \overline{{\bf L}_\tau}^{-T} \overline{{\bf L}_\tau}^{-1} {\bf Z}
+            = {\bf L}_\tau^{-T} {\bf L}_\tau^{-1} {\bf Z}
           \end{equation}
           (calculated with forward and back substitution);
         \item
@@ -211,8 +211,7 @@
           \qquad\;
           $ {\bf W}_\tau^s
             := {\bf N}_\tau^{-1} {\bf Y}_\tau^s
-            = \overline{{\bf L}_\tau}^{-T} \overline{{\bf L}_\tau}^{-1}
-              {\bf Y}_\tau^s$;
+            = {\bf L}_\tau^{-T} {\bf L}_\tau^{-1} {\bf Y}_\tau^s$
           \hfill\refstepcounter{equation}\textup{(\theequation)}
           \newline
           (calculated with forward and back substitution);
