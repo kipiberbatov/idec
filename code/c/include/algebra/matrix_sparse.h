@@ -113,6 +113,16 @@ void matrix_sparse_linear_solve(
   double * b,
   const char * method);
 
+matrix_sparse * matrix_sparse_cholesky_decomposition(const matrix_sparse * a);
+
+/* find x := l^{-1} x, where l is lower triangular */
+void matrix_sparse_lower_triangular_linear_solve(
+  double * x, const matrix_sparse * l);
+
+/* find x := l^{-T} x, where l is lower triangular */
+void matrix_sparse_lower_triangular_transpose_linear_solve(
+  double * x, const matrix_sparse * l);
+
 /**************************** matrix_sparse_remove ****************************/
 
 /* restrict matrix a to specified rows and columns */
@@ -254,6 +264,28 @@ void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(
   double * u,
   const double * a,
   const matrix_sparse * b,
+  const double * g,
+  const double * f);
+
+/*
+Let
+  . $m$ and $n$ be integers, with $m >= n$
+  . $a: M_{m * m}(R)$ be a positive diagonal matrix
+  . $b: M_{n * m}(R)$ be a sparse matrix of full rank ($n$)
+  . $c: M_{n * n}(R)$ be a positive diagonal matrix
+  . $g, q: R^m$
+  . $f, u: R^n$
+
+We are solving the following linear system for unknowns $q$ and $u$
+  | a q + b^t u = g
+  | b q - c   u = f
+*/
+void matrix_sparse_mixed_perturbed_linear_solve_with_diagonal_top_left_matrix(
+  double * q,
+  double * u,
+  const double * a,
+  const matrix_sparse * b,
+  const double * c,
   const double * g,
   const double * f);
 

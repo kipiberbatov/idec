@@ -10,6 +10,7 @@ DEMO_ALGEBRA := \
   build/$(MODE)/demo/algebra/matrix_sparse_4_4_linear_solve_double_4.txt\
   build/$(MODE)/demo/algebra/matrix_sparse_4_4_vector_multiply_add_double_4.txt\
   build/$(MODE)/demo/algebra/matrix_sparse_4_4_multiply_with_diagonal_matrix_double_4.txt\
+  build/$(MODE)/demo/algebra/matrix_sparse_cholesky_decomposition_example.txt\
   build/$(MODE)/demo/algebra/matrix_determinant_example.txt\
   build/$(MODE)/demo/algebra/matrix_times_transpose_example.txt\
   build/$(MODE)/demo/algebra/matrix_inverse_example.txt\
@@ -83,6 +84,11 @@ build/$(MODE)/demo/algebra/matrix_sparse_4_4_multiply_with_diagonal_matrix_doubl
   data/algebra/matrix_sparse_4_4.txt\
   data/algebra/double_4.txt | build/$(MODE)/demo/algebra
 	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw > $@
+
+build/$(MODE)/demo/algebra/matrix_sparse_cholesky_decomposition_example.txt:\
+  build/$(MODE)/bin/matrix_sparse_cholesky_decomposition\
+  | build/$(MODE)/demo/algebra
+	$< > $@
 
 build/$(MODE)/demo/algebra/matrix_determinant_example.txt:\
   build/$(MODE)/bin/matrix_determinant | build/$(MODE)/demo/algebra

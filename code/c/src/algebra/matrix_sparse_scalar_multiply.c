@@ -2,7 +2,7 @@
 
 void matrix_sparse_scalar_multiply(matrix_sparse * a, double lambda)
 {
-  int nonzero_max = a->cols_total[a->rows];
+  int nonzero_max = a->cols_total[a->cols];
   int i;
   double * values = a->values;
 
