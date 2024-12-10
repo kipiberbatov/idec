@@ -1,5 +1,7 @@
 #include <errno.h>
 #include <string.h>
+
+#include "color.h"
 #include "jagged_private.h"
 
 jagged1 * jagged1_file_scan(FILE * in, const char * format)
@@ -10,12 +12,18 @@ jagged1 * jagged1_file_scan(FILE * in, const char * format)
     arr = jagged1_file_scan_raw(in);
   else
   {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "format %s is not supported\n", format);
     errno = EINVAL;
-    fprintf(stderr, "jagged1_file_scan - format %s is not supported\n", format);
     return NULL;
   }
 
   if (errno)
-    fputs("jagged1_file_scan - cannot scan input\n", stderr);
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan input in format %s\n", format);
+    return NULL;
+  }
+
   return arr;
 }

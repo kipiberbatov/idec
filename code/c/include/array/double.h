@@ -34,6 +34,8 @@ void double_array_negate(double * b, int n, const double * a);
 
 void double_array_multiply_with(double * a, int d, double lambda);
 
+void double_array_pointwise_multiply(double * b, int n, const double * a);
+
 void double_array_pointwise_divide(double * b, int n, const double * a);
 
 void double_array_compress_to_sparse_array(

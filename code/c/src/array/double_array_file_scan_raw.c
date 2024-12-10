@@ -15,7 +15,7 @@ double * double_array_file_scan_raw(FILE * in, int n)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot allocate %ld bytes of memory for a",
+      "cannot allocate %ld bytes of memory for a\n",
       sizeof(double) * n);
     return NULL;
   }

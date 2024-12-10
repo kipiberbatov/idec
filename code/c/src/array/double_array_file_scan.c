@@ -35,7 +35,7 @@ double * double_array_file_scan(FILE * in, int n, const char * format)
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot scan input\n", stderr);
+    fprintf(stderr, "cannot scan input in format %s\n", format);
   }
   return a;
 }
