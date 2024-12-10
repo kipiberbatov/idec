@@ -65,6 +65,12 @@ matrix_sparse * mesh_qc_hodge_p(
 matrix_sparse ** mesh_qc_hodge(const mesh_qc * m, matrix_sparse ** m_bd,
                                double ** m_inner, double ** m_coeff);
 
+void mesh_qc_hodge_star_0(
+  double * cochain_d,
+  const mesh_qc * m,
+  const double * m_vol_d,
+  const double * cochain_0);
+
 void mesh_qc_hodge_star_d(
   double * cochain_0,
   const mesh * m,
