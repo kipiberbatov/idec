@@ -4,10 +4,12 @@
 
 #include <gtk/gtk.h>
 
+#include "color.h"
 #include "fill.h"
 #include "graphics_log.h"
 #include "gtk_draw.h"
 #include "gtk_run.h"
+#include "idec_error_message.h"
 #include "int.h"
 #include "paint_rgb.h"
 
@@ -34,12 +36,12 @@ int main(int argc, char ** argv)
   char * title;
 
   errno = 0;
-  if (argc != 2)
+
+#define ARGC 2
+  if (argc != ARGC)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "number of command-line arguments must be 2\n",
-      __func__, __FILE__,__LINE__);
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     return errno;
   }
@@ -48,10 +50,15 @@ int main(int argc, char ** argv)
   n = int_string_scan(argv[1]);
   if (errno)
   {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan number of colors from string %s\n", argv[1]);
+    return errno;
+  }
+  if (n < 1)
+  {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "unable to scan number of colors\n",
-       __func__, __FILE__,__LINE__);
+      "the number of colors is %d but it must be at least 1\n", n);
     return errno;
   }
 

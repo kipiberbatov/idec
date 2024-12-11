@@ -11,6 +11,7 @@
 #include "color.h"
 #include "double.h"
 #include "frame.h"
+#include "idec_error_message.h"
 #include "int.h"
 #include "mesh.h"
 #include "mesh_2d_colored_one_cochain_sequence.h"
@@ -20,10 +21,9 @@
 
 int main(int argc, char ** argv)
 {
-  char * m_format, * u_format;
-  char * m_name, * u_filename;
-  char * out_filename;
-  int i, n, steps, total_colors;
+  char * m_format, * m_name, * number_of_steps_name, * out_name, * u_format,
+       * u_name;
+  int i, n, number_of_steps, total_colors;
   double height, width;
   double * new_coordinates, * u;
   FILE * m_file;
@@ -36,17 +36,23 @@ int main(int argc, char ** argv)
 
   errno = 0;
 
-  if (argc != 7)
+#define ARGC 7
+  if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "number of command-line arguments must be 6; instead it is %d\n", argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }
 
+  i = 0;
+
   m_format = argv[1];
   m_name = argv[2];
+  number_of_steps_name = argv[3];
+  u_format = argv[4];
+  u_name = argv[5];
+  out_name = argv[6];
 
   m_file = fopen(m_name, "r");
   if (m_file == NULL)
@@ -75,35 +81,37 @@ int main(int argc, char ** argv)
   }
   fclose(m_file);
 
-  steps = int_string_scan(argv[3]);
+  number_of_steps = int_string_scan(number_of_steps_name);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan number of time steps from input %s\n", argv[3]);
-    goto m_bd_1_free;
+      "cannot scan number of steps from string %s\n", number_of_steps_name);
+    goto m_free;
   }
-  n = steps + 1;
-
-  u_format = argv[4];
-  u_filename = argv[5];
-  u = double_matrix_file_scan_by_name(u_filename, n, m->cn[1], u_format);
-  if (errno)
+  if (number_of_steps < 0)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan u from file %s in format %s\n",
-       u_filename, u_format);
+      "the number of steps is %d but it must be at least 0\n", number_of_steps);
+    goto m_free;
+  }
+  n = number_of_steps + 1;
+
+  u = double_matrix_file_scan_by_name(u_name, n, m->cn[1], u_format);
+  if (u == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan sequence of cochain values in format %s\n",
+      u_format);
     goto m_bd_1_free;
   }
 
   new_coordinates = (double *) malloc(sizeof(double) * 2 * m->cn[0]);
-  if (errno)
+  if (new_coordinates == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for new_coordinates\n",
-       sizeof(double) * 2 * m->cn[0]);
+    idec_error_message_malloc(sizeof(double) * 2 * m->cn[0], "new_coordinates");
     goto u_free;
   }
 
@@ -141,9 +149,9 @@ int main(int argc, char ** argv)
   a.max_value = double_array_absolute_max(n * m->cn[1], u);
   a.paint = paint_rgb;
 
-  out_filename = argv[6];
+  out_name = argv[6];
   pdf_write_to_file(
-    out_filename,
+    out_name,
     width,
     height,
     (void *) &a,

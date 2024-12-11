@@ -6,6 +6,7 @@
 
 #include "color.h"
 #include "double.h"
+#include "idec_error_message.h"
 #include "mesh.h"
 
 typedef void de_rham_dm1_t(double *, const mesh *, const matrix_sparse *);
@@ -26,9 +27,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of command-line arguments must be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }
@@ -91,9 +90,7 @@ int main(int argc, char ** argv)
   if (flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for flow\n",
-      sizeof(double) * m->cn[d - 1]);
+    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "flow");
     goto lib_close;
   }
 

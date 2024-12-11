@@ -11,8 +11,10 @@
 #include <cairo-pdf.h>
 
 /* internal headers */
+#include "color.h"
 #include "double.h"
 #include "frame.h"
+#include "idec_error_message.h"
 #include "int.h"
 #include "mesh.h"
 #include "mesh_2d_colored_zero_cochain_sequence.h"
@@ -21,26 +23,24 @@
 
 int main(int argc, char ** argv)
 {
-  char * m_format, * u_format;
-  char * m_filename, * u_filename;
-  int i, n, steps, total_colors;
+  char * m_format, * m_name, * number_of_steps_name, * out_name, * u_format,
+       * u_name;
+  int i, n, number_of_steps, total_colors;
   double height, width;
   double * new_coordinates, * u;
   mesh * m;
   mesh_2d_colored_zero_cochain_sequence a;
-  char * out_filename;
   margin window_margin;
   frame_mesh_data data;
   frame window_frame;
 
   errno = 0;
 
-  if (argc != 7)
+#define ARGC 7
+  if (argc != ARGC)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "number of command-line arguments must be 6\n",
-      __func__, __FILE__,__LINE__);
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }
@@ -48,47 +48,53 @@ int main(int argc, char ** argv)
   i = 0;
 
   m_format = argv[1];
-  m_filename = argv[2];
-  m = mesh_file_scan_by_name(m_filename, m_format);
-  if (errno)
+  m_name = argv[2];
+  number_of_steps_name = argv[3];
+  u_format = argv[4];
+  u_name = argv[5];
+  out_name = argv[6];
+
+  m = mesh_file_scan_by_name(m_name, m_format);
+  if (m == NULL)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate input mesh\n",
-      __func__, __FILE__,__LINE__);
+      "cannot scan mesh m from file %s in format %s\n", m_name, m_format);
     goto end;
   }
 
-  steps = int_string_scan(argv[3]);
+  number_of_steps = int_string_scan(number_of_steps_name);
   if (errno)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "unable to scan number of time steps\n",
-       __func__, __FILE__,__LINE__);
+      "cannot scan number of steps from string %s\n", number_of_steps_name);
     goto m_free;
   }
-  n = steps + 1;
-
-  u_format = argv[4];
-  u_filename = argv[5];
-  u = double_matrix_file_scan_by_name(u_filename, n, m->cn[0], u_format);
-  if (errno)
+  if (number_of_steps < 0)
   {
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate values\n",
-       __func__, __FILE__,__LINE__);
+      "the number of steps is %d but it must be at least 0\n", number_of_steps);
+    goto m_free;
+  }
+  n = number_of_steps + 1;
+
+  u = double_matrix_file_scan_by_name(u_name, n, m->cn[0], u_format);
+  if (u == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan cochain sequence u from file %s in format %s\n",
+      u_name, u_format);
     goto m_free;
   }
 
   new_coordinates = (double *) malloc(sizeof(double) * 2 * m->cn[0]);
   if (errno)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate values\n",
-       __func__, __FILE__,__LINE__);
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * 2 * m->cn[0], "new_coordinates");
     goto u_free;
   }
 
@@ -125,9 +131,8 @@ int main(int argc, char ** argv)
   a.max_value = double_array_max(n * m->cn[0], u);
   a.paint = paint_rgb;
 
-  out_filename = argv[6];
   pdf_write_to_file(
-    out_filename,
+    out_name,
     width,
     height,
     (void *) &a,

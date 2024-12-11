@@ -11,8 +11,10 @@
 #include <cairo-pdf.h>
 
 /* internal headers */
+#include "color.h"
 #include "double.h"
 #include "frame.h"
+#include "idec_error_message.h"
 #include "int.h"
 #include "mesh.h"
 #include "mesh_2d_colored_one_cochain_sequence.h"
@@ -21,26 +23,23 @@
 
 int main(int argc, char ** argv)
 {
-  char * m_format;
-  char * m_filename;
+  char * m_format, * m_name, * out_name;
   int i, total_colors;
   double height, width;
   double * new_coordinates, * u;
   mesh * m;
   mesh_2d_colored_one_cochain_sequence a;
-  char * out_filename;
   margin window_margin;
   frame_mesh_data data;
   frame window_frame;
 
   errno = 0;
 
-  if (argc != 4)
+#define ARGC 4
+  if (argc != ARGC)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "number of command-line arguments must be 6\n",
-      __func__, __FILE__,__LINE__);
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }
@@ -48,34 +47,31 @@ int main(int argc, char ** argv)
   i = 0;
 
   m_format = argv[1];
-  m_filename = argv[2];
-  m = mesh_file_scan_by_name(m_filename, m_format);
-  if (errno)
+  m_name = argv[2];
+  out_name = argv[3];
+
+  m = mesh_file_scan_by_name(m_name, m_format);
+  if (m == NULL)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate input mesh\n",
-      __func__, __FILE__,__LINE__);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan mesh m from file %s in format %s\n",
+      m_name, m_format);
     goto end;
   }
 
   u = (double *) calloc(m->cn[1], sizeof(double));
-  if (errno)
+  if (u == NULL)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate values\n",
-       __func__, __FILE__,__LINE__);
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m->cn[1], "u");
     goto m_free;
   }
 
   new_coordinates = (double *) malloc(sizeof(double) * 2 * m->cn[0]);
-  if (errno)
+  if (new_coordinates == NULL)
   {
-    fprintf(stderr,
-      "Error during execution of function %s in file %s on line %d: "
-      "could not generate values\n",
-       __func__, __FILE__,__LINE__);
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * 2 * m->cn[0], "new_coordinates");
     goto u_free;
   }
 
@@ -112,9 +108,8 @@ int main(int argc, char ** argv)
   a.max_value = 1;
   a.paint = paint_rgb;
 
-  out_filename = argv[3];
   pdf_write_to_file(
-    out_filename,
+    out_name,
     width,
     height,
     (void *) &a,

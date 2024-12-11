@@ -5,12 +5,14 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_steady_state_discrete_flow_from_potential.h"
+#include "idec_error_message.h"
 #include "int.h"
 
 int main(int argc, char ** argv)
 {
   char * flow_format, * kappa_1_format, * kappa_1_name, * m_format, * m_name,
        * m_hodge_format, * m_hodge_name, * potential_format, * potential_name;
+  int d;
   double * flow, * kappa_1, * potential;
   mesh * m;
   matrix_sparse * m_bd_1;
@@ -21,9 +23,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "number of command line arguments should be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     return EINVAL;
   }
 
@@ -57,6 +57,8 @@ int main(int argc, char ** argv)
     goto end;
   }
 
+  d = m->dim;
+
   m_bd_1 = mesh_file_scan_boundary_p(m_file, m, 1);
   if (m_bd_1 == NULL)
   {
@@ -68,7 +70,7 @@ int main(int argc, char ** argv)
   fclose(m_file);
 
   m_hodge = matrix_sparse_array_file_scan_by_name(
-    m_hodge_name, m->dim + 1, m_hodge_format);
+    m_hodge_name, d + 1, m_hodge_format);
   if (m_hodge == NULL)
   {
     color_error_position(__FILE__, __LINE__);
@@ -100,13 +102,11 @@ int main(int argc, char ** argv)
     goto kappa_1_free;
   }
 
-  flow = (double *) calloc(m->cn[m->dim - 1], sizeof(double));
+  flow = (double *) calloc(m->cn[d - 1], sizeof(double));
   if (flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate allocate %ld bytes of memory for flow\n",
-      sizeof(double) * m->cn[m->dim - 1]);
+    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "flow");
     goto potential_free;
   }
 
@@ -119,7 +119,7 @@ int main(int argc, char ** argv)
     goto flow_free;
   }
 
-  double_array_file_print(stdout, m->cn[m->dim - 1], flow, flow_format);
+  double_array_file_print(stdout, m->cn[d - 1], flow, flow_format);
 
 flow_free:
   free(flow);
@@ -128,7 +128,7 @@ potential_free:
 kappa_1_free:
   free(kappa_1);
 m_hodge_free:
-  matrix_sparse_array_free(m_hodge, m->dim + 1);
+  matrix_sparse_array_free(m_hodge, d + 1);
 m_bd_1_free:
   matrix_sparse_free(m_bd_1);
 m_free:

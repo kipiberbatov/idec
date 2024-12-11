@@ -4,6 +4,7 @@
 
 #include "color.h"
 #include "double.h"
+#include "idec_error_message.h"
 #include "int.h"
 #include "matrix_sparse.h"
 
@@ -21,9 +22,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of command-line arguments must be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EIO;
     goto end;
   }
@@ -62,9 +61,7 @@ int main(int argc, char ** argv)
   if (m_cn == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memmory for m_cn\n",
-      sizeof(int) * (d + 1));
+    idec_error_message_malloc(sizeof(int) * (d + 1), "m_cn");
     goto m_laplacian_free;
   }
   for (p = 0; p <= d; ++p)

@@ -6,6 +6,7 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_transient_discrete_primal_weak.h"
+#include "idec_error_message.h"
 
 int main(int argc, char ** argv)
 {
@@ -23,9 +24,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of command-line arguments must be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }

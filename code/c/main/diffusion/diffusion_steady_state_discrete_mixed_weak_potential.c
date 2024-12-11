@@ -5,6 +5,7 @@
 #include "color.h"
 #include "diffusion_steady_state_discrete_mixed_weak.h"
 #include "double.h"
+#include "idec_error_message.h"
 #include "int.h"
 #include "mesh_qc.h"
 
@@ -24,9 +25,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of command-line arguments must be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }
@@ -112,7 +111,7 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan flow from file in format 'raw' %s\n", solution_name);
+      "cannot scan flow from file in format --raw %s\n", solution_name);
     fclose(solution_file);
     goto data_free;
   }
@@ -123,7 +122,7 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan dual_potential from file in format 'raw' %s\n",
+      "cannot scan dual_potential from file in format --raw %s\n",
       solution_name);
     fclose(solution_file);
     goto data_free;
@@ -134,7 +133,7 @@ int main(int argc, char ** argv)
   if (potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for potential\n", stderr);
+    idec_error_message_malloc(sizeof(double) * m->cn[0], "potential");
     goto dual_potential_free;
   }
 

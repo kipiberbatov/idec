@@ -4,6 +4,7 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_transient_discrete_flow_from_potential.h"
+#include "idec_error_message.h"
 #include "int.h"
 
 int main(int argc, char ** argv)
@@ -22,9 +23,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "number of command line arguments should be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     return EINVAL;
   }
 
@@ -117,14 +116,13 @@ int main(int argc, char ** argv)
     goto kappa_1_free;
   }
 
-  flow = (double *) calloc(m->cn[d - 1] * (number_of_steps + 1),
+  flow = (double *) calloc((number_of_steps + 1) * m->cn[d - 1],
                            sizeof(double));
   if (flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate allocate %ld bytes of memory for flow\n",
-      sizeof(double) * m->cn[d - 1] * (number_of_steps + 1));
+    idec_error_message_malloc(
+      sizeof(double) * (number_of_steps + 1) * m->cn[d - 1], "flow");
     goto potential_free;
   }
 
@@ -139,6 +137,12 @@ int main(int argc, char ** argv)
 
   double_matrix_file_print(
     stdout, number_of_steps + 1, m->cn[d - 1], flow, flow_format);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot print flow in format %s\n", flow_format);
+    goto flow_free;
+  }
 
 flow_free:
   free(flow);

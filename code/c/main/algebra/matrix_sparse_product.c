@@ -1,6 +1,7 @@
 #include <errno.h>
 
 #include "color.h"
+#include "idec_error_message.h"
 #include "matrix_sparse.h"
 
 int main(int argc, char ** argv)
@@ -12,9 +13,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of command-line arguments must be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EIO;
     goto end;
   }
@@ -38,8 +37,8 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan the second matrix a from file %s in format %s\n",
-    b_name, b_format);
+      "cannot scan the second matrix b from file %s in format %s\n",
+      b_name, b_format);
     goto a_free;
   }
 

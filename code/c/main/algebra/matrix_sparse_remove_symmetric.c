@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "color.h"
+#include "idec_error_message.h"
 #include "jagged.h"
 #include "matrix_sparse.h"
 
@@ -16,9 +17,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of command-line arguments must be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EIO;
     goto end;
   }

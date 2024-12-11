@@ -7,6 +7,7 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_steady_state_discrete_primal_strong.h"
+#include "idec_error_message.h"
 
 int main(int argc, char ** argv)
 {
@@ -21,9 +22,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of command-line arguments must be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }
@@ -35,37 +34,45 @@ int main(int argc, char ** argv)
   data_name = argv[5];
 
   m = mesh_file_scan_by_name(m_name, m_format);
-  if (errno)
+  if (m == NULL)
   {
-    fputs("  main: cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan mesh m from file %s in format %s\n", m_name, m_format);
     goto end;
   }
 
   m->fc = mesh_fc(m);
-  if (errno)
+  if (m->fc == NULL)
   {
-    fputs("  main: cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
   m_cbd_0 = matrix_sparse_file_scan_by_name(m_cbd_0_name, "--raw");
-  if (errno)
+  if (m_cbd_0 == NULL)
   {
-    fputs("  main: cannot scan m_cbd_0\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_cbd_0\n", stderr);
     goto m_free;
   }
 
   m_cbd_star_1_file = fopen(m_cbd_star_1_name, "r");
-  if (errno)
+  if (m_cbd_star_1_file == NULL)
   {
-    fputs("Runtime error stack trace:\n", stderr);
-    fprintf(stderr, "  main: cannot open file %s\n", m_cbd_star_1_name);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot open adjoint coboundary matrix file %s for reading: %s\n",
+      m_cbd_star_1_name, strerror(errno));
     goto m_cbd_0_free;
   }
   m_cbd_star_1 = mesh_file_scan_boundary_p(m_cbd_star_1_file, m, 1);
   if (errno)
   {
-    fputs("  main: cannot scan m_cbd_star_1\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan m_cbd_star_1 from file %s\n", m_cbd_star_1_name);
     fclose(m_cbd_star_1_file);
     goto m_cbd_0_free;
   }

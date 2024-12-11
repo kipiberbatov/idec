@@ -8,6 +8,7 @@
 #include "double.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_dual_flow_from_potential.h"
+#include "idec_error_message.h"
 #include "int.h"
 #include "unsigned_approximation.h"
 
@@ -28,9 +29,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "number of command line arguments should be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     return EINVAL;
   }
 
@@ -142,9 +141,7 @@ int main(int argc, char ** argv)
   if (kappa_1 == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for kappa_1",
-      sizeof(double) * m->cn[1]);
+    idec_error_message_malloc(sizeof(double) * m->cn[1], "kappa_1");
     goto potential_free;
   }
   unsigned_approximation_of_scalar_field_on_1_cells(kappa_1, m, data->kappa_1);
@@ -154,9 +151,8 @@ int main(int argc, char ** argv)
   if (dual_flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for dual_flow",
-      sizeof(double) * m->cn[1] * (number_of_steps + 1));
+    idec_error_message_malloc(sizeof(double) * m->cn[1] * (number_of_steps + 1),
+      "dual_flow");
     goto kappa_1_free;
   }
 

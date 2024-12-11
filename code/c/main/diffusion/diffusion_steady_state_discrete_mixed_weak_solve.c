@@ -7,6 +7,7 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_steady_state_discrete_mixed_weak.h"
+#include "idec_error_message.h"
 
 int main(int argc, char ** argv)
 {
@@ -25,9 +26,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of command-line arguments must be %d; instead it is %d\n",
-      ARGC, argc);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }
@@ -119,7 +118,7 @@ int main(int argc, char ** argv)
   if (flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for flow\n", stderr);
+    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "flow");
     goto data_free;
   }
 
@@ -127,7 +126,7 @@ int main(int argc, char ** argv)
   if (dual_potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for dual_potential\n", stderr);
+    idec_error_message_malloc(sizeof(double) * m->cn[d], "dual_potential");
     goto flow_free;
   }
 
