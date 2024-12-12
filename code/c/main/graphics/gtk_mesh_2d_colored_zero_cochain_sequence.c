@@ -34,7 +34,7 @@ int main(int argc, char ** argv)
 {
   char * m_format, * m_name, * number_of_steps_name, * title, * u_format,
        * u_name;
-  int i, n, number_of_steps, total_colors;
+  int n, number_of_steps, total_colors;
   unsigned int speed;
   double height, width;
   double * new_coordinates, * u;
@@ -42,7 +42,6 @@ int main(int argc, char ** argv)
   mesh_2d_colored_zero_cochain_sequence a;
   margin window_margin;
   frame_mesh_data data;
-  frame window_frame;
 
   errno = 0;
 
@@ -54,8 +53,6 @@ int main(int argc, char ** argv)
     errno = EINVAL;
     goto end;
   }
-
-  i = 0;
 
   m_format = argv[1];
   m_name = argv[2];
@@ -115,7 +112,6 @@ int main(int argc, char ** argv)
   window_margin.bottom = 50;
   data.coordinates = new_coordinates;
   frame_internal_info_for_set_of_points(
-    &window_frame,
     &data,
     m->cn[0],
     m->coord,
@@ -126,7 +122,7 @@ int main(int argc, char ** argv)
 
   total_colors = 1000;
 
-  a.index = i;
+  a.index = 0;
   a.total_steps = n;
   a.m = m;
   a.values = u;

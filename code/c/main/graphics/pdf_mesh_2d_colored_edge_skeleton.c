@@ -24,14 +24,13 @@
 int main(int argc, char ** argv)
 {
   char * m_format, * m_name, * out_name;
-  int i, total_colors;
+  int total_colors;
   double height, width;
   double * new_coordinates, * u;
   mesh * m;
   mesh_2d_colored_one_cochain_sequence a;
   margin window_margin;
   frame_mesh_data data;
-  frame window_frame;
 
   errno = 0;
 
@@ -43,8 +42,6 @@ int main(int argc, char ** argv)
     errno = EINVAL;
     goto end;
   }
-
-  i = 0;
 
   m_format = argv[1];
   m_name = argv[2];
@@ -83,7 +80,6 @@ int main(int argc, char ** argv)
   window_margin.bottom = 50;
   data.coordinates = new_coordinates;
   frame_internal_info_for_set_of_points(
-    &window_frame,
     &data,
     m->cn[0],
     m->coord,
@@ -94,7 +90,7 @@ int main(int argc, char ** argv)
   total_colors = 10;
 
   a.is_mesh_edge_skeleton = 1;
-  a.index = i;
+  a.index = 0;
   a.total_steps = 1;
   a.m = m;
   a.bd_1 = NULL;

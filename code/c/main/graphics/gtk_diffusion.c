@@ -45,7 +45,6 @@ int main(int argc, char ** argv)
   int length;
   margin window_margin;
   frame_mesh_data data;
-  frame window_frame;
 
   errno = 0;
 
@@ -135,7 +134,6 @@ int main(int argc, char ** argv)
   window_margin.bottom = 50;
   data.coordinates = new_coordinates;
   frame_internal_info_for_set_of_points(
-    &window_frame,
     &data,
     m->cn[0],
     m->coord,

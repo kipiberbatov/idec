@@ -38,7 +38,7 @@ int main(int argc, char ** argv)
 {
   char * m_format, * m_name, * number_of_steps_name, * title, * u_format,
        * u_name;
-  int i, n, number_of_steps, total_colors;
+  int n, number_of_steps, total_colors;
   unsigned int speed;
   double height, width;
   double * new_coordinates, * u;
@@ -48,7 +48,6 @@ int main(int argc, char ** argv)
   mesh_2d_colored_one_cochain_sequence a;
   margin window_margin;
   frame_mesh_data data;
-  frame window_frame;
 
   errno = 0;
 
@@ -60,8 +59,6 @@ int main(int argc, char ** argv)
     errno = EINVAL;
     goto end;
   }
-
-  i = 0;
 
   m_format = argv[1];
   m_name = argv[2];
@@ -138,7 +135,6 @@ int main(int argc, char ** argv)
   window_margin.bottom = 50;
   data.coordinates = new_coordinates;
   frame_internal_info_for_set_of_points(
-    &window_frame,
     &data,
     m->cn[0],
     m->coord,
@@ -149,7 +145,7 @@ int main(int argc, char ** argv)
   total_colors = 1000;
 
   a.is_mesh_edge_skeleton = 0;
-  a.index = i;
+  a.index = 0;
   a.total_steps = n;
   a.m = m;
   a.bd_1 = m_bd_1->values;
@@ -157,7 +153,8 @@ int main(int argc, char ** argv)
 
   a.total_colors = total_colors;
   a.new_coordinates = new_coordinates;
-  a.point_size = points_array_minimal_distance(m->cn[0], new_coordinates);
+  // a.point_size = points_array_minimal_distance(m->cn[0], new_coordinates);
+  a.point_size = data.point_size * 4;
   a.line_width = data.line_width;
   a.min_value = double_array_absolute_min(n * m->cn[1], u);
   a.max_value = double_array_absolute_max(n * m->cn[1], u);
