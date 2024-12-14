@@ -88,7 +88,7 @@ static void set_g_bar(
     idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "g");
     return;
   }
-  
+
   g_dirichlet_0_big = (double *) calloc(m->cn[0], sizeof(double));
   if (g_dirichlet_0_big == NULL)
   {
@@ -97,7 +97,7 @@ static void set_g_bar(
     free(g);
     return;
   }
-  
+
   double_array_assemble_from_sparse_array(
     g_dirichlet_0_big, data->boundary_dirichlet_0, data->g_dirichlet_0);
   mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
@@ -257,7 +257,7 @@ diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
     idec_error_message_malloc(sizeof(double) * m_cn_dm1_bar, "v_tau");
     goto v_tau_free;
   }
-  
+
   set_a_bar_inverse(a_bar_inverse,
     boundary_neumann_dm1_bar, m_inner_dm1, data->kappa_dm1);
 
@@ -353,7 +353,7 @@ diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
 
     fputs("\n# n_tau:\n", stderr);
     matrix_sparse_file_print(stderr, n_tau, "--matrix-form-curly");
-    
+
     l_tau = matrix_sparse_cholesky_decomposition(n_tau);
     fputs("\n# l_tau:\n", stderr);
     matrix_sparse_file_print(stderr, l_tau, "--matrix-form-curly");

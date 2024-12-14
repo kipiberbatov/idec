@@ -15,7 +15,7 @@ rectangle_intrinsic_for_set_of_points_west(int n, const double * p)
 {
   int i;
   double west, x;
-  
+
   west = p[0];
   for (i = 1; i < n; ++i)
   {
@@ -31,7 +31,7 @@ rectangle_intrinsic_for_set_of_points_east(int n, const double * p)
 {
   int i;
   double east, x;
-  
+
   east = p[0];
   for (i = 1; i < n; ++i)
   {
@@ -47,7 +47,7 @@ rectangle_intrinsic_for_set_of_points_south(int n, const double * p)
 {
   int i;
   double south, x;
-  
+
   south = p[1];
   for (i = 1; i < n; ++i)
   {
@@ -63,7 +63,7 @@ rectangle_intrinsic_for_set_of_points_north(int n, const double * p)
 {
   int i;
   double north, x;
-  
+
   north = p[1];
   for (i = 1; i < n; ++i)
   {

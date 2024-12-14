@@ -46,7 +46,7 @@ void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
   int d, m_cn_dm1, m_cn_dm1_bar, m_cn_d;
   double * flow_reduced, * y;
   diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input;
-  
+
   d = m->dim;
   m_cn_dm1 = m->cn[d - 1];
   m_cn_dm1_bar = m_cn_dm1 - data->boundary_neumann_dm1->a0;
