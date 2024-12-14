@@ -2,6 +2,7 @@
 #define _mesh_2d_colored_one_cochain_h
 
 #include "mesh.h"
+#include "mesh_2d_colored_edge.h"
 #include "painter.h"
 
 typedef struct mesh_2d_colored_one_cochain
@@ -18,6 +19,20 @@ typedef struct mesh_2d_colored_one_cochain
   double max_value;
   painter paint;
 } mesh_2d_colored_one_cochain;
+
+void mesh_2d_one_cochain_skeleton_draw(
+  cairo_t * cr,
+  const mesh_2d_colored_one_cochain * c);
+
+void mesh_2d_colored_one_cochain_set_edge(
+  mesh_2d_colored_edge * edge,
+  const mesh_2d_colored_one_cochain * c,
+  int i,
+  int * cf_1_0_i);
+
+void mesh_2d_colored_one_cochain_values_cairo_draw(
+  cairo_t * cr,
+  const mesh_2d_colored_one_cochain * c);
 
 void mesh_2d_colored_one_cochain_cairo_draw(
   cairo_t * cr,

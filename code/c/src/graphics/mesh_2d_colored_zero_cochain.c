@@ -19,13 +19,20 @@ void mesh_2d_colored_zero_cochain_cairo_draw(
   node.total_colors = c->total_colors;
   node.paint = c->paint;
   denominator = c_max - c_min;
-  for (j = 0; j < c_number_of_nodes; ++j)
+  if (denominator == 0.)
   {
-    node.coordinates = c_coordinates + 2 * j;
-    if (denominator == 0.)
-      node.relative_value = 0.;
-    else
-      node.relative_value = (c_values[j] - c_min) / denominator;
-    mesh_2d_colored_node_cairo_draw(cr, &node);
+    node.relative_value = 0.;
+    for (j = 0; j < c_number_of_nodes; ++j)
+    {
+      node.coordinates = c_coordinates + 2 * j;
+      mesh_2d_colored_node_cairo_draw(cr, &node);
+    }
   }
+  else
+    for (j = 0; j < c_number_of_nodes; ++j)
+    {
+      node.coordinates = c_coordinates + 2 * j;
+      node.relative_value = (c_values[j] - c_min) / denominator;
+      mesh_2d_colored_node_cairo_draw(cr, &node);
+    }
 }
