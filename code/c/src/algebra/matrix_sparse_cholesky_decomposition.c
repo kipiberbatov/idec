@@ -225,35 +225,43 @@ matrix_sparse * matrix_sparse_cholesky_decomposition(const matrix_sparse * a)
 {
   cs a0;
   cs * l0;
-  css *S ;
-  csn *N ;
-  matrix_sparse * l = NULL;
-
-  matrix_sparse_to_cs(&a0, a);
-
-  
-  S = cs_schol (1, &a0) ;               /* ordering and symbolic analysis */
-  N = cs_chol (&a0, S) ;   
-  l0 = N->L;    
-  if (l0 == NULL)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fputs("cannot find matrix product via cs_multiply\n", stderr);
-    goto end;
-  }
+  css * S;
+  csn * N;
+  matrix_sparse * l;
 
   l = (matrix_sparse *) malloc(sizeof(matrix_sparse));
   if (l == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     idec_error_message_malloc(sizeof(matrix_sparse), "l");
-    goto l0_free;
+    goto end;
   }
 
+  matrix_sparse_to_cs(&a0, a);
+
+  /* ordering and symbolic analysis */
+  S = cs_schol(1, &a0);
+  if (S == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot do symbolic analysis of Cholesky decomposition\n", stderr);
+    goto end;
+  }
+
+  N = cs_chol(&a0, S);
+  if (N == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate Cholesky decomposition in csn structure\n", stderr);
+    goto S_free;
+  }
+
+  l0 = N->L;
   matrix_sparse_from_cs(l, l0);
 
-l0_free:
-  free(l0);
+  free(N);
+S_free:
+  cs_sfree(S);
 end:
   return l;
 }
