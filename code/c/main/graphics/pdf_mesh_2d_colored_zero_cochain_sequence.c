@@ -1,14 +1,6 @@
 /* system headers */
-#include <alloca.h>
 #include <errno.h>
-#include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-/* external headers */
-#include <cairo.h>
-#include <cairo-pdf.h>
 
 /* internal headers */
 #include "color.h"

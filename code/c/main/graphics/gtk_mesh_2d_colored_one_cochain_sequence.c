@@ -18,7 +18,6 @@
 #include "mesh.h"
 #include "mesh_2d_colored_one_cochain_sequence.h"
 #include "paint_rgb.h"
-#include "points_array_minimal_distance.h"
 
 static int gtk_draw_one_cochain(GtkWidget * widget, cairo_t * cr, void * data)
 {
@@ -153,7 +152,6 @@ int main(int argc, char ** argv)
 
   a.total_colors = total_colors;
   a.new_coordinates = new_coordinates;
-  // a.point_size = points_array_minimal_distance(m->cn[0], new_coordinates);
   a.point_size = data.point_size * 4;
   a.line_width = data.line_width;
   a.min_value = double_array_absolute_min(n * m->cn[1], u);
