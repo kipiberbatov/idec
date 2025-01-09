@@ -8,6 +8,10 @@ int int_file_scan(FILE * in);
 
 int int_string_scan(const char * s);
 
+void int_string_scan_void(void * result, int * status, const char * s);
+
+void int_file_print_void(FILE * out, const void * x);
+
 int int_power(int a, int n);
 
 int int_factorial(int n);

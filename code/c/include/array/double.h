@@ -10,6 +10,10 @@ double double_file_scan(FILE * in);
 
 double double_string_scan(const char * s);
 
+void double_string_scan_void(void * result, int * status, const char * s);
+
+void double_file_print_void(FILE * out, const void * x);
+
 int double_equal(double x, double y, double tolerance);
 
 /******************************** double_array ********************************/
