@@ -5,14 +5,88 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
+#include "idec_command_line.h"
 #include "idec_error_message.h"
 #include "int.h"
 
+static void idec_command_line_set_option_mesh_format(
+  idec_command_line * option, char ** value)
+{
+  idec_command_line_initialize_option_string(option);
+  option->name = "--mesh-format";
+  option->default_argument = "--raw";
+  option->arguments = (void *) value;
+}
+
+static void
+idec_command_line_set_option_mesh(idec_command_line * option, char ** value)
+{
+  idec_command_line_initialize_option_string(option);
+  option->name = "--mesh";
+  option->minimal_number_of_arguments = 1;
+  option->default_argument = NULL;
+  option->arguments = (void *) value;
+}
+
+static void idec_command_line_set_option_mesh_inner_format(
+  idec_command_line * option, char ** value)
+{
+  idec_command_line_initialize_option_string(option);
+  option->name = "--mesh-inner-format";
+  option->default_argument = "--raw";
+  option->arguments = (void *) value;
+}
+
+static void idec_command_line_set_option_mesh_inner(
+  idec_command_line * option, char ** value)
+{
+  idec_command_line_initialize_option_string(option);
+  option->name = "--mesh-inner";
+  option->default_argument = NULL;
+  option->arguments = (void *) value;
+}
+
+static void idec_command_line_set_option_input_data(
+  idec_command_line * option, char ** value)
+{
+  idec_command_line_initialize_option_string(option);
+  option->name = "--input-data";
+  option->default_argument = NULL;
+  option->arguments = (void *) value;
+}
+
+static void idec_command_line_set_option_time_step(
+  idec_command_line * option, double * value)
+{
+  idec_command_line_initialize_option_double(option);
+  option->name = "--time-step";
+  option->minimal_number_of_arguments = 1;
+  option->default_argument = NULL;
+  option->arguments = (void *) value;
+}
+
+static void idec_command_line_set_option_number_of_steps(
+  idec_command_line * option, int * value)
+{
+  idec_command_line_initialize_option_int(option);
+  option->name = "--number-of-steps";
+  option->minimal_number_of_arguments = 1;
+  option->default_argument = NULL;
+  option->arguments = (void *) value;
+}
+
+static void idec_command_line_set_no_positional(idec_command_line * option)
+{
+  idec_command_line_initialize_option_no_arguments(option);
+  option->name = NULL;
+  option->default_argument = NULL;
+  option->arguments = NULL;
+}
+
 int main(int argc, char ** argv)
 {
-  char * data_name, * m_inner_format, * m_inner_name, * m_format, * m_name,
-       * number_of_steps_name, * time_step_name;
-  int d, m_cn_dm1, m_cn_d, number_of_steps;
+  char * data_name, * m_inner_format, * m_inner_name, * m_format, * m_name;
+  int d, m_cn_dm1, m_cn_d, number_of_steps, size, status;
   int * m_cn;
   double time_step;
   double * dual_potential, * flow;
@@ -23,22 +97,58 @@ int main(int argc, char ** argv)
   mesh * m;
   diffusion_transient_discrete_mixed_weak * data;
 
-#define ARGC 8
-  if (argc != ARGC)
+  idec_command_line option_input_data, option_mesh, option_mesh_format,
+    option_mesh_inner, option_mesh_inner_format, option_number_of_steps,
+    option_time_step, positional_arguments;
+  idec_command_line *(options[]) =
+  {
+    &option_mesh,
+    &option_mesh_format,
+    &option_mesh_inner,
+    &option_mesh_inner_format,
+    &option_input_data,
+    &option_time_step,
+    &option_number_of_steps,
+    &positional_arguments
+  };
+
+  idec_command_line_set_option_mesh_format(
+    &option_mesh_format, &m_format);
+  idec_command_line_set_option_mesh(&option_mesh, &m_name);
+  idec_command_line_set_option_mesh_inner_format(
+    &option_mesh_inner_format, &m_inner_format);
+  idec_command_line_set_option_mesh_inner(&option_mesh_inner, &m_inner_name);
+  idec_command_line_set_option_input_data(&option_input_data, &data_name);
+  idec_command_line_set_option_time_step(&option_time_step, &time_step);
+  idec_command_line_set_option_number_of_steps(
+    &option_number_of_steps, &number_of_steps);
+  idec_command_line_set_no_positional(&positional_arguments);
+
+  size = (int) (sizeof(options) / sizeof(*options));
+  status = 0;
+  idec_command_line_parse(options, &status, size, argc, argv);
+  if (status)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
-    errno = EINVAL;
+    fputs("cannot parse command line options\n", stderr);
+    return status;
+  }
+
+  if (time_step <= 0.)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "the time step is %g but it must be positive\n", time_step);
     goto end;
   }
 
-  m_format = argv[1];
-  m_name = argv[2];
-  m_inner_format = argv[3];
-  m_inner_name = argv[4];
-  data_name = argv[5];
-  time_step_name = argv[6];
-  number_of_steps_name = argv[7];
+  if (number_of_steps < 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of steps is %d but it must be at least 0\n",
+      number_of_steps);
+    goto end;
+  }
 
   m_file = fopen(m_name, "r");
   if (m_file == NULL)
@@ -119,40 +229,6 @@ int main(int argc, char ** argv)
     goto m_inner_free;
   }
   fclose(data_file);
-
-  time_step = double_string_scan(time_step_name);
-  if (errno)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot scan time step from string %s\n",
-      number_of_steps_name);
-    goto data_free;
-  }
-  if (time_step <= 0.)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "the time step is %g but it must be positive\n", time_step);
-    goto data_free;
-  }
-
-  number_of_steps = int_string_scan(number_of_steps_name);
-  if (errno)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot scan number of steps from string %s\n",
-      number_of_steps_name);
-    goto data_free;
-  }
-  if (number_of_steps < 0)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of steps is %d but it must be at least 0\n",
-      number_of_steps);
-    goto data_free;
-  }
 
   flow = (double *) malloc(sizeof(double) * (number_of_steps + 1) * m_cn_dm1);
   if (flow == NULL)

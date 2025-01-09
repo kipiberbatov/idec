@@ -130,7 +130,7 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan flow from file in format 'raw' %s\n", solution_name);
+      "cannot scan flow from file %s in format --raw\n", solution_name);
     fclose(solution_file);
     goto data_free;
   }

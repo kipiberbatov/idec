@@ -113,10 +113,13 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_input.txt\
   | build/$(MODE)/demo/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  --raw $(word 3, $^)\
-  $(word 4, $^)\
-  0.001 1000\
+  --mesh-format=--raw\
+  --mesh=$(word 2, $^)\
+  --mesh-inner-format=--raw\
+  --mesh-inner=$(word 3, $^)\
+  --input-data=$(word 4, $^)\
+  --number-of-steps=1000\
+  --time-step=0.001\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_potential.txt:\
