@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "color.h"
 #include "double.h"
 #include "mesh_qc.h"
 #include "vector_sparse.h"
@@ -9,8 +10,7 @@
 static void mesh_qc_inner_direct_file_print_raw(
   FILE * out,
   const mesh_qc * m,
-  double ** m_vol
-)
+  double ** m_vol)
 {
   int m_dim, p;
   int * m_cn;
@@ -51,28 +51,32 @@ int main(int argc, char ** argv)
   m = mesh_file_scan_by_name(argv[1], "--raw");
   if (errno)
   {
-    fputs("main: cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m\n", stderr);
     goto end;
   }
 
   m->fc = mesh_fc(m);
   if (errno)
   {
-    fputs("main: cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
   m_vol = double_array2_file_scan_by_name(argv[2], m->dim + 1, m->cn, "--raw");
   if (errno)
   {
-    fputs("main: cannot scan m_vol\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_vol\n", stderr);
     goto m_free;
   }
 
   mesh_qc_inner_direct_file_print_raw(stdout, m, m_vol);
   if (errno)
   {
-    fputs("main: cannot print m_inner\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot print m_inner\n", stderr);
     goto m_vol_free;
   }
 

@@ -5,6 +5,7 @@
 
 #include <dlfcn.h>
 
+#include "color.h"
 #include "double.h"
 #include "diffusion_steady_state_continuous.h"
 #include "int.h"
@@ -26,9 +27,9 @@ int main(int argc, char ** argv)
 
   if (argc != 7)
   {
+    color_error_position(__FILE__, __LINE__);
+    fputs("the number of command-line arguments must be 8\n", stderr);
     errno = EINVAL;
-    fputs("Runtime error stack trace:\n", stderr);
-    fputs("  main: the number of command-line arguments must be 8\n", stderr);
     goto end;
   }
 
@@ -37,14 +38,16 @@ int main(int argc, char ** argv)
   m = mesh_file_scan_by_name(m_name, m_format);
   if (errno)
   {
-    fputs("  main: cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m\n", stderr);
     goto end;
   }
 
   m->fc = mesh_fc(m);
   if (errno)
   {
-    fputs("  main: cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
@@ -53,7 +56,8 @@ int main(int argc, char ** argv)
   m_cbd_0 = matrix_sparse_file_scan_by_name(m_cbd_0_name, "--raw");
   if (errno)
   {
-    fputs("  main: cannot scan m_cbd_0\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_cbd_0\n", stderr);
     goto m_free;
   }
 
@@ -62,14 +66,17 @@ int main(int argc, char ** argv)
   m_cbd_star_1_file = fopen(m_cbd_star_1_name, "r");
   if (errno)
   {
-    fputs("Runtime error stack trace:\n", stderr);
-    fprintf(stderr, "  main: cannot open file %s\n", m_cbd_star_1_name);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot open file %s: %s\n",
+      m_cbd_star_1_name, strerror(errno));
     goto m_cbd_0_free;
   }
   m_cbd_star_1 = mesh_file_scan_boundary_p(m_cbd_star_1_file, m, 1);
   if (errno)
   {
-    fputs("  main: cannot scan m_cbd_star_1\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_cbd_star_1\n", stderr);
     fclose(m_cbd_star_1_file);
     goto m_cbd_0_free;
   }
@@ -79,16 +86,16 @@ int main(int argc, char ** argv)
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
   {
-    fputs("Runtime error stack trace:\n", stderr);
-    fputs("  main: cannot open libshared\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot open libshared\n", stderr);
     goto m_cbd_star_1_free;
   }
   /* clear any existing errors */
   dlerror();
 
   data_name = argv[6];
-  data = (const diffusion_steady_state_continuous *)
-    dlsym(lib_handle, data_name);
+  data = (const diffusion_steady_state_continuous *) dlsym(
+    lib_handle, data_name);
   error = dlerror();
   if (error)
   {
@@ -101,7 +108,8 @@ int main(int argc, char ** argv)
     m, m_cbd_0, m_cbd_star_1, data);
   if (errno)
   {
-    fputs("  main: cannot calculate result\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate result\n", stderr);
     goto lib_close;
   }
 

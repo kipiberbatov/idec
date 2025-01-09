@@ -3,6 +3,7 @@
 
 #include <dlfcn.h>
 
+#include "color.h"
 #include "double.h"
 #include "diffusion_steady_state_continuous.h"
 #include "mesh.h"
@@ -23,8 +24,8 @@ int main(int argc, char ** argv)
   if (argc != 7)
   {
     errno = EINVAL;
-    fputs("Runtime error stack trace:\n", stderr);
-    fputs("  main: the number of command-line arguments must be 8\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("the number of command-line arguments must be 8\n", stderr);
     goto end;
   }
 
@@ -33,14 +34,16 @@ int main(int argc, char ** argv)
   m = mesh_file_scan_by_name(m_name, m_format);
   if (errno)
   {
-    fputs("  main: cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m\n", stderr);
     goto end;
   }
 
   m->fc = mesh_fc(m);
   if (errno)
   {
-    fputs("  main: cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
@@ -49,7 +52,8 @@ int main(int argc, char ** argv)
     m_vol_name, m->dim + 1, m->cn, "--raw");
   if (errno)
   {
-    fputs("  main: cannot scan m_vol\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_vol\n", stderr);
     goto m_free;
   }
 
@@ -58,7 +62,8 @@ int main(int argc, char ** argv)
     m_inner_name, m->dim + 1, m->cn, "--raw");
   if (errno)
   {
-    fputs("  main: cannot scan m_vol\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_vol\n", stderr);
     goto m_vol_free;
   }
 
@@ -66,8 +71,8 @@ int main(int argc, char ** argv)
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
   {
-    fputs("Runtime error stack trace:\n", stderr);
-    fputs("  main: cannot open libshared\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot open libshared\n", stderr);
     goto m_inner_free;
   }
   /* clear any existing errors */
@@ -88,7 +93,8 @@ int main(int argc, char ** argv)
     m, m_vol[m->dim - 1], m_vol[m->dim], m_inner[1], data);
   if (errno)
   {
-    fputs("  main: cannot calculate result\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate result\n", stderr);
     goto lib_close;
   }
 

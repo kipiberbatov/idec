@@ -5,6 +5,7 @@
 
 #include <dlfcn.h>
 
+#include "color.h"
 #include "diffusion_transient_continuous.h"
 #include "int.h"
 #include "mesh.h"
@@ -27,7 +28,8 @@ int main(int argc, char ** argv)
   if (argc != 8)
   {
     errno = EINVAL;
-    fputs("main - the number of command-line arguments must be 8\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("the number of command-line arguments must be 8\n", stderr);
     goto end;
   }
 
@@ -36,14 +38,16 @@ int main(int argc, char ** argv)
   m = mesh_file_scan_by_name(m_name, m_format);
   if (errno)
   {
-    fputs("main - cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m\n", stderr);
     goto end;
   }
 
   m->fc = mesh_fc(m);
   if (errno)
   {
-    fputs("main - cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
@@ -52,7 +56,8 @@ int main(int argc, char ** argv)
   m_cbd_0 = matrix_sparse_file_scan_by_name(m_cbd_0_name, "--raw");
   if (errno)
   {
-    fputs("main - cannot scan m_cbd_0\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_cbd_0\n", stderr);
     goto m_free;
   }
 
@@ -67,7 +72,8 @@ int main(int argc, char ** argv)
   m_cbd_star_1 = mesh_file_scan_boundary_p(m_cbd_star_1_file, m, 1);
   if (errno)
   {
-    fputs("main - cannot scan m_cbd_star_1\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_cbd_star_1\n", stderr);
     fclose(m_cbd_star_1_file);
     goto m_cbd_0_free;
   }
@@ -78,7 +84,8 @@ int main(int argc, char ** argv)
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
   {
-    fputs("main - cannot open libshared\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot open libshared\n", stderr);
     goto m_cbd_star_1_free;
   }
   /* clear any existing errors */
@@ -110,7 +117,8 @@ int main(int argc, char ** argv)
     0.004);
   if (errno)
   {
-    fputs("main - cannot calculate x\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate x\n", stderr);
     goto lib_close;
   }
   double_array_sequence_dynamic_file_print(stdout, result);

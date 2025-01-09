@@ -1,4 +1,6 @@
 #include <errno.h>
+
+#include "color.h"
 #include "mesh.h"
 
 int main(int argc, char ** argv)
@@ -14,14 +16,16 @@ int main(int argc, char ** argv)
   m = mesh_file_scan(in, "--raw");
   if (errno)
   {
-    fputs("main - cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m\n", stderr);
     return errno;
   }
 
   m_bd = mesh_file_scan_boundary(in, m);
   if (errno)
   {
-    fputs("main - cannot scan m->bd\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m->bd\n", stderr);
     mesh_free(m);
     return errno;
   }

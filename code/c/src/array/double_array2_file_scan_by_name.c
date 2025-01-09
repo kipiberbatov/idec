@@ -1,6 +1,8 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "color.h"
 #include "double.h"
 
 double ** double_array2_file_scan_by_name(
@@ -10,19 +12,18 @@ double ** double_array2_file_scan_by_name(
   double ** a = NULL;
 
   in = fopen(name, "r");
-  if (errno)
+  if (in == NULL)
   {
-    fprintf(stderr,
-      "double_array2_file_scan_by_name: cannot open file %s: %s\n",
-      name, strerror(errno));
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open file %s: %s\n", name, strerror(errno));
     goto end;
   }
 
   a = double_array2_file_scan(in, a0, a1, format);
   if (errno)
   {
-    fprintf(stderr,
-      "double_array2_file_scan_by_name: cannot scan file %s", name);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan file %s\n", name);
     goto in_close;
   }
 

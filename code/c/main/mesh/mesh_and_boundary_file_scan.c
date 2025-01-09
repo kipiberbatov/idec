@@ -1,5 +1,6 @@
 #include <errno.h>
 
+#include "color.h"
 #include "double.h"
 #include "mesh_and_boundary.h"
 
@@ -14,7 +15,8 @@ int main(int argc, char ** argv)
 
   if (argc != 2)
   {
-    fputs("main: number of command line arguments should be 1\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("number of command line arguments must be 1\n", stderr);
     return errno;
   }
 
@@ -22,8 +24,8 @@ int main(int argc, char ** argv)
   m_and_bd = mesh_and_boundary_file_scan(stdin, format);
   if (errno)
   {
-    fprintf(stderr, "%s:%d: unable to scan mesh and boundary in format %s\n",
-      __FILE__, __LINE__, format);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot to scan mesh and boundary in format %s\n", format);
     return errno;
   }
 

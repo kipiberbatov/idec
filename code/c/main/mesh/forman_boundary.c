@@ -30,7 +30,8 @@ static void forman_boundary_file_print(
   m_forman = forman(m, new_coordinates_format);
   if (errno)
   {
-    fputs("forman_boundary_file_print - cannot calculate m_forman\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_forman\n", stderr);
     goto end;
   }
   mesh_file_print(out, m_forman, "--raw");
@@ -38,8 +39,8 @@ static void forman_boundary_file_print(
   m_forman_boundary = forman_boundary(m, m_forman, m_bd);
   if (errno)
   {
-    fputs("forman_boundary_file_print - cannot calculate m_forman->bd\n",
-      stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_forman->bd\n", stderr);
     goto m_forman_free;
   }
 
@@ -54,11 +55,6 @@ end:
 
 int main(int argc, char ** argv)
 {
-  // mesh * m;
-  // matrix_sparse ** m_bd;
-  // FILE * in, * out;
-  // out = stdout;
-  // in = stdin;
   char * m_format, * m_name, * new_coordinates_format, * output_format;
   FILE * m_file;
   matrix_sparse ** m_bd;
@@ -120,7 +116,8 @@ int main(int argc, char ** argv)
     m, m_bd, new_coordinates_format, output_format);
   if (errno)
   {
-    fputs("main - cannot calculate and print m_forman->bd\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate and print m_forman->bd\n", stderr);
     goto m_bd_free;
   }
 

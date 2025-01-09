@@ -1,6 +1,8 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "color.h"
 #include "double.h"
 #include "int.h"
 #include "matrix_sparse.h"
@@ -45,8 +47,9 @@ int main(int argc, char ** argv)
 
   if (argc != 10)
   {
+    color_error_position(__FILE__, __LINE__);
+    fputs("the number of command line arguments must be 10\n", stderr);
     errno = EINVAL;
-    fputs("main - the number of command-line arguments must be 10\n", stderr);
     goto end;
   }
 
@@ -55,21 +58,24 @@ int main(int argc, char ** argv)
   m = mesh_file_scan_by_name(m_name, m_format);
   if (errno)
   {
-    fputs("main - cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m\n", stderr);
     goto end;
   }
 
   m->fc = mesh_fc(m);
   if (errno)
   {
-    fputs("main - cannot calculate m->fc\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->fc\n", stderr);
     goto m_free;
   }
 
   m_nodes_bd = mesh_boundary_nodes(m);
   if (errno)
   {
-    fputs("main - cannot calculate m_nodes_bd\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_nodes_bd\n", stderr);
     goto m_free;
   }
 
@@ -80,7 +86,8 @@ int main(int argc, char ** argv)
     matrix_sparse_file_scan_by_name(m_laplacian_0_name, m_laplacian_0_format);
   if (errno)
   {
-    fputs("main - cannot calculate m_laplacian[0]\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m_laplacian[0]\n", stderr);
     goto m_nodes_bd_free;
   }
 
@@ -90,21 +97,24 @@ int main(int argc, char ** argv)
     double_array_file_scan_by_name(m_inner_0_name, m->cn[0], m_inner_0_format);
   if (errno)
   {
-    fputs("main - cannot scan m_inner\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_inner\n", stderr);
     goto m_laplacian_0_free;
   }
 
   tau = double_string_scan(argv[7]);
   if (errno)
   {
-    fputs("main - cannot scan tau\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan tau\n", stderr);
     goto m_inner_0_free;
   }
 
   N = int_string_scan(argv[8]);
   if (errno)
   {
-    fputs("main - cannot scan N\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan N\n", stderr);
     goto m_inner_0_free;
   }
 
@@ -113,19 +123,10 @@ int main(int argc, char ** argv)
       u_0, tau, N);
   if (errno)
   {
-    fputs("main - cannot calculate x\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate x\n", stderr);
     goto m_inner_0_free;
   }
-
-  // {
-  //   int i;
-  //   double error;
-  //   for (i = 0; i < m_laplacian_0->rows; ++i)
-  //   {
-  //     error = x[i] - g_d(m->coord + m->dim_embedded * i);
-  //     fprintf(stderr, "%g\n", error);
-  //   }
-  // }
 
   out_format = argv[9];
   double_matrix_file_print(stdout, (N + 1), m_laplacian_0->rows, x, out_format);

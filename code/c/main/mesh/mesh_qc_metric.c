@@ -2,31 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "color.h"
 #include "double.h"
 #include "mesh_qc.h"
 
 static void mesh_qc_metric_file_print_only_values(
   FILE * out, const mesh_qc * m, double ** m_vol)
 {
-  int m_dim, p;
+  int d, p;
   int * m_cn;
   vector_sparse ** m_metric_p;
 
-  m_dim = m->dim;
+  d = m->dim;
   m_cn = m->cn;
 
-  for (p = 0; p <= m_dim; ++p)
+  for (p = 0; p <= d; ++p)
   {
     m_metric_p = mesh_qc_metric_p(m, p, m_vol[p]);
     if (errno)
     {
-      fprintf(stderr, "mesh_qc_metric_file_print - cannot calculate "
-              "m_metric[%d]\n", p);
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot calculate m_metric[%d]\n", p);
       return;
     }
 
     vector_sparse_array_file_print(out, m_cn[p], m_metric_p, "--only-values");
-    if (p != m_dim)
+    if (p != d)
       fputc('\n', out);
     vector_sparse_array_free(m_metric_p, m_cn[p]);
   }
@@ -34,6 +35,7 @@ static void mesh_qc_metric_file_print_only_values(
 
 int main(int argc, char ** argv)
 {
+  int d;
   mesh_qc * m;
   matrix_sparse ** m_bd;
   double ** m_vol;
@@ -41,54 +43,61 @@ int main(int argc, char ** argv)
 
   if (argc != 3)
   {
-    errno = EINVAL;
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr, "Number of command line arguments must be 3\n");
+    errno = EINVAL;
     goto end;
   }
 
   m_file = fopen(argv[1], "r");
   if (errno)
   {
-    fprintf(stderr, "Cannot open mesh file: %s\n", strerror(errno));
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open mesh file %s: %s\n", argv[1], strerror(errno));
     goto end;
   }
 
   m = mesh_file_scan(m_file, "--raw");
   if (errno)
   {
-    fputs("main - cannot scan m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m\n", stderr);
     fclose(m_file);
     goto end;
   }
+  d = m->dim;
 
   m_bd = mesh_file_scan_boundary(m_file, m);
   if (errno)
   {
-    fputs("main - cannot scan m_bd\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_bd\n", stderr);
     fclose(m_file);
     goto m_free;
   }
 
   fclose(m_file);
 
-  m_vol = double_array2_file_scan_by_name(argv[2], m->dim + 1, m->cn, "--raw");
+  m_vol = double_array2_file_scan_by_name(argv[2], d + 1, m->cn, "--raw");
   if (errno)
   {
-    fputs("main - cannot scan m_vol\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan m_vol\n", stderr);
     goto m_bd_free;
   }
 
   mesh_qc_metric_file_print_only_values(stdout, m, m_vol);
   if (errno)
   {
-    fputs("main - cannot print m_metric\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot print m_metric\n", stderr);
     goto m_vol_free;
   }
 
 m_vol_free:
-  double_array2_free(m_vol, m->dim + 1);
+  double_array2_free(m_vol, d + 1);
 m_bd_free:
-  matrix_sparse_array_free(m_bd, m->dim);
+  matrix_sparse_array_free(m_bd, d);
 m_free:
   mesh_free(m);
 end:

@@ -61,7 +61,6 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   rhs_final = (double *) malloc(sizeof(double) * n);
   if (errno)
   {
-    fputs("Runtime error stack trace:\n", stderr);
     color_error_position(__FILE__, __LINE__);
     fputs("cannot allocate memory for rhs_final\n", stderr);
     goto input_free;
@@ -71,8 +70,7 @@ double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
   potential = (double *) malloc(sizeof(double) * (number_of_steps + 1) * n);
   if (errno)
   {
-    fputs("Runtime error stack trace:\n", stderr);
-    color_error_position(__FILE__, __LINE__);
+        color_error_position(__FILE__, __LINE__);
     fputs("cannot allocate memory for potential\n", stderr);
     goto rhs_final_free;
   }
