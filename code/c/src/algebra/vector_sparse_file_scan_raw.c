@@ -1,6 +1,9 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
+#include "idec_error_message.h"
 #include "int.h"
 #include "vector_sparse_private.h"
 
@@ -43,53 +46,63 @@ vector_sparse * vector_sparse_file_scan_raw(FILE * in)
   a = (vector_sparse *) malloc(sizeof(vector_sparse));
   if (errno)
   {
-    perror("vector_sparse_file_scan_raw - cannot allocate memory for a");
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(vector_sparse), "a");
     goto end;
   }
 
   a->length = int_file_scan(in);
   if (errno)
   {
-    perror("vector_sparse_file_scan_raw - cannot scan a->length");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan a->length\n", stderr);
     goto a_free;
   }
   if (a->length <= 0)
   {
+    color_error_position(__FILE__, __LINE__);
+    fputs("a->length is nonpositive\n", stderr);
     errno = EINVAL;
-    perror("vector_sparse_file_scan_raw - a->length is nonpositive");
     goto a_free;
   }
 
   a->nonzero_max = int_file_scan(in);
   if (errno)
   {
-    perror("vector_sparse_file_scan_raw - cannot scan a->nonzero_max");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan a->nonzero_max\n", stderr);
     goto a_free;
   }
   if (a->nonzero_max <= 0 || a->nonzero_max > a->length)
   {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "a->nonzero_max = %d is not in [0, %d)\n",
+      a->nonzero_max, a->length);
     errno = EINVAL;
-    perror("vector_sparse_file_scan_raw - a->nonzero_max is out of domain");
     goto a_free;
   }
 
   a->positions = int_array_file_scan(in, a->nonzero_max, "--raw");
   if (errno)
   {
-    perror("vector_sparse_file_scan_raw - cannot scan a->positions");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan a->positions in format --raw\n", stderr);
     goto a_free;
   }
   if(!vector_sparse_positions_possible(a->length, a->nonzero_max, a->positions))
   {
+    color_error_position(__FILE__, __LINE__);
+    fputs("a->positions is impossible\n", stderr);
     errno = EINVAL;
-    perror("vector_sparse_file_scan_raw - a->positions is impossible");
     goto a_positions_free;
   }
 
   a->values = double_array_file_scan(in, a->nonzero_max, "--raw");
   if (errno)
   {
-    perror("vector_sparse_file_scan_raw - cannot scan a->values");
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot scan a->values in format --raw\n", stderr);
     goto a_positions_free;
   }
 

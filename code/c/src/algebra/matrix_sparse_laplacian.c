@@ -33,6 +33,7 @@ matrix_sparse * matrix_sparse_laplacian_p(
     fputs("cannot calculate tmp1\n", stderr);
     goto end;
   }
+
   tmp2 = matrix_sparse_product(a_p_minus_1, b_p);
   if (tmp2 == NULL)
   {
@@ -40,13 +41,15 @@ matrix_sparse * matrix_sparse_laplacian_p(
     fputs("cannot calculate tmp2\n", stderr);
     goto tmp1_free;
   }
+
   delta_p = matrix_sparse_add(tmp1, tmp2);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    perror("cannot calculate delta_p");
+    fputs("cannot calculate delta_p\n", stderr);
     goto tmp2_free;
   }
+
 tmp2_free:
   free(tmp2);
 tmp1_free:
@@ -64,7 +67,7 @@ matrix_sparse * matrix_sparse_laplacian_d(
   if (delta_d == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    perror("cannot calculate delta_d");
+    fputs("cannot calculate delta_d\n", stderr);
   }
   return delta_d;
 }
@@ -98,7 +101,7 @@ matrix_sparse ** matrix_sparse_laplacian(
     if (errno)
     {
       color_error_position(__FILE__, __LINE__);
-      fprintf(stderr, "cannot calculate delt[%d]\n", p);
+      fprintf(stderr, "cannot calculate delta[%d]\n", p);
       matrix_sparse_array_free(delta, p + 1);
       return NULL;
     }
@@ -107,7 +110,7 @@ matrix_sparse ** matrix_sparse_laplacian(
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot calculate delt[%d]\n", p);
+    fprintf(stderr, "cannot calculate delta[%d]\n", p);
     matrix_sparse_array_free(delta, d + 1);
     return NULL;
   }

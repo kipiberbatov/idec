@@ -1,77 +1,64 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
+#include "idec_error_message.h"
 #include "matrix_sparse.h"
 
-static void matrix_sparse_linear_solve_file_print(
-  FILE * out, const char * a_name, const char * a_format, const char * b_name,
-  const char * method)
+int main(int argc, char ** argv)
 {
-  matrix_sparse * a;
+  char * a_format, * a_name, * b_name, * method;
   double * b;
-  FILE * b_in;
+  matrix_sparse * a;
+
+#define ARGC 5
+  if (argc != ARGC)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    return EINVAL;
+  }
+
+  a_name = argv[1];
+  a_format = argv[2];
+  b_name = argv[3];
+  method = argv[4];
 
   a = matrix_sparse_file_scan_by_name(a_name, a_format);
   if (errno)
   {
-    perror("Cannot scan the first matrix");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan matrix a from file %s in format %s\n",
+      a_name, a_format);
     goto end;
   }
 
-  b_in = fopen(b_name, "r");
+  b = double_array_file_scan_by_name(b_name, a->rows, "--raw");
   if (errno)
   {
-    perror("Cannot open file for reading vector");
-    goto end;
-  }
-
-  b = double_array_file_scan(b_in, a->rows, "--raw");
-  if (errno)
-  {
-    perror("Cannot scan vector");
-    fclose(b_in);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot open file %s for reading vector b\n", b_name);
     goto a_free;
   }
-  fclose(b_in);
 
   matrix_sparse_linear_solve(a, b, method);
   if (errno)
   {
-    perror("Cannot solve linear equation");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot solve linear system a x = b using method %s\n",
+      method);
     goto b_free;
   }
 
-  double_array_file_print(out, a->rows, b, "--raw");
+  double_array_file_print(stdout, a->rows, b, "--raw");
 
 b_free:
   free(b);
 a_free:
   matrix_sparse_free(a);
-end:
-  return;
-}
-
-int main(int argc, char ** argv)
-{
-  char * a_format, * a_name, * b_name, * method;
-
-  if (argc != 5)
-  {
-    errno = EIO;
-    perror("Command-line argument list is not of the right format");
-    goto end;
-  }
-  a_name = argv[1];
-  a_format = argv[2];
-  b_name = argv[3];
-  method = argv[4];
-  matrix_sparse_linear_solve_file_print(
-    stdout, a_name, a_format, b_name, method);
-  if (errno)
-  {
-    perror("Unsuccessful execution of matrix_sparse_linear_solve");
-    goto end;
-  }
 end:
   return errno;
 }

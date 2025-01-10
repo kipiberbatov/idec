@@ -1,60 +1,58 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
 #include "double.h"
+#include "idec_error_message.h"
 #include "matrix_sparse.h"
 
 /* read a sparse matrix and vector from a file, multiply and print them */
 int main(int argc, char ** argv)
 {
-  double * x, * y;
-  matrix_sparse * a;
-  FILE * a_in, * x_in;
   char * a_name, * x_name;
   int m, n;
+  double * x, * y;
+  matrix_sparse * a;
 
-  if (argc != 3)
+#define ARGC 3
+  if (argc != ARGC)
   {
-    fputs("There should be exactly 3 command line arguments!", stderr);
-    return 1;
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    return EINVAL;
   }
 
   a_name = argv[1];
-  a_in = fopen(a_name, "r");
-  if (errno)
-  {
-    perror("Cannot open matrix file");
-    goto end;
-  }
+  x_name = argv[2];
 
-  a = matrix_sparse_file_scan(a_in, "--raw");
-  if (errno)
+  a = matrix_sparse_file_scan_by_name(a_name, "--raw");
+  if (a == NULL)
   {
-    perror("Problem in matrix_sparse scanning");
-    goto a_in_close;
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan sparse matrix a from file %s in format --raw\n",
+      a_name);
+    goto end;
   }
 
   m = a->rows;
   n = a->cols;
 
-  x_name = argv[2];
-  x_in = fopen(x_name, "r");
-  if (errno)
+  x = double_array_file_scan_by_name(x_name, n, "--raw");
+  if (x == NULL)
   {
-    perror("Problem in vector scanning");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan vector x of length %d from file %s in format --raw\n",
+      n, x_name);
     goto a_free;
   }
 
-  x = double_array_file_scan(x_in, n, "--raw");
-  if (errno)
-  {
-    perror("Problem in matrix_sparse scanning");
-    goto x_in_close;
-  }
-
   y = (double *) calloc(m, sizeof(double));
-  if (errno)
+  if (y == NULL)
   {
-    perror("Problem in matrix_sparse scanning");
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m, "y");
     goto x_free;
   }
 
@@ -64,12 +62,8 @@ int main(int argc, char ** argv)
   free(y);
 x_free:
   free(x);
-x_in_close:
-  fclose(x_in);
 a_free:
   free(a);
-a_in_close:
-  fclose(a_in);
 end:
   return errno;
 }

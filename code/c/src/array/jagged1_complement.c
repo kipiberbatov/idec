@@ -1,5 +1,8 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
+#include "idec_error_message.h"
 #include "jagged.h"
 
 jagged1 * jagged1_complement(int n, const jagged1 * arr)
@@ -10,7 +13,8 @@ jagged1 * jagged1_complement(int n, const jagged1 * arr)
   res = (jagged1 *) malloc(sizeof(jagged1));
   if (errno)
   {
-    perror("jagged1_complement : cannot allocate memory for res");
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(jagged1), "res");
     goto end;
   }
 
@@ -19,7 +23,8 @@ jagged1 * jagged1_complement(int n, const jagged1 * arr)
   res->a1 = (int *) malloc(sizeof(int) * res->a0);
   if (errno)
   {
-    perror("jagged1_complement : cannot allocate memory for res->a1");
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(int) * res->a0, "res->a1");
     goto res_free;
   }
 

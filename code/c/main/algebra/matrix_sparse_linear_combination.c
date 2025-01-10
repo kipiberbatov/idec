@@ -1,38 +1,83 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
+#include "double.h"
+#include "idec_error_message.h"
 #include "matrix_sparse.h"
 
-static void matrix_sparse_linear_combination_file_print(
-  FILE * out, const char * a_name, const char * a_format, const char * b_name,
-  const char * b_format, double alpha, double beta, const char * out_format)
+int main(int argc, char ** argv)
 {
+  char * a_format, * a_name, * alpha_name, * b_format, * b_name, * beta_name,
+       * out_format;
+  double alpha, beta;
   matrix_sparse * a, * b, * c;
+
+#define ARGC 8
+  if (argc != ARGC)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    return EINVAL;
+  }
+
+  a_name = argv[1];
+  a_format = argv[2];
+  b_name = argv[3];
+  b_format = argv[4];
+  alpha_name = argv[5];
+  beta_name = argv[6];
+  out_format = argv[7];
+
+  alpha = double_string_scan(alpha_name);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan alpha from string %s\n", alpha_name);
+    goto end;
+  }
+
+  beta = double_string_scan(beta_name);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan beta from string %s\n", beta_name);
+    goto end;
+  }
 
   a = matrix_sparse_file_scan_by_name(a_name, a_format);
   if (errno)
   {
-    perror("Cannot scan the first matrix");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan matrix a from file %s in format %s\n",
+      a_name, a_format);
     goto end;
   }
 
   b = matrix_sparse_file_scan_by_name(b_name, b_format);
   if (errno)
   {
-    perror("Cannot scan the second matrix");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan matrix b from file %s in format %s\n",
+      b_name, b_format);
     goto a_free;
   }
 
   c = matrix_sparse_linear_combination(a, b, alpha, beta);
   if (errno)
   {
-    perror("Cannot find the linear combination");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot calculate c = %g a + %g b\n", alpha, beta);
     goto b_free;
   }
 
-  matrix_sparse_file_print(out, c, out_format);
+  matrix_sparse_file_print(stdout, c, out_format);
   if (errno)
   {
-    perror("Cannot print the linear combination");
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot print c in format %s\n", out_format);
     goto c_free;
   }
 
@@ -42,53 +87,6 @@ b_free:
   matrix_sparse_free(b);
 a_free:
   matrix_sparse_free(a);
-end:
-  return;
-}
-
-int main(int argc, char ** argv)
-{
-  char * a_format, * a_name, * b_format, * b_name, * out_format, * ptr;
-  double alpha, beta;
-
-  if (argc != 8)
-  {
-    errno = EIO;
-    perror("Command-line argument list is not of the right format");
-    goto end;
-  }
-
-  a_name = argv[1];
-  a_format = argv[2];
-  b_name = argv[3];
-  b_format = argv[4];
-
-  alpha = strtod(argv[5], &ptr);
-  if (*ptr != '\0')
-  {
-    errno = EINVAL;
-    perror("First coefficient is not a valid number");
-    goto end;
-  }
-
-  beta = strtod(argv[6], &ptr);
-  if (*ptr != '\0')
-  {
-    errno = EINVAL;
-    perror("Second coefficient is not a valid number");
-    goto end;
-  }
-
-  out_format = argv[7];
-
-  matrix_sparse_linear_combination_file_print(
-    stdout, a_name, a_format, b_name, b_format, alpha, beta, out_format);
-  if (errno)
-  {
-    perror("Unsuccessful execution of matrix_sparse_linear_combination");
-    goto end;
-  }
-
 end:
   return errno;
 }

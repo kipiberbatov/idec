@@ -1,6 +1,7 @@
-#include <errno.h>
-#include <string.h>
 #include <stdlib.h>
+
+#include "color.h"
+#include "idec_error_message.h"
 #include "vector_sparse.h"
 
 vector_sparse ** vector_sparse_array_file_scan(
@@ -10,18 +11,19 @@ vector_sparse ** vector_sparse_array_file_scan(
   vector_sparse ** arr;
 
   arr = (vector_sparse **) malloc(sizeof(vector_sparse *) * a0);
-  if (errno)
+  if (arr == NULL)
   {
-    perror("vector_sparse_array_file_scan - cannot allocate memory for arr");
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(vector_sparse *) * a0, "arr");
     return NULL;
   }
   for (i = 0; i < a0; ++i)
   {
     arr[i] = vector_sparse_file_scan(in, format);
-    if (errno)
+    if (arr[i] == NULL)
     {
-      fprintf(stderr, "vector_sparse_array_file_scan - cannot scan arr[%d]: %s\n",
-              i, strerror(errno));
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot scan arr[%d] in format %s\n", i, format);
       vector_sparse_array_free(arr, i);
       return NULL;
     }
