@@ -246,7 +246,7 @@ static void idec_command_line_set_optional_argument_data(
   {
     offset = option_j->type_size * option_j->index;
     data = (void *) (((char *) option_j->arguments) + offset);
-    option_j->scan(data, status, data_name);
+    option_j->string_scan(data, status, data_name);
     if (*status)
     {
       color_error_position(__FILE__, __LINE__);
@@ -298,7 +298,7 @@ static void idec_command_line_set_optional_argument(
   }
   else
   {
-    *((int *) option_j->arguments) = 1;
+    option_j->arguments = (void *) option_j->default_argument;
     ++option_j->index;
   }
 }
@@ -313,7 +313,7 @@ static void idec_command_line_set_positional_argument(
   {
     offset = option_j->type_size * option_j->index;
     data = (void *) (((char *) option_j->arguments) + offset);
-    option_j->scan(data, status, data_name);
+    option_j->string_scan(data, status, data_name);
     if (*status)
     {
       color_error_position(__FILE__, __LINE__);
@@ -370,6 +370,24 @@ static void idec_command_line_set_arguments(
   }
 }
 
+static void
+idec_command_line_set_default(idec_command_line ** options, int size)
+{
+  int j;
+  idec_command_line * option_j;
+
+  for (j = 0; j < size; ++j)
+  {
+    option_j = options[j];
+    if (option_j->number_of_arguments == 0 &&
+        option_j->maximal_number_of_arguments == 1 &&
+        option_j->default_argument != NULL)
+    {
+      option_j->set_default(option_j->arguments, option_j->default_argument);
+    }
+  }
+}
+
 void idec_command_line_parse(
   idec_command_line ** options, int * status,
   int size, int argc, char ** argv)
@@ -407,4 +425,6 @@ void idec_command_line_parse(
     idec_command_line_free_arguments(options, size);
     return;
   }
+
+  idec_command_line_set_default(options, size);
 }

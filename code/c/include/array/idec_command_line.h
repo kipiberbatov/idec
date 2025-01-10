@@ -53,8 +53,9 @@ typedef struct idec_command_line
   size_t type_size;
   int minimal_number_of_arguments;
   int maximal_number_of_arguments;
-  void (*scan)(void * data, int * status, const char * data_name);
+  void (*string_scan)(void * data, int * status, const char * data_name);
   void (*file_print)(FILE * out, const void * data);
+  void (*set_default)(void * argument, const void * default_argument);
   void (*destroy)(void * data);
   const void * default_argument;
   int index;
@@ -69,16 +70,25 @@ void idec_command_line_parse(
 void idec_command_line_file_print(
   FILE * out, int size, idec_command_line ** options);
 
-void
-idec_command_line_initialize_option_no_arguments(idec_command_line * option);
+void idec_command_line_set_option_no_arguments(
+  idec_command_line * option, void * value,
+  const char * name, const void * default_argument);
 
-void idec_command_line_initialize_option_int(idec_command_line * option);
+void idec_command_line_set_option_int(
+  idec_command_line * option, int * value, const char * name,
+  const int * default_argument);
 
-void idec_command_line_initialize_option_double(idec_command_line * option);
+void idec_command_line_set_option_double(
+  idec_command_line * option, double * value, const char * name,
+  const double * default_argument);
 
-void idec_command_line_initialize_option_string(idec_command_line * option);
+void idec_command_line_set_option_string(
+  idec_command_line * option, char ** value, const char * name,
+  const char * default_argument);
 
-void
-idec_command_line_initialize_option_string_array(idec_command_line * option);
+void idec_command_line_set_option_string_array(
+  idec_command_line * option, const char * name);
+
+void idec_command_line_set_no_positional_arguments(idec_command_line * option);
 
 #endif /* _idec_command_line_h */

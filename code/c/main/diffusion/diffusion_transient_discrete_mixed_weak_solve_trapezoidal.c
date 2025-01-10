@@ -9,80 +9,6 @@
 #include "idec_error_message.h"
 #include "int.h"
 
-static void idec_command_line_set_option_mesh_format(
-  idec_command_line * option, char ** value)
-{
-  idec_command_line_initialize_option_string(option);
-  option->name = "--mesh-format";
-  option->default_argument = "--raw";
-  option->arguments = (void *) value;
-}
-
-static void
-idec_command_line_set_option_mesh(idec_command_line * option, char ** value)
-{
-  idec_command_line_initialize_option_string(option);
-  option->name = "--mesh";
-  option->minimal_number_of_arguments = 1;
-  option->default_argument = NULL;
-  option->arguments = (void *) value;
-}
-
-static void idec_command_line_set_option_mesh_inner_format(
-  idec_command_line * option, char ** value)
-{
-  idec_command_line_initialize_option_string(option);
-  option->name = "--mesh-inner-format";
-  option->default_argument = "--raw";
-  option->arguments = (void *) value;
-}
-
-static void idec_command_line_set_option_mesh_inner(
-  idec_command_line * option, char ** value)
-{
-  idec_command_line_initialize_option_string(option);
-  option->name = "--mesh-inner";
-  option->default_argument = NULL;
-  option->arguments = (void *) value;
-}
-
-static void idec_command_line_set_option_input_data(
-  idec_command_line * option, char ** value)
-{
-  idec_command_line_initialize_option_string(option);
-  option->name = "--input-data";
-  option->default_argument = NULL;
-  option->arguments = (void *) value;
-}
-
-static void idec_command_line_set_option_time_step(
-  idec_command_line * option, double * value)
-{
-  idec_command_line_initialize_option_double(option);
-  option->name = "--time-step";
-  option->minimal_number_of_arguments = 1;
-  option->default_argument = NULL;
-  option->arguments = (void *) value;
-}
-
-static void idec_command_line_set_option_number_of_steps(
-  idec_command_line * option, int * value)
-{
-  idec_command_line_initialize_option_int(option);
-  option->name = "--number-of-steps";
-  option->minimal_number_of_arguments = 1;
-  option->default_argument = NULL;
-  option->arguments = (void *) value;
-}
-
-static void idec_command_line_set_no_positional(idec_command_line * option)
-{
-  idec_command_line_initialize_option_no_arguments(option);
-  option->name = NULL;
-  option->default_argument = NULL;
-  option->arguments = NULL;
-}
-
 int main(int argc, char ** argv)
 {
   char * data_name, * m_inner_format, * m_inner_name, * m_format, * m_name;
@@ -98,8 +24,10 @@ int main(int argc, char ** argv)
   diffusion_transient_discrete_mixed_weak * data;
 
   idec_command_line option_input_data, option_mesh, option_mesh_format,
-    option_mesh_inner, option_mesh_inner_format, option_number_of_steps,
-    option_time_step, positional_arguments;
+                    option_mesh_inner, option_mesh_inner_format,
+                    no_positional_arguments, option_number_of_steps,
+                    option_time_step;
+
   idec_command_line *(options[]) =
   {
     &option_mesh,
@@ -109,20 +37,32 @@ int main(int argc, char ** argv)
     &option_input_data,
     &option_time_step,
     &option_number_of_steps,
-    &positional_arguments
+    &no_positional_arguments
   };
 
-  idec_command_line_set_option_mesh_format(
-    &option_mesh_format, &m_format);
-  idec_command_line_set_option_mesh(&option_mesh, &m_name);
-  idec_command_line_set_option_mesh_inner_format(
-    &option_mesh_inner_format, &m_inner_format);
-  idec_command_line_set_option_mesh_inner(&option_mesh_inner, &m_inner_name);
-  idec_command_line_set_option_input_data(&option_input_data, &data_name);
-  idec_command_line_set_option_time_step(&option_time_step, &time_step);
-  idec_command_line_set_option_number_of_steps(
-    &option_number_of_steps, &number_of_steps);
-  idec_command_line_set_no_positional(&positional_arguments);
+  idec_command_line_set_option_string(
+    &option_mesh_format, &m_format, "--mesh-format", "--raw");
+
+  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+
+  idec_command_line_set_option_string(
+    &option_mesh_inner_format, &m_inner_format, "--mesh-inner-format", "--raw");
+
+  idec_command_line_set_option_string(
+    &option_mesh_inner, &m_inner_name, "--mesh-inner", NULL);
+
+  idec_command_line_set_option_string(
+    &option_input_data, &data_name, "--input-data", NULL);
+
+  idec_command_line_set_option_double(&option_time_step, &time_step,
+    "--time-step", NULL);
+
+  idec_command_line_set_option_int(
+    &option_number_of_steps, &number_of_steps, "--number-of-steps", NULL);
+
+  /* there are no positional arguments */
+  idec_command_line_set_option_no_arguments(
+    &no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;

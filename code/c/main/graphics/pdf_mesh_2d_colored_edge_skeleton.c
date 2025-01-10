@@ -6,6 +6,7 @@
 #include "color.h"
 #include "double.h"
 #include "frame.h"
+#include "idec_command_line.h"
 #include "idec_error_message.h"
 #include "int.h"
 #include "mesh.h"
@@ -16,8 +17,10 @@
 int main(int argc, char ** argv)
 {
   char * m_format, * m_name, * out_name;
-  int total_colors;
+  int size, status, total_colors;
+  const int total_colors_default = 10;
   double height, width;
+  const double height_default = 500, width_default = 500;
   double * new_coordinates, * u;
   mesh * m;
   mesh_2d_colored_one_cochain_sequence a;
@@ -26,18 +29,48 @@ int main(int argc, char ** argv)
 
   errno = 0;
 
-#define ARGC 4
-  if (argc != ARGC)
+  idec_command_line option_height, option_mesh, option_mesh_format,
+                    option_total_colors, option_width,
+                    positional_argument_output;
+
+  idec_command_line *(options[]) =
+  {
+    &option_mesh,
+    &option_mesh_format,
+    &option_width,
+    &option_height,
+    &option_total_colors,
+    &positional_argument_output
+  };
+
+  idec_command_line_set_option_string(
+    &option_mesh_format, &m_format, "--mesh-format", "--raw");
+
+  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+
+  idec_command_line_set_option_double(
+    &option_width, &width, "--width", &width_default);
+
+  idec_command_line_set_option_double(
+    &option_height, &height, "--height", &height_default);
+
+  idec_command_line_set_option_int(
+    &option_total_colors, &total_colors, "--total-colors",
+    &total_colors_default);
+
+  /* there are no positional arguments */
+  idec_command_line_set_option_string(
+    &positional_argument_output, &out_name, NULL, NULL);
+
+  size = (int) (sizeof(options) / sizeof(*options));
+  status = 0;
+  idec_command_line_parse(options, &status, size, argc, argv);
+  if (status)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
-    errno = EINVAL;
-    goto end;
+    fputs("cannot parse command line options\n", stderr);
+    return status;
   }
-
-  m_format = argv[1];
-  m_name = argv[2];
-  out_name = argv[3];
 
   m = mesh_file_scan_by_name(m_name, m_format);
   if (m == NULL)
@@ -64,8 +97,6 @@ int main(int argc, char ** argv)
     goto u_free;
   }
 
-  width = 500;
-  height = 500;
   window_margin.left = 50;
   window_margin.right = 50;
   window_margin.top = 50;
@@ -78,8 +109,6 @@ int main(int argc, char ** argv)
     width,
     height,
     &window_margin);
-
-  total_colors = 10;
 
   a.is_mesh_edge_skeleton = 1;
   a.index = 0;

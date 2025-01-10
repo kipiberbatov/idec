@@ -113,9 +113,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_input.txt\
   | build/$(MODE)/demo/diffusion
 	$<\
-  --mesh-format=--raw\
   --mesh=$(word 2, $^)\
-  --mesh-inner-format=--raw\
   --mesh-inner=$(word 3, $^)\
   --input-data=$(word 4, $^)\
   --number-of-steps=1000\

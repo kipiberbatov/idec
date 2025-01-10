@@ -12,6 +12,8 @@ void int_string_scan_void(void * result, int * status, const char * s);
 
 void int_file_print_void(FILE * out, const void * x);
 
+void int_set_default_void(void * argument, const void * default_argument);
+
 int int_power(int a, int n);
 
 int int_factorial(int n);
