@@ -1,5 +1,8 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "color.h"
+#include "double.h"
 #include "int.h"
 #include "mesh_brick.h"
 
@@ -14,7 +17,8 @@ static void mesh_brick_file_print_raw(
   m = mesh_brick(d, brick_lengths, n);
   if (errno)
   {
-    fputs("mesh_brick_file_print - cannot calculate m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate mesh m\n", stderr);
     goto end;
   }
   mesh_file_print(out, m, "--raw");
@@ -25,7 +29,8 @@ static void mesh_brick_file_print_raw(
   m_bd = mesh_brick_boundary(m->dim, n, m_bd_sizes);
   if (errno)
   {
-    fputs("mesh_brick_file_print - cannot calculate m->bd\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m->bd\n", stderr);
     goto m_free;
   }
 
@@ -45,19 +50,69 @@ int main(int argc, char ** argv)
   int n[MAX_DIM];
   double brick_lengths[MAX_DIM];
 
-  d = atoi(argv[1]);
+  if (argc == 1)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs(
+      "there are no command line arguments, but dimension must be specified\n",
+      stderr);
+    return EINVAL;
+  }
 
-  for (p = 0; p < d; ++p)
-    brick_lengths[p] = atoi(argv[2 + p]);
-
-  for (p = 0; p < d; ++p)
-    n[p] = atoi(argv[2 + d + p]);
-
-  mesh_brick_file_print_raw(stdout, d, brick_lengths, n);
-
+  d = int_string_scan(argv[1]);
   if (errno)
   {
-    fputs("mesh_brick_file_print - find and print m->bd\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot scan dimension d from string %s\n", argv[1]);
+    return errno;
+  }
+
+  if (d < 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "dimension must be nonnegative; instead it is %d\n", d);
+    return errno;
+  }
+
+  if (argc < 2 * d + 2)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of command line arguments should be at least %d: use as\n"
+      "%s %d brick_lengths[%d] axes_partitions[%d]",
+      2 * d + 2, argv[0], d, d, d);
+    return errno;
+  }
+
+  for (p = 0; p < d; ++p)
+  {
+    brick_lengths[p] = double_string_scan(argv[2 + p]);
+    if (errno)
+    {
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot scan brick_length[%d] from string %s\n",
+        p, argv[2 + p]);
+      return errno;
+    }
+  }
+
+  for (p = 0; p < d; ++p)
+  {
+    n[p] = int_string_scan(argv[2 + d + p]);
+    if (errno)
+    {
+      color_error_position(__FILE__, __LINE__);
+      fprintf(stderr, "cannot scan axis_partition[%d] from string %s\n",
+        p, argv[2 + d + p]);
+      return errno;
+    }
+  }
+
+  mesh_brick_file_print_raw(stdout, d, brick_lengths, n);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate and print m->bd\n", stderr);
     return errno;
   }
 
