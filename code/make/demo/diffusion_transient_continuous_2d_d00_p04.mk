@@ -17,7 +17,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_primal_strong_cocha
 	$<\
   --mesh=$(word 2, $^)\
   --dynamic-library=$(word 2, $|)\
-  --input-data=diffusion_transient_continuous_2d_d00_p00\
+  --input-data=diffusion_transient_continuous_2d_d00_p04\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt:\
@@ -62,7 +62,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_primal_weak_cochain
   --mesh=$(word 2, $^)\
   --mesh-volumes=$(word 3, $^)\
   --dynamic-library=$(word 2, $|)\
-  --input-data=diffusion_transient_continuous_2d_d00_p01\
+  --input-data=diffusion_transient_continuous_2d_d00_p04\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt:\
@@ -107,7 +107,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_mixed_weak_cochain_
   --mesh-coboundary-star=$(word 3, $^)\
   --mesh-volumes=$(word 4, $^)\
   --dynamic-library=$(word 2, $|)\
-  --input-data=diffusion_transient_continuous_2d_d00_p01\
+  --input-data=diffusion_transient_continuous_2d_d00_p04\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_solution.txt:\

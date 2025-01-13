@@ -33,7 +33,7 @@ demo_diffusion_steady_state: $(_demo_diffusion_steady_state)
 
 include code/make/demo/diffusion_transient_continuous_2d_d00_p00.mk
 include code/make/demo/diffusion_transient_continuous_2d_d00_p01.mk
-# include code/make/demo/diffusion_transient_continuous_2d_d00_p04.mk
+include code/make/demo/diffusion_transient_continuous_2d_d00_p04.mk
 
 _demo_diffusion_transient_continuous_2d :=\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_potential.txt\

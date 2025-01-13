@@ -16,7 +16,7 @@ _demo_gtk_diffusion :=\
 
 include code/make/demo/gtk_diffusion_transient_continuous_2d_d00_p00.mk
 include code/make/demo/gtk_diffusion_transient_continuous_2d_d00_p01.mk
-# include code/make/demo/gtk_diffusion_transient_continuous_2d_d00_p04.mk
+include code/make/demo/gtk_diffusion_transient_continuous_2d_d00_p04.mk
 
 _demo_gtk :=\
   build/$(MODE)/demo/gtk/fill.log\
