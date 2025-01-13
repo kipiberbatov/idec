@@ -14,8 +14,8 @@ mesh * mesh_file_scan_by_name(const char * name, const char * format)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot open file %s for reading: %s\n",
-      name, strerror(errno));
+      "cannot open file %s%s%s for reading: %s\n",
+      color_variable, name, color_none, strerror(errno));
     goto end;
   }
 
@@ -24,8 +24,9 @@ mesh * mesh_file_scan_by_name(const char * name, const char * format)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan mesh m from file %s in format %s\n",
-      name, format);
+      "cannot scan mesh m from file %s%s%s in format %s%s%s\n",
+      color_variable, name, color_none,
+      color_variable, format, color_none);
     goto in_close;
   }
 

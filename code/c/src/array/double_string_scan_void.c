@@ -12,8 +12,9 @@ void double_string_scan_void(void * result, int * status, const char * s)
   if (strlen(ptr))
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "%s%s%s is not a valid floating point number\n",
-      color_green, s, color_none);
+    fprintf(stderr,
+      "%s%s%s is not a valid floating point number\n",
+      color_variable, s, color_none);
     *status = 1;
   }
 }

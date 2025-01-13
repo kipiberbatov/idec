@@ -1373,7 +1373,7 @@ build/$(MODE)/demo/mesh/2d_10_grains.txt:\
   build/$(MODE)/bin/mesh_and_boundary_file_scan$(.EXE)\
   data/mesh/2d_10_grains.tess\
   | build/$(MODE)/demo/mesh
-	$< --tess < $(word 2, $^) > $@
+	$< --mesh-format=tess $(word 2, $^) > $@
 
 build/$(MODE)/demo/mesh/2d_10_grains_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\

@@ -13,7 +13,7 @@ void int_string_scan_void(void * result, int * status, const char * s)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr, "%s%s%s is not a valid integer\n",
-      color_green, s, color_none);
+      color_variable, s, color_none);
     *status = 1;
   }
 }

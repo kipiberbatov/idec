@@ -1,33 +1,66 @@
 #include <errno.h>
+#include <string.h>
 
 #include "color.h"
 #include "double.h"
+#include "idec_command_line.h"
 #include "mesh_and_boundary.h"
 
 int main(int argc, char ** argv)
 {
-  int d, p, size;
-  char * format;
+  int d, p, size, status, total_options;
+  char * m_format, * m_name;
   double ** bd;
+  FILE * m_and_bd_file;
   mesh * m;
   mesh_and_boundary * m_and_bd;
   jagged1 m_cfn_pp1_p;
 
-  if (argc != 2)
+  idec_command_line option_mesh_format, positional_argument_mesh;
+
+  idec_command_line *(options[]) =
+  {
+    &option_mesh_format,
+    &positional_argument_mesh
+  };
+
+  idec_command_line_set_option_string(
+    &option_mesh_format, &m_format, "--mesh-format", "--raw");
+
+  idec_command_line_set_option_string(
+    &positional_argument_mesh, &m_name, NULL, NULL);
+
+  total_options = (int) (sizeof(options) / sizeof(*options));
+  status = 0;
+  idec_command_line_parse(options, &status, total_options, argc, argv);
+  if (status)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("number of command line arguments must be 1\n", stderr);
-    return errno;
+    fputs("cannot parse command line options\n", stderr);
+    return status;
   }
 
-  format = argv[1];
-  m_and_bd = mesh_and_boundary_file_scan(stdin, format);
+  m_and_bd_file = fopen(m_name, "r");
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot to scan mesh and boundary in format %s\n", format);
+    fprintf(stderr,
+      "cannot open mesh file %s%s%s for reading:%s\n",
+      color_variable, m_format, color_none, strerror(errno));
     return errno;
   }
+
+  m_and_bd = mesh_and_boundary_file_scan(m_and_bd_file, m_format);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot scan mesh and boundary in format %s%s%s\n",
+      color_variable, m_format, color_none);
+    fclose(m_and_bd_file);
+    return errno;
+  }
+  fclose(m_and_bd_file);
 
   m = m_and_bd->_mesh;
   bd = m_and_bd->boundary;

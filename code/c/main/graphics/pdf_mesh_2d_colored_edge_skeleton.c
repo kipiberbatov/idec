@@ -58,7 +58,6 @@ int main(int argc, char ** argv)
     &option_total_colors, &total_colors, "--total-colors",
     &total_colors_default);
 
-  /* there are no positional arguments */
   idec_command_line_set_option_string(
     &positional_argument_output, &out_name, NULL, NULL);
 
@@ -76,8 +75,10 @@ int main(int argc, char ** argv)
   if (m == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot scan mesh m from file %s in format %s\n",
-      m_name, m_format);
+    fprintf(stderr,
+      "cannot scan mesh m from file %s%s%s in format %s%s%s\n",
+      color_variable, m_name, color_none,
+      color_variable, m_format, color_none);
     goto end;
   }
 

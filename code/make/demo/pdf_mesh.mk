@@ -65,7 +65,10 @@ build/$(MODE)/demo/pdf/mesh/2d_10_grains_edge_skeleton.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\
   data/mesh/2d_10_grains.tess\
   | build/$(MODE)/demo/pdf/mesh
-	$< --mesh-format=--tess --mesh=$(word 2, $^) $@
+	$<\
+  --mesh-format=tess\
+  --mesh=$(word 2, $^)\
+  $@
 
 build/$(MODE)/demo/pdf/mesh/2d_10_grains_forman_edge_skeleton.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\

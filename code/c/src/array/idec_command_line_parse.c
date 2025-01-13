@@ -52,7 +52,7 @@ static void idec_command_line_find_number_of_occurences_optional(
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
       "%s%.*s%s is not a valid option\n",
-      color_green, idec_command_line_length(option_name), option_name,
+      color_variable, idec_command_line_length(option_name), option_name,
       color_none);
     *status = 1;
     return;
@@ -70,7 +70,7 @@ static void idec_command_line_find_number_of_occurences_optional(
         color_error_position(__FILE__, __LINE__);
         fprintf(stderr,
           "last option %s%s%s has no arguments\n",
-          color_green, option_j->name, color_none);
+          color_variable, option_j->name, color_none);
         *status = 1;
         return;
       }
@@ -95,7 +95,7 @@ static void idec_command_line_find_number_of_occurences(
       {
         color_error_position(__FILE__, __LINE__);
         fprintf(stderr, "cannot parse argument %s%s%s\n",
-          color_green, argv[i], color_none);
+          color_variable, argv[i], color_none);
         return;
       }
     }
@@ -126,9 +126,9 @@ static void idec_command_line_check_minimality(
       fprintf(stderr,
         "the minimal number of arguments for option %s%s%s is %s%d%s "
         "but only %s%d%s were found\n",
-        color_green, option_j->name, color_none,
-        color_green, min_j, color_none,
-        color_green, total_j, color_none);
+        color_variable, option_j->name, color_none,
+        color_variable, min_j, color_none,
+        color_variable, total_j, color_none);
       *status = 1;
       return;
     }
@@ -199,7 +199,7 @@ static void idec_command_line_allocate_arguments(
           fprintf(stderr,
             "cannot allocate %ld bytes of memory for option %s%s%s",
             option_j->type_size * total_j,
-            color_green, option_j->name, color_none);
+            color_variable, option_j->name, color_none);
           *status = 1;
           idec_command_line_free_arguments(options, j);
           return;
@@ -252,8 +252,8 @@ static void idec_command_line_set_optional_argument_data(
       color_error_position(__FILE__, __LINE__);
       fprintf(stderr,
         "cannot scan data for option %s%s%s from string %s%s%s\n",
-        color_green, option_j->name, color_none,
-        color_green, data_name, color_none);
+        color_variable, option_j->name, color_none,
+        color_variable, data_name, color_none);
       return;
     }
   }
@@ -263,11 +263,11 @@ static void idec_command_line_set_optional_argument_data(
       "%sWarning:%s option %s%s%s can take at most %s%d%s argument%s. "
       "Argument with index %s%d%s and value %s%s%s is ignored\n",
       color_red, color_none,
-      color_green, option_j->name, color_none,
-      color_green, option_j->maximal_number_of_arguments, color_none,
+      color_variable, option_j->name, color_none,
+      color_variable, option_j->maximal_number_of_arguments, color_none,
       option_j->maximal_number_of_arguments == 1 ? "" : "s",
-      color_green, option_j->index, color_none,
-      color_green, data_name, color_none);
+      color_variable, option_j->index, color_none,
+      color_variable, data_name, color_none);
   }
   ++option_j->index;
 }
@@ -291,8 +291,8 @@ static void idec_command_line_set_optional_argument(
       color_error_position(__FILE__, __LINE__);
       fprintf(stderr,
         "cannot set option %s%s%s from string %s%s%s\n",
-        color_green, option_j->name, color_none,
-        color_green, data_name, color_none);
+        color_variable, option_j->name, color_none,
+        color_variable, data_name, color_none);
       return;
     }
   }
@@ -319,8 +319,8 @@ static void idec_command_line_set_positional_argument(
       color_error_position(__FILE__, __LINE__);
       fprintf(stderr,
         "cannot scan data for option %s%s%s from string %s%s%s\n",
-        color_green, option_j->name, color_none,
-        color_green, data_name, color_none);
+        color_variable, option_j->name, color_none,
+        color_variable, data_name, color_none);
       return;
     }
   }
@@ -330,10 +330,10 @@ static void idec_command_line_set_positional_argument(
       "%sWarning:%s there could be at most %s%d%s positional argument%s. "
       "Argument with index %s%d%s and value %s%s%s is ignored\n",
       color_red, color_none,
-      color_green, option_j->maximal_number_of_arguments, color_none,
+      color_variable, option_j->maximal_number_of_arguments, color_none,
       option_j->maximal_number_of_arguments == 1 ? "" : "s",
-      color_green, option_j->index, color_none,
-      color_green, data_name, color_none);
+      color_variable, option_j->index, color_none,
+      color_variable, data_name, color_none);
   }
   ++option_j->index;
 }
