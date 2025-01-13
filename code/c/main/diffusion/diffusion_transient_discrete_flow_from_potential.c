@@ -4,39 +4,92 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_transient_discrete_flow_from_potential.h"
+#include "idec_command_line.h"
 #include "idec_error_message.h"
 #include "int.h"
 
 int main(int argc, char ** argv)
 {
   char * flow_format, * kappa_1_format, * kappa_1_name, * m_format, * m_name,
-       * m_hodge_format, * m_hodge_name, * number_of_steps_name,
-       * potential_format, * potential_name;
-  int d, number_of_steps;
+       * m_hodge_format, * m_hodge_name, * potential_format, * potential_name;
+  int d, number_of_steps, size, status;
   double * flow, * kappa_1, * potential;
   mesh * m;
   matrix_sparse * m_bd_1;
   matrix_sparse ** m_hodge;
   FILE * m_file;
 
-#define ARGC 11
-  if (argc != ARGC)
+  idec_command_line no_positional_arguments, option_flow_format,
+                    option_kappa_1, option_kappa_1_format, option_mesh,
+                    option_mesh_format, option_mesh_hodge,
+                    option_mesh_hodge_format, option_number_of_steps,
+                    option_potential_format, option_potential;
+
+  idec_command_line *(options[]) =
+  {
+    &option_mesh_format,
+    &option_mesh,
+    &option_mesh_hodge,
+    &option_mesh_hodge_format,
+    &option_kappa_1,
+    &option_kappa_1_format,
+    &option_potential,
+    &option_potential_format,
+    &option_number_of_steps,
+    &option_flow_format,
+    &no_positional_arguments
+  };
+
+  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+
+  idec_command_line_set_option_string(
+    &option_mesh_format, &m_format, "--mesh-format", "--raw");
+
+  idec_command_line_set_option_string(
+    &option_mesh_hodge_format, &m_hodge_format, "--mesh-hodge-format", "--raw");
+
+  idec_command_line_set_option_string(
+    &option_mesh_hodge, &m_hodge_name, "--mesh-hodge", NULL);
+
+  idec_command_line_set_option_string(
+    &option_kappa_1_format, &kappa_1_format, "--kappa-1-format", NULL);
+
+  idec_command_line_set_option_string(
+    &option_kappa_1, &kappa_1_name, "--kappa-1", NULL);
+
+  idec_command_line_set_option_string(
+    &option_potential_format, &potential_format, "--potential-format", "--raw");
+
+  idec_command_line_set_option_string(
+    &option_potential, &potential_name, "--potential", NULL);
+
+  idec_command_line_set_option_int(
+    &option_number_of_steps, &number_of_steps, "--number-of-steps", NULL);
+
+  idec_command_line_set_option_string(
+    &option_flow_format, &flow_format, "--flow-format", "--raw");
+
+  /* there are no positional arguments */
+  idec_command_line_set_option_no_arguments(
+    &no_positional_arguments, NULL, NULL, NULL);
+
+  size = (int) (sizeof(options) / sizeof(*options));
+  status = 0;
+  idec_command_line_parse(options, &status, size, argc, argv);
+  if (status)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
-    return EINVAL;
+    fputs("cannot parse command line options\n", stderr);
+    return status;
   }
 
-  m_format = argv[1];
-  m_name = argv[2];
-  m_hodge_format = argv[3];
-  m_hodge_name = argv[4];
-  kappa_1_format = argv[5];
-  kappa_1_name = argv[6];
-  potential_format = argv[7];
-  potential_name = argv[8];
-  number_of_steps_name = argv[9];
-  flow_format = argv[10];
+  if (number_of_steps < 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of steps is %d but it must be at least 0\n", number_of_steps);
+    goto end;
+  }
 
   m_file = fopen(m_name, "r");
   if (errno)
@@ -87,22 +140,6 @@ int main(int argc, char ** argv)
       "cannot scan kappa_1 form file %s in format %s\n",
       kappa_1_name, kappa_1_format);
     goto m_hodge_free;
-  }
-
-  number_of_steps = int_string_scan(number_of_steps_name);
-  if (errno)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot scan number of steps from string %s\n", number_of_steps_name);
-    goto kappa_1_free;
-  }
-  if (number_of_steps < 0)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of steps is %d but it must be at least 0\n", number_of_steps);
-    goto kappa_1_free;
   }
 
   potential = double_matrix_file_scan_by_name(

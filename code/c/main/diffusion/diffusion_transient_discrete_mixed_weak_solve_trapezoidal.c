@@ -23,9 +23,9 @@ int main(int argc, char ** argv)
   mesh * m;
   diffusion_transient_discrete_mixed_weak * data;
 
-  idec_command_line option_input_data, option_mesh, option_mesh_format,
-                    option_mesh_inner, option_mesh_inner_format,
-                    no_positional_arguments, option_number_of_steps,
+  idec_command_line no_positional_arguments, option_input_data, option_mesh,
+                    option_mesh_format, option_mesh_inner,
+                    option_mesh_inner_format, option_number_of_steps,
                     option_time_step;
 
   idec_command_line *(options[]) =

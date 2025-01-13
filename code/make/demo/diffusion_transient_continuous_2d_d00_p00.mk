@@ -15,9 +15,10 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cocha
   build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p00$(.OBJ)\
   | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
 	$<\
-  --raw $(word 2, $^)\
-  $(word 2, $|)\
-  diffusion_transient_continuous_2d_d00_p00\
+  --mesh-format=--raw\
+  --mesh=$(word 2, $^)\
+  --dynamic-library=$(word 2, $|)\
+  --input-data=diffusion_transient_continuous_2d_d00_p00\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_trapezoidal_0p001_100_potential.txt:\
@@ -28,11 +29,12 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cocha
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_input.txt\
   | build/$(MODE)/demo/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  $(word 3, $^)\
-  $(word 4, $^)\
-  $(word 5, $^)\
-  0.001 100\
+  --mesh=$(word 2, $^)\
+  --mesh-coboundary-0=$(word 3, $^)\
+  --mesh-coboundary-star-1=$(word 4, $^)\
+  --input-data=$(word 5, $^)\
+  --time-step=0.001\
+  --number-of-steps=100\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_trapezoidal_0p001_100_flow.txt:\
@@ -43,12 +45,13 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cocha
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_trapezoidal_0p001_100_potential.txt\
   | build/$(MODE)/demo/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  --raw $(word 3, $^)\
-  --transient-primal-strong-raw $(word 4, $^)\
-  --raw $(word 5, $^)\
-  100\
-  --raw > $@
+  --mesh=$(word 2, $^)\
+  --mesh-hodge=$(word 3, $^)\
+  --kappa-1-format=transient-primal-strong-raw\
+  --kappa-1=$(word 4, $^)\
+  --potential=$(word 5, $^)\
+  --number-of-steps=100\
+  > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain_brick_2d_2_forman_input.txt:\
   build/$(MODE)/bin/diffusion_transient_discrete_primal_weak_from_continuous$(.EXE)\
@@ -57,10 +60,10 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain
   build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p00$(.OBJ)\
   | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
 	$<\
-  --raw $(word 2, $^)\
-  --raw $(word 3, $^)\
-  $(word 2, $|)\
-  diffusion_transient_continuous_2d_d00_p00\
+  --mesh=$(word 2, $^)\
+  --mesh-volumes=$(word 3, $^)\
+  --dynamic-library=$(word 2, $|)\
+  --input-data=diffusion_transient_continuous_2d_d00_p01\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_100_potential.txt:\
@@ -70,10 +73,11 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain_brick_2d_2_forman_input.txt\
   | build/$(MODE)/demo/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  --raw $(word 3, $^)\
-  $(word 4, $^)\
-  0.001 100\
+  --mesh=$(word 2, $^)\
+  --mesh-inner=$(word 3, $^)\
+  --input-data=$(word 4, $^)\
+  --time-step=0.001\
+  --number-of-steps=100\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_100_flow.txt:\
@@ -84,12 +88,13 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_100_potential.txt\
   | build/$(MODE)/demo/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  --raw $(word 3, $^)\
-  --transient-primal-weak-raw $(word 4, $^)\
-  --raw $(word 5, $^)\
-  100\
-  --raw > $@
+  --mesh=$(word 2, $^)\
+  --mesh-hodge=$(word 3, $^)\
+  --kappa-1-format=transient-primal-weak-raw\
+  --kappa-1=$(word 4, $^)\
+  --potential=$(word 5, $^)\
+  --number-of-steps=100\
+  > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_input.txt:\
   build/$(MODE)/bin/diffusion_transient_discrete_mixed_weak_from_continuous$(.EXE)\
@@ -99,11 +104,11 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_
   build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p00$(.OBJ)\
   | build/$(MODE)/demo/diffusion build/$(MODE)/lib/libshared$(.DLL)
 	$<\
-  --raw $(word 2, $^)\
-  $(word 3, $^)\
-  --raw $(word 4, $^)\
-  $(word 2, $|)\
-  diffusion_transient_continuous_2d_d00_p00\
+  --mesh=$(word 2, $^)\
+  --mesh-coboundary-star=$(word 3, $^)\
+  --mesh-volumes=$(word 4, $^)\
+  --dynamic-library=$(word 2, $|)\
+  --input-data=diffusion_transient_continuous_2d_d00_p01\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_solution.txt:\
@@ -116,8 +121,8 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_
   --mesh=$(word 2, $^)\
   --mesh-inner=$(word 3, $^)\
   --input-data=$(word 4, $^)\
-  --number-of-steps=1000\
   --time-step=0.001\
+  --number-of-steps=1000\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_potential.txt:\
@@ -128,8 +133,9 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_solution.txt\
   | build/$(MODE)/demo/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  --raw $(word 3, $^)\
-  $(word 4, $^)\
-  1000 $(word 5, $^)\
+  --mesh=$(word 2, $^)\
+  --mesh-volumes=$(word 3, $^)\
+  --input-data=$(word 4, $^)\
+  --number-of-steps=1000\
+  --solution=$(word 5, $^)\
   > $@

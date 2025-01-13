@@ -6,13 +6,13 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_transient_discrete_primal_weak.h"
-#include "idec_error_message.h"
+#include "idec_command_line.h"
 
 int main(int argc, char ** argv)
 {
   char * data_continuous_name, * error, * lib_name, * m_format, * m_name,
        * m_vol_format, * m_vol_name;
-  int d;
+  int d, size, status;
   int * m_cn;
   double ** m_vol;
   void * lib_handle;
@@ -20,21 +20,51 @@ int main(int argc, char ** argv)
   const diffusion_transient_continuous * data_continuous;
   diffusion_transient_discrete_primal_weak * data_discrete;
 
-#define ARGC 7
-  if (argc != ARGC)
+  idec_command_line no_positional_arguments, option_input_data, option_lib,
+                    option_mesh, option_mesh_format, option_mesh_vol,
+                    option_mesh_vol_format;
+
+  idec_command_line *(options[]) =
+  {
+    &option_mesh_format,
+    &option_mesh,
+    &option_mesh_vol_format,
+    &option_mesh_vol,
+    &option_input_data,
+    &option_lib,
+    &no_positional_arguments
+  };
+
+  idec_command_line_set_option_string(
+    &option_mesh_format, &m_format, "--mesh-format", "--raw");
+
+  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+
+  idec_command_line_set_option_string(
+    &option_mesh_vol_format, &m_vol_format, "--mesh-volumes-format", "--raw");
+
+  idec_command_line_set_option_string(
+    &option_mesh_vol, &m_vol_name, "--mesh-volumes", NULL);
+
+  idec_command_line_set_option_string(
+    &option_input_data, &data_continuous_name, "--input-data", NULL);
+
+  idec_command_line_set_option_string(
+    &option_lib, &lib_name, "--dynamic-library", NULL);
+
+  /* there are no positional arguments */
+  idec_command_line_set_option_no_arguments(
+    &no_positional_arguments, NULL, NULL, NULL);
+
+  size = (int) (sizeof(options) / sizeof(*options));
+  status = 0;
+  idec_command_line_parse(options, &status, size, argc, argv);
+  if (status)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
-    errno = EINVAL;
-    goto end;
+    fputs("cannot parse command line options\n", stderr);
+    return status;
   }
-
-  m_format = argv[1];
-  m_name = argv[2];
-  m_vol_format = argv[3];
-  m_vol_name = argv[4];
-  lib_name = argv[5];
-  data_continuous_name = argv[6];
 
   m = mesh_file_scan_by_name(m_name, m_format);
   if (m == NULL)

@@ -5,6 +5,7 @@
 #include "color.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
 #include "double.h"
+#include "idec_command_line.h"
 #include "idec_error_message.h"
 #include "int.h"
 #include "mesh_qc.h"
@@ -12,8 +13,8 @@
 int main(int argc, char ** argv)
 {
   char * data_name, * m_vol_format, * m_vol_name, * m_format, * m_name,
-       * number_of_steps_name, * solution_name;
-  int d, m_cn_dm1, m_cn_0, m_cn_d, number_of_steps, s;
+       * solution_name;
+  int d, m_cn_dm1, m_cn_0, m_cn_d, number_of_steps, s, size, status;
   int * m_cn;
   double * flow, * potential, * dual_potential;
   double ** m_vol;
@@ -21,22 +22,63 @@ int main(int argc, char ** argv)
   mesh * m;
   diffusion_transient_discrete_mixed_weak * data;
 
-#define ARGC 8
-  if (argc != ARGC)
+  idec_command_line no_positional_arguments, option_input_data, option_mesh,
+                    option_mesh_format, option_mesh_vol, option_mesh_vol_format, 
+                    option_number_of_steps, option_solution;
+
+  idec_command_line *(options[]) =
+  {
+    &option_mesh_format,
+    &option_mesh,
+    &option_mesh_vol_format,
+    &option_mesh_vol,
+    &option_input_data,
+    &option_number_of_steps,
+    &option_solution,
+    &no_positional_arguments
+  };
+
+  idec_command_line_set_option_string(
+    &option_mesh_format, &m_format, "--mesh-format", "--raw");
+
+  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+
+  idec_command_line_set_option_string(
+    &option_mesh_vol_format, &m_vol_format, "--mesh-volumes-format", "--raw");
+
+  idec_command_line_set_option_string(
+    &option_mesh_vol, &m_vol_name, "--mesh-volumes", NULL);
+
+  idec_command_line_set_option_string(
+    &option_input_data, &data_name, "--input-data", NULL);
+
+  idec_command_line_set_option_int(
+    &option_number_of_steps, &number_of_steps, "--number-of-steps", NULL);
+
+  idec_command_line_set_option_string(
+    &option_solution, &solution_name, "--solution", NULL);
+
+  /* there are no positional arguments */
+  idec_command_line_set_option_no_arguments(
+    &no_positional_arguments, NULL, NULL, NULL);
+
+  size = (int) (sizeof(options) / sizeof(*options));
+  status = 0;
+  idec_command_line_parse(options, &status, size, argc, argv);
+  if (status)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
-    errno = EINVAL;
-    goto end;
+    fputs("cannot parse command line options\n", stderr);
+    return status;
   }
 
-  m_format = argv[1];
-  m_name = argv[2];
-  m_vol_format = argv[3];
-  m_vol_name = argv[4];
-  data_name = argv[5];
-  number_of_steps_name = argv[6];
-  solution_name = argv[7];
+  if (number_of_steps < 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of steps is %d but it must be at least 0\n", number_of_steps);
+    goto end;
+  }
 
   m_file = fopen(m_name, "r");
   if (m_file == NULL)
@@ -97,22 +139,6 @@ int main(int argc, char ** argv)
     goto m_vol_free;
   }
   fclose(data_file);
-
-  number_of_steps = int_string_scan(number_of_steps_name);
-  if (errno)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot scan number of steps from string %s\n", number_of_steps_name);
-    goto data_free;
-  }
-  if (number_of_steps < 0)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of steps is %d but it must be at least 0\n", number_of_steps);
-    goto data_free;
-  }
 
   solution_file = fopen(solution_name, "r");
   if (solution_file == NULL)

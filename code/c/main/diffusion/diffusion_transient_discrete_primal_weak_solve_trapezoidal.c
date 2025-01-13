@@ -5,14 +5,13 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_transient_discrete_primal_weak.h"
-#include "idec_error_message.h"
+#include "idec_command_line.h"
 #include "int.h"
 
 int main(int argc, char ** argv)
 {
-  char * data_name, * m_inner_format, * m_inner_name, * m_format, * m_name,
-       * number_of_steps_name, * time_step_name;
-  int d, number_of_steps;
+  char * data_name, * m_inner_format, * m_inner_name, * m_format, * m_name;
+  int d, number_of_steps, size, status;
   int * m_cn;
   double time_step;
   double * potential;
@@ -21,22 +20,72 @@ int main(int argc, char ** argv)
   mesh * m;
   diffusion_transient_discrete_primal_weak * data;
 
-#define ARGC 8
-  if (argc != ARGC)
+  idec_command_line no_positional_arguments, option_input_data, option_mesh,
+                    option_mesh_format, option_mesh_inner,
+                    option_mesh_inner_format, option_number_of_steps,
+                    option_time_step;
+
+  idec_command_line *(options[]) =
+  {
+    &option_mesh,
+    &option_mesh_format,
+    &option_mesh_inner,
+    &option_mesh_inner_format,
+    &option_input_data,
+    &option_time_step,
+    &option_number_of_steps,
+    &no_positional_arguments
+  };
+
+  idec_command_line_set_option_string(
+    &option_mesh_format, &m_format, "--mesh-format", "--raw");
+
+  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+
+  idec_command_line_set_option_string(
+    &option_mesh_inner_format, &m_inner_format, "--mesh-inner-format", "--raw");
+
+  idec_command_line_set_option_string(
+    &option_mesh_inner, &m_inner_name, "--mesh-inner", NULL);
+
+  idec_command_line_set_option_string(
+    &option_input_data, &data_name, "--input-data", NULL);
+
+  idec_command_line_set_option_double(&option_time_step, &time_step,
+    "--time-step", NULL);
+
+  idec_command_line_set_option_int(
+    &option_number_of_steps, &number_of_steps, "--number-of-steps", NULL);
+
+  /* there are no positional arguments */
+  idec_command_line_set_option_no_arguments(
+    &no_positional_arguments, NULL, NULL, NULL);
+
+  size = (int) (sizeof(options) / sizeof(*options));
+  status = 0;
+  idec_command_line_parse(options, &status, size, argc, argv);
+  if (status)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
-    errno = EINVAL;
+    fputs("cannot parse command line options\n", stderr);
+    return status;
+  }
+
+  if (time_step <= 0.)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "the time step is %g but it must be positive\n", time_step);
     goto end;
   }
 
-  m_format = argv[1];
-  m_name = argv[2];
-  m_inner_format = argv[3];
-  m_inner_name = argv[4];
-  data_name = argv[5];
-  time_step_name = argv[6];
-  number_of_steps_name = argv[7];
+  if (number_of_steps < 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of steps is %d but it must be at least 0\n",
+      number_of_steps);
+    goto end;
+  }
 
   m = mesh_file_scan_by_name(m_name, m_format);
   if (m == NULL)
@@ -88,40 +137,6 @@ int main(int argc, char ** argv)
     goto m_inner_free;
   }
   fclose(data_file);
-
-  time_step = double_string_scan(time_step_name);
-  if (errno)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot scan time step from string %s\n",
-      number_of_steps_name);
-    goto data_free;
-  }
-  if (time_step <= 0.)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "the time step is %g but it must be positive\n", time_step);
-    goto data_free;
-  }
-
-  number_of_steps = int_string_scan(number_of_steps_name);
-  if (errno)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot scan number of steps from string %s\n",
-      number_of_steps_name);
-    goto data_free;
-  }
-  if (number_of_steps < 0)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of steps is %d but it must be at least 0\n",
-      number_of_steps);
-    goto data_free;
-  }
 
   potential = diffusion_transient_discrete_primal_weak_solve_trapezoidal(
     m, m_inner[0], m_inner[1], data, time_step, number_of_steps);
