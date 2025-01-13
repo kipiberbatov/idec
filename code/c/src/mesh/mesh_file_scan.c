@@ -7,11 +7,12 @@
 mesh * mesh_file_scan(FILE * in, const char * format)
 {
   mesh * m;
+  mesh * (*scanner)(FILE *);
 
   if (!strcmp(format, "--raw"))
-    m = mesh_file_scan_raw(in);
+    scanner = mesh_file_scan_raw;
   else if (!strcmp(format, "tess"))
-    m = mesh_file_scan_tess(in);
+    scanner = mesh_file_scan_tess;
   else
   {
     color_error_position(__FILE__, __LINE__);
@@ -22,6 +23,7 @@ mesh * mesh_file_scan(FILE * in, const char * format)
     return NULL;
   }
 
+  m = scanner(in);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
