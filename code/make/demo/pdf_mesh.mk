@@ -73,8 +73,8 @@ build/$(MODE)/demo/pdf/mesh/2d_10_grains_forman_edge_skeleton.pdf:\
   | build/$(MODE)/demo/pdf/mesh
 	$<\
   --mesh=$(word 2, $^)\
-  --width=600\
-  --height=300\
+  --width=500\
+  --height=500\
   $@	
 
 .PHONY: demo_pdf_mesh demo_pdf_mesh_clean demo_pdf_mesh_distclean
