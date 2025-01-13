@@ -218,7 +218,7 @@ static idec_command_line * idec_command_line_find_option_index(
   for (j = 0; j < size - 1; ++j)
   {
     option_j = options[j];
-    if (!strncmp(argument, option_j->name, n))
+    if (strlen(option_j->name) == n && !strncmp(argument, option_j->name, n))
       return option_j;
   }
   return NULL;
