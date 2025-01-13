@@ -1,6 +1,8 @@
 #include <errno.h>
 #include <stdlib.h>
 
+#include "color.h"
+#include "idec_error_message.h"
 #include "mesh.h"
 
 static int mesh_boundary_lower_subfaces_size(
@@ -78,7 +80,8 @@ jagged1 * mesh_boundary_lower_subfaces(
   result = (jagged1 *) malloc(sizeof(jagged1));
   if (errno)
   {
-    fprintf(stderr, "Error in %s: cannot allocate memory", __func__);
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(jagged1), "result");
     return NULL;
   }
   result->a0 = mesh_boundary_lower_subfaces_size(m, p, m_boundary_hyperfaces);
@@ -86,7 +89,8 @@ jagged1 * mesh_boundary_lower_subfaces(
   result->a1 = (int *) malloc(sizeof(int) * result->a0);
   if (errno)
   {
-    fprintf(stderr, "Error in %s: cannot allocate memory", __func__);
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(int) * result->a0, "result->a1");
     free(result);
     return NULL;
   }

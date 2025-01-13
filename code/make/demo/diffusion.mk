@@ -254,6 +254,7 @@ _demo_diffusion_transient :=\
   $(_demo_diffusion_transient_continuous_2d_d00_p00)\
   $(_demo_diffusion_transient_continuous_2d_d00_p01)\
   $(_demo_diffusion_transient_continuous_2d_d00_p04)\
+  build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_2_forman_potential.txt\
 #   $(_demo_diffusion_transient_continuous_2d)\
 #   $(_demo_diffusion_transient_continuous_3d)\
 
