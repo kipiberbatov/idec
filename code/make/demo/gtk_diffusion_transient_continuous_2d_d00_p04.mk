@@ -81,3 +81,11 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p04_mixed_weak_coch
   --cochain-1=$(word 3, $^)\
   --title="2d_d00_p04 mixed weak flow"\
   > $@
+
+.PHONY: demo_gtk_diffusion_transient_continuous_2d_d00_p04
+demo_gtk_diffusion_transient_continuous_2d_d00_p04:\
+  $(_demo_gtk_diffusion_transient_continuous_2d_d00_p04)
+
+.PHONY: demo_gtk_diffusion_transient_continuous_2d_d00_p04_clean
+demo_gtk_diffusion_transient_continuous_2d_d00_p04_clean:
+	-$(RM) $(_demo_gtk_diffusion_transient_continuous_2d_d00_p04)

@@ -138,3 +138,11 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_mixed_weak_cochain_
   --number-of-steps=2500\
   --solution=$(word 5, $^)\
   > $@
+
+.PHONY: demo_diffusion_transient_continuous_2d_d00_p01
+demo_diffusion_transient_continuous_2d_d00_p01:\
+  $(_demo_diffusion_transient_continuous_2d_d00_p01)
+
+.PHONY: demo_diffusion_transient_continuous_2d_d00_p01
+demo_diffusion_transient_continuous_2d_d00_p01_clean:
+	-$(RM) $(_demo_diffusion_transient_continuous_2d_d00_p01)

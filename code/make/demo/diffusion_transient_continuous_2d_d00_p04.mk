@@ -113,7 +113,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_mixed_weak_cochain_
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_solution.txt:\
   build/$(MODE)/bin/diffusion_transient_discrete_mixed_weak_solve_trapezoidal$(.EXE)\
   build/$(MODE)/demo/mesh/brick_2d_5_forman.txt\
-  build/$(MODE)/demo/mesh/brick_2d_5_forman_inner.txt\
+  build/$(MODE)/demo/mesh/brick_2d_5_forman_inner_corrected.txt\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_mixed_weak_cochain_brick_2d_5_forman_input.txt\
   | build/$(MODE)/demo/diffusion
 	$<\
@@ -138,3 +138,11 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p04_mixed_weak_cochain_
   --number-of-steps=2500\
   --solution=$(word 5, $^)\
   > $@
+
+.PHONY: demo_diffusion_transient_continuous_2d_d00_p04
+demo_diffusion_transient_continuous_2d_d00_p04:\
+  $(_demo_diffusion_transient_continuous_2d_d00_p04)
+
+.PHONY: demo_diffusion_transient_continuous_2d_d00_p04
+demo_diffusion_transient_continuous_2d_d00_p04_clean:
+	-$(RM) $(_demo_diffusion_transient_continuous_2d_d00_p04)
