@@ -16,9 +16,10 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_strong_c
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_trapezoidal_0p001_100_potential.txt\
   | build/$(MODE)/demo/gtk/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  100\
-  --raw $(word 3, $^)\
+  --mesh=$(word 2, $^)\
+  --number-of-steps=100\
+  --cochain-0=$(word 3, $^)\
+  --title="2d_d00_p00 primal strong potential"\
   > $@
 
 build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_trapezoidal_0p001_100_flow.log:\
@@ -27,9 +28,10 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_strong_c
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_trapezoidal_0p001_100_flow.txt\
   | build/$(MODE)/demo/gtk/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  100\
-  --raw $(word 3, $^)\
+  --mesh=$(word 2, $^)\
+  --number-of-steps=100\
+  --cochain-1=$(word 3, $^)\
+  --title="2d_d00_p00 primal strong flow"\
   > $@
 
 build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_100_potential.log:\
@@ -38,9 +40,10 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_weak_coc
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_100_potential.txt\
   | build/$(MODE)/demo/gtk/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  100\
-  --raw $(word 3, $^)\
+  --mesh=$(word 2, $^)\
+  --number-of-steps=100\
+  --cochain-0=$(word 3, $^)\
+  --title="2d_d00_p00 primal weak potential"\
   > $@
 
 build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_100_flow.log:\
@@ -49,9 +52,10 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_weak_coc
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_100_flow.txt\
   | build/$(MODE)/demo/gtk/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  100\
-  --raw $(word 3, $^)\
+  --mesh=$(word 2, $^)\
+  --number-of-steps=100\
+  --cochain-1=$(word 3, $^)\
+  --title="2d_d00_p00 primal weak flow"\
   > $@
 
 build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_potential.log:\
@@ -60,9 +64,10 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_mixed_weak_coch
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_potential.txt\
   | build/$(MODE)/demo/gtk/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  1000\
-  --raw $(word 3, $^)\
+  --mesh=$(word 2, $^)\
+  --number-of-steps=1000\
+  --cochain-0=$(word 3, $^)\
+  --title="2d_d00_p00 mixed weak potential"\
   > $@
 
 build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_flow.log:\
@@ -71,7 +76,8 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_mixed_weak_coch
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_mixed_weak_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_solution.txt\
   | build/$(MODE)/demo/gtk/diffusion
 	$<\
-  --raw $(word 2, $^)\
-  1000\
-  --raw $(word 3, $^)\
+  --mesh=$(word 2, $^)\
+  --number-of-steps=1000\
+  --cochain-1=$(word 3, $^)\
+  --title="2d_d00_p00 mixed weak flow"\
   > $@

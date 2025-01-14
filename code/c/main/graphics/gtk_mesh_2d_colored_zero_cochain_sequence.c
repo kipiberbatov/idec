@@ -7,6 +7,7 @@
 #include "double.h"
 #include "graphics_log.h"
 #include "frame.h"
+#include "idec_command_line.h"
 #include "idec_error_message.h"
 #include "int.h"
 #include "mesh.h"
@@ -31,33 +32,120 @@ static int gtk_draw_zero_cochain(GtkWidget * widget, cairo_t * cr, void * data)
 
 int main(int argc, char ** argv)
 {
-  char * m_format, * m_name, * number_of_steps_name, * title, * u_format,
-       * u_name;
-  int n, number_of_steps, total_colors;
-  unsigned int speed;
-  double height, width;
+  char * m_format, * m_name, * title, * u_format, * u_name;
+  int n, number_of_steps, size, status, speed, total_colors;
+  const int speed_default = 100, total_colors_default = 1000;
+  double coefficient_left, coefficient_right, coefficient_bottom,
+         coefficient_top, height, width;
+  const double coefficient_bottom_default = 0.1,
+               coefficient_left_default = 0.1,
+               coefficient_right_default = 0.1,
+               coefficient_top_default = 0.1,
+               height_default = 500,
+               width_default = 500;
   double * new_coordinates, * u;
   mesh * m;
   mesh_2d_colored_zero_cochain_sequence a;
   margin window_margin;
   frame_mesh_data data;
 
-  errno = 0;
+  idec_command_line option_cochain_0_values, option_cochain_0_format,
+                    option_coefficient_bottom, option_coefficient_left,
+                    option_coefficient_right, option_coefficient_top,
+                    option_height, option_mesh, option_mesh_format,
+                    option_numner_of_steps, option_speed, option_total_colors,
+                    option_title,
+                    option_width, no_positional_argument;
 
-#define ARGC 6
-  if (argc != ARGC)
+  idec_command_line *(options[]) =
+  {
+    &option_mesh,
+    &option_mesh_format,
+    &option_numner_of_steps,
+    &option_cochain_0_format,
+    &option_cochain_0_values,
+    &option_title,
+    &option_total_colors,
+    &option_speed,
+    &option_width,
+    &option_height,
+    &option_coefficient_left,
+    &option_coefficient_right,
+    &option_coefficient_top,
+    &option_coefficient_bottom,
+    &no_positional_argument
+  };
+
+  idec_command_line_set_option_string(
+    &option_mesh_format, &m_format, "--mesh-format", "--raw");
+
+  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+
+  idec_command_line_set_option_int(
+    &option_numner_of_steps, &number_of_steps, "--number-of-steps", NULL);
+
+  idec_command_line_set_option_string(
+    &option_cochain_0_format, &u_format, "--cochain-0-format", "--raw");
+
+  idec_command_line_set_option_string(
+    &option_cochain_0_values, &u_name, "--cochain-0", NULL);
+
+  idec_command_line_set_option_string(&option_title, &title, "--title", NULL);
+
+  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+
+  idec_command_line_set_option_int(
+    &option_total_colors, &total_colors, "--total-colors",
+    &total_colors_default);
+
+  idec_command_line_set_option_int(
+    &option_speed, &speed, "--speed", &speed_default);
+
+  idec_command_line_set_option_double(
+    &option_width, &width, "--width", &width_default);
+
+  idec_command_line_set_option_double(
+    &option_height, &height, "--height", &height_default);
+
+  idec_command_line_set_option_double(
+    &option_coefficient_left, &coefficient_left,
+    "--margin-percentage-left", &coefficient_left_default);
+
+  idec_command_line_set_option_double(
+    &option_coefficient_right, &coefficient_right,
+    "--margin-percentage-right", &coefficient_right_default);
+
+  idec_command_line_set_option_double(
+    &option_coefficient_top, &coefficient_top,
+    "--margin-percentage-top", &coefficient_top_default);
+
+  idec_command_line_set_option_double(
+    &option_coefficient_bottom, &coefficient_bottom,
+    "--margin-percentage-bottom", &coefficient_bottom_default);
+
+  idec_command_line_set_option_no_arguments(
+    &no_positional_argument, NULL, NULL, NULL);
+
+  size = (int) (sizeof(options) / sizeof(*options));
+  status = 0;
+  idec_command_line_parse(options, &status, size, argc, argv);
+  if (status)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
-    errno = EINVAL;
-    goto end;
+    fputs("cannot parse command line options\n", stderr);
+    return status;
   }
 
-  m_format = argv[1];
-  m_name = argv[2];
-  number_of_steps_name = argv[3];
-  u_format = argv[4];
-  u_name = argv[5];
+  errno = 0;
+
+  if (number_of_steps < 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of steps is %d but it must be at least 0\n", number_of_steps);
+    return 1;
+  }
+  n = number_of_steps + 1;
 
   m = mesh_file_scan_by_name(m_name, m_format);
   if (m == NULL)
@@ -67,23 +155,6 @@ int main(int argc, char ** argv)
       "cannot scan mesh m from file %s in format %s\n", m_name, m_format);
     goto end;
   }
-
-  number_of_steps = int_string_scan(number_of_steps_name);
-  if (errno)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot scan number of steps from string %s\n", number_of_steps_name);
-    goto m_free;
-  }
-  if (number_of_steps < 0)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of steps is %d but it must be at least 0\n", number_of_steps);
-    goto m_free;
-  }
-  n = number_of_steps + 1;
 
   u = double_matrix_file_scan_by_name(u_name, n, m->cn[0], u_format);
   if (u == NULL)
@@ -103,12 +174,10 @@ int main(int argc, char ** argv)
     goto u_free;
   }
 
-  width = 500;
-  height = 500;
-  window_margin.left = 50;
-  window_margin.right = 50;
-  window_margin.top = 50;
-  window_margin.bottom = 50;
+  window_margin.left = width * coefficient_left;
+  window_margin.right = width * coefficient_right;
+  window_margin.top = height * coefficient_top;
+  window_margin.bottom = height * coefficient_bottom;
   data.coordinates = new_coordinates;
   frame_internal_info_for_set_of_points(
     &data,
@@ -118,8 +187,6 @@ int main(int argc, char ** argv)
     height,
     &window_margin);
   fprintf(stderr, "point_size = %g\n", data.point_size);
-
-  total_colors = 1000;
 
   a.index = 0;
   a.total_steps = n;
@@ -136,9 +203,6 @@ int main(int argc, char ** argv)
   a.max_value = double_array_max(n * m->cn[0], u);
   fprintf(stderr, "min = %g, max = %g\n", a.min_value, a.max_value);
   a.paint = paint_rgb;
-
-  speed = 100;
-  title = "Heat flow in 2D";
 
   gtk_init(&argc, &argv);
 

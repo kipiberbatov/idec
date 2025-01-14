@@ -17,7 +17,7 @@ build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cocha
 	$<\
   --mesh=$(word 2, $^)\
   --dynamic-library=$(word 2, $|)\
-  --input-data=diffusion_transient_continuous_2d_d00_p00\
+  --input-data=diffusion_transient_continuous_2d_d00_p01\
   > $@
 
 build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt:\

@@ -19,17 +19,23 @@ int main(int argc, char ** argv)
   char * m_format, * m_name, * out_name;
   int size, status, total_colors;
   const int total_colors_default = 10;
-  double height, width;
-  const double height_default = 500, width_default = 500;
+  double coefficient_left, coefficient_right, coefficient_bottom,
+         coefficient_top, height, width;
+  const double coefficient_bottom_default = 0.1,
+               coefficient_left_default = 0.1,
+               coefficient_right_default = 0.1,
+               coefficient_top_default = 0.1,
+               height_default = 500,
+               width_default = 500;
   double * new_coordinates, * u;
   mesh * m;
   mesh_2d_colored_one_cochain_sequence a;
   margin window_margin;
   frame_mesh_data data;
 
-  errno = 0;
-
-  idec_command_line option_height, option_mesh, option_mesh_format,
+  idec_command_line option_coefficient_bottom, option_coefficient_left,
+                    option_coefficient_right, option_coefficient_top,
+                    option_height, option_mesh, option_mesh_format,
                     option_total_colors, option_width,
                     positional_argument_output;
 
@@ -40,6 +46,10 @@ int main(int argc, char ** argv)
     &option_width,
     &option_height,
     &option_total_colors,
+    &option_coefficient_left,
+    &option_coefficient_right,
+    &option_coefficient_top,
+    &option_coefficient_bottom,
     &positional_argument_output
   };
 
@@ -58,6 +68,26 @@ int main(int argc, char ** argv)
     &option_total_colors, &total_colors, "--total-colors",
     &total_colors_default);
 
+  idec_command_line_set_option_double(
+    &option_coefficient_left, &coefficient_left,
+    "--margin-percentage-left",
+    &coefficient_left_default);
+
+  idec_command_line_set_option_double(
+    &option_coefficient_right, &coefficient_right,
+    "--margin-percentage-right",
+    &coefficient_right_default);
+
+  idec_command_line_set_option_double(
+    &option_coefficient_top, &coefficient_top,
+    "--margin-percentage-top",
+    &coefficient_top_default);
+
+  idec_command_line_set_option_double(
+    &option_coefficient_bottom, &coefficient_bottom,
+    "--margin-percentage-bottom",
+    &coefficient_bottom_default);
+
   idec_command_line_set_option_string(
     &positional_argument_output, &out_name, NULL, NULL);
 
@@ -70,6 +100,8 @@ int main(int argc, char ** argv)
     fputs("cannot parse command line options\n", stderr);
     return status;
   }
+
+  errno = 0;
 
   m = mesh_file_scan_by_name(m_name, m_format);
   if (m == NULL)
@@ -98,10 +130,10 @@ int main(int argc, char ** argv)
     goto u_free;
   }
 
-  window_margin.left = 50;
-  window_margin.right = 50;
-  window_margin.top = 50;
-  window_margin.bottom = 50;
+  window_margin.left = width * coefficient_left;
+  window_margin.right = width * coefficient_right;
+  window_margin.top = height * coefficient_top;
+  window_margin.bottom = height * coefficient_bottom;
   data.coordinates = new_coordinates;
   frame_internal_info_for_set_of_points(
     &data,
