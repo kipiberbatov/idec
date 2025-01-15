@@ -85,7 +85,7 @@ static void mesh_circular_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
   /* (1, 0) -> inner, radial */
   for (j = 0; j < na; ++j)
   {
-    m_cf_a4[index] = 0;
+    m_cf_a4[index + 0] = 0;
     m_cf_a4[index + 1] = j + 1;
     index += 2;
   }
@@ -93,11 +93,11 @@ static void mesh_circular_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
   /* (1, 0) -> inner, arcs */
   for (j = 0; j < na - 1; ++j)
   {
-    m_cf_a4[index] = j + 1;
+    m_cf_a4[index + 0] = j + 1;
     m_cf_a4[index + 1] = j + 2;
     index += 2;
   }
-  m_cf_a4[index] = na;
+  m_cf_a4[index + 0] = na;
   m_cf_a4[index + 1] = 1;
   index += 2;
 
@@ -108,7 +108,7 @@ static void mesh_circular_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
     /* radial */
     for (j = 1; j <= na; ++j)
     {
-      m_cf_a4[index] = offset - na + j;
+      m_cf_a4[index + 0] = offset - na + j;
       m_cf_a4[index + 1] = offset + j;
       index += 2;
     }
@@ -116,11 +116,11 @@ static void mesh_circular_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
     /* arcs */
     for (j = 1; j < na; ++j)
     {
-      m_cf_a4[index] = offset + j;
+      m_cf_a4[index + 0] = offset + j;
       m_cf_a4[index + 1] = offset + j + 1;
       index += 2;
     }
-    m_cf_a4[index] = offset + na;
+    m_cf_a4[index + 0] = offset + na;
     m_cf_a4[index + 1] = offset + 1;
     index += 2;
   }
@@ -128,12 +128,12 @@ static void mesh_circular_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
   /* (2, 0) -> inner */
   for (j = 0; j < na - 1; ++j)
   {
-    m_cf_a4[index] = 0;
+    m_cf_a4[index + 0] = 0;
     m_cf_a4[index + 1] = j + 1;
     m_cf_a4[index + 2] = j + 2;
     index += 3;
   }
-  m_cf_a4[index] = 0;
+  m_cf_a4[index + 0] = 0;
   m_cf_a4[index + 1] = na;
   m_cf_a4[index + 2] = 1;
   index += 3;
@@ -144,28 +144,28 @@ static void mesh_circular_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
     offset = (i - 1) * na;
     for (j = 0; j < na - 1; ++j)
     {
-      m_cf_a4[index] = 1 + offset + j;
+      m_cf_a4[index + 0] = 1 + offset + j;
       m_cf_a4[index + 1] = na + 1 + offset + j;
       m_cf_a4[index + 2] = na + 2 + offset + j;
       m_cf_a4[index + 3] = 2 + offset + j;
       index += 4;
     }
-    m_cf_a4[index] = 2 * na + offset;
-    m_cf_a4[index + 1] = na + 1 + offset;
-    m_cf_a4[index + 2] = 1 + offset;
-    m_cf_a4[index + 3] = na + offset;
+    m_cf_a4[index + 0] = na + offset;
+    m_cf_a4[index + 1] = 2 * na + offset;
+    m_cf_a4[index + 2] = na + 1 + offset;
+    m_cf_a4[index + 3] = 1 + offset;
     index += 4;
   }
 
   /* (2, 1) -> inner */
   for (j = 0; j < na - 1; ++j)
   {
-    m_cf_a4[index] = j;
+    m_cf_a4[index + 0] = j;
     m_cf_a4[index + 1] = j + na;
     m_cf_a4[index + 2] = j + 1;
     index += 3;
   }
-  m_cf_a4[index] = na - 1;
+  m_cf_a4[index + 0] = na - 1;
   m_cf_a4[index + 1] = 2 * na - 1;
   m_cf_a4[index + 2] = 0;
   index += 3;
@@ -176,13 +176,13 @@ static void mesh_circular_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
     offset = 2 * (i - 1) * na;
     for (j = 0; j < na - 1; ++j)
     {
-      m_cf_a4[index] = na + offset + j;
+      m_cf_a4[index + 0] = na + offset + j;
       m_cf_a4[index + 1] = 2 * na + offset + j;
       m_cf_a4[index + 2] = 3 * na + offset + j;
       m_cf_a4[index + 3] = 2 * na + 1 + offset + j;
       index += 4;
     }
-    m_cf_a4[index] = 2 * na - 1 + offset;
+    m_cf_a4[index + 0] = 2 * na - 1 + offset;
     m_cf_a4[index + 1] = 3 * na - 1 + offset;
     m_cf_a4[index + 2] = 4 * na - 1 + offset;
     m_cf_a4[index + 3] = 2 * na + offset;

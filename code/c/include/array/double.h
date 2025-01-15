@@ -116,4 +116,7 @@ double ** double_array2_file_scan(
 double ** double_array2_file_scan_by_name(
   const char * name, int a0, const int * a1, const char * format);
 
+void double_array2_file_print(FILE * out, int * status,
+  int a0, const int * a1, double ** a2, const char * format);
+
 #endif /* _double_h */

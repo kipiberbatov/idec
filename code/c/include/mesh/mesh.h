@@ -80,11 +80,12 @@ matrix_sparse ** mesh_coboundary(int m_dim, matrix_sparse ** m_bd);
 
 /******************************** mesh_measure ********************************/
 double * mesh_measure(const mesh * m);
-// double * mesh_measure_simplex(const mesh * m);
-// double * mesh_measure_quasi_cube(const mesh * m);
+void mesh_measure_single(double * m_measure_p, const mesh * m, int p);
+
+void mesh_measures(double *** m_measures, int * status,
+  const mesh * m, const char * method);
 
 /**************************** mesh_node_curvature *****************************/
-// double mesh_node_curvature_i(const mesh * m, int i);
 double * mesh_node_curvature(const mesh * m);
 
 /***************************** mesh_displacement ******************************/
