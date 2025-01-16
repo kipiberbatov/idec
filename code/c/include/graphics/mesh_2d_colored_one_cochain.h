@@ -18,6 +18,8 @@ typedef struct mesh_2d_colored_one_cochain
   double min_value;
   double max_value;
   painter paint;
+  void (*draw_skeleton)(cairo_t *, const struct mesh_2d_colored_one_cochain *);
+  void (*draw_values)(cairo_t *, const struct mesh_2d_colored_one_cochain *);
 } mesh_2d_colored_one_cochain;
 
 void mesh_2d_one_cochain_skeleton_draw(

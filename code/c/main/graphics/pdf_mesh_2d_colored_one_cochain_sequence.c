@@ -139,6 +139,8 @@ int main(int argc, char ** argv)
   a.min_value = double_array_absolute_min(n * m->cn[1], u);
   a.max_value = double_array_absolute_max(n * m->cn[1], u);
   a.paint = paint_rgb;
+  a.draw_skeleton = mesh_2d_one_cochain_skeleton_draw;
+  a.draw_values = mesh_2d_colored_one_cochain_values_cairo_draw;
 
   out_name = argv[6];
   pdf_write_to_file(

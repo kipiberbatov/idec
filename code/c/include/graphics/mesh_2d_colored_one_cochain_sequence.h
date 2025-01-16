@@ -2,6 +2,7 @@
 #define _mesh_2d_colored_one_cochain_sequence_h
 
 #include "mesh.h"
+#include "mesh_2d_colored_one_cochain.h"
 #include "painter.h"
 
 typedef struct mesh_2d_colored_one_cochain_sequence
@@ -20,6 +21,8 @@ typedef struct mesh_2d_colored_one_cochain_sequence
   double min_value;
   double max_value;
   painter paint;
+  void (*draw_skeleton)(cairo_t *, const struct mesh_2d_colored_one_cochain *);
+  void (*draw_values)(cairo_t *, const struct mesh_2d_colored_one_cochain *);
 } mesh_2d_colored_one_cochain_sequence;
 
 int mesh_2d_colored_one_cochain_sequence_get_index_void(const void * a);
