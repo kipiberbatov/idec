@@ -24,7 +24,7 @@ This problem has exact solution
   . q(x, y) = - 2 y dx + 2 x dy
 */
 
-#define EPSILON 0.000001
+#define EPSILON 0.00001
 
 static int on_unit_circle(const double * x)
 {
