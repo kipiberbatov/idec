@@ -6,8 +6,8 @@ _demo_pdf_mesh :=\
   build/$(MODE)/demo/pdf/mesh/brick_2d_10_forman_edge_skeleton.pdf\
   build/$(MODE)/demo/pdf/mesh/circular_4_3_edge_skeleton.pdf\
   build/$(MODE)/demo/pdf/mesh/circular_4_3_forman_edge_skeleton.pdf\
-  build/$(MODE)/demo/pdf/mesh/circular_17_10_edge_skeleton.pdf\
-  build/$(MODE)/demo/pdf/mesh/circular_17_10_forman_edge_skeleton.pdf\
+  build/$(MODE)/demo/pdf/mesh/circular_18_10_edge_skeleton.pdf\
+  build/$(MODE)/demo/pdf/mesh/circular_18_10_forman_edge_skeleton.pdf\
   build/$(MODE)/demo/pdf/mesh/pentagon_edge_skeleton.pdf\
   build/$(MODE)/demo/pdf/mesh/pentagon_forman_edge_skeleton.pdf\
   build/$(MODE)/demo/pdf/mesh/2d_10_grains_edge_skeleton.pdf\
@@ -37,15 +37,15 @@ build/$(MODE)/demo/pdf/mesh/circular_4_3_forman_edge_skeleton.pdf:\
   | build/$(MODE)/demo/pdf/mesh
 	$< --mesh=$(word 2, $^) $@
 
-build/$(MODE)/demo/pdf/mesh/circular_17_10_edge_skeleton.pdf:\
+build/$(MODE)/demo/pdf/mesh/circular_18_10_edge_skeleton.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\
-  build/$(MODE)/demo/mesh/circular_17_10.txt\
+  build/$(MODE)/demo/mesh/circular_18_10.txt\
   | build/$(MODE)/demo/pdf/mesh
 	$< --mesh=$(word 2, $^) $@
 
-build/$(MODE)/demo/pdf/mesh/circular_17_10_forman_edge_skeleton.pdf:\
+build/$(MODE)/demo/pdf/mesh/circular_18_10_forman_edge_skeleton.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_edge_skeleton$(.EXE)\
-  build/$(MODE)/demo/mesh/circular_17_10_forman.txt\
+  build/$(MODE)/demo/mesh/circular_18_10_forman.txt\
   | build/$(MODE)/demo/pdf/mesh
 	$< --mesh=$(word 2, $^) $@
 
