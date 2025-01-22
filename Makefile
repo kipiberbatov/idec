@@ -34,8 +34,8 @@ MODULES := array algebra region mesh diffusion shared graphics
 # region: array
 # mesh: region algebra
 # diffusion: mesh
-# shared:
-# graphics: mesh shared
+# shared: mesh (+ diffusion headers)
+# graphics: mesh (dynamically on shared, and hence, on diffusion)
 
 ############################ names of source files #############################
 _src_array := $(wildcard code/c/src/array/*.c)
@@ -98,49 +98,6 @@ _obj_main_shared :=
 _obj_main_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_graphics))
 
-################### names of source header dependency files ####################
-_dep_src_array := $(patsubst code/c/src/array/%.c,\
-  build/$(MODE)/dep/src/%$(.DEP), $(_src_array))
-
-_dep_src_algebra := $(patsubst code/c/src/algebra/%.c,\
-  build/$(MODE)/dep/src/%$(.DEP), $(_src_algebra))
-
-_dep_src_region := $(patsubst code/c/src/region/%.c,\
-  build/$(MODE)/dep/src/%$(.DEP), $(_src_region))
-
-_dep_src_mesh := $(patsubst code/c/src/mesh/%.c,\
-  build/$(MODE)/dep/src/%$(.DEP), $(_src_mesh))
-
-_dep_src_diffusion := $(patsubst code/c/src/diffusion/%.c,\
-  build/$(MODE)/dep/src/%$(.DEP), $(_src_diffusion))
-
-_dep_src_shared := $(patsubst code/c/src/shared/%.c,\
-  build/$(MODE)/dep/src/%$(.DEP), $(_src_shared))
-
-_dep_src_graphics := $(patsubst code/c/src/graphics/%.c,\
-  build/$(MODE)/dep/src/%$(.DEP), $(_src_graphics))
-
-#################### names of main header dependency files #####################
-_dep_main_array := $(patsubst code/c/main/array/%.c,\
-  build/$(MODE)/dep/main/%$(.DEP), $(_main_array))
-
-_dep_main_algebra := $(patsubst code/c/main/algebra/%.c,\
-  build/$(MODE)/dep/main/%$(.DEP), $(_main_algebra))
-
-_dep_main_region := $(patsubst code/c/main/region/%.c,\
-  build/$(MODE)/dep/main/%$(.DEP), $(_main_region))
-
-_dep_main_mesh := $(patsubst code/c/main/mesh/%.c,\
-  build/$(MODE)/dep/main/%$(.DEP), $(_main_mesh))
-
-_dep_main_diffusion := $(patsubst code/c/main/diffusion/%.c,\
-  build/$(MODE)/dep/main/%$(.DEP), $(_main_diffusion))
-
-_dep_main_shared :=
-
-_dep_main_graphics := $(patsubst code/c/main/graphics/%.c,\
-  build/$(MODE)/dep/main/%$(.DEP), $(_main_graphics))
-
 ########################## names of executable files ###########################
 _bin_array := $(patsubst code/c/main/array/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_array))
@@ -198,7 +155,7 @@ _libs_graphics := build/$(MODE)/lib/libgraphics$(.LIB) $(_libs_mesh)
 
 ############################### all-type targets ###############################
 .PHONY: all
-all: obj dep lib bin demo
+all: obj lib bin demo
 
 ############################# object file targets ##############################
 .PHONY: obj obj_src obj_main
@@ -225,32 +182,6 @@ obj_main_mesh: $(_obj_main_mesh)
 obj_main_diffusion: $(_obj_main_diffusion)
 obj_main_shared:
 obj_main_graphics: $(_obj_main_graphics)
-
-########################## header dependency targets ###########################
-.PHONY: dep dep_src dep_main
-dep: dep_src dep_main
-
-# header dependencies of source files
-.PHONY: $(patsubst %, dep_src_%, $(MODULES))
-dep_src: $(patsubst %, dep_src_%, $(MODULES))
-dep_src_array: $(_dep_src_array)
-dep_src_algebra: $(_dep_src_algebra)
-dep_src_region: $(_dep_src_region)
-dep_src_mesh: $(_dep_src_mesh)
-dep_src_diffusion: $(_dep_src_diffusion)
-dep_src_shared: $(_dep_src_shared)
-dep_src_graphics: $(_dep_src_graphics)
-
-# header dependencies of main files
-.PHONY: $(patsubst %, dep_main_%, $(MODULES))
-dep_main: $(patsubst %, dep_main_%, $(MODULES))
-dep_main_array: $(_dep_main_array)
-dep_main_algebra: $(_dep_main_algebra)
-dep_main_region: $(_dep_main_region)
-dep_main_mesh: $(_dep_main_mesh)
-dep_main_diffusion: $(_dep_main_diffusion)
-dep_main_shared:
-dep_main_graphics: $(_dep_main_graphics)
 
 ############################### library targets ################################
 .PHONY: lib $(patsubst %, lib_%, $(MODULES))
@@ -328,8 +259,8 @@ $(_obj_src_graphics): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/graphics/%.c\
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_graphics)\
 	  $(shell pkg-config --cflags gtk+-3.0) -c $<
 
-# in case `dep_src` is not called
-# -include build/$(MODE)/obj/src/*$(.DEP)
+# include header dependencies for object files from code/c/src
+-include build/$(MODE)/obj/src/*$(.DEP)
 
 # compiling main files
 build/$(MODE)/obj/main: | build/$(MODE)/obj
@@ -360,76 +291,8 @@ $(_obj_main_graphics): build/$(MODE)/obj/main/%$(.OBJ):\
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_graphics)\
 	  $(shell pkg-config --cflags gtk+-3.0) -c $<
 
-# in case `dep_main` is not called
-# -include build/$(MODE)/obj/main/*$(.DEP)
-
-########################### move header dependencies ###########################
-build/$(MODE)/dep: | build/$(MODE)
-	mkdir -p $@
-
-# move header dependencies of source files
-build/$(MODE)/dep/src: | build/$(MODE)/dep
-	mkdir -p $@
-
-$(_dep_src_array): build/$(MODE)/dep/src/%.d: build/$(MODE)/obj/src/%.o\
-  | build/$(MODE)/dep/src
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/src
-
-$(_dep_src_algebra): build/$(MODE)/dep/src/%.d: build/$(MODE)/obj/src/%.o\
-  | build/$(MODE)/dep/src
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/src
-
-$(_dep_src_region): build/$(MODE)/dep/src/%.d: build/$(MODE)/obj/src/%.o\
-  | build/$(MODE)/dep/src
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/src
-
-$(_dep_src_mesh): build/$(MODE)/dep/src/%.d: build/$(MODE)/obj/src/%.o\
-  | build/$(MODE)/dep/src
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/src
-
-$(_dep_src_diffusion): build/$(MODE)/dep/src/%.d: build/$(MODE)/obj/src/%.o\
-  | build/$(MODE)/dep/src
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/src
-
-$(_dep_src_shared): build/$(MODE)/dep/src/%.d: build/$(MODE)/obj/src/%.o\
-  | build/$(MODE)/dep/src
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/src
-
-$(_dep_src_graphics): build/$(MODE)/dep/src/%.d: build/$(MODE)/obj/src/%.o\
-  | build/$(MODE)/dep/src
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/src
-
--include build/$(MODE)/dep/src/*$(.DEP)
-
-# move header dependencies of main files
-build/$(MODE)/dep/main: | build/$(MODE)/dep
-	mkdir -p $@
-
-$(_dep_main_array): build/$(MODE)/dep/main/%.d: build/$(MODE)/obj/main/%.o\
-  | build/$(MODE)/dep/main
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/main
-
-$(_dep_main_algebra): build/$(MODE)/dep/main/%.d: build/$(MODE)/obj/main/%.o\
-  | build/$(MODE)/dep/main
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/main
-
-$(_dep_main_region): build/$(MODE)/dep/main/%.d: build/$(MODE)/obj/main/%.o\
-  | build/$(MODE)/dep/main
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/main
-
-$(_dep_main_mesh): build/$(MODE)/dep/main/%.d: build/$(MODE)/obj/main/%.o\
-  | build/$(MODE)/dep/main
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/main
-
-$(_dep_main_diffusion): build/$(MODE)/dep/main/%.d: build/$(MODE)/obj/main/%.o\
-  | build/$(MODE)/dep/main
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/main
-
-$(_dep_main_graphics): build/$(MODE)/dep/main/%.d: build/$(MODE)/obj/main/%.o\
-  | build/$(MODE)/dep/main
-	mv $(patsubst %.o, %.d, $<) build/$(MODE)/dep/main
-
--include build/$(MODE)/dep/main/*$(.DEP)
+# include header dependencies for object files from code/c/main
+-include build/$(MODE)/obj/main/*$(.DEP)
 
 ################################## archiving ###################################
 build/$(MODE)/lib: | build/$(MODE)
