@@ -43,7 +43,7 @@ void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
   c.line_width = a->line_width;
   c.min_value = a->min_value;
   c.max_value = a->max_value;
-  c.paint = a->paint;
+  c.set_color = a->set_color;
   c.draw_skeleton = a->draw_skeleton;
   c.draw_values = a->draw_values;
   mesh_2d_colored_one_cochain_cairo_draw(cr, status, &c);

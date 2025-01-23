@@ -1,56 +1,57 @@
 #include <stdio.h>
 
 #include "color.h"
-#include "rgb.h"
+#include "idec_rgb.h"
 
-static void rgb_red_to_yellow(rgb * color, int i, int n)
+static void red_to_yellow(idec_rgb * color, int i, int n)
 {
   color->red = 1.;
   color->green = (double) i / (double) n;
   color->blue = 0.;
 }
 
-static void rgb_yellow_to_green(rgb * color, int i, int n)
+static void yellow_to_green(idec_rgb * color, int i, int n)
 {
   color->red = 1. - (double) i / (double) n;
   color->green = 1.;
   color->blue = 0.;
 }
 
-static void rgb_green_to_cyan(rgb * color, int i, int n)
+static void green_to_cyan(idec_rgb * color, int i, int n)
 {
   color->red = 0.;
   color->green = 1.;
   color->blue = (double) i / (double) n;
 }
 
-static void rgb_cyan_to_blue(rgb * color, int i, int n)
+static void cyan_to_blue(idec_rgb * color, int i, int n)
 {
   color->red = 0.;
   color->green = 1. - (double) i / (double) n;
   color->blue = 1.;
 }
 
-static void rgb_blue_to_magenta(rgb * color, int i, int n)
+static void blue_to_magenta(idec_rgb * color, int i, int n)
 {
   color->red = (double) i / (double) n;
   color->green = 0.;
   color->blue = 1.;
 }
 
-void rgb_color(rgb * color, int * status, int i, int n)
+void
+idec_rgb_set_from_scheme_rainbow(idec_rgb * color, int * status, int i, int n)
 {
   int k_n, k_i, k, size;
-  void (*(rgb_nuances[]))(rgb *, int, int) =
+  void (*(color_subschemes[]))(idec_rgb *, int, int) =
   {
-    rgb_red_to_yellow,
-    rgb_yellow_to_green,
-    rgb_green_to_cyan,
-    rgb_cyan_to_blue,
-    rgb_blue_to_magenta
+    red_to_yellow,
+    yellow_to_green,
+    green_to_cyan,
+    cyan_to_blue,
+    blue_to_magenta
   };
 
-  size = sizeof(rgb_nuances) / sizeof(*rgb_nuances);
+  size = sizeof(color_subschemes) / sizeof(*color_subschemes);
   if (n % size != 0)
   {
     color_error_position(__FILE__, __LINE__);
@@ -76,5 +77,5 @@ void rgb_color(rgb * color, int * status, int i, int n)
   k_n = n / size;
   k_i = i % k_n;
   k = i / k_n;
-  rgb_nuances[k](color, k_i, k_n);
+  color_subschemes[k](color, k_i, k_n);
 }

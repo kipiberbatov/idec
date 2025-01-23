@@ -1,8 +1,9 @@
 #ifndef _mesh_2d_colored_node_h
 #define _mesh_2d_colored_node_h
 
+#include <cairo.h>
+
 #include "mesh.h"
-#include "painter.h"
 
 typedef struct mesh_2d_colored_node
 {
@@ -10,7 +11,7 @@ typedef struct mesh_2d_colored_node
   double * coordinates;
   double size;
   double relative_value;
-  painter paint;
+  void (*set_color)(cairo_t *, int *, int, int);
 } mesh_2d_colored_node;
 
 void mesh_2d_colored_node_cairo_draw(

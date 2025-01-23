@@ -19,7 +19,7 @@ double * diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
     m, data_continuous);
   if (errno)
   {
-    color_error_position(__FILE__, __LINE__);;
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr, "cannot discretize continuous data\n");
     goto end;
   }
@@ -34,7 +34,7 @@ double * diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
   );
   if (errno)
   {
-    color_error_position(__FILE__, __LINE__);;
+    color_error_position(__FILE__, __LINE__);
     fprintf(stderr, "cannot find discretized result\n");
     goto data_discrete_free;
   }

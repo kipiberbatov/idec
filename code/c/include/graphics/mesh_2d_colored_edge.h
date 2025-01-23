@@ -1,8 +1,9 @@
 #ifndef _mesh_2d_colored_edge_h
 #define _mesh_2d_colored_edge_h
 
+#include <cairo.h>
+
 #include "mesh.h"
-#include "painter.h"
 
 typedef struct mesh_2d_colored_edge
 {
@@ -12,7 +13,7 @@ typedef struct mesh_2d_colored_edge
   double point_size;
   double width;
   double relative_value;
-  painter paint;
+  void (*set_color)(cairo_t *, int *, int, int);
 } mesh_2d_colored_edge;
 
 void mesh_2d_colored_edge_cairo_draw(

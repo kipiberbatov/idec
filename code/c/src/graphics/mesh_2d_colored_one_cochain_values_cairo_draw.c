@@ -14,7 +14,7 @@ void mesh_2d_colored_one_cochain_values_cairo_draw(
   edge.point_size = c->point_size / 4;
   edge.width = c->line_width / 4;
   edge.total_colors = c->total_colors;
-  edge.paint = c->paint;
+  edge.set_color = c->set_color;
   cf_1_0 = c->cf_1_0;
   c_number_of_edges = cf_1_0->a0;
   cf_1_0_i = cf_1_0->a2;

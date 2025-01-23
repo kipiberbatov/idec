@@ -12,7 +12,7 @@
 #include "int.h"
 #include "mesh.h"
 #include "mesh_2d_colored_one_cochain_sequence.h"
-#include "paint_rgb.h"
+#include "idec_set_color_from_scheme_rainbow.h"
 #include "pdf_write_to_file.h"
 
 typedef void
@@ -173,7 +173,7 @@ int main(int argc, char ** argv)
   a.line_width = data.line_width;
   a.min_value = -1;
   a.max_value = 1;
-  a.paint = paint_rgb;
+  a.set_color = idec_set_color_from_scheme_rainbow;
   a.draw_skeleton = idec_mesh_draw_skeleton_get(method_draw_skeleton);
   if (a.draw_skeleton == NULL)
   {

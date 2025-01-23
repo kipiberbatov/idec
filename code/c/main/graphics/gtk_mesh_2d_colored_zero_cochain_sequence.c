@@ -12,7 +12,7 @@
 #include "int.h"
 #include "mesh.h"
 #include "mesh_2d_colored_zero_cochain_sequence.h"
-#include "paint_rgb.h"
+#include "idec_set_color_from_scheme_rainbow.h"
 #include "gtk_draw.h"
 #include "gtk_run.h"
 
@@ -204,7 +204,7 @@ int main(int argc, char ** argv)
   a.min_value = double_array_min(n * m->cn[0], u);
   a.max_value = double_array_max(n * m->cn[0], u);
   fprintf(stderr, "min = %g, max = %g\n", a.min_value, a.max_value);
-  a.paint = paint_rgb;
+  a.set_color = idec_set_color_from_scheme_rainbow;
 
   gtk_init(&argc, &argv);
 

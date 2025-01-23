@@ -1,15 +1,15 @@
 #include "idec_animation.h"
-#include "idec_animation_draw.h"
+#include "idec_animation_draw_snapshot.h"
 
-void idec_animation_draw(
+void idec_animation_draw_snapshot(
   void * canvas,
   struct idec_animation * animation,
   int * status)
 {
-  animation->canvas_functions->draw(
+  animation->canvas_functions->draw_snapshot(
     canvas,
     status,
     animation->data,
     animation->total_colors,
-    animation->canvas_functions->color_scheme);
+    animation->canvas_functions->set_color);
 }

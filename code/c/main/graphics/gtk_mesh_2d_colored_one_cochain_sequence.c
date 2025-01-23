@@ -18,7 +18,7 @@
 #include "int.h"
 #include "mesh.h"
 #include "mesh_2d_colored_one_cochain_sequence.h"
-#include "paint_rgb.h"
+#include "idec_set_color_from_scheme_rainbow.h"
 
 static int gtk_draw_one_cochain(GtkWidget * widget, cairo_t * cr, void * data)
 {
@@ -231,7 +231,7 @@ int main(int argc, char ** argv)
   a.line_width = data.line_width;
   a.min_value = double_array_absolute_min(n * m->cn[1], u);
   a.max_value = double_array_absolute_max(n * m->cn[1], u);
-  a.paint = paint_rgb;
+  a.set_color = idec_set_color_from_scheme_rainbow;
   a.draw_skeleton = mesh_2d_one_cochain_skeleton_draw;
   a.draw_values = mesh_2d_colored_one_cochain_values_cairo_draw;
 

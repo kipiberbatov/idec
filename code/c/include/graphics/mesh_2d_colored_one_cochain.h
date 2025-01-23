@@ -3,7 +3,6 @@
 
 #include "mesh.h"
 #include "mesh_2d_colored_edge.h"
-#include "painter.h"
 
 typedef struct mesh_2d_colored_one_cochain
 {
@@ -17,7 +16,7 @@ typedef struct mesh_2d_colored_one_cochain
   double line_width;
   double min_value;
   double max_value;
-  painter paint;
+  void (*set_color)(cairo_t *, int *, int, int);
   void (*draw_skeleton)(
     cairo_t *, int *, const struct mesh_2d_colored_one_cochain *);
   void (*draw_values)(

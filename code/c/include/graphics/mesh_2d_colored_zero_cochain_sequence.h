@@ -1,8 +1,9 @@
 #ifndef _mesh_2d_colored_zero_cochain_sequence_h
 #define _mesh_2d_colored_zero_cochain_sequence_h
 
+#include <cairo.h>
+
 #include "mesh.h"
-#include "painter.h"
 
 typedef struct mesh_2d_colored_zero_cochain_sequence
 {
@@ -16,7 +17,7 @@ typedef struct mesh_2d_colored_zero_cochain_sequence
   double point_size;
   double min_value;
   double max_value;
-  painter paint;
+  void (*set_color)(cairo_t *, int *, int, int);
 } mesh_2d_colored_zero_cochain_sequence;
 
 int mesh_2d_colored_zero_cochain_sequence_get_index_void(const void * a);

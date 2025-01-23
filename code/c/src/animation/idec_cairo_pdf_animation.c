@@ -5,7 +5,7 @@
 
 #include "color.h"
 #include "idec_animation.h"
-#include "idec_animation_draw.h"
+#include "idec_animation_draw_snapshot.h"
 
 static void idec_cairo_render_snapshot_to_pageable_cairo_context(
   cairo_t * cr, struct idec_animation * animation, int * status)
@@ -14,7 +14,7 @@ static void idec_cairo_render_snapshot_to_pageable_cairo_context(
   animation->canvas_functions->set_background_color((void *) cr);
   cairo_paint(cr);
   cairo_restore(cr);
-  idec_animation_draw((void *) cr, animation, status);
+  idec_animation_draw_snapshot((void *) cr, animation, status);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);

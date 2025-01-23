@@ -35,7 +35,7 @@ void mesh_2d_colored_zero_cochain_sequence_snapshot_cairo_draw(
   c.point_size = a->point_size;
   c.min_value = a->min_value;
   c.max_value = a->max_value;
-  c.paint = a->paint;
+  c.set_color = a->set_color;
   mesh_2d_colored_zero_cochain_cairo_draw(cr, status, &c);
 }
 

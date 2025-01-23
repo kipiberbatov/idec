@@ -1,8 +1,7 @@
+#include <math.h>
+
 #include "color.h"
 #include "mesh_2d_colored_edge.h"
-
-#include <errno.h>
-#include <math.h>
 
 void mesh_2d_colored_edge_cairo_draw(
   cairo_t * cr,
@@ -12,7 +11,7 @@ void mesh_2d_colored_edge_cairo_draw(
   int ind;
 
   ind = (int) (edge->relative_value * ((double) (edge->total_colors - 1)));
-  edge->paint(cr, status, ind, edge->total_colors);
+  edge->set_color(cr, status, ind, edge->total_colors);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);

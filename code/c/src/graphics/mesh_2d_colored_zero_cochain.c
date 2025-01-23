@@ -18,7 +18,7 @@ void mesh_2d_colored_zero_cochain_cairo_draw(
   c_values = c->values;
   node.size = c->point_size;
   node.total_colors = c->total_colors;
-  node.paint = c->paint;
+  node.set_color = c->set_color;
   denominator = c_max - c_min;
   if (denominator == 0.)
   {
