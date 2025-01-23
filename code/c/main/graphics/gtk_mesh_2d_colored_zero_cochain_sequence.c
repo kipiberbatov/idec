@@ -18,10 +18,12 @@
 
 static int gtk_draw_zero_cochain(GtkWidget * widget, cairo_t * cr, void * data)
 {
+  int status = 0;
   gtk_draw(
     widget,
     cr,
     data,
+    &status,
     mesh_2d_colored_zero_cochain_sequence_snapshot_cairo_draw_void,
     mesh_2d_colored_zero_cochain_sequence_get_index_void,
     mesh_2d_colored_zero_cochain_sequence_get_total_steps_void,
@@ -33,8 +35,8 @@ static int gtk_draw_zero_cochain(GtkWidget * widget, cairo_t * cr, void * data)
 int main(int argc, char ** argv)
 {
   char * m_format, * m_name, * title, * u_format, * u_name;
-  int n, number_of_steps, size, status, speed, total_colors;
-  const int speed_default = 100, total_colors_default = 1000;
+  int n, number_of_steps, size, status, timelapse, total_colors;
+  const int timelapse_default = 100, total_colors_default = 1000;
   double coefficient_left, coefficient_right, coefficient_bottom,
          coefficient_top, height, width;
   const double coefficient_bottom_default = 0.1,
@@ -53,9 +55,9 @@ int main(int argc, char ** argv)
                     option_coefficient_bottom, option_coefficient_left,
                     option_coefficient_right, option_coefficient_top,
                     option_height, option_mesh, option_mesh_format,
-                    option_numner_of_steps, option_speed, option_total_colors,
-                    option_title,
-                    option_width, no_positional_argument;
+                    option_numner_of_steps, option_timelapse,
+                    option_total_colors, option_title, option_width,
+                    no_positional_argument;
 
   idec_command_line *(options[]) =
   {
@@ -66,7 +68,7 @@ int main(int argc, char ** argv)
     &option_cochain_0_values,
     &option_title,
     &option_total_colors,
-    &option_speed,
+    &option_timelapse,
     &option_width,
     &option_height,
     &option_coefficient_left,
@@ -99,7 +101,7 @@ int main(int argc, char ** argv)
     &total_colors_default);
 
   idec_command_line_set_option_int(
-    &option_speed, &speed, "--speed", &speed_default);
+    &option_timelapse, &timelapse, "--timelapse", &timelapse_default);
 
   idec_command_line_set_option_double(
     &option_width, &width, "--width", &width_default);
@@ -206,7 +208,7 @@ int main(int argc, char ** argv)
 
   gtk_init(&argc, &argv);
 
-  gtk_run(gtk_draw_zero_cochain, (void *) &a, width, height, speed, title);
+  gtk_run(gtk_draw_zero_cochain, (void *) &a, width, height, timelapse, title);
 
   gtk_main();
 

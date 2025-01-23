@@ -6,7 +6,7 @@ void gtk_run(
   void * a,
   double width,
   double height,
-  int speed,
+  int timelapse,
   const char * title)
 {
   GtkWidget * window, * drawing_area;
@@ -24,7 +24,7 @@ void gtk_run(
   gtk_window_set_default_size(GTK_WINDOW(window), width, height);
   gtk_window_set_title(GTK_WINDOW(window), title);
 
-  g_timeout_add(speed, (GSourceFunc) gtk_time_handler, (void *) window);
+  g_timeout_add(timelapse, (GSourceFunc) gtk_time_handler, (void *) window);
 
   gtk_widget_show_all(window);
 }

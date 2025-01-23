@@ -33,8 +33,8 @@ void diffusion_set(
   int total_colors,
   painter paint);
 
-void
-diffusion_draw(cairo_t * cr, double width, double height, const diffusion * a);
+void diffusion_draw(
+  cairo_t * cr, int * status, double width, double height, const diffusion * a);
 
-void
-diffusion_draw_void(cairo_t * cr, double width, double height, const void * a);
+void diffusion_draw_void(
+  cairo_t * cr, int * sttatus, double width, double height, const void * a);

@@ -3,6 +3,6 @@
 
 #include <cairo.h>
 
-typedef void (*painter)(cairo_t *, int, int);
+typedef void (*painter)(cairo_t *, int *, int, int);
 
 #endif /* _painter_h */

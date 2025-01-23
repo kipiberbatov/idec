@@ -19,6 +19,7 @@ void mesh_2d_colored_one_cochain_sequence_increment_index_void(void * a)
 
 void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
   cairo_t * cr,
+  int * status,
   double width,
   double height,
   const mesh_2d_colored_one_cochain_sequence * a)
@@ -45,17 +46,19 @@ void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
   c.paint = a->paint;
   c.draw_skeleton = a->draw_skeleton;
   c.draw_values = a->draw_values;
-  mesh_2d_colored_one_cochain_cairo_draw(cr, &c);
+  mesh_2d_colored_one_cochain_cairo_draw(cr, status, &c);
 }
 
 void mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw_void(
   cairo_t * cr,
+  int * status,
   double width,
   double height,
   const void * a)
 {
   mesh_2d_colored_one_cochain_sequence_snapshot_cairo_draw(
     cr,
+    status,
     width,
     height,
     (const mesh_2d_colored_one_cochain_sequence *) a);

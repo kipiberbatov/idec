@@ -1,3 +1,6 @@
+#include <stdio.h>
+
+#include "color.h"
 #include "rgb.h"
 
 static void rgb_red_to_yellow(rgb * color, int i, int n)
@@ -35,10 +38,10 @@ static void rgb_blue_to_magenta(rgb * color, int i, int n)
   color->blue = 1.;
 }
 
-void rgb_color(rgb * color, int i, int n)
+void rgb_color(rgb * color, int * status, int i, int n)
 {
-  typedef void (*rgb_nuance_t)(rgb *, int, int);
-  rgb_nuance_t rgb_nuances[] =
+  int k_n, k_i, k, size;
+  void (*(rgb_nuances[]))(rgb *, int, int) =
   {
     rgb_red_to_yellow,
     rgb_yellow_to_green,
@@ -47,8 +50,31 @@ void rgb_color(rgb * color, int i, int n)
     rgb_blue_to_magenta
   };
 
-  int k_n = n / (sizeof(rgb_nuances) / sizeof(rgb_nuance_t));
-  int k_i = i % k_n;
-  int k = i / k_n;
+  size = sizeof(rgb_nuances) / sizeof(*rgb_nuances);
+  if (n % size != 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the number of total colors (%s%d%s) "
+      "is not divisible by the number of color regions (%s%d%s)\n",
+      color_variable, n, color_none,
+      color_variable, size, color_none);
+    *status = 1;
+    return;
+  }
+  if (i < 0 || i >= n)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "the color index i = %s%d%s "
+      "is not in the interval [0, total_colors - 1] = [0, %s%d%s]\n",
+      color_variable, i, color_none,
+      color_variable, n - 1, color_none);
+    *status = 1;
+    return;
+  }
+  k_n = n / size;
+  k_i = i % k_n;
+  k = i / k_n;
   rgb_nuances[k](color, k_i, k_n);
 }

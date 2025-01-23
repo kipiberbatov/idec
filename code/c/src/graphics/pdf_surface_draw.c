@@ -3,10 +3,11 @@
 
 void pdf_surface_draw(
   cairo_surface_t * surface,
+  int * status,
   double width,
   double height,
   void * a,
-  void (*draw)(cairo_t *, double, double, const void *),
+  void (*draw)(cairo_t *, int *, double, double, const void *),
   int (*get_index)(const void *),
   int (*get_total_steps)(const void *),
   void (*increment_index)(void *))
@@ -19,7 +20,7 @@ void pdf_surface_draw(
   while (i < n)
   {
     cr = cairo_create(surface);
-    pdf_draw(cr, width, height, a, draw);
+    pdf_draw(cr, status, width, height, a, draw);
     increment_index(a);
     i = get_index(a);
     cairo_destroy(cr);

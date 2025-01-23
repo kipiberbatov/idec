@@ -133,12 +133,13 @@ struct colored_2d_point
   painter paint;
 };
 
-void colored_2d_point_draw(cairo_t * cr, const colored_2d_point * p)
+static void
+colored_2d_point_draw(cairo_t * cr, int * status, const colored_2d_point * p)
 {
   int ind;
 
   ind = (int) (p->relative_value * ((double) (p->total_colors - 1)));
-  p->paint(cr, ind, p->total_colors);
+  p->paint(cr, status, ind, p->total_colors);
   cairo_set_line_width(cr, 1);
   cairo_arc(cr, p->x, p->y, p->point_size, 0, 2 * M_PI);
 
@@ -160,8 +161,9 @@ struct colored_2d_zero_cochain
   painter paint;
 };
 
-void colored_2d_zero_cochain_cairo_draw(
+static void colored_2d_zero_cochain_cairo_draw(
   cairo_t * cr,
+  int * status,
   const colored_2d_zero_cochain * c)
 {
   int c_size, j;
@@ -184,12 +186,12 @@ void colored_2d_zero_cochain_cairo_draw(
     p.x = x_j[0];
     p.y = x_j[1];
     p.relative_value = (c_values[j] - c_min) / denominator;
-    colored_2d_point_draw(cr, &p);
+    colored_2d_point_draw(cr, status, &p);
   }
 }
 
-void
-diffusion_draw(cairo_t * cr, double width, double height, const diffusion * a)
+void diffusion_draw(
+  cairo_t * cr, int * status, double width, double height, const diffusion * a)
 {
   int i;
   double * u;
@@ -208,11 +210,11 @@ diffusion_draw(cairo_t * cr, double width, double height, const diffusion * a)
   c.min_value = diffusion_min_value(a);
   c.max_value = diffusion_max_value(a);
   c.paint = diffusion_get_paint(a);
-  colored_2d_zero_cochain_cairo_draw(cr, &c);
+  colored_2d_zero_cochain_cairo_draw(cr, status, &c);
 }
 
-void
-diffusion_draw_void(cairo_t * cr, double width, double height, const void * a)
+void diffusion_draw_void(
+  cairo_t * cr, int * status, double width, double height, const void * a)
 {
-  diffusion_draw(cr, width, height, (const diffusion *) a);
+  diffusion_draw(cr, status, width, height, (const diffusion *) a);
 }

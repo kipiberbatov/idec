@@ -17,6 +17,7 @@ typedef struct mesh_2d_colored_edge
 
 void mesh_2d_colored_edge_cairo_draw(
   cairo_t * cr,
+  int * status,
   const mesh_2d_colored_edge * edge);
 
 #endif /* _mesh_2d_colored_edge_h */

@@ -2,6 +2,7 @@
 
 void mesh_2d_one_cochain_skeleton_draw(
   cairo_t * cr,
+  int * status,
   const mesh_2d_colored_one_cochain * c)
 {
   int c_number_of_edges, i;

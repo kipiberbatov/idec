@@ -1,7 +1,9 @@
+#include "color.h"
 #include "mesh_2d_colored_one_cochain.h"
 
 void mesh_2d_colored_one_cochain_values_cairo_draw(
   cairo_t * cr,
+  int * status,
   const mesh_2d_colored_one_cochain * c)
 {
   int c_number_of_edges, i;
@@ -27,7 +29,13 @@ void mesh_2d_colored_one_cochain_values_cairo_draw(
   for (i = 0; i < c_number_of_edges; ++i)
   {
     mesh_2d_colored_one_cochain_set_edge(&edge, c, i, cf_1_0_i);
-    mesh_2d_colored_edge_cairo_draw(cr, &edge);
+    mesh_2d_colored_edge_cairo_draw(cr, status, &edge);
+    if (*status)
+    {
+      color_error_position(__FILE__, __LINE__);
+      fputs("cannot paint an edge\n", stderr);
+      return;
+    }
     cf_1_0_i += cf_1_0_a1[i];
   }
 }

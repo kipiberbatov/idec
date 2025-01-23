@@ -2,7 +2,8 @@
 
 void pdf_draw(
   cairo_t * cr,
+  int * status,
   double width,
   double height,
   void * a,
-  void (*draw)(cairo_t *, double, double, const void *));
+  void (*draw)(cairo_t *, int *, double, double, const void *));

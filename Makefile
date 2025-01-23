@@ -28,14 +28,15 @@ else
 endif
 
 ########################### modules and dependencies ###########################
-MODULES := array algebra region mesh diffusion shared graphics
+MODULES := array algebra region mesh diffusion shared animation graphics
 # array:
 # algebra: array
 # region: array
 # mesh: region algebra
 # diffusion: mesh
-# shared: mesh (+ diffusion headers)
 # graphics: mesh (dynamically on shared, and hence, on diffusion)
+# shared: mesh (+ diffusion headers)
+# animation: graphics
 
 ############################ names of source files #############################
 _src_array := $(wildcard code/c/src/array/*.c)
@@ -43,8 +44,9 @@ _src_algebra := $(wildcard code/c/src/algebra/*.c)
 _src_region := $(wildcard code/c/src/region/*.c)
 _src_mesh := $(wildcard code/c/src/mesh/*.c)
 _src_diffusion := $(wildcard code/c/src/diffusion/*.c)
-_src_shared := $(wildcard code/c/src/shared/*.c)
 _src_graphics := $(wildcard code/c/src/graphics/*.c)
+_src_shared := $(wildcard code/c/src/shared/*.c)
+_src_animation := $(wildcard code/c/src/animation/*.c)
 
 ############################# names of main files ##############################
 _main_array := $(wildcard code/c/main/array/*.c)
@@ -52,8 +54,9 @@ _main_algebra := $(wildcard code/c/main/algebra/*.c)
 _main_region := $(wildcard code/c/main/region/*.c)
 _main_mesh := $(wildcard code/c/main/mesh/*.c)
 _main_diffusion := $(wildcard code/c/main/diffusion/*.c)
-_main_shared :=
 _main_graphics := $(wildcard code/c/main/graphics/*.c)
+_main_shared :=
+_mian_animation :=
 
 ######################### names of source object files #########################
 _obj_src_array := $(patsubst code/c/src/array/%.c,\
@@ -71,11 +74,14 @@ _obj_src_mesh := $(patsubst code/c/src/mesh/%.c,\
 _obj_src_diffusion := $(patsubst code/c/src/diffusion/%.c,\
   build/$(MODE)/obj/src/%$(.OBJ), $(_src_diffusion))
 
+_obj_src_graphics := $(patsubst code/c/src/graphics/%.c,\
+  build/$(MODE)/obj/src/%$(.OBJ), $(_src_graphics))
+
 _obj_src_shared := $(patsubst code/c/src/shared/%.c,\
   build/$(MODE)/obj/src/%$(.OBJ), $(_src_shared))
 
-_obj_src_graphics := $(patsubst code/c/src/graphics/%.c,\
-  build/$(MODE)/obj/src/%$(.OBJ), $(_src_graphics))
+_obj_src_animation := $(patsubst code/c/src/animation/%.c,\
+  build/$(MODE)/obj/src/%$(.OBJ), $(_src_animation))
 
 ########################## names of main object files ##########################
 _obj_main_array := $(patsubst code/c/main/array/%.c,\
@@ -93,10 +99,12 @@ _obj_main_mesh := $(patsubst code/c/main/mesh/%.c,\
 _obj_main_diffusion := $(patsubst code/c/main/diffusion/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_diffusion))
 
-_obj_main_shared :=
-
 _obj_main_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_graphics))
+
+_obj_main_shared :=
+
+_obj_main_animation :=
 
 ########################## names of executable files ###########################
 _bin_array := $(patsubst code/c/main/array/%.c,\
@@ -114,10 +122,12 @@ _bin_mesh := $(patsubst code/c/main/mesh/%.c,\
 _bin_diffusion := $(patsubst code/c/main/diffusion/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_diffusion))
 
-_bin_shared :=
-
 _bin_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_graphics))
+
+_bin_shared :=
+
+_bin_animation :=
 
 ################# include directories for compiling main files #################
 _include_main_array := -iquote code/c/include/array
@@ -127,10 +137,10 @@ _include_main_mesh := $(_include_main_algebra)\
   -iquote code/c/include/region -iquote code/c/include/mesh
 _include_main_diffusion := $(_include_main_mesh)\
   -iquote code/c/include/diffusion
-_include_main_shared :=
 _include_main_graphics := $(_include_main_mesh) -iquote code/c/include/graphics
 # $(shell pkg-config --cflags gtk+-3.0) is included when calling the compiler
-
+_include_main_shared :=
+_include_main_animation :=
 
 ################ include directories for compiling source files ################
 _include_src_array := $(_include_main_array) -iquote code/c/src/array
@@ -139,8 +149,9 @@ _include_src_region := $(_include_main_region) -iquote code/c/src/region
 _include_src_mesh := $(_include_main_mesh) -iquote code/c/src/mesh
 _include_src_diffusion := $(_include_main_diffusion)\
   -iquote code/c/src/diffusion
-_include_src_shared := $(_include_main_diffusion)
 _include_src_graphics := $(_include_main_graphics) -iquote code/c/src/graphics
+_include_src_shared := $(_include_main_diffusion)
+_include_src_animation := $(_include_main_graphics) -iquote code/c/src/animation
 
 ############################# library dependencies #############################
 _libs_array := build/$(MODE)/lib/libarray$(.LIB)
@@ -149,9 +160,10 @@ _libs_region := build/$(MODE)/lib/libregion$(.LIB) $(_libs_array)
 _libs_mesh := build/$(MODE)/lib/libmesh$(.LIB)\
   build/$(MODE)/lib/libregion$(.LIB) $(_libs_algebra)
 _libs_diffusion := build/$(MODE)/lib/libdiffusion$(.LIB) $(_libs_mesh)
-_libs_shared :=
 _libs_graphics := build/$(MODE)/lib/libgraphics$(.LIB) $(_libs_mesh)
 # $(shell pkg-config --libs gtk+-3.0) is included when calling the linker
+_libs_shared :=
+_libs_animation :=
 
 ############################### all-type targets ###############################
 .PHONY: all
@@ -169,8 +181,9 @@ obj_src_algebra: $(_obj_src_algebra)
 obj_src_region: $(_obj_src_region)
 obj_src_mesh: $(_obj_src_mesh)
 obj_src_diffusion: $(_obj_src_diffusion)
-obj_src_shared: $(_obj_src_shared)
 obj_src_graphics: $(_obj_src_graphics)
+obj_src_shared: $(_obj_src_shared)
+obj_src_animation: $(_obj_src_animation)
 
 # object files from main files
 .PHONY: $(patsubst %, obj_main_%, $(MODULES))
@@ -180,8 +193,9 @@ obj_main_algebra: $(_obj_main_algebra)
 obj_main_region: $(_obj_main_region)
 obj_main_mesh: $(_obj_main_mesh)
 obj_main_diffusion: $(_obj_main_diffusion)
-obj_main_shared:
 obj_main_graphics: $(_obj_main_graphics)
+obj_main_shared:
+obj_main_animation:
 
 ############################### library targets ################################
 .PHONY: lib $(patsubst %, lib_%, $(MODULES))
@@ -191,8 +205,9 @@ lib_algebra: build/$(MODE)/lib/libalgebra$(.LIB)
 lib_region: build/$(MODE)/lib/libregion$(.LIB)
 lib_mesh: build/$(MODE)/lib/libmesh$(.LIB)
 lib_diffusion: build/$(MODE)/lib/libdiffusion$(.LIB)
-lib_shared: build/$(MODE)/lib/libshared$(.DLL)
 lib_graphics: build/$(MODE)/lib/libgraphics$(.LIB)
+lib_shared: build/$(MODE)/lib/libshared$(.DLL)
+lib_animation: build/$(MODE)/lib/libanimation$(.DLL)
 
 ############################## executable targets ##############################
 .PHONY: $(patsubst %, bin_%, $(MODULES))
@@ -202,8 +217,9 @@ bin_algebra: $(_bin_algebra)
 bin_region: $(_bin_region)
 bin_mesh: $(_bin_mesh)
 bin_diffusion: $(_bin_diffusion)
-bin_shared:
 bin_graphics: $(_bin_graphics)
+bin_shared:
+bin_animation:
 
 #################### targets by modules -- called on demand ####################
 .PHONY: $(MODULES)
@@ -212,8 +228,9 @@ algebra: $(patsubst %, %_algebra, obj_src obj_main lib bin demo)
 region: $(patsubst %, %_region, obj_src obj_main lib bin demo)
 mesh: $(patsubst %, %_mesh, obj_src obj_main lib bin demo)
 diffusion: $(patsubst %, %_diffusion, obj_src obj_main lib bin demo)
-shared: obj_src_shared lib_shared
 graphics: $(patsubst %, %_graphics, obj_src obj_main lib bin demo)
+shared: obj_src_shared lib_shared
+animation: obj_src_animation lib_animation
 
 ########################## preparing build directory ###########################
 build:
@@ -250,13 +267,18 @@ $(_obj_src_diffusion): build/$(MODE)/obj/src/%$(.OBJ):\
   code/c/src/diffusion/%.c | build/$(MODE)/obj/src
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_diffusion) -c $<
 
+$(_obj_src_graphics): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/graphics/%.c\
+    | build/$(MODE)/obj/src
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_graphics)\
+	  $(shell pkg-config --cflags gtk+-3.0) -c $<
+
 $(_obj_src_shared): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/shared/%.c\
     | build/$(MODE)/obj/src
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_shared) -c $<
 
-$(_obj_src_graphics): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/graphics/%.c\
+$(_obj_src_animation): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/animation/%.c\
     | build/$(MODE)/obj/src
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_graphics)\
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_animation)\
 	  $(shell pkg-config --cflags gtk+-3.0) -c $<
 
 # include header dependencies for object files from code/c/src
@@ -278,6 +300,11 @@ $(_obj_main_region): build/$(MODE)/obj/main/%$(.OBJ):\
    code/c/main/region/%.c | build/$(MODE)/obj/main
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_region) -c $<
 
+$(_obj_main_graphics): build/$(MODE)/obj/main/%$(.OBJ):\
+   code/c/main/graphics/%.c | build/$(MODE)/obj/main
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_graphics)\
+	  $(shell pkg-config --cflags gtk+-3.0) -c $<
+
 $(_obj_main_mesh): build/$(MODE)/obj/main/%$(.OBJ): code/c/main/mesh/%.c\
   | build/$(MODE)/obj/main
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_mesh) -c $<
@@ -285,11 +312,6 @@ $(_obj_main_mesh): build/$(MODE)/obj/main/%$(.OBJ): code/c/main/mesh/%.c\
 $(_obj_main_diffusion): build/$(MODE)/obj/main/%$(.OBJ):\
   code/c/main/diffusion/%.c | build/$(MODE)/obj/main
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_diffusion) -c $<
-
-$(_obj_main_graphics): build/$(MODE)/obj/main/%$(.OBJ):\
-   code/c/main/graphics/%.c | build/$(MODE)/obj/main
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_graphics)\
-	  $(shell pkg-config --cflags gtk+-3.0) -c $<
 
 # include header dependencies for object files from code/c/main
 -include build/$(MODE)/obj/main/*$(.DEP)
@@ -322,6 +344,12 @@ build/$(MODE)/lib/libshared$(.DLL):\
   | build/$(MODE)/lib
 	$(CC) -o $@ -fPIC -shared $^ $(LDLIBS)
 
+_external_libs_gtk = $(shell pkg-config --libs gtk+-3.0)
+
+build/$(MODE)/lib/libanimation$(.DLL):\
+  $(_obj_src_animation) | build/$(MODE)/lib
+	$(CC) -o $@ -fPIC -shared $^ $(_external_libs_gtk) $(LDLIBS)
+
 ################################### linking ####################################
 build/$(MODE)/bin: | build/$(MODE)
 	-mkdir -p $@
@@ -345,8 +373,6 @@ $(_bin_mesh): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
 $(_bin_diffusion): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
   $(_libs_diffusion) | build/$(MODE)/bin
 	$(CC) -o $@ $< $(_libs_diffusion) $(LDLIBS)
-
-_external_libs_gtk = $(shell pkg-config --libs gtk+-3.0)
 
 $(_bin_graphics): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
   $(_libs_graphics) | build/$(MODE)/bin
@@ -503,6 +529,21 @@ shared_clean: obj_shared_clean
 
 .PHONY: shared_distclean
 shared_distclean: shared_clean lib_shared_clean
+
+# animation
+.PHONY: obj_animation_clean
+obj_animation_clean:
+	-$(RM) $(_obj_src_animation)
+
+.PHONY: lib_animation_clean
+lib_animation_clean:
+	-$(RM) build/$(MODE)/lib/libanimation$(.LIB)
+
+.PHONY: animation_clean
+animation_clean: obj_animation_clean
+
+.PHONY: animation_distclean
+animation_distclean: animation_clean lib_animation_clean
 
 # all
 .PHONY: obj_clean

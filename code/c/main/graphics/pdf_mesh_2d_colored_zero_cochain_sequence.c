@@ -17,7 +17,7 @@ int main(int argc, char ** argv)
 {
   char * m_format, * m_name, * number_of_steps_name, * out_name, * u_format,
        * u_name;
-  int n, number_of_steps, total_colors;
+  int n, number_of_steps, status = 0, total_colors;
   double height, width;
   double * new_coordinates, * u;
   mesh * m;
@@ -121,6 +121,7 @@ int main(int argc, char ** argv)
 
   pdf_write_to_file(
     out_name,
+    &status,
     width,
     height,
     (void *) &a,
@@ -128,6 +129,12 @@ int main(int argc, char ** argv)
     mesh_2d_colored_zero_cochain_sequence_get_index_void,
     mesh_2d_colored_zero_cochain_sequence_get_total_steps_void,
     mesh_2d_colored_zero_cochain_sequence_increment_index_void);
+  if (status)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot create PDF animation\n", stderr);
+    errno = status;
+  }
 
   free(new_coordinates);
 u_free:

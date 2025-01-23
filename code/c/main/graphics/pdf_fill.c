@@ -18,7 +18,7 @@
 int main(int argc, char ** argv)
 {
   char * n_name, * out_name;
-  int i, n;
+  int i, n, status = 0;
   double height, width;
   fill * a;
 
@@ -59,6 +59,7 @@ int main(int argc, char ** argv)
 
   pdf_write_to_file(
     out_name,
+    &status,
     width,
     height,
     (void *) a,

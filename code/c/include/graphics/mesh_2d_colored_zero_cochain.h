@@ -18,6 +18,7 @@ typedef struct mesh_2d_colored_zero_cochain
 
 void mesh_2d_colored_zero_cochain_cairo_draw(
   cairo_t * cr,
+  int * status,
   const mesh_2d_colored_zero_cochain * c);
 
 #endif /* mesh_2d_colored_zero_cochain */

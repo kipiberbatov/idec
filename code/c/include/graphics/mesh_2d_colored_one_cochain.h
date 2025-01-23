@@ -18,12 +18,15 @@ typedef struct mesh_2d_colored_one_cochain
   double min_value;
   double max_value;
   painter paint;
-  void (*draw_skeleton)(cairo_t *, const struct mesh_2d_colored_one_cochain *);
-  void (*draw_values)(cairo_t *, const struct mesh_2d_colored_one_cochain *);
+  void (*draw_skeleton)(
+    cairo_t *, int *, const struct mesh_2d_colored_one_cochain *);
+  void (*draw_values)(
+    cairo_t *, int *, const struct mesh_2d_colored_one_cochain *);
 } mesh_2d_colored_one_cochain;
 
 void mesh_2d_one_cochain_skeleton_draw(
   cairo_t * cr,
+  int * status,
   const mesh_2d_colored_one_cochain * c);
 
 void mesh_2d_colored_one_cochain_set_edge(
@@ -34,10 +37,12 @@ void mesh_2d_colored_one_cochain_set_edge(
 
 void mesh_2d_colored_one_cochain_values_cairo_draw(
   cairo_t * cr,
+  int * status,
   const mesh_2d_colored_one_cochain * c);
 
 void mesh_2d_colored_one_cochain_cairo_draw(
   cairo_t * cr,
+  int * status,
   const mesh_2d_colored_one_cochain * c);
 
 #endif /* mesh_2d_colored_one_cochain */

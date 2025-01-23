@@ -8,6 +8,6 @@ typedef struct rgb
   double blue;
 } rgb;
 
-void rgb_color(rgb * color, int i, int n);
+void rgb_color(rgb * color, int * status, int i, int n);
 
 #endif /* _rgb_h */

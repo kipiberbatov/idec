@@ -9,7 +9,7 @@
 #include "rgb.h"
 
 static void unit_square_point_draw_in_window(
-  cairo_t * cr, rgb * color, double width, double height,
+  cairo_t * cr, rgb * color, int * status, double width, double height,
   double x, double y, double value,
   double min_value, double max_value, int total_colors)
 {
@@ -23,7 +23,7 @@ static void unit_square_point_draw_in_window(
   relative_value = (value - min_value) /
                          (max_value - min_value);
   ind = (int) (relative_value * ((double) (total_colors - 1)));
-  rgb_color(color, ind, total_colors);
+  rgb_color(color, status, ind, total_colors);
   cairo_set_source_rgb(cr, color->red, color->green, color->blue);
   cairo_set_line_width(cr, 1);
   cairo_arc(cr, x_new, y_new, (width + height) / 100, 0, 2 * M_PI);
@@ -32,8 +32,8 @@ static void unit_square_point_draw_in_window(
   cairo_stroke(cr);
 }
 
-void
-gtk_spacetime_pde(cairo_t * cr, double width, double height, diffusion * a)
+void gtk_spacetime_pde(
+  cairo_t * cr, int * status, double width, double height, diffusion * a)
 {
   int i, j, m_cn_0, m_dim_embedded, total_colors;
   double min_value, max_value;
@@ -57,7 +57,7 @@ gtk_spacetime_pde(cairo_t * cr, double width, double height, diffusion * a)
   {
     m_coord_j = m_coord + m_dim_embedded * j;
     unit_square_point_draw_in_window(
-      cr, &color, width, height, m_coord_j[0], m_coord_j[1], u_i[j],
+      cr, &color, status, width, height, m_coord_j[0], m_coord_j[1], u_i[j],
       min_value, max_value, total_colors);
   }
 }

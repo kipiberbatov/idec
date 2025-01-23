@@ -16,7 +16,7 @@
 #include "pdf_write_to_file.h"
 
 typedef void
-draw_skeleton_t(cairo_t *, const struct mesh_2d_colored_one_cochain *);
+draw_skeleton_t(cairo_t *, int *, const struct mesh_2d_colored_one_cochain *);
 
 static draw_skeleton_t * idec_mesh_draw_skeleton_get(const char * method)
 {
@@ -186,6 +186,7 @@ int main(int argc, char ** argv)
 
   pdf_write_to_file(
     out_name,
+    &status,
     width,
     height,
     (void *) &a,

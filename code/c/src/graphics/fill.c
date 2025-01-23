@@ -54,13 +54,15 @@ void fill_set(fill * a, int i, int n, painter paint)
   a->paint = paint;
 }
 
-void fill_draw(cairo_t * cr, double width, double height, const fill * a)
+void fill_draw(
+  cairo_t * cr, int * status, double width, double height, const fill * a)
 {
-  a->paint(cr, a->i, a->n);
+  a->paint(cr, status, a->i, a->n);
   cairo_paint(cr);
 }
 
-void fill_draw_void(cairo_t * cr, double width, double height, const void * a)
+void fill_draw_void(
+  cairo_t * cr, int * status, double width, double height, const void * a)
 {
-  fill_draw(cr, width, height, (const fill *) a);
+  fill_draw(cr, status, width, height, (const fill *) a);
 }

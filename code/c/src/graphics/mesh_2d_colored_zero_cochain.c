@@ -3,6 +3,7 @@
 
 void mesh_2d_colored_zero_cochain_cairo_draw(
   cairo_t * cr,
+  int * status,
   const mesh_2d_colored_zero_cochain * c)
 {
   int c_number_of_nodes, j;
@@ -25,7 +26,7 @@ void mesh_2d_colored_zero_cochain_cairo_draw(
     for (j = 0; j < c_number_of_nodes; ++j)
     {
       node.coordinates = c_coordinates + 2 * j;
-      mesh_2d_colored_node_cairo_draw(cr, &node);
+      mesh_2d_colored_node_cairo_draw(cr, status, &node);
     }
   }
   else
@@ -33,6 +34,6 @@ void mesh_2d_colored_zero_cochain_cairo_draw(
     {
       node.coordinates = c_coordinates + 2 * j;
       node.relative_value = (c_values[j] - c_min) / denominator;
-      mesh_2d_colored_node_cairo_draw(cr, &node);
+      mesh_2d_colored_node_cairo_draw(cr, status, &node);
     }
 }

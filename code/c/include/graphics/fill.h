@@ -20,5 +20,7 @@ painter fill_get_paint(const fill * a);
 
 void fill_set(fill * a, int i, int n, painter paint);
 
-void fill_draw(cairo_t * cr, double width, double height, const fill * a);
-void fill_draw_void(cairo_t * cr, double width, double height, const void * a);
+void fill_draw(
+  cairo_t * cr, int * status, double width, double height, const fill * a);
+void fill_draw_void(
+  cairo_t * cr, int * status, double width, double height, const void * a);

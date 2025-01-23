@@ -33,8 +33,13 @@ build/$(MODE)/demo/gtk: | build/$(MODE)/demo
 	mkdir -p $@
 
 build/$(MODE)/demo/gtk/fill.log:\
-  build/$(MODE)/bin/gtk_fill | build/$(MODE)/demo/gtk
-	$< 100 > $@
+  build/$(MODE)/bin/idec_fill\
+  build/$(MODE)/obj/src/idec_gtk_animation$(.OBJ)\
+  | build/$(MODE)/demo/pdf build/$(MODE)/lib/libanimation$(.DLL)
+	$<\
+  --animation-library=$(word 2, $|)\
+  --animation-backend=idec_gtk_animation\
+  --output=$@
 
 build/$(MODE)/demo/gtk/diffusion: | build/$(MODE)/demo/gtk
 	mkdir -p $@

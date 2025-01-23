@@ -15,6 +15,7 @@ typedef struct mesh_2d_colored_node
 
 void mesh_2d_colored_node_cairo_draw(
   cairo_t * cr,
+  int * status,
   const mesh_2d_colored_node * node);
 
 #endif /* _mesh_2d_colored_node_h */

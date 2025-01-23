@@ -2,8 +2,13 @@ build/$(MODE)/demo/pdf: | build/$(MODE)/demo
 	mkdir -p $@
 
 build/$(MODE)/demo/pdf/fill.pdf:\
-  build/$(MODE)/bin/pdf_fill | build/$(MODE)/demo/pdf
-	$< 100 $@
+  build/$(MODE)/bin/idec_fill\
+  build/$(MODE)/obj/src/idec_cairo_pdf_animation$(.OBJ)\
+  | build/$(MODE)/demo/pdf build/$(MODE)/lib/libanimation$(.DLL)
+	$<\
+  --animation-library=$(word 2, $|)\
+  --animation-backend=idec_cairo_pdf_animation\
+  --output=$@
 
 include code/make/demo/pdf_mesh.mk
 include code/make/demo/pdf_diffusion.mk

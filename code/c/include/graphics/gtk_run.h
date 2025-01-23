@@ -6,5 +6,5 @@ void gtk_run(
   void * a,
   double width,
   double height,
-  int speed,
+  int timelapse,
   const char * title);
