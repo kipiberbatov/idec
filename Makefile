@@ -28,7 +28,7 @@ else
 endif
 
 ########################### modules and dependencies ###########################
-MODULES := array algebra region mesh diffusion shared animation graphics
+MODULES := array algebra region mesh diffusion graphics shared animation canvas
 # array:
 # algebra: array
 # region: array
@@ -36,7 +36,8 @@ MODULES := array algebra region mesh diffusion shared animation graphics
 # diffusion: mesh
 # graphics: mesh (dynamically on shared, and hence, on diffusion)
 # shared: mesh (+ diffusion headers)
-# animation: graphics
+# canvas: [Cairo] (+ animation headers)
+# animation: graphics Cairo GTK3
 
 ############################ names of source files #############################
 _src_array := $(wildcard code/c/src/array/*.c)
@@ -47,6 +48,7 @@ _src_diffusion := $(wildcard code/c/src/diffusion/*.c)
 _src_graphics := $(wildcard code/c/src/graphics/*.c)
 _src_shared := $(wildcard code/c/src/shared/*.c)
 _src_animation := $(wildcard code/c/src/animation/*.c)
+_src_canvas := $(wildcard code/c/src/canvas/*.c)
 
 ############################# names of main files ##############################
 _main_array := $(wildcard code/c/main/array/*.c)
@@ -56,7 +58,8 @@ _main_mesh := $(wildcard code/c/main/mesh/*.c)
 _main_diffusion := $(wildcard code/c/main/diffusion/*.c)
 _main_graphics := $(wildcard code/c/main/graphics/*.c)
 _main_shared :=
-_mian_animation :=
+_main_animation :=
+_main_canvas :=
 
 ######################### names of source object files #########################
 _obj_src_array := $(patsubst code/c/src/array/%.c,\
@@ -83,6 +86,9 @@ _obj_src_shared := $(patsubst code/c/src/shared/%.c,\
 _obj_src_animation := $(patsubst code/c/src/animation/%.c,\
   build/$(MODE)/obj/src/%$(.OBJ), $(_src_animation))
 
+_obj_src_canvas := $(patsubst code/c/src/canvas/%.c,\
+  build/$(MODE)/obj/src/%$(.OBJ), $(_src_canvas))
+
 ########################## names of main object files ##########################
 _obj_main_array := $(patsubst code/c/main/array/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_array))
@@ -105,6 +111,8 @@ _obj_main_graphics := $(patsubst code/c/main/graphics/%.c,\
 _obj_main_shared :=
 
 _obj_main_animation :=
+
+_obj_main_canvas :=
 
 ########################## names of executable files ###########################
 _bin_array := $(patsubst code/c/main/array/%.c,\
@@ -129,6 +137,8 @@ _bin_shared :=
 
 _bin_animation :=
 
+_bin_canvas :=
+
 ################# include directories for compiling main files #################
 _include_main_array := -iquote code/c/include/array
 _include_main_algebra := $(_include_main_array) -iquote code/c/include/algebra
@@ -141,6 +151,7 @@ _include_main_graphics := $(_include_main_mesh) -iquote code/c/include/graphics
 # $(shell pkg-config --cflags gtk+-3.0) is included when calling the compiler
 _include_main_shared :=
 _include_main_animation :=
+_include_main_canvas :=
 
 ################ include directories for compiling source files ################
 _include_src_array := $(_include_main_array) -iquote code/c/src/array
@@ -152,6 +163,8 @@ _include_src_diffusion := $(_include_main_diffusion)\
 _include_src_graphics := $(_include_main_graphics) -iquote code/c/src/graphics
 _include_src_shared := $(_include_main_diffusion)
 _include_src_animation := $(_include_main_graphics) -iquote code/c/src/animation
+_include_src_canvas := $(_include_main_graphics)\
+  -iquote code/c/include/animation -iquote code/c/src/canvas
 
 ############################# library dependencies #############################
 _libs_array := build/$(MODE)/lib/libarray$(.LIB)
@@ -164,6 +177,7 @@ _libs_graphics := build/$(MODE)/lib/libgraphics$(.LIB) $(_libs_mesh)
 # $(shell pkg-config --libs gtk+-3.0) is included when calling the linker
 _libs_shared :=
 _libs_animation :=
+_libs_canvas :=
 
 ############################### all-type targets ###############################
 .PHONY: all
@@ -184,6 +198,7 @@ obj_src_diffusion: $(_obj_src_diffusion)
 obj_src_graphics: $(_obj_src_graphics)
 obj_src_shared: $(_obj_src_shared)
 obj_src_animation: $(_obj_src_animation)
+obj_src_canvas: $(_obj_src_canvas)
 
 # object files from main files
 .PHONY: $(patsubst %, obj_main_%, $(MODULES))
@@ -196,6 +211,7 @@ obj_main_diffusion: $(_obj_main_diffusion)
 obj_main_graphics: $(_obj_main_graphics)
 obj_main_shared:
 obj_main_animation:
+obj_main_canvas:
 
 ############################### library targets ################################
 .PHONY: lib $(patsubst %, lib_%, $(MODULES))
@@ -208,6 +224,7 @@ lib_diffusion: build/$(MODE)/lib/libdiffusion$(.LIB)
 lib_graphics: build/$(MODE)/lib/libgraphics$(.LIB)
 lib_shared: build/$(MODE)/lib/libshared$(.DLL)
 lib_animation: build/$(MODE)/lib/libanimation$(.DLL)
+lib_canvas: build/$(MODE)/lib/libcanvas$(.DLL)
 
 ############################## executable targets ##############################
 .PHONY: $(patsubst %, bin_%, $(MODULES))
@@ -220,6 +237,7 @@ bin_diffusion: $(_bin_diffusion)
 bin_graphics: $(_bin_graphics)
 bin_shared:
 bin_animation:
+bin_canvas:
 
 #################### targets by modules -- called on demand ####################
 .PHONY: $(MODULES)
@@ -231,6 +249,7 @@ diffusion: $(patsubst %, %_diffusion, obj_src obj_main lib bin demo)
 graphics: $(patsubst %, %_graphics, obj_src obj_main lib bin demo)
 shared: obj_src_shared lib_shared
 animation: obj_src_animation lib_animation
+canvas: obj_src_canvas lib_canvas
 
 ########################## preparing build directory ###########################
 build:
@@ -280,6 +299,11 @@ $(_obj_src_animation): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/animation/%.c\
     | build/$(MODE)/obj/src
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_animation)\
 	  $(shell pkg-config --cflags gtk+-3.0) -c $<
+
+$(_obj_src_canvas): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/canvas/%.c\
+    | build/$(MODE)/obj/src
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_canvas)\
+	  $(shell pkg-config --cflags cairo) -c $<
 
 # include header dependencies for object files from code/c/src
 -include build/$(MODE)/obj/src/*$(.DEP)
@@ -344,10 +368,22 @@ build/$(MODE)/lib/libshared$(.DLL):\
   | build/$(MODE)/lib
 	$(CC) -o $@ -fPIC -shared $^ $(LDLIBS)
 
+_external_libs_cairo = $(shell pkg-config --libs cairo)
 _external_libs_gtk = $(shell pkg-config --libs gtk+-3.0)
 
 build/$(MODE)/lib/libanimation$(.DLL):\
   $(_obj_src_animation) | build/$(MODE)/lib
+	$(CC) -o $@ -fPIC -shared $^ $(_external_libs_gtk) $(LDLIBS)
+
+# after refactoring of graphics only _external_libs_cairo will be required
+build/$(MODE)/lib/libcanvas$(.DLL):\
+  $(_obj_src_canvas)\
+  $(_obj_src_graphics)\
+  $(_obj_src_mesh)\
+  $(_obj_src_region)\
+  $(_obj_src_algebra)\
+  $(_obj_src_array)\
+  | build/$(MODE)/lib
 	$(CC) -o $@ -fPIC -shared $^ $(_external_libs_gtk) $(LDLIBS)
 
 ################################### linking ####################################
@@ -522,7 +558,7 @@ obj_shared_clean:
 
 .PHONY: lib_shared_clean
 lib_shared_clean:
-	-$(RM) build/$(MODE)/lib/libshared$(.LIB)
+	-$(RM) build/$(MODE)/lib/libshared$(.DLL)
 
 .PHONY: shared_clean
 shared_clean: obj_shared_clean
@@ -537,13 +573,28 @@ obj_animation_clean:
 
 .PHONY: lib_animation_clean
 lib_animation_clean:
-	-$(RM) build/$(MODE)/lib/libanimation$(.LIB)
+	-$(RM) build/$(MODE)/lib/libanimation$(.DLL)
 
 .PHONY: animation_clean
 animation_clean: obj_animation_clean
 
 .PHONY: animation_distclean
 animation_distclean: animation_clean lib_animation_clean
+
+# canvas
+.PHONY: obj_canvas_clean
+obj_canvas_clean:
+	-$(RM) $(_obj_src_canvas)
+
+.PHONY: lib_canvas_clean
+lib_canvas_clean:
+	-$(RM) build/$(MODE)/lib/libcanvas$(.DLL)
+
+.PHONY: canvas_clean
+canvas_clean: obj_canvas_clean
+
+.PHONY: canvas_distclean
+canvas_distclean: canvas_clean lib_canvas_clean
 
 # all
 .PHONY: obj_clean

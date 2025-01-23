@@ -180,7 +180,9 @@ static void idec_gtk_animation_log_by_name(
   if (out == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot open file %s: %s\n", output, strerror(errno));
+    fprintf(stderr, "cannot open file %s%s%s: %s\n",
+      color_variable, output, color_none,
+      strerror(errno));
     *status = errno;
     return;
   }
