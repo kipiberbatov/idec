@@ -117,7 +117,7 @@ int main(int argc, char ** argv)
   animation.data = (void *) &fill;
   animation.total_colors = fill.total_colors;
   animation.intrinsic_functions = idec_filled_window_intrinsic_functions;
-  
+
   lib_canvas = dlopen(canvas_library, RTLD_LAZY);
   error = dlerror();
   if (error)

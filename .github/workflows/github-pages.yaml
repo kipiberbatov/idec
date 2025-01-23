@@ -42,7 +42,7 @@ jobs:
           name: linux-release
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: build/release
-      
+
       - name: Install TeX Live and most used packages
         run: sudo apt-get install -y texlive-latex-extra
 

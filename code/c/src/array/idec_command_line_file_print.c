@@ -21,7 +21,7 @@ void idec_command_line_file_print(
     for (i = 0; i < total_j; ++i)
     {
       fputc(' ', out);
-      data_j_i = (void *) ((char *) data_j + size_j * i); 
+      data_j_i = (void *) ((char *) data_j + size_j * i);
       option_j->file_print(out, data_j_i);
     }
     fputc('\n', out);
