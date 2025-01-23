@@ -33,7 +33,7 @@ build/$(MODE)/demo/gtk: | build/$(MODE)/demo
 	mkdir -p $@
 
 build/$(MODE)/demo/gtk/filled_window_default.log:\
-  build/$(MODE)/bin/idec_filled_window\
+  build/$(MODE)/bin/idec_filled_window$(.EXE)\
   build/$(MODE)/obj/src/idec_filled_window_canvas_functions_cairo$(.OBJ)\
   build/$(MODE)/obj/src/idec_gtk_animation$(.OBJ)\
   | build/$(MODE)/demo/gtk\

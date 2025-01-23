@@ -2,7 +2,7 @@ build/$(MODE)/demo/pdf: | build/$(MODE)/demo
 	mkdir -p $@
 
 build/$(MODE)/demo/pdf/filled_window_default.pdf:\
-  build/$(MODE)/bin/idec_filled_window\
+  build/$(MODE)/bin/idec_filled_window$(.EXE)\
   build/$(MODE)/obj/src/idec_filled_window_canvas_functions_cairo$(.OBJ)\
   build/$(MODE)/obj/src/idec_cairo_pdf_animation$(.OBJ)\
   | build/$(MODE)/demo/pdf\
