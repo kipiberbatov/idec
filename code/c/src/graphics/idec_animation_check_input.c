@@ -2,20 +2,15 @@
 
 #include "color.h"
 #include "idec_animation.h"
-#include "idec_animation_intrinsic_functions.h"
+#include "idec_animation_generic_data.h"
 
 void idec_animation_check_input(
   int * status, const struct idec_animation * animation)
 {
-  void * data;
   int initial_index, timelapse, total_steps;
   double height, width;
-  const struct idec_animation_intrinsic_functions * intrinsic_functions;
 
-  data = animation->data;
-  intrinsic_functions = animation->intrinsic_functions;
-
-  width = intrinsic_functions->get_width(data);
+  width = animation->generic_data->width;
   if (width <= 0.)
   {
     color_error_position(__FILE__, __LINE__);
@@ -26,8 +21,8 @@ void idec_animation_check_input(
     return;
   }
 
-  height = intrinsic_functions->get_height(data);
-  if (width <= 0.)
+  height = animation->generic_data->height;
+  if (height <= 0.)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
@@ -37,7 +32,7 @@ void idec_animation_check_input(
     return;
   }
   
-  total_steps = intrinsic_functions->get_total_steps(data);
+  total_steps = animation->generic_data->total_steps;
   if (total_steps <= 0)
   {
     color_error_position(__FILE__, __LINE__);
@@ -48,7 +43,7 @@ void idec_animation_check_input(
     return;
   }
   
-  initial_index = *(intrinsic_functions->get_new_index_address(data));
+  initial_index = animation->generic_data->new_index;
   if (initial_index < 0 || initial_index >= total_steps)
   {
     color_error_position(__FILE__, __LINE__);

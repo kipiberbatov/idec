@@ -3,7 +3,9 @@
 #include "color.h"
 #include "idec_animation.h"
 #include "idec_command_line.h"
-#include "idec_filled_window.h"
+#include "idec_animation_generic_data.h"
+
+static void update_index(int * i){++*i;}
 
 int main(int argc, char ** argv)
 {
@@ -13,11 +15,8 @@ int main(int argc, char ** argv)
   const int close_automatically_default = 0, timelapse_default = 100,
             total_colors_default = 100;
   const double height_default = 500,  width_default = 500;
-  struct idec_filled_window fill;
+  struct idec_animation_generic_data fill;
   struct idec_animation animation;
-
-  extern const struct idec_animation_intrinsic_functions *
-  idec_filled_window_intrinsic_functions;
 
   idec_command_line option_animation_backend, option_animation_library,
                     option_canvas_backend, option_canvas_library,
@@ -61,7 +60,7 @@ int main(int argc, char ** argv)
     &option_title, &(animation.title), "--title", "Changing colors");
 
   idec_command_line_set_option_int(
-    &option_total_colors, &(fill.total_colors), "--total-colors",
+    &option_total_colors, &(fill.total_steps), "--total-colors",
     &total_colors_default);
 
   idec_command_line_set_option_int(
@@ -92,9 +91,10 @@ int main(int argc, char ** argv)
   }
 
   fill.new_index = 0;
-  animation.data = (void *) &fill;
-  animation.total_colors = fill.total_colors;
-  animation.intrinsic_functions = idec_filled_window_intrinsic_functions;
+  animation.data = NULL;
+  animation.generic_data = (void *) &fill;
+  animation.total_colors = fill.total_steps;
+  animation.update_new_index = update_index;
 
   idec_animation_check_input(&status, &animation);
   if (status)

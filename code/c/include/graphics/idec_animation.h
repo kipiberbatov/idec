@@ -4,7 +4,8 @@
 struct idec_animation
 {
   void * data;
-  const struct idec_animation_intrinsic_functions * intrinsic_functions;
+  struct idec_animation_generic_data * generic_data;
+  void (*update_new_index)(int *);
   const struct idec_animation_canvas_functions * canvas_functions;
   int total_colors;
   int timelapse;

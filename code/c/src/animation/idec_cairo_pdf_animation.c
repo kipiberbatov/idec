@@ -7,7 +7,7 @@
 #include "idec_animation.h"
 #include "idec_animation_canvas_functions.h"
 #include "idec_animation_draw_snapshot.h"
-#include "idec_animation_intrinsic_functions.h"
+#include "idec_animation_generic_data.h"
 
 static void idec_cairo_render_snapshot_to_pageable_cairo_context(
   cairo_t * cr, struct idec_animation * animation, int * status)
@@ -30,12 +30,12 @@ static void idec_cairo_render_to_pageable_cairo_surface(
   cairo_surface_t * surface, struct idec_animation * animation, int * status)
 {
   int i, n;
-  void * data;
+  struct idec_animation_generic_data * generic_data;
   cairo_t * cr;
 
-  data = animation->data;
-  n = animation->intrinsic_functions->get_total_steps(data);
-  i = *(animation->intrinsic_functions->get_new_index_address(data));
+  generic_data = animation->generic_data;
+  n = generic_data->total_steps;
+  i = generic_data->new_index;
   while (i < n)
   {
     cr = cairo_create(surface);
@@ -59,8 +59,9 @@ static void idec_cairo_render_to_pageable_cairo_surface(
       return;
     }
 
-    animation->intrinsic_functions->update_new_index(data);
-    i = *(animation->intrinsic_functions->get_new_index_address(data));
+    generic_data->old_index = i;
+    animation->update_new_index(&(generic_data->new_index));
+    i = generic_data->new_index;
     cairo_destroy(cr);
   }
 }
@@ -71,8 +72,8 @@ static void idec_cairo_render_to_pdf(
   double height, width;
   cairo_surface_t * surface;
 
-  width = animation->intrinsic_functions->get_width(animation->data);
-  height = animation->intrinsic_functions->get_height(animation->data);
+  width = animation->generic_data->width;
+  height = animation->generic_data->height;
 
   surface = cairo_pdf_surface_create(filename, width, height);
   *status = cairo_surface_status(surface);

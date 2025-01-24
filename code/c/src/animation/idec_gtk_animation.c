@@ -7,7 +7,7 @@
 #include "color.h"
 #include "idec_animation.h"
 #include "idec_animation_draw_snapshot.h"
-#include "idec_animation_intrinsic_functions.h"
+#include "idec_animation_generic_data.h"
 
 struct idec_gtk_animation_input
 {
@@ -24,23 +24,17 @@ static int on_draw_event(
   struct idec_gtk_animation_input * input)
 {
   int new_index, total_steps;
-  void * data;
-  int * (*get_old_index_address)(const void *);
-  int * (*get_new_index_address)(const void *);
-  void (*update_new_index)(void *);
+  struct idec_animation_generic_data * generic_data;
   struct idec_animation * animation;
 
   animation = input->animation;
-  data = animation->data;
-  total_steps = animation->intrinsic_functions->get_total_steps(data);
-  get_old_index_address = animation->intrinsic_functions->get_old_index_address;
-  update_new_index = animation->intrinsic_functions->update_new_index;
-  get_new_index_address = animation->intrinsic_functions->get_new_index_address;
-  new_index = *(get_new_index_address(data));
+  generic_data = animation->generic_data;
+  total_steps = generic_data->total_steps;
+  new_index = generic_data->new_index;
 
   if (new_index >= total_steps)
   {
-    *(get_new_index_address(data)) = *(get_old_index_address(data));
+    generic_data->new_index = generic_data->old_index;
     idec_animation_draw_snapshot((void *) cr, animation, &(input->status));
     if (input->status)
     {
@@ -49,7 +43,7 @@ static int on_draw_event(
       input->to_be_closed = 1;
       return TRUE;
     }
-    update_new_index(data);
+    animation->update_new_index(&(generic_data->new_index));
     return TRUE;
   }
   idec_animation_draw_snapshot((void *) cr, animation, &(input->status));
@@ -61,23 +55,19 @@ static int on_draw_event(
     return TRUE;
   }
   fprintf(stderr, "i = %d\n", new_index);
-  *(get_old_index_address(data)) = new_index;
-  update_new_index(data);
+  generic_data->old_index = new_index;
+  animation->update_new_index(&(generic_data->new_index));
   return TRUE;
 }
 
 static int on_timeout(struct idec_gtk_animation_input * input)
 {
   int new_index, total_steps;
-  void * data;
-  int * (*get_new_index_address)(const void *);
   struct idec_animation * animation;
 
   animation = input->animation;
-  data = animation->data;
-  total_steps = animation->intrinsic_functions->get_total_steps(data);
-  get_new_index_address = animation->intrinsic_functions->get_new_index_address;
-  new_index = *(get_new_index_address(data));
+  total_steps = animation->generic_data->total_steps;
+  new_index = animation->generic_data->new_index;
 
   if (new_index >= total_steps)
   {
@@ -110,8 +100,8 @@ static void idec_gtk_animation_run(
   input.to_be_closed = 0;
   input.status = 0;
 
-  width = (int) animation->intrinsic_functions->get_width(animation->data);
-  height = (int) animation->intrinsic_functions->get_height(animation->data);
+  width = (int) animation->generic_data->width;
+  height = (int) animation->generic_data->height;
 
   gtk_init(NULL, NULL);
 
@@ -199,10 +189,6 @@ void idec_gtk_animation(
   const char * output)
 {
   int index, total_steps;
-  void * data;
-
-  data = animation->data;
-  total_steps = animation->intrinsic_functions->get_total_steps(data);
 
   idec_gtk_animation_run(animation, status);
   if (*status)
@@ -211,7 +197,8 @@ void idec_gtk_animation(
     fputs("cannot run GTK animation\n", stderr);
   }
 
-  index = *(animation->intrinsic_functions->get_old_index_address(data));
+  total_steps = animation->generic_data->total_steps;
+  index = animation->generic_data->old_index;
 
   idec_gtk_animation_log_by_name(
     status, argc, argv, index, total_steps, output);

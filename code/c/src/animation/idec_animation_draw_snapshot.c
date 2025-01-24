@@ -11,6 +11,7 @@ void idec_animation_draw_snapshot(
     canvas,
     status,
     animation->data,
+    animation->generic_data,
     animation->total_colors,
     animation->canvas_functions->set_color);
 }
