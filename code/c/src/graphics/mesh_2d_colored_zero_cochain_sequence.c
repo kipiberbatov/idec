@@ -1,4 +1,3 @@
-#include "mesh_2d_colored_node.h"
 #include "mesh_2d_colored_zero_cochain.h"
 #include "mesh_2d_colored_zero_cochain_sequence.h"
 

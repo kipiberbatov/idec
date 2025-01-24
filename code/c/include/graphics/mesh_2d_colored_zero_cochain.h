@@ -1,6 +1,8 @@
 #ifndef _mesh_2d_colored_zero_cochain_h
 #define _mesh_2d_colored_zero_cochain_h
 
+#include <cairo.h>
+
 #include "mesh.h"
 
 typedef struct mesh_2d_colored_zero_cochain
