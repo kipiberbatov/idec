@@ -10,12 +10,8 @@ struct idec_filled_window
   int total_colors;
 };
 
-struct idec_animation_intrinsic_functions;
-
 extern const struct idec_animation_intrinsic_functions *
 idec_filled_window_intrinsic_functions;
-
-struct idec_animation_canvas_functions;
 
 extern const struct idec_animation_canvas_functions *
 idec_filled_window_canvas_functions;
