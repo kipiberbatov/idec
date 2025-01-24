@@ -5,14 +5,10 @@
 #include "idec_command_line.h"
 #include "idec_filled_window.h"
 
-extern const struct idec_animation_intrinsic_functions *
-idec_filled_window_intrinsic_functions;
-
 int main(int argc, char ** argv)
 {
-  void * lib_animation, * lib_canvas;
   char * animation_backend, * animation_library, * canvas_backend,
-       * canvas_library, * error, * output_name = NULL;
+       * canvas_library, * output_name = NULL;
   int size, status;
   const int close_automatically_default = 0, timelapse_default = 100,
             total_colors_default = 100;
@@ -20,7 +16,9 @@ int main(int argc, char ** argv)
   const double height_default = 500,  width_default = 500;
   struct idec_filled_window fill;
   struct idec_animation animation;
-  void (*animator)(struct idec_animation *, int *, int, char **, const char *);
+
+  extern const struct idec_animation_intrinsic_functions *
+  idec_filled_window_intrinsic_functions;
 
   idec_command_line option_animation_backend, option_animation_library,
                     option_canvas_backend, option_canvas_library,
@@ -94,26 +92,6 @@ int main(int argc, char ** argv)
     goto end;
   }
 
-  if (fill.total_colors < 1)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "the number of colors is %s%d%s but it must be positive\n",
-      color_variable, fill.total_colors, color_none);
-    status = 1;
-    goto end;
-  }
-
-  if (animation.timelapse <= 0)
-  {
-    fprintf(stderr,
-      "%sWarning:%s timelapse = %s%d%s but it should be positive.\n"
-      "timelapse = 1 will be used instead.\n",
-      color_red, color_none,
-      color_variable, animation.timelapse, color_none);
-    animation.timelapse = 1;
-  }
-
   fill.width = (int) width;
   fill.height = (int) height;
   fill.new_index = 0;
@@ -121,58 +99,25 @@ int main(int argc, char ** argv)
   animation.total_colors = fill.total_colors;
   animation.intrinsic_functions = idec_filled_window_intrinsic_functions;
 
-  lib_canvas = dlopen(canvas_library, RTLD_LAZY);
-  error = dlerror();
-  if (error)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "%s\n", error);
-    status = 1;
-    goto end;
-  }
-
-  *(void **) &(animation.canvas_functions) = dlsym(lib_canvas, canvas_backend);
-  error = dlerror();
-  if (error)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "%s\n", error);
-    status = 1;
-    goto lib_canvas_close;
-  }
-
-  lib_animation = dlopen(animation_library, RTLD_LAZY);
-  error = dlerror();
-  if (error)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "%s\n", error);
-    status = 1;
-    goto lib_canvas_close;
-  }
-
-  *(void **) (&animator) = dlsym(lib_animation, animation_backend);
-  error = dlerror();
-  if (error)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "%s\n", error);
-    status = 1;
-    goto lib_animation_close;
-  }
-
-  animator(&animation, &status, argc, argv, output_name);
+  idec_animation_check_input(&status, &animation);
   if (status)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot draw animation\n", stderr);
-    goto lib_animation_close;
+    fputs("bad input\n", stderr);
+    goto end;
   }
 
-lib_animation_close:
-  dlclose(lib_animation);
-lib_canvas_close:
-  dlclose(lib_canvas);
+  idec_animation_read_and_apply_backends(
+    &animation, &status,
+    argc, argv, output_name,
+    canvas_library, canvas_backend, animation_library, animation_backend);
+  if (status)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot read and apply backends\n", stderr);
+    goto end;
+  }
+
 end:
   return status;
 }

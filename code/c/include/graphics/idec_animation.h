@@ -12,4 +12,18 @@ struct idec_animation
   char * title;
 };
 
+void idec_animation_read_and_apply_backends(
+  struct idec_animation * animation,
+  int * status,
+  int argc,
+  char ** argv,
+  const char * output_name,
+  const char * canvas_library,
+  const char * canvas_backend,
+  const char * animation_library,
+  const char * animation_backend);
+
+void idec_animation_check_input(
+  int * status, const struct idec_animation * animation);
+
 #endif /* _idec_animation_h */
