@@ -8,8 +8,8 @@ with 'total_colors' from a color scheme, specified elewhere.
 struct idec_filled_window
 {
   /* immutable once set */
-  int width;
-  int height;
+  double width;
+  double height;
   int total_colors;
 
   /* mutable on each iteration of animation drawing */

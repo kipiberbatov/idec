@@ -12,7 +12,6 @@ int main(int argc, char ** argv)
   int size, status;
   const int close_automatically_default = 0, timelapse_default = 100,
             total_colors_default = 100;
-  double height, width;
   const double height_default = 500,  width_default = 500;
   struct idec_filled_window fill;
   struct idec_animation animation;
@@ -70,10 +69,10 @@ int main(int argc, char ** argv)
     "--timelapse", &timelapse_default);
 
   idec_command_line_set_option_double(
-    &option_width, &(width), "--width", &width_default);
+    &option_width, &(fill.width), "--width", &width_default);
 
   idec_command_line_set_option_double(
-    &option_height, &(height), "--height", &height_default);
+    &option_height, &(fill.height), "--height", &height_default);
 
   idec_command_line_set_option_int(
     &option_close_automatically, &(animation.close_automatically),
@@ -92,8 +91,6 @@ int main(int argc, char ** argv)
     goto end;
   }
 
-  fill.width = (int) width;
-  fill.height = (int) height;
   fill.new_index = 0;
   animation.data = (void *) &fill;
   animation.total_colors = fill.total_colors;
