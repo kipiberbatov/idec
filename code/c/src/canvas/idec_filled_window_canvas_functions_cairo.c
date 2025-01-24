@@ -3,11 +3,11 @@
 #include <cairo.h>
 
 #include "color.h"
-#include "idec_animation.h"
+#include "idec_animation_canvas_functions.h"
 #include "idec_filled_window.h"
 #include "idec_set_color_from_scheme_rainbow.h"
 
-static void set_background_color(void * canvas)
+static void set_background_color_white(void * canvas)
 {
   cairo_set_source_rgb((cairo_t *) canvas, 1, 1, 1);
 }
@@ -29,10 +29,11 @@ static void draw_snapshot(
   cairo_paint(cr);
 }
 
+/* This variable will be resolved at runtime by its address */
 const struct idec_animation_canvas_functions
 idec_filled_window_canvas_functions_cairo =
 {
-  set_background_color,
+  set_background_color_white,
   (void (*)(void *, int *, int, int)) idec_set_color_from_scheme_rainbow,
   draw_snapshot
 };

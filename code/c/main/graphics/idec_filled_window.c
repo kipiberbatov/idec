@@ -5,6 +5,9 @@
 #include "idec_command_line.h"
 #include "idec_filled_window.h"
 
+extern const struct idec_animation_intrinsic_functions *
+idec_filled_window_intrinsic_functions;
+
 int main(int argc, char ** argv)
 {
   void * lib_animation, * lib_canvas;
@@ -17,7 +20,7 @@ int main(int argc, char ** argv)
   const double height_default = 500,  width_default = 500;
   struct idec_filled_window fill;
   struct idec_animation animation;
-  idec_animation_backend_t * animator;
+  void (*animator)(struct idec_animation *, int *, int, char **, const char *);
 
   idec_command_line option_animation_backend, option_animation_library,
                     option_canvas_backend, option_canvas_library,

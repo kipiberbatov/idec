@@ -1,4 +1,4 @@
-#include "idec_animation.h"
+#include "idec_animation_intrinsic_functions.h"
 #include "idec_filled_window.h"
 
 static double get_width(const void * animation)

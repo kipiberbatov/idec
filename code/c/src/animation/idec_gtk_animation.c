@@ -7,6 +7,7 @@
 #include "color.h"
 #include "idec_animation.h"
 #include "idec_animation_draw_snapshot.h"
+#include "idec_animation_intrinsic_functions.h"
 
 struct idec_gtk_animation_input
 {

@@ -5,7 +5,9 @@
 
 #include "color.h"
 #include "idec_animation.h"
+#include "idec_animation_canvas_functions.h"
 #include "idec_animation_draw_snapshot.h"
+#include "idec_animation_intrinsic_functions.h"
 
 static void idec_cairo_render_snapshot_to_pageable_cairo_context(
   cairo_t * cr, struct idec_animation * animation, int * status)

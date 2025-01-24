@@ -1,4 +1,5 @@
 #include "idec_animation.h"
+#include "idec_animation_canvas_functions.h"
 #include "idec_animation_draw_snapshot.h"
 
 void idec_animation_draw_snapshot(

@@ -1,28 +1,6 @@
 #ifndef _idec_animation_h
 #define _idec_animation_h
 
-struct idec_animation_intrinsic_functions
-{
-  double (*get_width)(const void *);
-  double (*get_height)(const void *);
-  int (*get_total_steps)(const void *);
-  int * (*get_old_index_address)(const void *);
-  int * (*get_new_index_address)(const void *);
-  void (*update_new_index)(void *);
-};
-
-struct idec_animation_canvas_functions
-{
-  void (*set_background_color)(void * canvas);
-
-  void (*set_color)(
-    void * canvas, int * status, int color_index, int total_colors);
-
-  void (*draw_snapshot)(
-    void * canvas, int * status, const void * data, int total_colors,
-    void (*)(void *, int *, int, int));
-};
-
 struct idec_animation
 {
   void * data;
@@ -33,12 +11,5 @@ struct idec_animation
   int close_automatically;
   char * title;
 };
-
-typedef void idec_animation_backend_t(
-  struct idec_animation * animation,
-  int * status,
-  int argc,
-  char ** argv,
-  const char * output);
 
 #endif /* _idec_animation_h */
