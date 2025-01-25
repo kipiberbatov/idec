@@ -153,7 +153,7 @@ dual_potential_free:
 flow_free:
   free(flow);
 lib_close:
-  dlclose(lib_name);
+  dlclose(lib_handle);
 m_inner_free:
   double_array2_free(m_inner, d + 1);
 m_vol_free:

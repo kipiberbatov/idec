@@ -99,7 +99,7 @@ int main(int argc, char ** argv)
 
   free(flow);
 lib_close:
-  dlclose(lib_name);
+  dlclose(lib_handle);
 m_bd_1_free:
   matrix_sparse_free(m_bd_1);
 m_free:

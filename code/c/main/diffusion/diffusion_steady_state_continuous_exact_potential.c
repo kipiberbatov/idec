@@ -75,7 +75,7 @@ int main(int argc, char ** argv)
 
   free(potential);
 lib_close:
-  dlclose(lib_name);
+  dlclose(lib_handle);
 m_free:
   mesh_free(m);
 end:

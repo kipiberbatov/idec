@@ -158,7 +158,7 @@ int main(int argc, char ** argv)
 
   double_array_sequence_dynamic_free(potential);
 lib_close:
-  dlclose(lib_name);
+  dlclose(lib_handle);
 m_inner_free:
   double_array2_free(m_inner, d + 1);
 m_vol_free:

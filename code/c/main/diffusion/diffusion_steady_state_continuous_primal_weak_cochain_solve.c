@@ -102,7 +102,7 @@ int main(int argc, char ** argv)
 
   free(result);
 lib_close:
-  dlclose(lib_name);
+  dlclose(lib_handle);
 m_inner_free:
   double_array2_free(m_inner, m->dim + 1);
 m_vol_free:

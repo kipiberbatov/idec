@@ -142,7 +142,7 @@ int main(int argc, char ** argv)
 
   free(result);
 lib_close:
-  dlclose(lib_name);
+  dlclose(lib_handle);
 m_cbd_star_1_free:
   matrix_sparse_free(m_cbd_star_1);
 m_cbd_0_free:

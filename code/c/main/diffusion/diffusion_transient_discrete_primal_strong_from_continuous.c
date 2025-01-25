@@ -97,7 +97,7 @@ int main(int argc, char ** argv)
 
   diffusion_transient_discrete_primal_strong_free(data_discrete);
 lib_close:
-  dlclose(lib_name);
+  dlclose(lib_handle);
 m_free:
   mesh_free(m);
 end:

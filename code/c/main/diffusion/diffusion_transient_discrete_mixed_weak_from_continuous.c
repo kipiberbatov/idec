@@ -160,7 +160,7 @@ int main(int argc, char ** argv)
 
   diffusion_transient_discrete_mixed_weak_free(data_discrete);
 lib_close:
-  dlclose(lib_name);
+  dlclose(lib_handle);
 m_vol_free:
   double_array2_free(m_vol, d + 1);
 m_cbd_star_free:
