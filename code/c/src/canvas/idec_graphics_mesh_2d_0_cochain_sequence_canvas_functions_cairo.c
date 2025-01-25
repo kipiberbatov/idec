@@ -67,7 +67,6 @@ static void draw_snapshot(
 
   i = generic_data->new_index;
   values_i = object->values + number_of_nodes * i;
-  //coordinates_i = object->coordinates + 2 * i;
   if (denominator == 0.)
   {
     node.relative_value = 0.;
