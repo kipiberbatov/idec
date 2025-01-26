@@ -231,6 +231,8 @@ int main(int argc, char ** argv)
   }
   double_array_assign_constant(
     cochain_sequence.point_sizes, m->cn[0], data.point_size);
+  cochain_sequence.m = m;
+  cochain_sequence.line_width = data.line_width;
   cochain_sequence.min_value = double_array_min(n * m->cn[0], u);
   cochain_sequence.max_value = double_array_max(n * m->cn[0], u);
   

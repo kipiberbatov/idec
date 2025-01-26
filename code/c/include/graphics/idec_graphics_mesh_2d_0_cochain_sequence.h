@@ -1,13 +1,17 @@
 #ifndef _idec_graphics_mesh_2d_0_cochain_sequence_h
 #define _idec_graphics_mesh_2d_0_cochain_sequence_h
 
+#include "mesh.h"
+
 /* used in conjunction with idec_animation_generic_data */
 struct idec_graphics_mesh_2d_0_cochain_sequence
 {
+  mesh * m;
   int number_of_nodes;
   double * values;
   double * coordinates;
   double * point_sizes;
+  double line_width;
   double min_value;
   double max_value;
 };
