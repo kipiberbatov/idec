@@ -6,6 +6,7 @@
 
 #include "color.h"
 #include "idec_animation.h"
+#include "idec_animation_canvas_functions.h"
 #include "idec_animation_draw_snapshot.h"
 #include "idec_animation_generic_data.h"
 
@@ -35,6 +36,7 @@ static int on_draw_event(
   if (new_index >= total_steps)
   {
     generic_data->new_index = generic_data->old_index;
+    animation->canvas_functions->set_background_color((void *) cr);
     idec_animation_draw_snapshot((void *) cr, animation, &(input->status));
     if (input->status)
     {
@@ -46,6 +48,7 @@ static int on_draw_event(
     animation->update_new_index(&(generic_data->new_index));
     return TRUE;
   }
+  animation->canvas_functions->set_background_color((void *) cr);
   idec_animation_draw_snapshot((void *) cr, animation, &(input->status));
   if (input->status)
   {

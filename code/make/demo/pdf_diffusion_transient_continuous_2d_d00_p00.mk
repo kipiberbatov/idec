@@ -21,8 +21,7 @@ build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p00_primal_strong_c
   --canvas-backend=idec_graphics_mesh_2d_0_cochain_sequence_canvas_functions_cairo\
   --animation-library=$(word 3, $|)\
   --animation-backend=idec_cairo_pdf_animation\
-  --output=$@\
-  --title=2d_d00_p00_primal_strong_potential
+  --output=$@
 
 build/$(MODE)/demo/pdf/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_flow.pdf:\
   build/$(MODE)/bin/pdf_mesh_2d_colored_one_cochain_sequence$(.EXE)\

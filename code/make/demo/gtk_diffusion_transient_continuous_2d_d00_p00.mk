@@ -15,7 +15,7 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_strong_c
   build/$(MODE)/demo/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/demo/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_potential.txt\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_0_cochain_sequence_canvas_functions_cairo$(.OBJ)\
-  build/$(MODE)/obj/src/idec_cairo_pdf_animation$(.OBJ)\
+  build/$(MODE)/obj/src/idec_gtk_animation$(.OBJ)\
   | build/$(MODE)/demo/gtk/diffusion\
     build/$(MODE)/lib/libcanvas$(.DLL)\
     build/$(MODE)/lib/libanimation$(.DLL)
@@ -27,8 +27,8 @@ build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_strong_c
   --canvas-backend=idec_graphics_mesh_2d_0_cochain_sequence_canvas_functions_cairo\
   --animation-library=$(word 3, $|)\
   --animation-backend=idec_gtk_animation\
-  --output=$@\
-  --title=2d_d00_p00_primal_strong_potential
+  --title=2d_d00_p00_primal_strong_potential\
+  --output=$@
 
 build/$(MODE)/demo/gtk/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochain_brick_2d_2_forman_trapezoidal_0p001_1000_flow.log:\
   build/$(MODE)/bin/gtk_mesh_2d_colored_one_cochain_sequence$(.EXE)\

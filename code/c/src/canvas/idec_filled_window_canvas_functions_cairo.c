@@ -7,10 +7,7 @@
 #include "idec_animation_generic_data.h"
 #include "idec_set_color_from_scheme_rainbow.h"
 
-static void set_background_color_white(void * canvas)
-{
-  cairo_set_source_rgb((cairo_t *) canvas, 1, 1, 1);
-}
+static void do_nothing(void * canvas){}
 
 static void draw_snapshot(
   void * canvas,
@@ -20,6 +17,9 @@ static void draw_snapshot(
   int total_colors,
   void (*set_color)(void *, int *, int, int))
 {
+  cairo_t * cr = (cairo_t *) canvas;
+
+  cairo_save(cr);
   set_color(canvas, status, generic_data->new_index, total_colors);
   if (*status)
   {
@@ -27,14 +27,15 @@ static void draw_snapshot(
     fputs("cannot apply color set_color\n", stderr);
     return;
   }
-  cairo_paint((cairo_t *) canvas);
+  cairo_paint(cr);
+  cairo_restore(cr);
 }
 
 /* This variable will be resolved at runtime by its address */
 const struct idec_animation_canvas_functions
 idec_filled_window_canvas_functions_cairo =
 {
-  set_background_color_white,
+  do_nothing,
   (void (*)(void *, int *, int, int)) idec_set_color_from_scheme_rainbow,
   draw_snapshot
 };

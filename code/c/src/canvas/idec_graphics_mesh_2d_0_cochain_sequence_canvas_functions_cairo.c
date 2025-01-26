@@ -5,38 +5,42 @@
 
 #include "color.h"
 #include "idec_animation_canvas_functions.h"
-#include "idec_animation_generic_data.h"
 #include "idec_graphics_mesh_2d_0_cochain_sequence.h"
+#include "idec_graphics_mesh_2d_node.h"
 #include "idec_set_color_from_scheme_rainbow.h"
 
 static void set_background_color_white(void * canvas)
 {
+  cairo_t * cr = (cairo_t *) canvas;
+
+  cairo_save(cr);
   cairo_set_source_rgb((cairo_t *) canvas, 1, 1, 1);
+  cairo_paint(cr);
+  cairo_restore(cr);
 }
 
-struct idec_node
-{
-  int total_colors;
-  double * coordinates;
-  double size;
-  double relative_value;
-  void (*set_color)(void *, int *, int, int);
-};
-
-static void idec_node_cairo_draw(
+static void idec_graphics_mesh_2d_node_cairo_draw(
   cairo_t * cr,
   int * status,
-  const struct idec_node * node)
+  const struct idec_graphics_mesh_2d_node * node)
 {
-  int ind;
   double * coordinates = node->coordinates;
 
-  ind = (int) (node->relative_value * ((double) (node->total_colors - 1)));
-  node->set_color(cr, status, ind, node->total_colors);
+  cairo_save(cr);
+  node->set_color(cr, status, node->color_index, node->total_colors);
+  if (*status)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot set color\n", stderr);
+    return;
+  }
   cairo_arc(cr, coordinates[0], coordinates[1], node->size, 0, 2 * M_PI);
   cairo_fill(cr);
   cairo_stroke(cr);
+  cairo_restore(cr);
 }
+
+struct idec_animation_generic_data;
 
 static void draw_snapshot(
   void * canvas,
@@ -44,47 +48,23 @@ static void draw_snapshot(
   const void * data,
   const struct idec_animation_generic_data * generic_data,
   int total_colors,
-  void (*set_color)(void *, int *, int, int))
+  void (*set_color_cairo)(void *, int *, int, int))
 {
-  int i, j, number_of_nodes;
-  double max, min, denominator;
-  double * coordinates, * point_sizes, * values_i;
-  struct idec_node node;
-  cairo_t * cr;
-  const struct idec_graphics_mesh_2d_0_cochain_sequence * object;
-
-  cr = (cairo_t *) canvas;
-  object = (const struct idec_graphics_mesh_2d_0_cochain_sequence *) data;
-
-  min = object->min_value;
-  max = object->max_value;
-  number_of_nodes = object->number_of_nodes;
-  node.total_colors = total_colors;
-  node.set_color = set_color;
-  denominator = max - min;
-  point_sizes = object->point_sizes;
-  coordinates = object->coordinates;
-
-  i = generic_data->new_index;
-  values_i = object->values + number_of_nodes * i;
-  if (denominator == 0.)
+  idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
+    (cairo_t *) canvas,
+    status,
+    (const struct idec_graphics_mesh_2d_0_cochain_sequence *) data,
+    generic_data,
+    total_colors,
+    set_color_cairo,
+    (void (*)(void *, int *, const struct idec_graphics_mesh_2d_node *))
+      idec_graphics_mesh_2d_node_cairo_draw);
+  if (*status)
   {
-    node.relative_value = 0.;
-    for (j = 0; j < number_of_nodes; ++j)
-    {
-      node.size = point_sizes[j];
-      node.coordinates = coordinates + 2 * j;
-      idec_node_cairo_draw(cr, status, &node);
-    }
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot draw snapshot\n", stderr);
+    return;
   }
-  else
-    for (j = 0; j < number_of_nodes; ++j)
-    {
-      node.size = point_sizes[j];
-      node.coordinates = coordinates + 2 * j;
-      node.relative_value = (values_i[j] - min) / denominator;
-      idec_node_cairo_draw(cr, status, &node);
-    }
 }
 
 /* This variable will be resolved at runtime by its address */
