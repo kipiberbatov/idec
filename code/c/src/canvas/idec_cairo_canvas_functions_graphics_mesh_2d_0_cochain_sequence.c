@@ -58,9 +58,9 @@ static void draw_snapshot_cairo(
 
 /* This variable will be resolved at runtime by its name */
 const struct idec_animation_canvas_functions
-idec_graphics_mesh_2d_0_cochain_sequence_canvas_functions_cairo =
+idec_cairo_canvas_functions_graphics_mesh_2d_0_cochain_sequence =
 {
-  (void (*)(void *)) idec_cairo_paint_white,
+  (void (*)(void *, int *)) idec_cairo_paint_white,
   (void (*)(void *, int *, int, int)) idec_cairo_set_color_from_scheme_rainbow,
   draw_snapshot_cairo
 };

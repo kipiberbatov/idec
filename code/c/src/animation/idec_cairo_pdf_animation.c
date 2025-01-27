@@ -6,21 +6,29 @@
 #include "color.h"
 #include "idec_animation.h"
 #include "idec_animation_canvas_functions.h"
-#include "idec_animation_draw_snapshot.h"
+#include "idec_animation_draw.h"
 #include "idec_animation_generic_data.h"
 
 static void idec_cairo_render_snapshot_to_pageable_cairo_context(
   cairo_t * cr, struct idec_animation * animation, int * status)
 {
-  animation->canvas_functions->set_background_color((void *) cr);
-  idec_animation_draw_snapshot((void *) cr, animation, status);
+  idec_animation_draw((void *) cr, animation, status);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot render snapshot to Cairo context\n", stderr);
+    fputs("cannot draw to Cairo context\n", stderr);
     return;
   }
   cairo_show_page(cr);
+  *status = cairo_status(cr);
+  if (*status)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot render with Cairo: %s\n",
+      cairo_status_to_string(*status));
+    return;
+  }
 }
 
 static void idec_cairo_render_to_pageable_cairo_surface(

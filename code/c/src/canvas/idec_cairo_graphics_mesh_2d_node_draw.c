@@ -24,4 +24,13 @@ void idec_cairo_graphics_mesh_2d_node_draw(
   cairo_fill(cr);
   cairo_stroke(cr);
   cairo_restore(cr);
+  *status = cairo_status(cr);
+  if (*status)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr,
+      "cannot render with Cairo: %s\n",
+      cairo_status_to_string(*status));
+    return;
+  }
 }

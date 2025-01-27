@@ -3,14 +3,14 @@ build/$(MODE)/demo/pdf: | build/$(MODE)/demo
 
 build/$(MODE)/demo/pdf/filled_window_default.pdf:\
   build/$(MODE)/bin/idec_filled_window$(.EXE)\
-  build/$(MODE)/obj/src/idec_filled_window_canvas_functions_cairo$(.OBJ)\
+  build/$(MODE)/obj/src/idec_cairo_canvas_functions_filled_window$(.OBJ)\
   build/$(MODE)/obj/src/idec_cairo_pdf_animation$(.OBJ)\
   | build/$(MODE)/demo/pdf\
     build/$(MODE)/lib/libcanvas$(.DLL)\
     build/$(MODE)/lib/libanimation$(.DLL)
 	$<\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_filled_window_canvas_functions_cairo\
+  --canvas-backend=idec_cairo_canvas_functions_filled_window\
   --animation-library=$(word 3, $|)\
   --animation-backend=idec_cairo_pdf_animation\
   --output=$@

@@ -21,7 +21,7 @@ void idec_cairo_graphics_mesh_2d_edge_black_draw(
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "error in rendereing with Cairo: %s\n",
+      "cannot render with Cairo: %s\n",
       cairo_status_to_string(*status));
     return;
   }

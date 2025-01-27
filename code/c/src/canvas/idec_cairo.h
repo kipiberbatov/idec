@@ -6,7 +6,7 @@
 struct idec_graphics_mesh_2d_edge;
 struct idec_graphics_mesh_2d_node;
 
-void idec_cairo_paint_white(cairo_t * cr);
+void idec_cairo_paint_white(cairo_t * cr, int * status);
 
 void idec_cairo_set_color_from_scheme_rainbow(
   cairo_t * cr, int * status, int color_index, int total_colors);

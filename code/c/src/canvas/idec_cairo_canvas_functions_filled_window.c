@@ -5,9 +5,9 @@
 #include "color.h"
 #include "idec_animation_canvas_functions.h"
 #include "idec_animation_generic_data.h"
-#include "idec_set_color_from_scheme_rainbow.h"
+#include "idec_cairo.h"
 
-static void do_nothing(void * canvas){}
+static void do_nothing(void * canvas, int * status){}
 
 static void draw_snapshot(
   void * canvas,
@@ -33,9 +33,9 @@ static void draw_snapshot(
 
 /* This variable will be resolved at runtime by its name */
 const struct idec_animation_canvas_functions
-idec_filled_window_canvas_functions_cairo =
+idec_cairo_canvas_functions_filled_window =
 {
   do_nothing,
-  (void (*)(void *, int *, int, int)) idec_set_color_from_scheme_rainbow,
+  (void (*)(void *, int *, int, int)) idec_cairo_set_color_from_scheme_rainbow,
   draw_snapshot
 };

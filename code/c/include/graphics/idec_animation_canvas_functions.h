@@ -5,7 +5,7 @@ struct idec_animation_generic_data;
 
 struct idec_animation_canvas_functions
 {
-  void (*set_background_color)(void * canvas);
+  void (*set_background_color)(void * canvas, int * status);
 
   void (*set_color)(
     void * canvas, int * status, int color_index, int total_colors);
