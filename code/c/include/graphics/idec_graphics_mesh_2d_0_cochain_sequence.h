@@ -7,7 +7,6 @@
 struct idec_graphics_mesh_2d_0_cochain_sequence
 {
   mesh * m;
-  int number_of_nodes;
   double * values;
   double * coordinates;
   double * point_sizes;

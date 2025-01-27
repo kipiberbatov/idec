@@ -21,7 +21,7 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
 
   min = cochain_sequence->min_value;
   max = cochain_sequence->max_value;
-  number_of_nodes = cochain_sequence->number_of_nodes;
+  number_of_nodes = cochain_sequence->m->cn[0];
   node.total_colors = total_colors;
   node.set_color = set_color;
   denominator = max - min;

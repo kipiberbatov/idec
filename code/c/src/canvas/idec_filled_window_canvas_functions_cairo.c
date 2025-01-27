@@ -31,7 +31,7 @@ static void draw_snapshot(
   cairo_restore(cr);
 }
 
-/* This variable will be resolved at runtime by its address */
+/* This variable will be resolved at runtime by its name */
 const struct idec_animation_canvas_functions
 idec_filled_window_canvas_functions_cairo =
 {
