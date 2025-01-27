@@ -13,7 +13,7 @@ void idec_graphics_mesh_2d_skeleton_draw(
 {
   int i, number_of_edges;
   int * cf_1_0_a1, * cf_1_0_i;
-  double * coordinates;
+  double * coordinates, * e0, * e1;
   jagged2 cf_1_0;
   mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
@@ -27,8 +27,12 @@ void idec_graphics_mesh_2d_skeleton_draw(
   cf_1_0_a1 = cf_1_0.a1;
   for (i = 0; i < number_of_edges; ++i)
   {
-    edge.e0 = coordinates + 2 * cf_1_0_i[0];
-    edge.e1 = coordinates + 2 * cf_1_0_i[1];
+    e0 = coordinates + 2 * cf_1_0_i[0];
+    e1 = coordinates + 2 * cf_1_0_i[1];
+    edge.e0[0] = e0[0];
+    edge.e0[1] = e0[1];
+    edge.e1[0] = e1[0];
+    edge.e1[1] = e1[1];
     draw_edge(canvas, status, &edge);
     if (*status)
     {

@@ -17,4 +17,7 @@ void idec_cairo_graphics_mesh_2d_node_draw(
 void idec_cairo_graphics_mesh_2d_edge_black_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge);
 
+void idec_cairo_graphics_mesh_2d_edge_perpendicular_oriented_draw(
+  cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge);
+
 #endif /* _idec_cairo_h */

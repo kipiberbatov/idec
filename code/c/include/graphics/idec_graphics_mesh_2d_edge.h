@@ -5,8 +5,8 @@ struct idec_graphics_mesh_2d_edge
 {
   int total_colors;
   int color_index;
-  double * e0;
-  double * e1;
+  double e0[2];
+  double e1[2];
   double width;
   void (*set_color)(void *, int *, int, int);
 };
