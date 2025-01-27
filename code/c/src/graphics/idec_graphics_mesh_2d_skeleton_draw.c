@@ -3,6 +3,7 @@
 #include "color.h"
 #include "idec_graphics_mesh_2d_edge.h"
 #include "idec_graphics_mesh_2d_skeleton.h"
+#include "mesh.h"
 
 void idec_graphics_mesh_2d_skeleton_draw(
   void * canvas,
@@ -13,15 +14,17 @@ void idec_graphics_mesh_2d_skeleton_draw(
   int i, number_of_edges;
   int * cf_1_0_a1, * cf_1_0_i;
   double * coordinates;
-  jagged2 * cf_1_0;
+  jagged2 cf_1_0;
+  mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
 
   coordinates = skeleton->coordinates;
   edge.width = skeleton->line_width;
-  cf_1_0 = skeleton->cf_1_0;
-  number_of_edges = cf_1_0->a0;
-  cf_1_0_i = cf_1_0->a2;
-  cf_1_0_a1 = cf_1_0->a1;
+  m = skeleton->m;
+  mesh_cf_part2(&cf_1_0, m, 1, 0);
+  number_of_edges = cf_1_0.a0;
+  cf_1_0_i = cf_1_0.a2;
+  cf_1_0_a1 = cf_1_0.a1;
   for (i = 0; i < number_of_edges; ++i)
   {
     edge.e0 = coordinates + 2 * cf_1_0_i[0];

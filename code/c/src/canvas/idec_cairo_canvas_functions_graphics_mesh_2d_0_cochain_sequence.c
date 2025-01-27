@@ -8,7 +8,7 @@
 
 struct idec_animation_generic_data;
 
-static void draw_snapshot_cairo(
+static void idec_cairo_draw_snapshot_graphics_mesh_2d_0_cochain_sequence(
   void * canvas,
   int * status,
   const void * data,
@@ -18,13 +18,11 @@ static void draw_snapshot_cairo(
 {
   const struct idec_graphics_mesh_2d_0_cochain_sequence * cochain_sequence;
   struct idec_graphics_mesh_2d_skeleton skeleton;
-  jagged2 cf_1_0;
 
   *(const void **) (&cochain_sequence) = data;
   skeleton.line_width = cochain_sequence->line_width;
   skeleton.coordinates = cochain_sequence->coordinates;
-  mesh_cf_part2(&cf_1_0, cochain_sequence->m, 1, 0);
-  skeleton.cf_1_0 = &cf_1_0;
+  skeleton.m = cochain_sequence->m;
 
   idec_graphics_mesh_2d_skeleton_draw(
     canvas,
@@ -62,5 +60,5 @@ idec_cairo_canvas_functions_graphics_mesh_2d_0_cochain_sequence =
 {
   (void (*)(void *, int *)) idec_cairo_paint_white,
   (void (*)(void *, int *, int, int)) idec_cairo_set_color_from_scheme_rainbow,
-  draw_snapshot_cairo
+  idec_cairo_draw_snapshot_graphics_mesh_2d_0_cochain_sequence
 };

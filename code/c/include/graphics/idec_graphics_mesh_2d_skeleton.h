@@ -1,11 +1,11 @@
 #ifndef _idec_graphics_mesh_2d_skeleton_h
 #define _idec_graphics_mesh_2d_skeleton_h
 
-#include "jagged.h"
+struct mesh;
 
 struct idec_graphics_mesh_2d_skeleton
 {
-  jagged2 * cf_1_0;
+  struct mesh * m;
   double * coordinates;
   double line_width;
 };
