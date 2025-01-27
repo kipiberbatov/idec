@@ -13,7 +13,7 @@ void idec_cairo_graphics_mesh_2d_node_draw(
   double * coordinates = node->coordinates;
 
   cairo_save(cr);
-  node->set_color(cr, status, node->color_index, node->total_colors);
+  node->set_color((void *) cr, status, node->color_index, node->total_colors);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);
