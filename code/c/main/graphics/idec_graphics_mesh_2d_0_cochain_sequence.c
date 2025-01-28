@@ -217,6 +217,9 @@ int main(int argc, char ** argv)
     generic_data.height,
     &window_margin);
 
+  if (data.point_size < 2.5)
+    data.point_size = 2.5;
+
   cochain_sequence.values = u;
   cochain_sequence.coordinates = new_coordinates;
   cochain_sequence.point_sizes = (double *) malloc(sizeof(double) * m->cn[0]);
