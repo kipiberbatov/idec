@@ -148,7 +148,6 @@ _include_main_mesh := $(_include_main_algebra)\
 _include_main_diffusion := $(_include_main_mesh)\
   -iquote code/c/include/diffusion
 _include_main_graphics := $(_include_main_mesh) -iquote code/c/include/graphics
-# $(shell pkg-config --cflags gtk+-3.0) is included when calling the compiler
 _include_main_shared :=
 _include_main_animation :=
 _include_main_canvas :=
@@ -174,7 +173,6 @@ _libs_mesh := build/$(MODE)/lib/libmesh$(.LIB)\
   build/$(MODE)/lib/libregion$(.LIB) $(_libs_algebra)
 _libs_diffusion := build/$(MODE)/lib/libdiffusion$(.LIB) $(_libs_mesh)
 _libs_graphics := build/$(MODE)/lib/libgraphics$(.LIB) $(_libs_mesh)
-# $(shell pkg-config --libs gtk+-3.0) is included when calling the linker
 _libs_shared :=
 _libs_animation :=
 _libs_canvas :=
@@ -288,8 +286,7 @@ $(_obj_src_diffusion): build/$(MODE)/obj/src/%$(.OBJ):\
 
 $(_obj_src_graphics): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/graphics/%.c\
     | build/$(MODE)/obj/src
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_graphics)\
-	  $(shell pkg-config --cflags gtk+-3.0) -c $<
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_graphics) -c $<
 
 $(_obj_src_shared): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/shared/%.c\
     | build/$(MODE)/obj/src
@@ -326,8 +323,7 @@ $(_obj_main_region): build/$(MODE)/obj/main/%$(.OBJ):\
 
 $(_obj_main_graphics): build/$(MODE)/obj/main/%$(.OBJ):\
    code/c/main/graphics/%.c | build/$(MODE)/obj/main
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_graphics)\
-	  $(shell pkg-config --cflags gtk+-3.0) -c $<
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_main_graphics) -c $<
 
 $(_obj_main_mesh): build/$(MODE)/obj/main/%$(.OBJ): code/c/main/mesh/%.c\
   | build/$(MODE)/obj/main
@@ -368,14 +364,10 @@ build/$(MODE)/lib/libshared$(.DLL):\
   | build/$(MODE)/lib
 	$(CC) -o $@ -fPIC -shared $^ $(LDLIBS)
 
-_external_libs_cairo = $(shell pkg-config --libs cairo)
-_external_libs_gtk = $(shell pkg-config --libs gtk+-3.0)
-
 build/$(MODE)/lib/libanimation$(.DLL):\
   $(_obj_src_animation) | build/$(MODE)/lib
-	$(CC) -o $@ -fPIC -shared $^ $(_external_libs_gtk) $(LDLIBS)
+	$(CC) -o $@ -fPIC -shared $^ $(shell pkg-config --libs gtk+-3.0) $(LDLIBS)
 
-# after refactoring of graphics only _external_libs_cairo will be required
 build/$(MODE)/lib/libcanvas$(.DLL):\
   $(_obj_src_canvas)\
   $(_obj_src_graphics)\
@@ -384,7 +376,7 @@ build/$(MODE)/lib/libcanvas$(.DLL):\
   $(_obj_src_algebra)\
   $(_obj_src_array)\
   | build/$(MODE)/lib
-	$(CC) -o $@ -fPIC -shared $^ $(_external_libs_gtk) $(LDLIBS)
+	$(CC) -o $@ -fPIC -shared $^ $(shell pkg-config --libs cairo) $(LDLIBS)
 
 ################################### linking ####################################
 build/$(MODE)/bin: | build/$(MODE)
@@ -412,7 +404,7 @@ $(_bin_diffusion): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
 
 $(_bin_graphics): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
   $(_libs_graphics) | build/$(MODE)/bin
-	$(CC) -o $@ $< $(_libs_graphics) $(_external_libs_gtk) $(LDLIBS)
+	$(CC) -o $@ $< $(_libs_graphics) $(LDLIBS)
 
 ################################ running demos #################################
 build/$(MODE)/demo: | build/$(MODE)
