@@ -8,7 +8,9 @@
 void idec_cairo_graphics_mesh_2d_edge_perpendicular_oriented_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge)
 {
-  edge->set_color(cr, status, edge->color_index, edge->total_colors);
+  if (edge->color_index == 0)
+    return;
+  edge->set_color((void *) cr, status, edge->color_index, edge->total_colors);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);
