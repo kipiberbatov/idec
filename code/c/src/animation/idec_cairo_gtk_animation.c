@@ -10,7 +10,7 @@
 #include "idec_animation_draw.h"
 #include "idec_animation_generic_data.h"
 
-struct idec_gtk_animation_input
+struct idec_cairo_gtk_animation_input
 {
   GtkWidget * drawing_area;
   struct idec_animation * animation;
@@ -22,7 +22,7 @@ struct idec_gtk_animation_input
 static int on_draw_event(
   GtkWidget * widget,
   cairo_t * cr,
-  struct idec_gtk_animation_input * input)
+  struct idec_cairo_gtk_animation_input * input)
 {
   int new_index, total_steps;
   struct idec_animation_generic_data * generic_data;
@@ -61,7 +61,7 @@ static int on_draw_event(
   return TRUE;
 }
 
-static int on_timeout(struct idec_gtk_animation_input * input)
+static int on_timeout(struct idec_cairo_gtk_animation_input * input)
 {
   int new_index, total_steps;
   struct idec_animation * animation;
@@ -89,12 +89,12 @@ static void on_window_destroy(GtkWidget *widget, int * to_be_closed)
   *to_be_closed = 1;
 }
 
-static void idec_gtk_animation_run(
+static void idec_cairo_gtk_animation_run(
   struct idec_animation * animation,
   int * status)
 {
   int height, width;
-  struct idec_gtk_animation_input input;
+  struct idec_cairo_gtk_animation_input input;
   GtkWidget * window;
 
   input.animation = animation;
@@ -148,7 +148,7 @@ static void idec_program_log(FILE * out, int argc, char ** argv, int status)
   fprintf(out, "Exit status: %d\n", status);
 }
 
-static void idec_gtk_animation_log(
+static void idec_cairo_gtk_animation_log(
   FILE * out, int argc, char ** argv, int index, int total_steps, int status)
 {
   idec_program_log(out, argc, argv, status);
@@ -156,7 +156,7 @@ static void idec_gtk_animation_log(
   fprintf(out, "Total range of iterations: i = 0 to i = %d\n", total_steps - 1);
 }
 
-static void idec_gtk_animation_log_by_name(
+static void idec_cairo_gtk_animation_log_by_name(
   int * status, int argc, char ** argv, int index, int total_steps,
   const char * output)
 {
@@ -164,7 +164,7 @@ static void idec_gtk_animation_log_by_name(
 
   if (output == NULL)
   {
-    idec_gtk_animation_log(stdout, argc, argv, index, total_steps, *status);
+    idec_cairo_gtk_animation_log(stdout, argc, argv, index, total_steps, *status);
     return;
   }
 
@@ -178,11 +178,11 @@ static void idec_gtk_animation_log_by_name(
     *status = errno;
     return;
   }
-  idec_gtk_animation_log(out, argc, argv, index, total_steps, *status);
+  idec_cairo_gtk_animation_log(out, argc, argv, index, total_steps, *status);
   fclose(out);
 }
 
-void idec_gtk_animation(
+void idec_cairo_gtk_animation(
   struct idec_animation * animation,
   int * status,
   int argc,
@@ -191,7 +191,7 @@ void idec_gtk_animation(
 {
   int index, total_steps;
 
-  idec_gtk_animation_run(animation, status);
+  idec_cairo_gtk_animation_run(animation, status);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);
@@ -201,7 +201,7 @@ void idec_gtk_animation(
   total_steps = animation->generic_data->total_steps;
   index = animation->generic_data->old_index;
 
-  idec_gtk_animation_log_by_name(
+  idec_cairo_gtk_animation_log_by_name(
     status, argc, argv, index, total_steps, output);
   if (*status)
   {
