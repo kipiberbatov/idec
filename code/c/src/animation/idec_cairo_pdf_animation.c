@@ -5,14 +5,12 @@
 
 #include "color.h"
 #include "idec_animation.h"
-#include "idec_animation_canvas_functions.h"
-#include "idec_animation_draw.h"
 #include "idec_animation_generic_data.h"
 
 static void idec_cairo_render_snapshot_to_pageable_cairo_context(
-  cairo_t * cr, struct idec_animation * animation, int * status)
+  cairo_t * cr, int * status, const struct idec_animation * animation)
 {
-  idec_animation_draw((void *) cr, animation, status);
+  animation->draw_snapshot((void *) cr, status, animation);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);
@@ -54,7 +52,7 @@ static void idec_cairo_render_to_pageable_cairo_surface(
       return;
     }
 
-    idec_cairo_render_snapshot_to_pageable_cairo_context(cr, animation, status);
+    idec_cairo_render_snapshot_to_pageable_cairo_context(cr, status, animation);
     if (*status)
     {
       color_error_position(__FILE__, __LINE__);

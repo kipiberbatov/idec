@@ -6,8 +6,6 @@
 
 #include "color.h"
 #include "idec_animation.h"
-#include "idec_animation_canvas_functions.h"
-#include "idec_animation_draw.h"
 #include "idec_animation_generic_data.h"
 
 struct idec_cairo_gtk_animation_input
@@ -36,7 +34,7 @@ static int on_draw_event(
   if (new_index >= total_steps)
   {
     generic_data->new_index = generic_data->old_index;
-    idec_animation_draw((void *) cr, animation, &(input->status));
+    animation->draw_snapshot((void *) cr, &(input->status), animation);
     if (input->status)
     {
       color_error_position(__FILE__, __LINE__);
@@ -47,7 +45,7 @@ static int on_draw_event(
     animation->update_new_index(&(generic_data->new_index));
     return TRUE;
   }
-  idec_animation_draw((void *) cr, animation, &(input->status));
+  animation->draw_snapshot((void *) cr, &(input->status), animation);
   if (input->status)
   {
     color_error_position(__FILE__, __LINE__);

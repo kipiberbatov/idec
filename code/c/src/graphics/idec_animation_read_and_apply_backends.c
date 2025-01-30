@@ -18,7 +18,7 @@ void idec_animation_read_and_apply_backends(
 {
   void * lib_animation, * lib_canvas;
   char * error;
-  void (*animator)(struct idec_animation *, int *, int, char **, const char *);
+  void (*render)(struct idec_animation *, int *, int, char **, const char *);
 
   lib_canvas = dlopen(canvas_library, RTLD_LAZY);
   error = dlerror();
@@ -30,7 +30,7 @@ void idec_animation_read_and_apply_backends(
     goto end;
   }
 
-  *(void **) &(animation->canvas_functions) = dlsym(lib_canvas, canvas_backend);
+  animation->draw_functions = (const void *) dlsym(lib_canvas, canvas_backend);
   error = dlerror();
   if (error)
   {
@@ -50,7 +50,7 @@ void idec_animation_read_and_apply_backends(
     goto lib_canvas_close;
   }
 
-  *(void **) (&animator) = dlsym(lib_animation, animation_backend);
+  *(void **) (&render) = dlsym(lib_animation, animation_backend);
   error = dlerror();
   if (error)
   {
@@ -60,7 +60,7 @@ void idec_animation_read_and_apply_backends(
     goto lib_animation_close;
   }
 
-  animator(animation, status, argc, argv, output_name);
+  render(animation, status, argc, argv, output_name);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);

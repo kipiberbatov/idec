@@ -22,7 +22,7 @@ include code/make/demo/gtk_diffusion_transient_continuous_2d_d00_p01.mk
 include code/make/demo/gtk_diffusion_transient_continuous_2d_d00_p04.mk
 
 _demo_gtk :=\
-  build/$(MODE)/demo/gtk/filled_window_default.log\
+  build/$(MODE)/demo/gtk/filled_window_rainbow_100.log\
   $(_demo_gtk_diffusion_transient_continuous_2d_d00_p00)\
   $(_demo_gtk_diffusion_transient_continuous_2d_d00_p01)\
   $(_demo_gtk_diffusion_transient_continuous_2d_d00_p04)\
@@ -35,16 +35,16 @@ demo_gtk: bin $(_demo_gtk)\
 build/$(MODE)/demo/gtk: | build/$(MODE)/demo
 	mkdir -p $@
 
-build/$(MODE)/demo/gtk/filled_window_default.log:\
-  build/$(MODE)/bin/idec_filled_window$(.EXE)\
-  build/$(MODE)/obj/src/idec_cairo_canvas_functions_filled_window$(.OBJ)\
+build/$(MODE)/demo/gtk/filled_window_rainbow_100.log:\
+  build/$(MODE)/bin/idec_graphics_filled_window$(.EXE)\
+  build/$(MODE)/obj/src/idec_cairo_graphics_draw_functions_filled_window$(.OBJ)\
   build/$(MODE)/obj/src/idec_cairo_gtk_animation$(.OBJ)\
   | build/$(MODE)/demo/gtk\
     build/$(MODE)/lib/libcanvas$(.DLL)\
     build/$(MODE)/lib/libanimation$(.DLL)
 	$<\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_canvas_functions_filled_window\
+  --canvas-backend=idec_cairo_graphics_draw_functions_filled_window\
   --animation-library=$(word 3, $|)\
   --animation-backend=idec_cairo_gtk_animation\
   --title=filled_window\

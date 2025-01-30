@@ -6,7 +6,8 @@ struct idec_animation
   void * data;
   struct idec_animation_generic_data * generic_data;
   void (*update_new_index)(int *);
-  const struct idec_animation_canvas_functions * canvas_functions;
+  const void * draw_functions;
+  void (*draw_snapshot)(void *, int *, const struct idec_animation *);
   int total_colors;
   int timelapse;
   int close_automatically;

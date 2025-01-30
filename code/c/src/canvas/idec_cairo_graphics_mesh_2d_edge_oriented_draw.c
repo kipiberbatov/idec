@@ -5,7 +5,7 @@
 #include "idec_cairo.h"
 #include "idec_graphics_mesh_2d_edge.h"
 
-void idec_cairo_graphics_mesh_2d_edge_perpendicular_oriented_draw(
+void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge)
 {
   if (edge->color_index == 0)

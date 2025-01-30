@@ -241,6 +241,9 @@ int main(int argc, char ** argv)
   animation.data = (void *) &cochain_sequence;
   animation.update_new_index = update_index;
 
+  animation.draw_snapshot
+  = idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot;
+
   idec_animation_read_and_apply_backends(
     &animation, &status,
     argc, argv, output_name,

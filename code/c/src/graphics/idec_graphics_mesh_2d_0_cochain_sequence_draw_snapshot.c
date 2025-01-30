@@ -1,66 +1,47 @@
 #include <stdio.h>
 
 #include "color.h"
-#include "idec_animation_generic_data.h"
+#include "idec_animation.h"
 #include "idec_graphics_mesh_2d_0_cochain_sequence.h"
-#include "idec_graphics_mesh_2d_node.h"
+#include "idec_graphics_mesh_2d_0_cochain_sequence_draw_functions.h"
 
 void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
   void * canvas,
   int * status,
-  const struct idec_graphics_mesh_2d_0_cochain_sequence * cochain_sequence,
-  const struct idec_animation_generic_data * generic_data,
-  int total_colors,
-  void (*set_color)(void *, int *, int, int),
-  void (*node_draw)(void *, int *, const struct idec_graphics_mesh_2d_node *))
+  const struct idec_animation * animation)
 {
-  int i, j, number_of_nodes;
-  double color_coefficient, max, min, denominator;
-  double * coordinates, * point_sizes, * values_i;
-  struct idec_graphics_mesh_2d_node node;
+  struct idec_graphics_mesh_2d_0_cochain_sequence * cochain_sequence;
+  
+  const struct idec_graphics_mesh_2d_0_cochain_sequence_draw_functions *
+  functions;
 
-  min = cochain_sequence->min_value;
-  max = cochain_sequence->max_value;
-  number_of_nodes = cochain_sequence->m->cn[0];
-  node.total_colors = total_colors;
-  node.set_color = set_color;
-  denominator = max - min;
-  point_sizes = cochain_sequence->point_sizes;
-  coordinates = cochain_sequence->coordinates;
+  *(void **) (&cochain_sequence) = animation->data;
+  *(const void **) (&functions) = animation->draw_functions;
 
-  i = generic_data->new_index;
-  values_i = cochain_sequence->values + number_of_nodes * i;
-  if (denominator == 0.)
+  functions->set_background_color(canvas, status);
+  if (*status)
   {
-    node.color_index = 0.;
-    for (j = 0; j < number_of_nodes; ++j)
-    {
-      node.size = point_sizes[j];
-      node.coordinates = coordinates + 2 * j;
-      node_draw(canvas, status, &node);
-      if (*status)
-      {
-        color_error_position(__FILE__, __LINE__);
-        fputs("cannot draw node\n", stderr);
-        return;
-      }
-    }
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot set set background color %d\n", stderr);
+    return;
   }
-  else
+
+  idec_graphics_mesh_2d_0_cochain_sequence_draw_skeleton(
+    canvas, status, cochain_sequence, functions->draw_black_edge);
+  if (*status)
   {
-    color_coefficient = (double) (total_colors - 1) / denominator;
-    for (j = 0; j < number_of_nodes; ++j)
-    {
-      node.color_index = (int) ((values_i[j] - min) * color_coefficient);
-      node.size = point_sizes[j];
-      node.coordinates = coordinates + 2 * j;
-      node_draw(canvas, status, &node);
-      if (*status)
-      {
-        color_error_position(__FILE__, __LINE__);
-        fputs("cannot draw node\n", stderr);
-        return;
-      }
-    }
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot draw skeleton %d\n", stderr);
+    return;
+  }
+
+  idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
+    canvas, status, cochain_sequence, animation->generic_data,
+    animation->total_colors, functions->set_color, functions->draw_node);
+  if (*status)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot draw values %d\n", stderr);
+    return;
   }
 }

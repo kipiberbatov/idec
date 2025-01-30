@@ -2,8 +2,9 @@
 
 #include "color.h"
 #include "idec_animation.h"
-#include "idec_command_line.h"
 #include "idec_animation_generic_data.h"
+#include "idec_command_line.h"
+#include "idec_graphics_filled_window.h"
 
 static void update_index(int * i){++*i;}
 
@@ -95,6 +96,7 @@ int main(int argc, char ** argv)
   animation.generic_data = (void *) &fill;
   animation.total_colors = fill.total_steps;
   animation.update_new_index = update_index;
+  animation.draw_snapshot = idec_graphics_filled_window_draw_snapshot;
 
   idec_animation_check_input(&status, &animation);
   if (status)
