@@ -90,47 +90,43 @@ are archived;
 - **build/release/bin** where source files from
 [code/c/main](https://github.com/kipiberbatov/idec/tree/main/code/c/main)
 are compiled and linked against libraries in **build/release/lib**;
-- **build/release/demo** where demos are run using
+- **build/release/txt** where text-outputting demos are run using
 executables from **build/release/bin**,
 manually written input data from
 [data](https://github.com/kipiberbatov/idec/tree/main/data),
-and already generated files from **build/release/demo**.
+and already generated files from **build/release/txt**.
 
-This will not run graphics demos (produced by Cairo and GTK+).
-To run them, after running `make`, type
-
+You can generate PDFs of various images and animations (e.g., meshes, cochains)
+in a freshly created directory **build/release/pdf** by typing
 ```
-make demo_graphics
+make -j pdf
 ```
-
-(it is not a good idea to run it in parallel since lots of GTK windows pop-up).
-
-Note that GTK+ windows will appear
-and they have to be manually closed one by one
-after you are finished watching them.
-
-PDF documents are produced by Cairo
-and represent animations such that
-each page represents a snapshot at a given moment of time for that animation.
+PDF documents are produced by Cairo and represent animations such that
+each page is a snapshot of that animation at a given moment of time.
 Some of the PDFs have thousands of pages
 and will take (uncompressed) tens of megabytes of disk space.
-Note that although compilation,
-linking and running text demos are extremely fast
-(in milliseconds on average for every file),
+Note that although compilation, linking and running text-outputting demos are
+extremely fast (in milliseconds on average for every file),
 generating PDFs may take from a few seconds to a minute for the big animations.
 
-You can run GTK+ animations and PDF animations separately, by typing
-
+You can run GTK animations in pop-up windows by typing
 ```
-make demo_gtk
-make -j demo_pdf
+make gtk
+```
+(Log files documenting animation runs will be saved in a freshly created
+directory **build/release/gtk**.)
+Note that GTK+ windows will appear and they have to be manually closed after
+you are finished watching them.
+If you want to close them automatically after finishing, type
+```
+make CLOSE_AUTOMATICALLY=1 gtk
 ```
 
-You can build the latex documentation by typing
+You can build the LaTeX documentation in a freshly created **build/docs**
+directory by typing
 ```
 make docs
 ```
-(it will go to a freshly created **build/docs** directory).
 
 You can combine the documentation with web assets to create a static website by
 typing
@@ -150,8 +146,6 @@ make distclean
 
 There are various smaller cleans that will delete certain types of files.
 For instance `make clean` will clean the object files.
-You can look at
-[Makefile](https://github.com/kipiberbatov/idec/blob/main/Makefile)
-or the files in
+You can look the files in
 [code/make](https://github.com/kipiberbatov/idec/tree/main/code/make)
 to see all the cleaning options (they all end with **_clean**).

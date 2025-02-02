@@ -35,11 +35,11 @@ jobs:
       - name: Link
         run: make bin
 
-      - name: Run text-outputing demos
-        run: make demo
+      - name: Run text-outputting demos
+        run: make txt
 
-      - name: Run PDF-outputing demos
-        run: make demo_pdf
+      - name: Run PDF-outputting demos
+        run: make pdf
 
       - name: Upload release directory
         uses: actions/upload-artifact@v4

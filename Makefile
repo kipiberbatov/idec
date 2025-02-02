@@ -1,6 +1,6 @@
 ################################ default target ################################
 .PHONY: all
-all: obj lib bin demo
+all: obj lib bin txt
 
 ##################################### mode #####################################
 MODE := release
@@ -15,22 +15,19 @@ build/$(MODE): | build
 ############### generating object files, libraries and binaries ################
 -include code/make/c_compile.mk
 
-################################ running demos #################################
-build/$(MODE)/demo: | build/$(MODE)
-	mkdir -p $@
+######################## running text-outputting demos #########################
+-include code/make/txt.mk
 
--include code/make/demo/array.mk
--include code/make/demo/algebra.mk
--include code/make/demo/region.mk
--include code/make/demo/mesh.mk
--include code/make/demo/diffusion.mk
--include code/make/demo/graphics.mk
+######################### running PDF-outputting demos #########################
+-include code/make/pdf.mk
 
-.PHONY: demo
-demo: $(patsubst %, demo_%, array algebra region mesh diffusion)
+############################ running GTK animations ############################
+-include code/make/gtk.mk
 
-########### creating a documentation and publishing it as a website ############
--include code/make/docs/latex.mk
+################### creating a PDF documentation using LaTeX ###################
+-include code/make/docs.mk
+
+############### creating a website linking to PDF documentation ################
 -include code/make/website.mk
 
 ################################### cleaning ###################################

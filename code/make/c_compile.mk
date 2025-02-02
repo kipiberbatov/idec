@@ -232,12 +232,12 @@ bin_canvas:
 
 #################### targets by modules -- called on demand ####################
 .PHONY: $(MODULES)
-array: $(patsubst %, %_array, obj_src obj_main lib bin demo)
-algebra: $(patsubst %, %_algebra, obj_src obj_main lib bin demo)
-region: $(patsubst %, %_region, obj_src obj_main lib bin demo)
-mesh: $(patsubst %, %_mesh, obj_src obj_main lib bin demo)
-diffusion: $(patsubst %, %_diffusion, obj_src obj_main lib bin demo)
-graphics: $(patsubst %, %_graphics, obj_src obj_main lib bin demo)
+array: $(patsubst %, %_array, obj_src obj_main lib bin txt)
+algebra: $(patsubst %, %_algebra, obj_src obj_main lib bin txt)
+region: $(patsubst %, %_region, obj_src obj_main lib bin txt)
+mesh: $(patsubst %, %_mesh, obj_src obj_main lib bin txt)
+diffusion: $(patsubst %, %_diffusion, obj_src obj_main lib bin txt)
+graphics: $(patsubst %, %_graphics, obj_src obj_main lib bin txt)
 shared: obj_src_shared lib_shared
 animation: obj_src_animation lib_animation
 canvas: obj_src_canvas lib_canvas

@@ -47,7 +47,7 @@ jobs:
         run: sudo apt-get install -y texlive-latex-extra
 
       - name: Build website (do not build already downloaded PDF images)
-        run: make website -o build/.demo_pdf
+        run: make website -o build/.pdf
 
       - name: Upload website
         uses: actions/upload-pages-artifact@v3

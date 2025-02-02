@@ -16,7 +16,7 @@ bin_array_clean:
 array_clean: obj_array_clean
 
 .PHONY: array_distclean
-array_distclean: array_clean lib_array_clean bin_array_clean demo_array_clean
+array_distclean: array_clean lib_array_clean bin_array_clean txt_array_clean
 
 # algebra
 .PHONY: obj_algebra_clean
@@ -36,7 +36,7 @@ algebra_clean: obj_algebra_clean
 
 .PHONY: algebra_distclean
 algebra_distclean: algebra_clean lib_algebra_clean bin_algebra_clean\
-  demo_algebra_clean
+  txt_algebra_clean
 
 # region
 .PHONY: obj_region_clean
@@ -56,7 +56,7 @@ region_clean: obj_region_clean
 
 .PHONY: region_distclean
 region_distclean: region_clean lib_region_clean bin_region_clean\
-  demo_region_clean
+  txt_region_clean
 
 # mesh
 .PHONY: obj_mesh_clean
@@ -75,7 +75,7 @@ bin_mesh_clean:
 mesh_clean: obj_mesh_clean
 
 .PHONY: mesh_distclean
-mesh_distclean: mesh_clean lib_mesh_clean bin_mesh_clean demo_mesh_clean
+mesh_distclean: mesh_clean lib_mesh_clean bin_mesh_clean txt_mesh_clean
 
 # diffusion
 .PHONY: obj_diffusion_clean
@@ -95,7 +95,7 @@ diffusion_clean: obj_diffusion_clean
 
 .PHONY: diffusion_distclean
 diffusion_distclean: diffusion_clean lib_diffusion_clean bin_diffusion_clean\
-  demo_diffusion_clean
+  txt_diffusion_clean
 
 # graphics
 .PHONY: obj_graphics_clean
@@ -115,7 +115,7 @@ graphics_clean: obj_graphics_clean
 
 .PHONY: graphics_distclean
 graphics_distclean: graphics_clean lib_graphics_clean bin_graphics_clean\
-  demo_graphics_clean
+  txt_graphics_clean
 
 # shared
 .PHONY: obj_shared_clean
@@ -175,10 +175,10 @@ lib_clean:
 bin_clean:
 	-$(RM) -r build/$(MODE)/bin
 
-# demo_<module>_clean is found in -include demo/<module>/demo_<module>.mk
-.PHONY: demo_clean
-demo_clean:
-	-$(RM) -r build/$(MODE)/demo
+# txt_<module>_clean is found in -include txt/<module>/txt_<module>.mk
+.PHONY: txt_clean
+txt_clean:
+	-$(RM) -r build/$(MODE)/txt
 
 .PHONY: clean
 clean: obj_clean
