@@ -54,10 +54,6 @@ _main_mesh := $(wildcard code/c/main/mesh/*.c)
 _main_diffusion := $(wildcard code/c/main/diffusion/*.c)
 _main_graphics := $(wildcard code/c/main/graphics/*.c)
 
-# _main_diffusion :=
-# _main_animation :=
-# _main_canvas :=
-
 ############################ names of plugin files #############################
 _plugins_diffusion := $(wildcard code/c/plugins/diffusion/*.c)
 _plugins_animation := $(wildcard code/c/plugins/animation/*.c)
@@ -101,12 +97,6 @@ _obj_main_diffusion := $(patsubst code/c/main/diffusion/%.c,\
 _obj_main_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_graphics))
 
-# _obj_main_diffusion :=
-
-# _obj_main_animation :=
-
-# _obj_main_canvas :=
-
 ######################### names of plugin object files #########################
 _obj_plugins_diffusion := $(patsubst code/c/plugins/diffusion/%.c,\
   build/$(MODE)/obj/plugins/%$(.OBJ), $(_plugins_diffusion))
@@ -136,12 +126,6 @@ _bin_diffusion := $(patsubst code/c/main/diffusion/%.c,\
 _bin_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_graphics))
 
-# _bin_diffusion :=
-
-# _bin_animation :=
-
-# _bin_canvas :=
-
 ################# include directories for compiling main files #################
 _include_main_array := -iquote code/c/include/array
 _include_main_algebra := $(_include_main_array) -iquote code/c/include/algebra
@@ -151,9 +135,6 @@ _include_main_mesh := $(_include_main_algebra)\
 _include_main_diffusion := $(_include_main_mesh)\
   -iquote code/c/include/diffusion
 _include_main_graphics := $(_include_main_mesh) -iquote code/c/include/graphics
-# _include_main_diffusion :=
-# _include_main_animation :=
-# _include_main_canvas :=
 
 ################ include directories for compiling source files ################
 _include_src_array := $(_include_main_array) -iquote code/c/src/array
@@ -181,10 +162,6 @@ _libs_src_diffusion := build/$(MODE)/lib/src/libdiffusion$(.LIB)\
   $(_libs_src_mesh)
 _libs_src_graphics := build/$(MODE)/lib/src/libgraphics$(.LIB) $(_libs_src_mesh)
 
-# _libs_diffusion :=
-# _libs_animation :=
-# _libs_canvas :=
-
 ############################# object file targets ##############################
 .PHONY: obj obj_src obj_main obj_plugins
 obj: obj_src obj_main obj_plugins
@@ -209,9 +186,6 @@ obj_main_region: $(_obj_main_region)
 obj_main_mesh: $(_obj_main_mesh)
 obj_main_diffusion: $(_obj_main_diffusion)
 obj_main_graphics: $(_obj_main_graphics)
-# obj_main_diffusion:
-# obj_main_animation:
-# obj_main_canvas:
 
 # object files from plugin files
 .PHONY: $(patsubst %, obj_plugins_%, $(PLUGINS))
@@ -250,9 +224,6 @@ bin_region: $(_bin_region)
 bin_mesh: $(_bin_mesh)
 bin_diffusion: $(_bin_diffusion)
 bin_graphics: $(_bin_graphics)
-# bin_diffusion:
-# bin_animation:
-# bin_canvas:
 
 #################### targets by modules -- called on demand ####################
 .PHONY: $(MODULES) $(PLUGINS)

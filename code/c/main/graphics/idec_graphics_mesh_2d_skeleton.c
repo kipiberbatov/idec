@@ -197,7 +197,7 @@ int main(int argc, char ** argv)
   skeleton.m = m;
   skeleton.coordinates = new_coordinates;
   skeleton.line_width = data.line_width / 4;
-  
+
   animation.data = (void *) &skeleton;
   animation.update_new_index = update_index;
   animation.draw_snapshot = idec_graphics_mesh_2d_skeleton_draw_snapshot;

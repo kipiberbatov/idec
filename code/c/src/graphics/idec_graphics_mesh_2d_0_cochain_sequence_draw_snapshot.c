@@ -11,7 +11,7 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
   const struct idec_animation * animation)
 {
   struct idec_graphics_mesh_2d_0_cochain_sequence * cochain_sequence;
-  
+
   const struct idec_graphics_mesh_2d_0_cochain_sequence_draw_functions *
   functions;
 

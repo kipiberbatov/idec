@@ -31,7 +31,7 @@ void idec_animation_check_input(
     *status = 1;
     return;
   }
-  
+
   total_steps = animation->generic_data->total_steps;
   if (total_steps <= 0)
   {
@@ -42,7 +42,7 @@ void idec_animation_check_input(
     *status = 1;
     return;
   }
-  
+
   initial_index = animation->generic_data->new_index;
   if (initial_index < 0 || initial_index >= total_steps)
   {

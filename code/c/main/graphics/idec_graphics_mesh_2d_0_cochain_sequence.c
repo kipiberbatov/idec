@@ -237,7 +237,7 @@ int main(int argc, char ** argv)
   cochain_sequence.line_width = data.line_width / 4;
   cochain_sequence.min_value = double_array_min(n * m->cn[0], u);
   cochain_sequence.max_value = double_array_max(n * m->cn[0], u);
-  
+
   animation.data = (void *) &cochain_sequence;
   animation.update_new_index = update_index;
 
