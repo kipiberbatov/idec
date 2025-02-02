@@ -37,11 +37,11 @@ build/$(MODE)/gtk: | build/$(MODE)
 
 build/$(MODE)/gtk/filled_window_rainbow_100.log:\
   build/$(MODE)/bin/idec_graphics_filled_window$(.EXE)\
-  build/$(MODE)/obj/src/idec_cairo_graphics_draw_functions_filled_window$(.OBJ)\
-  build/$(MODE)/obj/src/idec_cairo_gtk_animation$(.OBJ)\
+  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_filled_window$(.OBJ)\
+  build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
   | build/$(MODE)/gtk\
-    build/$(MODE)/lib/libcanvas$(.DLL)\
-    build/$(MODE)/lib/libanimation$(.DLL)
+    build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
+    build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$<\
   --canvas-library=$(word 2, $|)\
   --canvas-backend=idec_cairo_graphics_draw_functions_filled_window\

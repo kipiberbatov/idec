@@ -1843,7 +1843,7 @@ build/$(MODE)/txt/mesh/brick_3d_2_forman_laplacian.txt:\
   build/$(MODE)/bin/mesh_qc_laplacian$(.EXE)\
   build/$(MODE)/txt/mesh/brick_3d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_3d_2_forman_cbd_star.txt\
-  | build/$(MODE)/txt/mesh build/$(MODE)/lib/libshared$(.DLL)
+  | build/$(MODE)/txt/mesh build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$^ > $@
 
 build/$(MODE)/txt/mesh/brick_3d_2_forman_hodge_coeff.txt:\

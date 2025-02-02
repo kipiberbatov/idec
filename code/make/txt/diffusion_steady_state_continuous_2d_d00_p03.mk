@@ -14,8 +14,8 @@ _txt_diffusion_steady_state_continuous_2d_d00_p03 :=\
 build/$(MODE)/txt/diffusion/steady_state_continuous_2d_d00_p03_exact_brick_2d_2_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_exact_potential$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
-  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
@@ -25,8 +25,8 @@ build/$(MODE)/txt/diffusion/steady_state_continuous_2d_d00_p03_exact_brick_2d_2_
 build/$(MODE)/txt/diffusion/steady_state_continuous_2d_d00_p03_exact_brick_2d_2_forman_flow.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
-  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
@@ -36,8 +36,8 @@ build/$(MODE)/txt/diffusion/steady_state_continuous_2d_d00_p03_exact_brick_2d_2_
 build/$(MODE)/txt/diffusion/steady_state_continuous_2d_d00_p03_primal_strong_cochain_brick_2d_2_forman_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_strong_from_continuous$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
-  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
@@ -76,8 +76,8 @@ build/$(MODE)/txt/diffusion/steady_state_continuous_2d_d00_p03_primal_weak_cocha
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_from_continuous$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_vol.txt\
-  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
@@ -115,8 +115,8 @@ build/$(MODE)/txt/diffusion/steady_state_continuous_2d_d00_p03_mixed_weak_cochai
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_from_continuous$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_vol.txt\
-  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d00_p03$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\

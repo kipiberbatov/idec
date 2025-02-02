@@ -6,7 +6,7 @@ obj_array_clean:
 
 .PHONY: lib_array_clean
 lib_array_clean:
-	-$(RM) build/$(MODE)/lib/libarray$(.LIB)
+	-$(RM) build/$(MODE)/lib/src/libarray$(.LIB)
 
 .PHONY: bin_array_clean
 bin_array_clean:
@@ -25,7 +25,7 @@ obj_algebra_clean:
 
 .PHONY: lib_algebra_clean
 lib_algebra_clean:
-	-$(RM) build/$(MODE)/lib/libalgebra$(.LIB)
+	-$(RM) build/$(MODE)/lib/src/libalgebra$(.LIB)
 
 .PHONY: bin_algebra_clean
 bin_algebra_clean:
@@ -45,7 +45,7 @@ obj_region_clean:
 
 .PHONY: lib_region_clean
 lib_region_clean:
-	-$(RM) build/$(MODE)/lib/libregion$(.LIB)
+	-$(RM) build/$(MODE)/lib/src/libregion$(.LIB)
 
 .PHONY: bin_region_clean
 bin_region_clean:
@@ -65,7 +65,7 @@ obj_mesh_clean:
 
 .PHONY: lib_mesh_clean
 lib_mesh_clean:
-	-$(RM) build/$(MODE)/lib/libmesh$(.LIB)
+	-$(RM) build/$(MODE)/lib/src/libmesh$(.LIB)
 
 .PHONY: bin_mesh_clean
 bin_mesh_clean:
@@ -80,11 +80,13 @@ mesh_distclean: mesh_clean lib_mesh_clean bin_mesh_clean txt_mesh_clean
 # diffusion
 .PHONY: obj_diffusion_clean
 obj_diffusion_clean:
-	-$(RM) $(_obj_src_diffusion) $(_obj_main_diffusion)
+	-$(RM) $(_obj_src_diffusion) $(_obj_main_diffusion)\
+	       $(_obj_plugins_diffusion)
 
 .PHONY: lib_diffusion_clean
 lib_diffusion_clean:
-	-$(RM) build/$(MODE)/lib/libdiffusion$(.LIB)
+	-$(RM) build/$(MODE)/lib/src/libdiffusion$(.LIB)\
+	       build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 
 .PHONY: bin_diffusion_clean
 bin_diffusion_clean:
@@ -100,11 +102,11 @@ diffusion_distclean: diffusion_clean lib_diffusion_clean bin_diffusion_clean\
 # graphics
 .PHONY: obj_graphics_clean
 obj_graphics_clean:
-	-$(RM) $(_obj_src_graphics) $(_obj_main_graphics)
+	-$(RM) $(_obj_plugins_graphics)
 
 .PHONY: lib_graphics_clean
 lib_graphics_clean:
-	-$(RM) build/$(MODE)/lib/libgraphics$(.LIB)
+	-$(RM) build/$(MODE)/lib/src/libgraphics$(.LIB)
 
 .PHONY: bin_graphics_clean
 bin_graphics_clean:
@@ -117,21 +119,6 @@ graphics_clean: obj_graphics_clean
 graphics_distclean: graphics_clean lib_graphics_clean bin_graphics_clean\
   txt_graphics_clean
 
-# shared
-.PHONY: obj_shared_clean
-obj_shared_clean:
-	-$(RM) $(_obj_src_shared)
-
-.PHONY: lib_shared_clean
-lib_shared_clean:
-	-$(RM) build/$(MODE)/lib/libshared$(.DLL)
-
-.PHONY: shared_clean
-shared_clean: obj_shared_clean
-
-.PHONY: shared_distclean
-shared_distclean: shared_clean lib_shared_clean
-
 # animation
 .PHONY: obj_animation_clean
 obj_animation_clean:
@@ -139,7 +126,7 @@ obj_animation_clean:
 
 .PHONY: lib_animation_clean
 lib_animation_clean:
-	-$(RM) build/$(MODE)/lib/libanimation$(.DLL)
+	-$(RM) build/$(MODE)/lib/plugins/libanimation$(.DLL)
 
 .PHONY: animation_clean
 animation_clean: obj_animation_clean
@@ -150,11 +137,11 @@ animation_distclean: animation_clean lib_animation_clean
 # canvas
 .PHONY: obj_canvas_clean
 obj_canvas_clean:
-	-$(RM) $(_obj_src_canvas)
+	-$(RM) $(_obj_plugins_canvas)
 
 .PHONY: lib_canvas_clean
 lib_canvas_clean:
-	-$(RM) build/$(MODE)/lib/libcanvas$(.DLL)
+	-$(RM) build/$(MODE)/lib/plugins/libcanvas$(.DLL)
 
 .PHONY: canvas_clean
 canvas_clean: obj_canvas_clean

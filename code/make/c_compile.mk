@@ -24,15 +24,17 @@ else
   endif
 endif
 
-########################### modules and dependencies ###########################
-MODULES := array algebra region mesh diffusion graphics shared animation canvas
+###################### modules, plugins and dependencies #######################
+MODULES := array algebra region mesh diffusion graphics
+PLUGINS := diffusion animation canvas
 # array:
 # algebra: array
 # region: array
 # mesh: region algebra
 # diffusion: mesh
-# graphics: mesh (dynamically on shared, and hence, on diffusion)
-# shared: mesh (+ diffusion headers)
+# graphics: mesh (dynamically on plugins/diffusion, and hence, on diffusion)
+
+# plugins/diffusion: mesh (+ diffusion headers)
 # canvas: [Cairo] (+ animation headers)
 # animation: graphics Cairo GTK3
 
@@ -43,9 +45,6 @@ _src_region := $(wildcard code/c/src/region/*.c)
 _src_mesh := $(wildcard code/c/src/mesh/*.c)
 _src_diffusion := $(wildcard code/c/src/diffusion/*.c)
 _src_graphics := $(wildcard code/c/src/graphics/*.c)
-_src_shared := $(wildcard code/c/src/shared/*.c)
-_src_animation := $(wildcard code/c/src/animation/*.c)
-_src_canvas := $(wildcard code/c/src/canvas/*.c)
 
 ############################# names of main files ##############################
 _main_array := $(wildcard code/c/main/array/*.c)
@@ -54,9 +53,15 @@ _main_region := $(wildcard code/c/main/region/*.c)
 _main_mesh := $(wildcard code/c/main/mesh/*.c)
 _main_diffusion := $(wildcard code/c/main/diffusion/*.c)
 _main_graphics := $(wildcard code/c/main/graphics/*.c)
-_main_shared :=
-_main_animation :=
-_main_canvas :=
+
+# _main_diffusion :=
+# _main_animation :=
+# _main_canvas :=
+
+############################ names of plugin files #############################
+_plugins_diffusion := $(wildcard code/c/plugins/diffusion/*.c)
+_plugins_animation := $(wildcard code/c/plugins/animation/*.c)
+_plugins_canvas := $(wildcard code/c/plugins/canvas/*.c)
 
 ######################### names of source object files #########################
 _obj_src_array := $(patsubst code/c/src/array/%.c,\
@@ -77,15 +82,6 @@ _obj_src_diffusion := $(patsubst code/c/src/diffusion/%.c,\
 _obj_src_graphics := $(patsubst code/c/src/graphics/%.c,\
   build/$(MODE)/obj/src/%$(.OBJ), $(_src_graphics))
 
-_obj_src_shared := $(patsubst code/c/src/shared/%.c,\
-  build/$(MODE)/obj/src/%$(.OBJ), $(_src_shared))
-
-_obj_src_animation := $(patsubst code/c/src/animation/%.c,\
-  build/$(MODE)/obj/src/%$(.OBJ), $(_src_animation))
-
-_obj_src_canvas := $(patsubst code/c/src/canvas/%.c,\
-  build/$(MODE)/obj/src/%$(.OBJ), $(_src_canvas))
-
 ########################## names of main object files ##########################
 _obj_main_array := $(patsubst code/c/main/array/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_array))
@@ -105,11 +101,21 @@ _obj_main_diffusion := $(patsubst code/c/main/diffusion/%.c,\
 _obj_main_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/obj/main/%$(.OBJ), $(_main_graphics))
 
-_obj_main_shared :=
+# _obj_main_diffusion :=
 
-_obj_main_animation :=
+# _obj_main_animation :=
 
-_obj_main_canvas :=
+# _obj_main_canvas :=
+
+######################### names of plugin object files #########################
+_obj_plugins_diffusion := $(patsubst code/c/plugins/diffusion/%.c,\
+  build/$(MODE)/obj/plugins/%$(.OBJ), $(_plugins_diffusion))
+
+_obj_plugins_animation := $(patsubst code/c/plugins/animation/%.c,\
+  build/$(MODE)/obj/plugins/%$(.OBJ), $(_plugins_animation))
+
+_obj_plugins_canvas := $(patsubst code/c/plugins/canvas/%.c,\
+  build/$(MODE)/obj/plugins/%$(.OBJ), $(_plugins_canvas))
 
 ########################## names of executable files ###########################
 _bin_array := $(patsubst code/c/main/array/%.c,\
@@ -130,11 +136,11 @@ _bin_diffusion := $(patsubst code/c/main/diffusion/%.c,\
 _bin_graphics := $(patsubst code/c/main/graphics/%.c,\
   build/$(MODE)/bin/%$(.EXE), $(_main_graphics))
 
-_bin_shared :=
+# _bin_diffusion :=
 
-_bin_animation :=
+# _bin_animation :=
 
-_bin_canvas :=
+# _bin_canvas :=
 
 ################# include directories for compiling main files #################
 _include_main_array := -iquote code/c/include/array
@@ -145,9 +151,9 @@ _include_main_mesh := $(_include_main_algebra)\
 _include_main_diffusion := $(_include_main_mesh)\
   -iquote code/c/include/diffusion
 _include_main_graphics := $(_include_main_mesh) -iquote code/c/include/graphics
-_include_main_shared :=
-_include_main_animation :=
-_include_main_canvas :=
+# _include_main_diffusion :=
+# _include_main_animation :=
+# _include_main_canvas :=
 
 ################ include directories for compiling source files ################
 _include_src_array := $(_include_main_array) -iquote code/c/src/array
@@ -157,26 +163,31 @@ _include_src_mesh := $(_include_main_mesh) -iquote code/c/src/mesh
 _include_src_diffusion := $(_include_main_diffusion)\
   -iquote code/c/src/diffusion
 _include_src_graphics := $(_include_main_graphics) -iquote code/c/src/graphics
-_include_src_shared := $(_include_main_diffusion)
-_include_src_animation := $(_include_main_graphics) -iquote code/c/src/animation
-_include_src_canvas := $(_include_main_graphics)\
-  -iquote code/c/include/animation -iquote code/c/src/canvas
+
+################ include directories for compiling plugin files ################
+_include_plugins_diffusion := $(_include_main_diffusion)
+_include_plugins_animation := $(_include_main_graphics)\
+  -iquote code/c/plugins/animation
+_include_plugins_canvas := $(_include_main_graphics)\
+  -iquote code/c/include/animation -iquote code/c/plugins/canvas
 
 ############################# library dependencies #############################
-_libs_array := build/$(MODE)/lib/libarray$(.LIB)
-_libs_algebra := build/$(MODE)/lib/libalgebra$(.LIB) $(_libs_array)
-_libs_region := build/$(MODE)/lib/libregion$(.LIB) $(_libs_array)
-_libs_mesh := build/$(MODE)/lib/libmesh$(.LIB)\
-  build/$(MODE)/lib/libregion$(.LIB) $(_libs_algebra)
-_libs_diffusion := build/$(MODE)/lib/libdiffusion$(.LIB) $(_libs_mesh)
-_libs_graphics := build/$(MODE)/lib/libgraphics$(.LIB) $(_libs_mesh)
-_libs_shared :=
-_libs_animation :=
-_libs_canvas :=
+_libs_src_array := build/$(MODE)/lib/src/libarray$(.LIB)
+_libs_src_algebra := build/$(MODE)/lib/src/libalgebra$(.LIB) $(_libs_src_array)
+_libs_src_region := build/$(MODE)/lib/src/libregion$(.LIB) $(_libs_src_array)
+_libs_src_mesh := build/$(MODE)/lib/src/libmesh$(.LIB)\
+  build/$(MODE)/lib/src/libregion$(.LIB) $(_libs_src_algebra)
+_libs_src_diffusion := build/$(MODE)/lib/src/libdiffusion$(.LIB)\
+  $(_libs_src_mesh)
+_libs_src_graphics := build/$(MODE)/lib/src/libgraphics$(.LIB) $(_libs_src_mesh)
+
+# _libs_diffusion :=
+# _libs_animation :=
+# _libs_canvas :=
 
 ############################# object file targets ##############################
-.PHONY: obj obj_src obj_main
-obj: obj_src obj_main
+.PHONY: obj obj_src obj_main obj_plugins
+obj: obj_src obj_main obj_plugins
 
 # object files from source files
 .PHONY: $(patsubst %, obj_src_%, $(MODULES))
@@ -187,9 +198,7 @@ obj_src_region: $(_obj_src_region)
 obj_src_mesh: $(_obj_src_mesh)
 obj_src_diffusion: $(_obj_src_diffusion)
 obj_src_graphics: $(_obj_src_graphics)
-obj_src_shared: $(_obj_src_shared)
-obj_src_animation: $(_obj_src_animation)
-obj_src_canvas: $(_obj_src_canvas)
+
 
 # object files from main files
 .PHONY: $(patsubst %, obj_main_%, $(MODULES))
@@ -200,22 +209,37 @@ obj_main_region: $(_obj_main_region)
 obj_main_mesh: $(_obj_main_mesh)
 obj_main_diffusion: $(_obj_main_diffusion)
 obj_main_graphics: $(_obj_main_graphics)
-obj_main_shared:
-obj_main_animation:
-obj_main_canvas:
+# obj_main_diffusion:
+# obj_main_animation:
+# obj_main_canvas:
+
+# object files from plugin files
+.PHONY: $(patsubst %, obj_plugins_%, $(PLUGINS))
+obj_plugins: $(patsubst %, obj_plugins_%, $(PLUGINS))
+obj_plugins_diffusion: $(_obj_plugins_diffusion)
+obj_plugins_animation: $(_obj_plugins_animation)
+obj_plugins_canvas: $(_obj_plugins_canvas)
 
 ############################### library targets ################################
-.PHONY: lib $(patsubst %, lib_%, $(MODULES))
-lib: obj_src $(patsubst %, lib_%, $(MODULES))
-lib_array: build/$(MODE)/lib/libarray$(.LIB)
-lib_algebra: build/$(MODE)/lib/libalgebra$(.LIB)
-lib_region: build/$(MODE)/lib/libregion$(.LIB)
-lib_mesh: build/$(MODE)/lib/libmesh$(.LIB)
-lib_diffusion: build/$(MODE)/lib/libdiffusion$(.LIB)
-lib_graphics: build/$(MODE)/lib/libgraphics$(.LIB)
-lib_shared: build/$(MODE)/lib/libshared$(.DLL)
-lib_animation: build/$(MODE)/lib/libanimation$(.DLL)
-lib_canvas: build/$(MODE)/lib/libcanvas$(.DLL)
+.PHONY: lib lib_src lib_plugins
+lib: lib_src lib_plugins
+
+# (static) libraries for source files
+.PHONY: $(patsubst %, lib_src_%, $(MODULES))
+lib_src: obj_src $(patsubst %, lib_src_%, $(MODULES))
+lib_src_array: build/$(MODE)/lib/src/libarray$(.LIB)
+lib_src_algebra: build/$(MODE)/lib/src/libalgebra$(.LIB)
+lib_src_region: build/$(MODE)/lib/src/libregion$(.LIB)
+lib_src_mesh: build/$(MODE)/lib/src/libmesh$(.LIB)
+lib_src_diffusion: build/$(MODE)/lib/src/libdiffusion$(.LIB)
+lib_src_graphics: build/$(MODE)/lib/src/libgraphics$(.LIB)
+
+# dynamic libraries for plugins
+.PHONY: $(patsubst %, lib_plugins_%, $(PLUGINS))
+lib_plugins: obj_plugins $(patsubst %, lib_plugins_%, $(PLUGINS))
+lib_plugins_diffusion: build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
+lib_plugins_animation: build/$(MODE)/lib/plugins/libanimation$(.DLL)
+lib_plugins_canvas: build/$(MODE)/lib/plugins/libcanvas$(.DLL)
 
 ############################## executable targets ##############################
 .PHONY: $(patsubst %, bin_%, $(MODULES))
@@ -226,21 +250,22 @@ bin_region: $(_bin_region)
 bin_mesh: $(_bin_mesh)
 bin_diffusion: $(_bin_diffusion)
 bin_graphics: $(_bin_graphics)
-bin_shared:
-bin_animation:
-bin_canvas:
+# bin_diffusion:
+# bin_animation:
+# bin_canvas:
 
 #################### targets by modules -- called on demand ####################
-.PHONY: $(MODULES)
-array: $(patsubst %, %_array, obj_src obj_main lib bin txt)
-algebra: $(patsubst %, %_algebra, obj_src obj_main lib bin txt)
-region: $(patsubst %, %_region, obj_src obj_main lib bin txt)
-mesh: $(patsubst %, %_mesh, obj_src obj_main lib bin txt)
-diffusion: $(patsubst %, %_diffusion, obj_src obj_main lib bin txt)
-graphics: $(patsubst %, %_graphics, obj_src obj_main lib bin txt)
-shared: obj_src_shared lib_shared
-animation: obj_src_animation lib_animation
-canvas: obj_src_canvas lib_canvas
+.PHONY: $(MODULES) $(PLUGINS)
+array: $(patsubst %, %_array, obj_src obj_main lib_src bin txt)
+algebra: $(patsubst %, %_algebra, obj_src obj_main lib_src bin txt)
+region: $(patsubst %, %_region, obj_src obj_main lib_src bin txt)
+mesh: $(patsubst %, %_mesh, obj_src obj_main lib_src bin txt)
+diffusion: $(patsubst %, %_diffusion, obj_src obj_main lib_src bin txt)
+graphics: $(patsubst %, %_graphics, obj_src obj_main lib_src bin txt)
+
+diffusion: obj_plugins_diffusion lib_plugins_diffusion
+animation: obj_plugins_animation lib_plugins_animation
+canvas: obj_plugins_canvas lib_plugins_canvas
 
 ######################### preprocessing and compiling ##########################
 build/$(MODE)/obj: | build/$(MODE)
@@ -274,22 +299,13 @@ $(_obj_src_graphics): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/graphics/%.c\
     | build/$(MODE)/obj/src
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_graphics) -c $<
 
-$(_obj_src_shared): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/shared/%.c\
-    | build/$(MODE)/obj/src
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_shared) -c $<
-
-$(_obj_src_animation): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/animation/%.c\
-    | build/$(MODE)/obj/src
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_animation)\
-	  $(shell pkg-config --cflags gtk+-3.0) -c $<
-
-$(_obj_src_canvas): build/$(MODE)/obj/src/%$(.OBJ): code/c/src/canvas/%.c\
-    | build/$(MODE)/obj/src
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_src_canvas)\
-	  $(shell pkg-config --cflags cairo) -c $<
-
 # include header dependencies for object files from code/c/src
 -include build/$(MODE)/obj/src/*$(.DEP)
+
+$(_obj_plugins_canvas): build/$(MODE)/obj/plugins/%$(.OBJ):\
+  code/c/plugins/canvas/%.c | build/$(MODE)/obj/plugins
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_plugins_canvas)\
+	  $(shell pkg-config --cflags cairo) -c $<
 
 # compiling main files
 build/$(MODE)/obj/main: | build/$(MODE)/obj
@@ -322,72 +338,96 @@ $(_obj_main_diffusion): build/$(MODE)/obj/main/%$(.OBJ):\
 # include header dependencies for object files from code/c/main
 -include build/$(MODE)/obj/main/*$(.DEP)
 
-################################## archiving ###################################
+# compiling plugin files
+build/$(MODE)/obj/plugins: | build/$(MODE)/obj
+	mkdir -p $@
+
+$(_obj_plugins_diffusion): build/$(MODE)/obj/plugins/%$(.OBJ):\
+  code/c/plugins/diffusion/%.c | build/$(MODE)/obj/plugins
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_plugins_diffusion) -c $<
+
+$(_obj_plugins_animation): build/$(MODE)/obj/plugins/%$(.OBJ):\
+  code/c/plugins/animation/%.c | build/$(MODE)/obj/plugins
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(_include_plugins_animation)\
+	  $(shell pkg-config --cflags gtk+-3.0) -c $<
+
+# include header dependencies for object files from code/c/plugins
+-include build/$(MODE)/obj/plugins/*$(.DEP)
+
+############################## creating libraries ##############################
 build/$(MODE)/lib: | build/$(MODE)
 	mkdir -p $@
 
-build/$(MODE)/lib/libarray$(.LIB): $(_obj_src_array) | build/$(MODE)/lib
+# (static) libraries for source files
+build/$(MODE)/lib/src: | build/$(MODE)/lib
+	mkdir -p $@
+
+build/$(MODE)/lib/src/libarray$(.LIB): $(_obj_src_array) | build/$(MODE)/lib/src
 	$(AR) $(ARFLAGS) $@ $^
 
-build/$(MODE)/lib/libalgebra$(.LIB): $(_obj_src_algebra) | build/$(MODE)/lib
+build/$(MODE)/lib/src/libalgebra$(.LIB): $(_obj_src_algebra)\
+  | build/$(MODE)/lib/src
 	$(AR) $(ARFLAGS) $@ $^
 
-build/$(MODE)/lib/libregion$(.LIB): $(_obj_src_region) | build/$(MODE)/lib
+build/$(MODE)/lib/src/libregion$(.LIB): $(_obj_src_region)\
+  | build/$(MODE)/lib/src
 	$(AR) $(ARFLAGS) $@ $^
 
-build/$(MODE)/lib/libmesh$(.LIB): $(_obj_src_mesh) | build/$(MODE)/lib
+build/$(MODE)/lib/src/libmesh$(.LIB): $(_obj_src_mesh) | build/$(MODE)/lib/src
 	$(AR) $(ARFLAGS) $@ $^
 
-build/$(MODE)/lib/libdiffusion$(.LIB): $(_obj_src_diffusion) | build/$(MODE)/lib
+build/$(MODE)/lib/src/libdiffusion$(.LIB): $(_obj_src_diffusion)\
+  | build/$(MODE)/lib/src
 	$(AR) $(ARFLAGS) $@ $^
 
-build/$(MODE)/lib/libgraphics$(.LIB): $(_obj_src_graphics) | build/$(MODE)/lib
+build/$(MODE)/lib/src/libgraphics$(.LIB): $(_obj_src_graphics)\
+  | build/$(MODE)/lib/src
 	$(AR) $(ARFLAGS) $@ $^
 
-build/$(MODE)/lib/libshared$(.DLL):\
-  $(_obj_src_shared) $(_obj_src_mesh) $(_obj_src_region) $(_obj_src_algebra)\
-  $(_obj_src_array)\
-  | build/$(MODE)/lib
+# dynamic libraries for plugins
+build/$(MODE)/lib/plugins: | build/$(MODE)/lib
+	mkdir -p $@
+
+build/$(MODE)/lib/plugins/libdiffusion$(.DLL): $(_obj_plugins_diffusion)\
+  $(_obj_src_mesh) $(_obj_src_region) $(_obj_src_algebra) $(_obj_src_array)\
+  | build/$(MODE)/lib/plugins
 	$(CC) -o $@ -fPIC -shared $^ $(LDLIBS)
 
-build/$(MODE)/lib/libanimation$(.DLL):\
-  $(_obj_src_animation) | build/$(MODE)/lib
-	$(CC) -o $@ -fPIC -shared $^ $(shell pkg-config --libs gtk+-3.0) $(LDLIBS)
+build/$(MODE)/lib/plugins/libanimation$(.DLL):  $(_obj_plugins_animation)\
+  | build/$(MODE)/lib/plugins
+	$(CC) -o $@ -fPIC -shared $^\
+	  $(shell pkg-config --libs gtk+-3.0) $(LDLIBS)
 
-build/$(MODE)/lib/libcanvas$(.DLL):\
-  $(_obj_src_canvas)\
-  $(_obj_src_graphics)\
-  $(_obj_src_mesh)\
-  $(_obj_src_region)\
-  $(_obj_src_algebra)\
-  $(_obj_src_array)\
-  | build/$(MODE)/lib
-	$(CC) -o $@ -fPIC -shared $^ $(shell pkg-config --libs cairo) $(LDLIBS)
+build/$(MODE)/lib/plugins/libcanvas$(.DLL): $(_obj_plugins_canvas)\
+  build/$(MODE)/obj/src/idec_rgb_set_from_scheme_rainbow$(.OBJ)\
+  | build/$(MODE)/lib/plugins
+	$(CC) -o $@ -fPIC -shared $^\
+	  $(shell pkg-config --libs cairo) $(LDLIBS)
 
 ################################### linking ####################################
 build/$(MODE)/bin: | build/$(MODE)
 	mkdir -p $@
 
 $(_bin_array): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
-  $(_libs_array) | build/$(MODE)/bin
-	$(CC) -o $@ $< $(_libs_array) $(LDLIBS)
+  $(_libs_src_array) | build/$(MODE)/bin
+	$(CC) -o $@ $< $(_libs_src_array) $(LDLIBS)
 
 $(_bin_algebra): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
-  $(_libs_algebra) | build/$(MODE)/bin
-	$(CC) -o $@ $< $(_libs_algebra) $(LDLIBS)
+  $(_libs_src_algebra) | build/$(MODE)/bin
+	$(CC) -o $@ $< $(_libs_src_algebra) $(LDLIBS)
 
 $(_bin_region): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
-  $(_libs_region) | build/$(MODE)/bin
-	$(CC) -o $@ $< $(_libs_region) $(LDLIBS)
+  $(_libs_src_region) | build/$(MODE)/bin
+	$(CC) -o $@ $< $(_libs_src_region) $(LDLIBS)
 
 $(_bin_mesh): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
-  $(_libs_mesh) | build/$(MODE)/bin
-	$(CC) -o $@ $< $(_libs_mesh) $(LDLIBS)
+  $(_libs_src_mesh) | build/$(MODE)/bin
+	$(CC) -o $@ $< $(_libs_src_mesh) $(LDLIBS)
 
 $(_bin_diffusion): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
-  $(_libs_diffusion) | build/$(MODE)/bin
-	$(CC) -o $@ $< $(_libs_diffusion) $(LDLIBS)
+  $(_libs_src_diffusion) | build/$(MODE)/bin
+	$(CC) -o $@ $< $(_libs_src_diffusion) $(LDLIBS)
 
 $(_bin_graphics): build/$(MODE)/bin/%$(.EXE): build/$(MODE)/obj/main/%$(.OBJ)\
-  $(_libs_graphics) | build/$(MODE)/bin
-	$(CC) -o $@ $< $(_libs_graphics) $(LDLIBS)
+  $(_libs_src_graphics) | build/$(MODE)/bin
+	$(CC) -o $@ $< $(_libs_src_graphics) $(LDLIBS)

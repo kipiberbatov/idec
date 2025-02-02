@@ -60,8 +60,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochai
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_cbd.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p02$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p02$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d00_p02 0.05 100 > $@
 
@@ -69,8 +69,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochai
   build/$(MODE)/bin/diffusion_transient_discrete_dual_flow_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p02_primal_strong_cochain_brick_2d_2_forman_potential.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p02$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p02$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) "-" $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d00_p02 100 --raw $(word 3, $^) --raw > $@
 
@@ -79,8 +79,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochai
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_cbd.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d00_p01 0.001 > $@
 
@@ -89,8 +89,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p01_primal_weak_to_stead
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_vol.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_inner.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^)\
 	  $(word 2, $|) diffusion_transient_continuous_2d_d00_p01 0.001 0.01 > $@
 
@@ -99,8 +99,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p01_primal_weak_cochain_
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_vol.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_inner.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^)\
 	  $(word 2, $|) diffusion_transient_continuous_2d_d00_p01 0.001 1000 --raw > $@
 
@@ -109,8 +109,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p05_primal_strong_cochai
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_cbd.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p05$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p05$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d00_p05 0.05 20 > $@
 
@@ -119,8 +119,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochai
   build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_cbd.txt\
   build/$(MODE)/txt/mesh/brick_2d_2_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p00$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
   	  diffusion_transient_continuous_2d_d00_p00 0.001 100 > $@
 
@@ -129,8 +129,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p00_primal_strong_cochai
   build/$(MODE)/txt/mesh/brick_2d_5_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_5_forman_cbd.txt\
   build/$(MODE)/txt/mesh/brick_2d_5_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p00$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d00_p00 0.0001 10000 > $@
 
@@ -139,8 +139,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochai
   build/$(MODE)/txt/mesh/brick_2d_5_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_5_forman_cbd.txt\
   build/$(MODE)/txt/mesh/brick_2d_5_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d00_p01 0.0001 10000 > $@
 
@@ -149,8 +149,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochai
   build/$(MODE)/txt/mesh/brick_2d_10_forman.txt\
   build/$(MODE)/txt/mesh/brick_2d_10_forman_cbd.txt\
   build/$(MODE)/txt/mesh/brick_2d_10_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d00_p01$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d00_p01 0.0001 4000 > $@
 
@@ -158,8 +158,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochai
   build/$(MODE)/bin/diffusion_transient_discrete_dual_flow_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_10_forman.txt\
   build/$(MODE)/txt/diffusion/transient_continuous_2d_d00_p01_primal_strong_cochain_brick_2d_10_forman_potential.txt\
-  build/$(MODE)/obj/src/diffusion_steady_state_continuous_2d_d00_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d00_p01$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) "-" $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d00_p01 4000 --raw $(word 3, $^) --raw > $@
 
@@ -168,8 +168,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochai
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_cbd.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d02_p00 0.0001 1000 > $@
 
@@ -177,8 +177,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochai
   build/$(MODE)/bin/diffusion_transient_discrete_dual_flow_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/diffusion/transient_continuous_2d_d02_p00_primal_strong_cochain_2d_10_grains_forman_potential.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) "-" $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d02_p00 1000 --raw $(word 3, $^) --raw > $@
 
@@ -187,8 +187,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_vol.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_inner.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^)\
 	  $(word 2, $|) diffusion_transient_continuous_2d_d02_p00 0.01 2000 --raw > $@
 
@@ -196,8 +196,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_
   build/$(MODE)/bin/diffusion_transient_discrete_dual_flow_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/diffusion/transient_continuous_2d_d02_p00_primal_weak_cochain_2d_10_grains_forman_potential.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) "-" $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d02_p00 2000 --raw $(word 3, $^) --raw > $@
 
@@ -206,8 +206,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d02_p00_primal_weak_to_stead
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_vol.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_inner.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d02_p00$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^)\
 	  $(word 2, $|) diffusion_transient_continuous_2d_d02_p00 0.001 0.0001 > $@
 
@@ -216,8 +216,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d02_p01_primal_weak_cochain_
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_vol.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_inner.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d02_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d02_p01$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) --raw $(word 3, $^) --raw $(word 4, $^)\
   	  $(word 2, $|) diffusion_transient_continuous_2d_d02_p01 0.01 2000 --raw > $@
 
@@ -226,8 +226,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_2d_d01_p00_primal_strong_cochai
   build/$(MODE)/txt/mesh/square_8.txt\
   build/$(MODE)/txt/mesh/square_8_cbd.txt\
   build/$(MODE)/txt/mesh/square_8_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_2d_d01_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_2d_d01_p00$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_2d_d01_p00 0.001 4000 > $@
 
@@ -242,8 +242,8 @@ build/$(MODE)/txt/diffusion/transient_continuous_3d_d00_p00_primal_strong_cochai
   build/$(MODE)/txt/mesh/brick_3d_2_forman.txt\
   build/$(MODE)/txt/mesh/brick_3d_2_forman_cbd.txt\
   build/$(MODE)/txt/mesh/brick_3d_2_forman_cbd_star.txt\
-  build/$(MODE)/obj/src/diffusion_transient_continuous_3d_d00_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/libshared$(.DLL)
+  build/$(MODE)/obj/plugins/diffusion_transient_continuous_3d_d00_p00$(.OBJ)\
+  | build/$(MODE)/txt/diffusion build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$< --raw $(word 2, $^) $(word 3, $^) $(word 4, $^) $(word 2, $|)\
 	  diffusion_transient_continuous_3d_d00_p00 0.001 1000 > $@
 
