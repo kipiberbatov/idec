@@ -217,7 +217,7 @@ lib_plugins_canvas: build/$(MODE)/lib/plugins/libcanvas$(.DLL)
 
 ############################## executable targets ##############################
 .PHONY: $(patsubst %, bin_%, $(MODULES))
-bin: obj_main lib $(patsubst %, bin_%, $(MODULES))
+bin: obj_main lib_src $(patsubst %, bin_%, $(MODULES))
 bin_array: $(_bin_array)
 bin_algebra: $(_bin_algebra)
 bin_region: $(_bin_region)

@@ -1,6 +1,9 @@
 ################################ default target ################################
 .PHONY: all
-all: obj lib bin txt
+all: obj_src obj_main obj_plugins_diffusion\
+     lib_src lib_plugins_diffusion\
+     bin\
+     txt
 
 ##################################### mode #####################################
 MODE := release

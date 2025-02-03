@@ -2,14 +2,18 @@
 Intrinsic Discrete Exterior Calculus
 
 Software library implementing the operations in
-<https://arxiv.org/abs/2201.03704>.
+<https://arxiv.org/abs/2201.03704> and its applications.
+At the moment diffusion in strong and weak formulations is being implemented.
 
 The project is hosted on GitHub at <https://github.com/kipiberbatov/idec>.
+
+The project produces its own website, hosted at
+<https://kipiberbatov.github.io/idec>.
 
 ## Modules
 - array: functions working on integers and floating point numbers and
 arrays structures of those types;
-importantly the **jagged1**, ..., **jagged4** structures of jagged integral
+importantly the **jagged1**, ..., **jagged4** structures of jagged integer
 arrays (of levels 1-4) are implemented;
 - algebra: using the structure **cs** from
 [CSparse library](https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/stable/CSparse)
@@ -23,20 +27,32 @@ for quasi-cubical meshes resulting from applying **forman**;
 - diffusion: includes various structures for encoding the input data for
 diffusion problems (in particular, heat equation), as well as implementations
 of solution methods for those problems;
-- graphics: examples using [Cairo](https://www.cairographics.org) and
-[GTK 3](https://docs.gtk.org/gtk3/)
-- shared: inputs that are dynamically loaded during execution:
-they contain input data for numerical examples.
+- graphics: structures and functions for drawing images and animations on a
+canvas in a backend-independent way (the canvas and animation backend are
+selected at runtime according to the command line arguments);
+
+## Plugins
+- diffusion: problem data and exact solutions to transient and steady-state
+continuous diffusion problems;
+- canvas: procedures for drawing shapes on a canvas, currently with Cairo;
+- animation: procedures for producing animations based on the canvas data;
+PDF and GTK animation backends are supported via the Cairo canvas backend.
 
 ## Dependencies
 
-You need the following programs and libraries installed on your system:
+You need the following programs and installed on your system in order to clone,
+build the project and run the text-outputting demos:
 - git
 - C compiler (GCC or Clang)
 - GNU make
+
+In order to build the canvas and animation plugins, run PDF-outputting demos
+and GTK animations, you need the following software
 - pkg-config
 - Cairo
 - GTK+ 3
+
+To build the documentation, you need the LaTeX compiler **pdflatex**. 
 
 On MacOS git, Clang and GNU make should be shipped with
 [command line tools for XCode](https://developer.apple.com/xcode/resources/).
@@ -55,10 +71,13 @@ The remaining dependencies are installed in the same manner:
 brew install pkg-config
 brew install cairo
 brew install gtk+3
+brew install texlive
 ```
 
 For Linux you can install the required dependencies using your preferred
 package manager or [Homebrew on Linux](https://docs.brew.sh/Homebrew-on-Linux).
+(Cairo and GTK+ may already be installed by your distribution.)
+
 For Windows, you should install
 [Windows subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install),
 [Homebrew on Linux](https://docs.brew.sh/Homebrew-on-Linux),
