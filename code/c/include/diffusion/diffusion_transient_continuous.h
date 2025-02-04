@@ -1,61 +1,59 @@
 #ifndef _diffusion_transient_continuous_h
 #define _diffusion_transient_continuous_h
 
-#include "double.h"
-#include "mesh_qc.h"
+struct double_array_sequence_dynamic;
+struct matrix_sparse;
+struct mesh;
 
-/* typedef double scalar_field(const double *); */
-typedef int region_implicit(const double *);
-
-typedef struct diffusion_transient_continuous
+struct diffusion_transient_continuous
 {
-  scalar_field pi_0;
-  scalar_field kappa_1;
-  scalar_field initial;
-  scalar_field source;
-  region_implicit * boundary_dirichlet;
-  scalar_field g_dirichlet;
-  region_implicit * boundary_neumann;
-  scalar_field g_neumann;
-} diffusion_transient_continuous;
+  double (*pi_0)(const double *);
+  double (*kappa_1)(const double *);
+  double (*initial)(const double *);
+  double (*source)(const double *);
+  int (*boundary_dirichlet)(const double *);
+  double (*g_dirichlet)(const double *);
+  int (*boundary_neumann)(const double *);
+  double (*g_neumann)(const double *);
+};
 
 /******************************* primal strong ********************************/
 double * diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
-  const mesh * m,
-  const matrix_sparse * m_cbd_0,
-  const matrix_sparse * m_cbd_star_1,
-  const diffusion_transient_continuous * data_continuous,
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_0,
+  const struct matrix_sparse * m_cbd_star_1,
+  const struct diffusion_transient_continuous * data_continuous,
   double time_step,
   int number_of_steps);
 
-double_array_sequence_dynamic *
+struct double_array_sequence_dynamic *
 diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal_to_steady_state(
-  const mesh * m,
-  const matrix_sparse * m_cbd_0,
-  const matrix_sparse * m_cbd_star_1,
-  const diffusion_transient_continuous * data_continuous,
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_0,
+  const struct matrix_sparse * m_cbd_star_1,
+  const struct diffusion_transient_continuous * data_continuous,
   double time_step,
   double tolerance);
 
 /******************************** primal weak *********************************/
 double * diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal(
-  const mesh * m,
+  const struct mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_0,
   const double * m_inner_1,
-  const diffusion_transient_continuous * data_continuous,
+  const struct diffusion_transient_continuous * data_continuous,
   double time_step,
   int number_of_steps);
 
-double_array_sequence_dynamic *
+struct double_array_sequence_dynamic *
 diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal_to_steady_state(
-  const mesh * m,
+  const struct mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_0,
   const double * m_inner_1,
-  const diffusion_transient_continuous * data_continuous,
+  const struct diffusion_transient_continuous * data_continuous,
   double time_step,
   double tolerance);
 
@@ -63,26 +61,26 @@ diffusion_transient_continuous_primal_weak_cochain_solve_trapezoidal_to_steady_s
 void diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal(
   double * flow,
   double * potential,
-  const mesh * m,
-  const matrix_sparse * m_bd_d,
+  const struct mesh * m,
+  const struct matrix_sparse * m_bd_d,
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_0,
   const double * m_inner_dm1,
-  const diffusion_transient_continuous * data_continuous,
+  const struct diffusion_transient_continuous * data_continuous,
   double time_step,
   int number_of_steps);
 
 void
 diffusion_transient_continuous_mixed_weak_cochain_solve_trapezoidal_to_steady_state(
-  double_array_sequence_dynamic * flow,
-  double_array_sequence_dynamic * potential,
-  const mesh * m,
+  struct double_array_sequence_dynamic * flow,
+  struct double_array_sequence_dynamic * potential,
+  const struct mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_0,
   const double * m_inner_dm1,
-  const diffusion_transient_continuous * data_continuous,
+  const struct diffusion_transient_continuous * data_continuous,
   double time_step,
   double tolerance);
 

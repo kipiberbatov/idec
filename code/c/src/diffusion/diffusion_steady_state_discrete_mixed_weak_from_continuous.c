@@ -10,20 +10,19 @@
 #include "double.h"
 #include "unsigned_approximation.h"
 
-diffusion_steady_state_discrete_mixed_weak *
+struct diffusion_steady_state_discrete_mixed_weak *
 diffusion_steady_state_discrete_mixed_weak_from_continuous(
-  const mesh * m,
+  const struct mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
-  const diffusion_steady_state_continuous * data_continuous)
+  const struct diffusion_steady_state_continuous * data_continuous)
 {
   int d;
-  diffusion_steady_state_discrete_mixed_weak * data_discrete;
+  struct diffusion_steady_state_discrete_mixed_weak * data_discrete;
 
   d = m->dim;
 
-  data_discrete = (diffusion_steady_state_discrete_mixed_weak *) malloc(
-    sizeof(diffusion_steady_state_discrete_mixed_weak));
+  *(void **) (&data_discrete) = malloc(sizeof(*data_discrete));
   if (errno)
     goto end;
 

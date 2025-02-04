@@ -7,15 +7,14 @@
 #include "diffusion_transient_discrete_primal_strong.h"
 #include "unsigned_approximation.h"
 
-diffusion_transient_discrete_primal_strong *
+struct diffusion_transient_discrete_primal_strong *
 diffusion_transient_discrete_primal_strong_from_continuous(
-  const mesh * m,
-  const diffusion_transient_continuous * data_continuous)
+  const struct mesh * m,
+  const struct diffusion_transient_continuous * data_continuous)
 {
-  diffusion_transient_discrete_primal_strong * data_discrete;
+  struct diffusion_transient_discrete_primal_strong * data_discrete;
 
-  data_discrete = (diffusion_transient_discrete_primal_strong *) malloc(
-    sizeof(diffusion_transient_discrete_primal_strong));
+  *(void **) (&data_discrete) = malloc(sizeof(*data_discrete));
   if (errno)
     goto end;
 

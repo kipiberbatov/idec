@@ -2,13 +2,18 @@
 #include <string.h>
 
 #include "color.h"
+#include "diffusion_transient_discrete_primal_weak.h"
 #include "diffusion_transient_discrete_primal_weak_solve_trapezoidal_next.h"
+#include "diffusion_transient_discrete_primal_weak_trapezoidal_loop_data.h"
+#include "double.h"
+#include "matrix_sparse.h"
 
 void diffusion_transient_discrete_primal_weak_solve_trapezoidal_next(
   double * potential_next,
   double * rhs_final,
   const double * potential_current,
-  const diffusion_transient_discrete_primal_weak_trapezoidal_loop_data * input)
+  const struct diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *
+    input)
 {
   /* $rhs_final = free_part + rhs * potential_current$ */
   memcpy(rhs_final, input->free_part, sizeof(double) * input->lhs->rows);

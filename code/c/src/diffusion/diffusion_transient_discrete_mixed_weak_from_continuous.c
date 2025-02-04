@@ -7,12 +7,14 @@
 #include "de_rham.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
+#include "double.h"
 #include "idec_error_message.h"
+#include "mesh_qc.h"
 #include "unsigned_approximation.h"
 
 static void discrete_dual_potential_from_continuous_potential(
   double * discrete_dual_potential,
-  const mesh * m,
+  const struct mesh * m,
   const double * m_vol_d,
   double (*continuous_potential)(const double *))
 {
@@ -31,26 +33,24 @@ static void discrete_dual_potential_from_continuous_potential(
   errno = 0;
 }
 
-diffusion_transient_discrete_mixed_weak *
+struct diffusion_transient_discrete_mixed_weak *
 diffusion_transient_discrete_mixed_weak_from_continuous(
-  const mesh * m,
+  const struct mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
-  const matrix_sparse * m_cbd_star_d,
-  const diffusion_transient_continuous * data_continuous)
+  const struct matrix_sparse * m_cbd_star_d,
+  const struct diffusion_transient_continuous * data_continuous)
 {
   int d;
-  diffusion_transient_discrete_mixed_weak * data_discrete;
+  struct diffusion_transient_discrete_mixed_weak * data_discrete;
 
   d = m->dim;
 
-  data_discrete = (diffusion_transient_discrete_mixed_weak *) malloc(
-    sizeof(diffusion_transient_discrete_mixed_weak));
+  *(void **) (&data_discrete) = malloc(sizeof(*data_discrete));
   if (data_discrete == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(diffusion_transient_discrete_mixed_weak),
-      "data_discrete");
+    idec_error_message_malloc(sizeof(*data_discrete), "data_discrete");
     goto end;
   }
 

@@ -5,20 +5,20 @@
 #include "double.h"
 #include "diffusion_steady_state_continuous.h"
 #include "diffusion_steady_state_discrete_mixed_weak.h"
-#include "mesh_qc.h"
+#include "mesh.h"
 
 void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
   double * flow,
   double * dual_potential,
-  const mesh * m,
-  const matrix_sparse * m_cbd_dm1,
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_dm1,
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_dm1,
   const double * m_inner_d,
-  const diffusion_steady_state_continuous * data_continuous)
+  const struct diffusion_steady_state_continuous * data_continuous)
 {
-  diffusion_steady_state_discrete_mixed_weak * data_discrete;
+  struct diffusion_steady_state_discrete_mixed_weak * data_discrete;
 
   data_discrete = diffusion_steady_state_discrete_mixed_weak_from_continuous(
     m, m_vol_dm1, m_vol_d, data_continuous);
@@ -30,13 +30,7 @@ void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
   }
 
   diffusion_steady_state_discrete_mixed_weak_solve(
-    flow,
-    dual_potential,
-    m,
-    m_cbd_dm1,
-    m_inner_dm1,
-    m_inner_d,
-    data_discrete);
+    flow, dual_potential, m, m_cbd_dm1, m_inner_dm1, m_inner_d, data_discrete);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);

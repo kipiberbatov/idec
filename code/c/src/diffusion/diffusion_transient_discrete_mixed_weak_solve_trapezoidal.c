@@ -3,15 +3,19 @@
 #include <string.h>
 
 #include "color.h"
+#include "diffusion_transient_discrete_mixed_weak.h"
 #include "diffusion_transient_discrete_mixed_weak_solve_trapezoidal_next.h"
+#include "diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data.h"
 #include "idec_error_message.h"
+#include "mesh_qc.h"
 
 static void loop(
   double * flow,
   double * dual_potential,
   double * y,
   double * flow_reduced,
-  const diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input,
+  const struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data *
+    input,
   int number_of_steps)
 {
   int i, m_cn_dm1, m_cn_d;
@@ -35,17 +39,17 @@ static void loop(
 void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
   double * flow,
   double * dual_potential,
-  const mesh * m,
-  const matrix_sparse * m_cbd_dm1,
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_dm1,
   const double * m_inner_dm1,
   const double * m_inner_d,
-  const diffusion_transient_discrete_mixed_weak * data,
+  const struct diffusion_transient_discrete_mixed_weak * data,
   double time_step,
   int number_of_steps)
 {
   int d, m_cn_dm1, m_cn_dm1_bar, m_cn_d;
   double * flow_reduced, * y;
-  diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input;
+  struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input;
 
   d = m->dim;
   m_cn_dm1 = m->cn[d - 1];

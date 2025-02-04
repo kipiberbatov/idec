@@ -8,6 +8,7 @@
 #include "idec_command_line.h"
 #include "idec_error_message.h"
 #include "int.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
@@ -18,10 +19,10 @@ int main(int argc, char ** argv)
   double * dual_potential, * flow;
   double ** m_inner;
   FILE * data_file, * m_file;
-  matrix_sparse * m_cbd_dm1;
-  matrix_sparse ** m_bd;
-  mesh * m;
-  diffusion_transient_discrete_mixed_weak * data;
+  struct matrix_sparse * m_cbd_dm1;
+  struct matrix_sparse ** m_bd;
+  struct mesh * m;
+  struct diffusion_transient_discrete_mixed_weak * data;
 
   idec_command_line no_positional_arguments, option_input_data, option_mesh,
                     option_mesh_format, option_mesh_inner,

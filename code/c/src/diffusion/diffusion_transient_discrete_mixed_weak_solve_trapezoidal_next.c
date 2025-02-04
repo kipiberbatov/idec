@@ -1,8 +1,11 @@
-#include <errno.h>
 #include <string.h>
 
 #include "color.h"
+#include "diffusion_transient_discrete_mixed_weak.h"
 #include "diffusion_transient_discrete_mixed_weak_solve_trapezoidal_next.h"
+#include "diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data.h"
+#include "double.h"
+#include "mesh.h"
 
 static void double_array_diagonal_matrix_multiply_add(
   double * y, int n, const double * d, const double * x)
@@ -22,7 +25,8 @@ void diffusion_transient_discrete_mixed_weak_solve_trapezoidal_next(
   double * flow_reduced,
   const double * flow_current,
   const double * dual_potential_current,
-  const diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input)
+  const struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data *
+    input)
 {
   int m_cn_dm1, m_cn_dm1_bar, m_cn_d;
   double * w;

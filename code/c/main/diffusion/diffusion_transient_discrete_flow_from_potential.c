@@ -7,17 +7,18 @@
 #include "idec_command_line.h"
 #include "idec_error_message.h"
 #include "int.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
   char * flow_format, * kappa_1_format, * kappa_1_name, * m_format, * m_name,
        * m_hodge_format, * m_hodge_name, * potential_format, * potential_name;
-  int d, number_of_steps, size, status;
+  int d, m_cn_dm1, number_of_steps, size, status;
   double * flow, * kappa_1, * potential;
-  mesh * m;
-  matrix_sparse * m_bd_1;
-  matrix_sparse ** m_hodge;
   FILE * m_file;
+  struct mesh * m;
+  struct matrix_sparse * m_bd_1;
+  struct matrix_sparse ** m_hodge;
 
   idec_command_line no_positional_arguments, option_flow_format,
                     option_kappa_1, option_kappa_1_format, option_mesh,
@@ -109,6 +110,7 @@ int main(int argc, char ** argv)
     goto end;
   }
   d = m->dim;
+  m_cn_dm1 = m->cn[d - 1];
 
   m_bd_1 = mesh_file_scan_boundary_p(m_file, m, 1);
   if (m_bd_1 == NULL)
@@ -153,13 +155,12 @@ int main(int argc, char ** argv)
     goto kappa_1_free;
   }
 
-  flow = (double *) calloc((number_of_steps + 1) * m->cn[d - 1],
-                           sizeof(double));
+  flow = (double *) calloc((number_of_steps + 1) * m_cn_dm1, sizeof(double));
   if (flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     idec_error_message_malloc(
-      sizeof(double) * (number_of_steps + 1) * m->cn[d - 1], "flow");
+      sizeof(double) * (number_of_steps + 1) * m_cn_dm1, "flow");
     goto potential_free;
   }
 
@@ -173,7 +174,7 @@ int main(int argc, char ** argv)
   }
 
   double_matrix_file_print(
-    stdout, number_of_steps + 1, m->cn[d - 1], flow, flow_format);
+    stdout, number_of_steps + 1, m_cn_dm1, flow, flow_format);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);

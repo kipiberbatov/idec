@@ -19,8 +19,8 @@ int main(int argc, char ** argv)
   double * flow, * potential, * dual_potential;
   double ** m_vol;
   FILE * data_file, * m_file, * solution_file;
-  mesh * m;
-  diffusion_transient_discrete_mixed_weak * data;
+  struct mesh * m;
+  struct diffusion_transient_discrete_mixed_weak * data;
 
   idec_command_line no_positional_arguments, option_input_data, option_mesh,
                     option_mesh_format, option_mesh_vol, option_mesh_vol_format,

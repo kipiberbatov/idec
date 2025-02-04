@@ -2,16 +2,17 @@
 
 #include "diffusion_steady_state_continuous.h"
 #include "diffusion_steady_state_discrete_primal_weak.h"
+#include "mesh.h"
 
 double * diffusion_steady_state_continuous_primal_weak_cochain_solve(
-  const mesh * m,
+  const struct mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
   const double * m_inner_1,
-  const diffusion_steady_state_continuous * data_continuous)
+  const struct diffusion_steady_state_continuous * data_continuous)
 {
   double * result = NULL;
-  diffusion_steady_state_discrete_primal_weak * data_discrete;
+  struct diffusion_steady_state_discrete_primal_weak * data_discrete;
 
   data_discrete = diffusion_steady_state_discrete_primal_weak_from_continuous(
     m, m_vol_dm1, m_vol_d, data_continuous);

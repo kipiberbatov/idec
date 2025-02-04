@@ -11,17 +11,17 @@
 
 int main(int argc, char ** argv)
 {
+  void * lib_handle;
   char * error, * data_name, * lib_name, * m_inner_name, * m_name, * m_vol_name;
   int d;
   int * m_cn;
   double * flow, * dual_potential;
   double ** m_inner, ** m_vol;
   FILE * m_file;
-  matrix_sparse * m_cbd_dm1;
-  matrix_sparse ** m_bd;
-  mesh * m;
-  void * lib_handle;
-  const diffusion_steady_state_continuous * data;
+  struct matrix_sparse * m_cbd_dm1;
+  struct matrix_sparse ** m_bd;
+  struct mesh * m;
+  const struct diffusion_steady_state_continuous * data;
 
   if (argc != 6)
   {
@@ -112,8 +112,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  data
-  = (const diffusion_steady_state_continuous *) dlsym(lib_handle, data_name);
+  *(const void **) (&data) = dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
   {

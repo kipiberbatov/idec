@@ -3,17 +3,18 @@
 #include "color.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_primal_strong.h"
+#include "mesh.h"
 
 double * diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
-  const mesh * m,
-  const matrix_sparse * m_cbd_0,
-  const matrix_sparse * m_cbd_star_1,
-  const diffusion_transient_continuous * data_continuous,
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_0,
+  const struct matrix_sparse * m_cbd_star_1,
+  const struct diffusion_transient_continuous * data_continuous,
   double time_step,
   int number_of_steps)
 {
   double * result = NULL;
-  diffusion_transient_discrete_primal_strong * data_discrete;
+  struct diffusion_transient_discrete_primal_strong * data_discrete;
 
   data_discrete = diffusion_transient_discrete_primal_strong_from_continuous(
     m, data_continuous);
@@ -25,13 +26,7 @@ double * diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal(
   }
 
   result = diffusion_transient_discrete_primal_strong_solve_trapezoidal(
-    m,
-    m_cbd_0,
-    m_cbd_star_1,
-    data_discrete,
-    time_step,
-    number_of_steps
-  );
+    m, m_cbd_0, m_cbd_star_1, data_discrete, time_step, number_of_steps);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);

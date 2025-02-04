@@ -8,6 +8,7 @@
 #include "double.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
 #include "idec_command_line.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
@@ -18,10 +19,10 @@ int main(int argc, char ** argv)
   double ** m_vol;
   void * lib_handle;
   FILE * m_cbd_star_file;
-  mesh * m;
-  matrix_sparse ** m_cbd_star;
-  const diffusion_transient_continuous * data_continuous;
-  diffusion_transient_discrete_mixed_weak * data_discrete;
+  struct mesh * m;
+  struct matrix_sparse ** m_cbd_star;
+  const struct diffusion_transient_continuous * data_continuous;
+  struct diffusion_transient_discrete_mixed_weak * data_discrete;
 
   idec_command_line no_positional_arguments, option_input_data, option_lib,
                     option_mesh, option_mesh_format,
@@ -136,8 +137,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  data_continuous = (const diffusion_transient_continuous *) dlsym(
-    lib_handle, data_continuous_name);
+  *(const void **) (&data_continuous) = dlsym(lib_handle, data_continuous_name);
   error = dlerror();
   if (error)
   {

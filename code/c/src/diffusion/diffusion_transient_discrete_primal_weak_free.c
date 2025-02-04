@@ -1,9 +1,10 @@
 #include <stdlib.h>
 
 #include "diffusion_transient_discrete_primal_weak.h"
+#include "jagged.h"
 
 void diffusion_transient_discrete_primal_weak_free(
-  diffusion_transient_discrete_primal_weak * data)
+  struct diffusion_transient_discrete_primal_weak * data)
 {
   free(data->g_neumann);
   jagged1_free(data->boundary_neumann);

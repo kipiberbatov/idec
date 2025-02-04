@@ -67,7 +67,7 @@ static double g_neumann(const double * x)
   return 2.;
 }
 
-const diffusion_steady_state_continuous
+const struct diffusion_steady_state_continuous
 diffusion_steady_state_continuous_2d_d03_p00 =
 {
   kappa_1,
@@ -88,14 +88,14 @@ static double norm_2d_squared(const double * point)
 }
 
 void diffusion_steady_state_continuous_2d_d03_p00_exact_potential_circular(
-  double * potential, const mesh * m)
+  double * potential, const struct mesh * m)
 {
   de_rham_0(potential, m, norm_2d_squared);
 }
 
 /* Exact flow on the Forman subdivision */
 void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
-  double * flow, const mesh * m, const matrix_sparse * m_bd_1)
+  double * flow, const struct mesh * m, const struct matrix_sparse * m_bd_1)
 {
   int i, index, j, na, nd;
   int * topology;

@@ -7,18 +7,19 @@
 #include "double.h"
 #include "diffusion_steady_state_discrete_mixed_weak.h"
 #include "idec_error_message.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
+  void * lib_handle;
   char * data_continuous_name, * error, * lib_name, * m_format, * m_name,
        * m_vol_format, * m_vol_name;
   int d;
   int * m_cn;
   double ** m_vol;
-  void * lib_handle;
-  mesh * m;
-  const diffusion_steady_state_continuous * data_continuous;
-  diffusion_steady_state_discrete_mixed_weak * data_discrete;
+  struct mesh * m;
+  const struct diffusion_steady_state_continuous * data_continuous;
+  struct diffusion_steady_state_discrete_mixed_weak * data_discrete;
 
 #define ARGC 7
   if (argc != ARGC)
@@ -69,8 +70,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  data_continuous = (const diffusion_steady_state_continuous *) dlsym(
-    lib_handle, data_continuous_name);
+  *(const void **) (&data_continuous) = dlsym(lib_handle, data_continuous_name);
   error = dlerror();
   if (error)
   {

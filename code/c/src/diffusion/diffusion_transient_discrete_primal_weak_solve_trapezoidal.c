@@ -3,7 +3,11 @@
 #include <string.h>
 
 #include "color.h"
+#include "diffusion_transient_discrete_primal_weak.h"
 #include "diffusion_transient_discrete_primal_weak_solve_trapezoidal_next.h"
+#include "diffusion_transient_discrete_primal_weak_trapezoidal_loop_data.h"
+#include "idec_error_message.h"
+#include "mesh.h"
 
 /*
 $potential$ stores the final solution $y_0, ..., y_{number_of_steps}$.
@@ -14,7 +18,8 @@ For $i = 0, ..., number_of_steps$:
 static void loop(
   double * potential,
   double * rhs_final,
-  const diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *input,
+  const struct diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *
+    input,
   int number_of_steps)
 {
   int i, m_cn_0;
@@ -27,23 +32,23 @@ static void loop(
     if (errno)
     {
       color_error_position(__FILE__, __LINE__);
-      fprintf(stderr, "loop: error in iteration %d\n", i);
+      fprintf(stderr, "cannot calculate loop iteration %d\n", i);
       return;
     }
   }
 }
 
 double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
-  const mesh * m,
+  const struct mesh * m,
   const double * m_inner_0,
   const double * m_inner_1,
-  const diffusion_transient_discrete_primal_weak * data,
+  const struct diffusion_transient_discrete_primal_weak * data,
   double time_step,
   int number_of_steps)
 {
   int m_cn_0;
   double * rhs_final, * potential = NULL;
-  diffusion_transient_discrete_primal_weak_trapezoidal_loop_data * input;
+  struct diffusion_transient_discrete_primal_weak_trapezoidal_loop_data * input;
 
   input =
   diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
@@ -62,9 +67,7 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
   if (rhs_final == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for rhs_final\n",
-      sizeof(double) * m_cn_0);
+    idec_error_message_malloc(sizeof(double) * m_cn_0, "rhs_final");
     goto input_free;
   }
 
@@ -73,9 +76,8 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
   if (potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld memory for potential\n",
-      sizeof(double) * (number_of_steps + 1) * m_cn_0);
+    idec_error_message_malloc(sizeof(double) * (number_of_steps + 1) * m_cn_0,
+      "potential");
     goto rhs_final_free;
   }
 
@@ -89,7 +91,7 @@ double * diffusion_transient_discrete_primal_weak_solve_trapezoidal(
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("error in loop calculating potential\n", stderr);
+    fputs("cannot calculate potential\n", stderr);
     free(potential);
     potential =  NULL;
     goto rhs_final_free;

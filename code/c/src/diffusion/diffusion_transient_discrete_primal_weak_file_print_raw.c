@@ -1,9 +1,10 @@
 #include "diffusion_transient_discrete_primal_weak.h"
 #include "double.h"
+#include "jagged.h"
 
 void diffusion_transient_discrete_primal_weak_file_print_raw(
   FILE * out,
-  const diffusion_transient_discrete_primal_weak * data)
+  const struct diffusion_transient_discrete_primal_weak * data)
 {
   fprintf(out, "%d\n", data->number_of_cells_0);
   fprintf(out, "%d\n", data->number_of_cells_1);

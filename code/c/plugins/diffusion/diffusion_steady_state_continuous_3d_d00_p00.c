@@ -65,7 +65,7 @@ static double g_neumann(const double * x)
   return 0.;
 }
 
-const diffusion_steady_state_continuous
+const struct diffusion_steady_state_continuous
 diffusion_steady_state_continuous_3d_d00_p00 =
 {
   kappa_1,
@@ -83,7 +83,7 @@ static double u(const double * point)
 }
 
 void diffusion_steady_state_continuous_3d_d00_p00_potential(
-  double * potential, const mesh * m)
+  double * potential, const struct mesh * m)
 {
   de_rham_0(potential, m, u);
 }

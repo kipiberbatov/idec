@@ -3,13 +3,16 @@
 #include <string.h>
 
 #include "color.h"
+#include "diffusion_transient_discrete_mixed_weak.h"
 #include "diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data.h"
+#include "double.h"
 #include "idec_error_message.h"
+#include "mesh_qc.h"
 
 static void set_f_tilde(
   double * f_tilde,
-  const matrix_sparse * b,
-  const jagged1 * boundary_neumann,
+  const struct matrix_sparse * b,
+  const struct jagged1 * boundary_neumann,
   const double * g_neumann)
 {
   int boundary_neumann_a0, i, i_local, k, k_local;
@@ -36,8 +39,8 @@ static void set_f_tilde(
 }
 
 static void update_g_neumann_sign(
-  const matrix_sparse * m_cbd_dm1,
-  const jagged1 * boundary_neumann_dm1,
+  const struct matrix_sparse * m_cbd_dm1,
+  const struct jagged1 * boundary_neumann_dm1,
   double * g_neumann_dm1)
 {
   int i, i_local, index;
@@ -53,7 +56,7 @@ static void update_g_neumann_sign(
 
 static void set_a_bar_inverse(
   double * a_bar_inverse,
-  const jagged1 * boundary_neumann_dm1_bar,
+  const struct jagged1 * boundary_neumann_dm1_bar,
   const double * m_inner_dm1,
   const double * kappa_dm1)
 {
@@ -71,10 +74,10 @@ static void set_a_bar_inverse(
 
 static void set_g_bar(
   double * g_bar,
-  const mesh * m,
-  const matrix_sparse * m_cbd_dm1,
-  const jagged1 * boundary_neumann_dm1_bar,
-  const diffusion_transient_discrete_mixed_weak * data)
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_dm1,
+  const struct jagged1 * boundary_neumann_dm1_bar,
+  const struct diffusion_transient_discrete_mixed_weak * data)
 {
   int d;
   double * g, * g_dirichlet_0_big;
@@ -149,21 +152,21 @@ delete everything else:
 
 #define progress 0
 
-diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data *
+struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data *
 diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
-  const mesh_qc * m,
-  const matrix_sparse * m_cbd_dm1,
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_dm1,
   const double * m_inner_dm1,
   const double * m_inner_d,
-  const diffusion_transient_discrete_mixed_weak * data,
+  const struct diffusion_transient_discrete_mixed_weak * data,
   double time_step)
 {
   int d, m_cn_dm1, m_cn_dm1_bar, m_cn_d;
   double * a_bar_inverse, * c, * c_tau, * f, * f_tilde, * g_bar, * p_bar,
          * v_tau, * z;
-  jagged1 * boundary_neumann_dm1_bar;
-  matrix_sparse * b, * b_bar, * b_bar_transpose, /* * l_tau, */ * n_tau;
-  diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input;
+  struct jagged1 * boundary_neumann_dm1_bar;
+  struct matrix_sparse * b, * b_bar, * b_bar_transpose, /* * l_tau, */ * n_tau;
+  struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input;
 
   /* temporary hack to patch the wrong orientation coming from discretizing
    * the Neumann boundary condition
@@ -176,15 +179,11 @@ diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
   m_cn_dm1_bar = m_cn_dm1 - data->boundary_neumann_dm1->a0;
   m_cn_d = m->cn[d];
 
-  input
-  = (diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data *) malloc(
-    sizeof(diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data));
+  *(void **) (&input) = malloc(sizeof(*input));
   if (input == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(
-      sizeof(diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data),
-      "input");
+    idec_error_message_malloc(sizeof(*input), "input");
     goto end;
   }
 
@@ -349,7 +348,7 @@ diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
 
 #if progress
   {
-    matrix_sparse * l_tau, * l_tau_transpose, * n_tau_1;
+    struct matrix_sparse * l_tau, * l_tau_transpose, * n_tau_1;
 
     fputs("\n# n_tau:\n", stderr);
     matrix_sparse_file_print(stderr, n_tau, "--matrix-form-curly");

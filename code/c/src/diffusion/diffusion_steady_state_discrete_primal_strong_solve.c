@@ -6,16 +6,18 @@
 #include "double.h"
 #include "diffusion_discrete_set_neumann_rows.h"
 #include "diffusion_steady_state_discrete_primal_strong.h"
+#include "idec_error_message.h"
+#include "mesh.h"
 
 double * diffusion_steady_state_discrete_primal_strong_solve(
-  const mesh * m,
-  const matrix_sparse * m_cbd_0,
-  const matrix_sparse * m_cbd_star_1,
-  const diffusion_steady_state_discrete_primal_strong * data)
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_0,
+  const struct matrix_sparse * m_cbd_star_1,
+  const struct diffusion_steady_state_discrete_primal_strong * data)
 {
   int n;
   double * result = NULL;
-  matrix_sparse * lhs;
+  struct matrix_sparse * lhs;
 
   lhs = matrix_sparse_material_product(m_cbd_0, data->kappa_1, m_cbd_star_1);
   if (lhs == NULL)
@@ -30,9 +32,7 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
   if (result == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for result\n",
-      sizeof(double) * n);
+    idec_error_message_malloc(sizeof(double) * n, "result");
     goto lhs_free;
   }
   memcpy(result, data->source, sizeof(double) * n);

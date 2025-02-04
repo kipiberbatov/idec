@@ -75,7 +75,7 @@ static double g_neumann(const double * x)
   return 0.;
 }
 
-const diffusion_transient_continuous
+const struct diffusion_transient_continuous
 diffusion_transient_continuous_2d_d00_p00 =
 {
   pi_0,
@@ -94,14 +94,14 @@ static double u(double t, const double * point)
 }
 
 void diffusion_transient_continuous_2d_d00_p00_potential(
-  double * potential, const mesh * m, double step, int number_of_steps)
+  double * potential, const struct mesh * m, double step, int number_of_steps)
 {
   de_rham_sequence_0(potential, m, 0., step, number_of_steps, u);
 }
 
 void diffusion_transient_continuous_2d_d00_p00_flow(
-  double * flow, const mesh * m, double step, int number_of_steps,
-  const matrix_sparse * m_bd_1)
+  double * flow, const struct mesh * m, double step, int number_of_steps,
+  const struct matrix_sparse * m_bd_1)
 {
   int i, m_cn_1;
 

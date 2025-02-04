@@ -4,30 +4,31 @@
 
 #include "color.h"
 #include "diffusion_discrete_set_neumann_rows.h"
+#include "diffusion_transient_discrete_primal_weak.h"
 #include "diffusion_transient_discrete_primal_weak_trapezoidal_loop_data.h"
+#include "double.h"
+#include "idec_error_message.h"
+#include "mesh_qc.h"
 
-diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *
+struct diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *
 diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
-  const mesh_qc * m,
+  const struct mesh * m,
   const double * m_inner_0,
   const double * m_inner_1,
-  const diffusion_transient_discrete_primal_weak * data,
+  const struct diffusion_transient_discrete_primal_weak * data,
   double time_step)
 {
   int m_cn_0;
   double * b, * f, * free_part, * g;
-  matrix_sparse * a, * lhs, * rhs;
-  diffusion_transient_discrete_primal_weak_trapezoidal_loop_data * result;
+  struct matrix_sparse * a, * lhs, * rhs;
+  struct diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *
+    result;
 
-  result = (diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *)
-    malloc(sizeof(
-      diffusion_transient_discrete_primal_weak_trapezoidal_loop_data));
+  *(void **) (&result) = malloc(sizeof(*result));
   if (result == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for result\n",
-      sizeof(diffusion_transient_discrete_primal_weak_trapezoidal_loop_data));
+    idec_error_message_malloc(sizeof(*result), "result");
     goto end;
   }
 
@@ -47,9 +48,7 @@ diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
   if (b == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for diagonal matrix b\n",
-      sizeof(double) * m_cn_0);
+    idec_error_message_malloc(sizeof(double) * m_cn_0, "b");
     goto a_free;
   }
   mesh_qc_matrix_diagonal_from_inner_of_basis_0_cup_pi_0_basis_0(
@@ -78,9 +77,7 @@ diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
   if (f == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for vector f\n",
-      sizeof(double) * m_cn_0);
+    idec_error_message_malloc(sizeof(double) * m_cn_0, "f");
     goto rhs_free;
   }
   mesh_qc_vector_from_integral_of_basis_0_cup_d_cochain(f, m, data->source);
@@ -89,9 +86,7 @@ diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
   if (g == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for vector f\n",
-      sizeof(double) * data->boundary_neumann->a0);
+    idec_error_message_malloc(sizeof(double) * data->boundary_neumann->a0, "g");
     goto f_free;
   }
   mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(

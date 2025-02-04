@@ -5,6 +5,7 @@
 #include "double.h"
 #include "diffusion_discrete_set_neumann_rows.h"
 #include "idec_error_message.h"
+#include "mesh.h"
 
 static int x1_axis_constant(const double * x)
 {
@@ -14,9 +15,9 @@ static int x1_axis_constant(const double * x)
 int main(int argc, char ** argv)
 {
   char * m_format, * m_laplacian_0_format, * m_laplacian_0_name, * m_name;
-  mesh * m;
-  jagged1 * neumann_nodes;
-  matrix_sparse * m_laplacian_0;
+  struct mesh * m;
+  struct jagged1 * neumann_nodes;
+  struct matrix_sparse * m_laplacian_0;
   double * kappa_1;
 
 #define ARGC 5

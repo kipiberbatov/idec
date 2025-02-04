@@ -12,6 +12,7 @@
 
 int main(int argc, char ** argv)
 {
+  void * lib_handle;
   char * data_name, * error, * lib_name, * m_format, * m_inner_format,
        * m_inner_name, * m_name, * m_vol_format, * m_vol_name,
        * number_of_steps_name, * time_step_name, * potential_format;
@@ -19,9 +20,8 @@ int main(int argc, char ** argv)
   double time_step;
   double * potential;
   double ** m_inner, ** m_vol;
-  void * lib_handle;
-  mesh * m;
-  const diffusion_transient_continuous * data;
+  struct mesh * m;
+  const struct diffusion_transient_continuous * data;
 
 #define ARGC 12
   if (argc != ARGC)
@@ -93,7 +93,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  data = (const diffusion_transient_continuous *) dlsym(lib_handle, data_name);
+  *(const void **) (&data) = dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
   {

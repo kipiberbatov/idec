@@ -3,15 +3,16 @@
 #include "color.h"
 #include "diffusion_steady_state_continuous.h"
 #include "diffusion_steady_state_discrete_primal_strong.h"
+#include "mesh.h"
 
 double * diffusion_steady_state_continuous_primal_strong_cochain_solve(
-  const mesh * m,
-  const matrix_sparse * m_cbd_0,
-  const matrix_sparse * m_cbd_star_1,
-  const diffusion_steady_state_continuous * data_continuous)
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_0,
+  const struct matrix_sparse * m_cbd_star_1,
+  const struct diffusion_steady_state_continuous * data_continuous)
 {
   double * result = NULL;
-  diffusion_steady_state_discrete_primal_strong * data_discrete;
+  struct diffusion_steady_state_discrete_primal_strong * data_discrete;
 
   data_discrete =
   diffusion_steady_state_discrete_primal_strong_from_continuous(

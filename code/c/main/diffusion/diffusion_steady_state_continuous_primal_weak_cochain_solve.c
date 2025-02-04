@@ -10,16 +10,13 @@
 
 int main(int argc, char ** argv)
 {
-  char * error, * data_name, * lib_name;
-  char * m_format, * m_name;
-  char * m_inner_name;
-  char * m_vol_name;
-  double * result;
-
-  double ** m_inner, ** m_vol;
-  mesh * m;
   void * lib_handle;
-  const diffusion_steady_state_continuous * data;
+  char * error, * data_name, * lib_name, * m_format, * m_inner_name, * m_name,
+       * m_vol_name;
+  double * result;
+  double ** m_inner, ** m_vol;
+  struct mesh * m;
+  const struct diffusion_steady_state_continuous * data;
 
   if (argc != 7)
   {
@@ -79,8 +76,7 @@ int main(int argc, char ** argv)
   dlerror();
 
   data_name = argv[6];
-  data = (const diffusion_steady_state_continuous *)
-    dlsym(lib_handle, data_name);
+  *(const void **) (&data) = dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
   {

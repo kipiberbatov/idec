@@ -8,16 +8,14 @@
 #include "idec_error_message.h"
 #include "mesh.h"
 
-typedef void de_rham_0_t(double *, const mesh *);
-
 int main(int argc, char ** argv)
 {
+  void * lib_handle;
   char * error, * function_name, * lib_name, * m_format, * m_name,
        * output_format;
   double * potential;
-  void * lib_handle;
-  mesh * m;
-  de_rham_0_t * function;
+  struct mesh * m;
+  void (*function)(double *, const struct mesh *);
 
 #define ARGC 6
   if (argc != ARGC)
@@ -53,7 +51,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  function = (de_rham_0_t *) dlsym(lib_handle, function_name);
+  *(void **) (&function) = dlsym(lib_handle, function_name);
   error = dlerror();
   if (error)
   {

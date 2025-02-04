@@ -3,14 +3,14 @@
 #include "diffusion_transient_discrete_primal_strong.h"
 #include "double.h"
 #include "int.h"
+#include "jagged.h"
 
-diffusion_transient_discrete_primal_strong *
+struct diffusion_transient_discrete_primal_strong *
 diffusion_transient_discrete_primal_strong_file_scan_raw(FILE * in)
 {
-  diffusion_transient_discrete_primal_strong * data;
+  struct diffusion_transient_discrete_primal_strong * data;
 
-  data = (diffusion_transient_discrete_primal_strong *) malloc(
-    sizeof(diffusion_transient_discrete_primal_strong));
+  *(void **) (&data) = malloc(sizeof(*data));
 
   data->number_of_cells_0 = int_file_scan(in);
 

@@ -3,14 +3,14 @@
 #include "diffusion_steady_state_discrete_primal_weak.h"
 #include "double.h"
 #include "int.h"
+#include "jagged.h"
 
-diffusion_steady_state_discrete_primal_weak *
+struct diffusion_steady_state_discrete_primal_weak *
 diffusion_steady_state_discrete_primal_weak_file_scan_raw(FILE * in)
 {
-  diffusion_steady_state_discrete_primal_weak * data;
+  struct diffusion_steady_state_discrete_primal_weak * data;
 
-  data = (diffusion_steady_state_discrete_primal_weak *) malloc(
-    sizeof(diffusion_steady_state_discrete_primal_weak));
+  *(void **) (&data) = malloc(sizeof(*data));
 
   data->number_of_cells_1 = int_file_scan(in);
 

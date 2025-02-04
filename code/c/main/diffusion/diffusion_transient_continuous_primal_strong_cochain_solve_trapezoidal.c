@@ -13,19 +13,16 @@
 
 int main(int argc, char ** argv)
 {
-  char * error, * data_name, * lib_name;
-  char * m_format, * m_name;
-  char * m_cbd_0_name;
-  char * m_cbd_star_1_name;
-  FILE * m_cbd_star_1_file;
-  double * result;
-
-  mesh * m;
-  matrix_sparse * m_cbd_0, * m_cbd_star_1;
   void * lib_handle;
-  const diffusion_transient_continuous * data;
+  char * error, * data_name, * lib_name, * m_cbd_0_name, * m_cbd_star_1_name,
+       * m_format, * m_name, * number_of_steps_name, * time_step_name;
   int number_of_steps;
   double time_step;
+  double * result;
+  FILE * m_cbd_star_1_file;
+  struct mesh * m;
+  struct matrix_sparse * m_cbd_0, * m_cbd_star_1;
+  const struct diffusion_transient_continuous * data;
 
   if (argc != 9)
   {
@@ -37,6 +34,13 @@ int main(int argc, char ** argv)
 
   m_format = argv[1];
   m_name = argv[2];
+  m_cbd_0_name = argv[3];
+  m_cbd_star_1_name = argv[4];
+  lib_name = argv[5];
+  data_name = argv[6];
+  time_step_name = argv[7];
+  number_of_steps_name = argv[8];
+
   m = mesh_file_scan_by_name(m_name, m_format);
   if (errno)
   {
@@ -53,8 +57,6 @@ int main(int argc, char ** argv)
     goto m_free;
   }
 
-  m_cbd_0_name = argv[3];
-
   m_cbd_0 = matrix_sparse_file_scan_by_name(m_cbd_0_name, "--raw");
   if (errno)
   {
@@ -62,8 +64,6 @@ int main(int argc, char ** argv)
     fputs("cannot scan m_cbd_0\n", stderr);
     goto m_free;
   }
-
-  m_cbd_star_1_name = argv[4];
 
   m_cbd_star_1_file = fopen(m_cbd_star_1_name, "r");
   if (errno)
@@ -84,8 +84,6 @@ int main(int argc, char ** argv)
   }
   fclose(m_cbd_star_1_file);
 
-
-  lib_name = argv[5];
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (!lib_handle)
   {
@@ -96,8 +94,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  data_name = argv[6];
-  data = (const diffusion_transient_continuous *) dlsym(lib_handle, data_name);
+  *(const void **) (&data) = dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
   {
@@ -106,7 +103,7 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  time_step = double_string_scan(argv[7]);
+  time_step = double_string_scan(time_step_name);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
@@ -114,7 +111,7 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  number_of_steps = int_string_scan(argv[8]);
+  number_of_steps = int_string_scan(number_of_steps_name);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);

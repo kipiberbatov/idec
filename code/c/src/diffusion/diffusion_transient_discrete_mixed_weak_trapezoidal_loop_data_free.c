@@ -1,9 +1,10 @@
 #include <stdlib.h>
 
 #include "diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data.h"
+#include "matrix_sparse.h"
 
 void diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_free(
-  diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input)
+  struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input)
 {
   free(input->p_bar);
   free(input->v_tau);

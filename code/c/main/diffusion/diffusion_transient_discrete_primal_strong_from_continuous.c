@@ -7,15 +7,16 @@
 #include "double.h"
 #include "diffusion_transient_discrete_primal_strong.h"
 #include "idec_command_line.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
-  char * data_continuous_name, * error, * lib_name, * m_format, * m_name;
   void * lib_handle;
+  char * data_continuous_name, * error, * lib_name, * m_format, * m_name;
   int size, status;
-  mesh * m;
-  const diffusion_transient_continuous * data_continuous;
-  diffusion_transient_discrete_primal_strong * data_discrete;
+  struct mesh * m;
+  const struct diffusion_transient_continuous * data_continuous;
+  struct diffusion_transient_discrete_primal_strong * data_discrete;
 
   idec_command_line no_positional_arguments, option_input_data, option_lib,
                     option_mesh, option_mesh_format;
@@ -73,8 +74,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  data_continuous = (const diffusion_transient_continuous *) dlsym(
-    lib_handle, data_continuous_name);
+  *(const void **) (&data_continuous) = dlsym(lib_handle, data_continuous_name);
   error = dlerror();
   if (error)
   {

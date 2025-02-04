@@ -6,19 +6,18 @@
 #include "double.h"
 #include "idec_error_message.h"
 #include "int.h"
+#include "jagged.h"
 
-diffusion_transient_discrete_mixed_weak *
+struct diffusion_transient_discrete_mixed_weak *
 diffusion_transient_discrete_mixed_weak_file_scan_raw(FILE * in)
 {
-  diffusion_transient_discrete_mixed_weak * data;
+  struct diffusion_transient_discrete_mixed_weak * data;
 
-  data = (diffusion_transient_discrete_mixed_weak *) malloc(
-    sizeof(diffusion_transient_discrete_mixed_weak));
+  *(void **) (&data) = malloc(sizeof(*data));
   if (data == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(
-      sizeof(diffusion_transient_discrete_mixed_weak), "data");
+    idec_error_message_malloc(sizeof(*data), "data");
     goto end;
   }
 

@@ -7,6 +7,7 @@
 #include "diffusion_transient_discrete_primal_weak.h"
 #include "idec_command_line.h"
 #include "int.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
@@ -17,8 +18,8 @@ int main(int argc, char ** argv)
   double * potential;
   double ** m_inner;
   FILE * data_file;
-  mesh * m;
-  diffusion_transient_discrete_primal_weak * data;
+  struct mesh * m;
+  struct diffusion_transient_discrete_primal_weak * data;
 
   idec_command_line no_positional_arguments, option_input_data, option_mesh,
                     option_mesh_format, option_mesh_inner,

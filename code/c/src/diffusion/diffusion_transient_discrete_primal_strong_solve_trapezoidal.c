@@ -3,7 +3,9 @@
 #include <string.h>
 
 #include "color.h"
+#include "diffusion_transient_discrete_primal_strong.h"
 #include "diffusion_transient_discrete_primal_strong_solve_trapezoidal_next.h"
+#include "mesh.h"
 
 /*
 $potential$ stores the final solution $y_0, ..., y_{number_of_steps}$.
@@ -14,7 +16,8 @@ For $i = 0, ..., number_of_steps$:
 static void loop(
   double * potential,
   double * rhs_final,
-  const diffusion_transient_discrete_primal_strong_trapezoidal_loop_data *input,
+  const struct diffusion_transient_discrete_primal_strong_trapezoidal_loop_data
+    * input,
   int number_of_steps)
 {
   int i, n;
@@ -34,16 +37,18 @@ static void loop(
 }
 
 double * diffusion_transient_discrete_primal_strong_solve_trapezoidal(
-  const mesh * m,
-  const matrix_sparse * m_cbd_0,
-  const matrix_sparse * m_cbd_star_1,
-  const diffusion_transient_discrete_primal_strong * data,
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_0,
+  const struct matrix_sparse * m_cbd_star_1,
+  const struct diffusion_transient_discrete_primal_strong * data,
   double time_step,
   int number_of_steps)
 {
   int n;
   double * rhs_final, * potential = NULL;
-  diffusion_transient_discrete_primal_strong_trapezoidal_loop_data * input;
+
+  struct diffusion_transient_discrete_primal_strong_trapezoidal_loop_data *
+  input;
 
   input =
   diffusion_transient_discrete_primal_strong_trapezoidal_loop_data_initialize(

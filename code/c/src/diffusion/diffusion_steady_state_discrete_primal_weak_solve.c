@@ -5,12 +5,13 @@
 #include "color.h"
 #include "diffusion_steady_state_discrete_primal_weak.h"
 #include "double.h"
+#include "idec_error_message.h"
 #include "mesh_qc.h"
 
 static double * matrix_sparse_symmetric_constrained_solve(
-  matrix_sparse * a,
+  struct matrix_sparse * a,
   double * f,
-  const jagged1 * rows,
+  const struct jagged1 * rows,
   const double * values)
 {
   int i, i_local, rows_a0;
@@ -30,9 +31,7 @@ static double * matrix_sparse_symmetric_constrained_solve(
   if (u == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for u\n",
-      sizeof(double) * a->cols);
+    idec_error_message_malloc(sizeof(double) * a->cols, "u");
     return NULL;
   }
   memcpy(u, f, sizeof(double) * a->cols);
@@ -50,13 +49,13 @@ static double * matrix_sparse_symmetric_constrained_solve(
 }
 
 double * diffusion_steady_state_discrete_primal_weak_solve(
-  const mesh * m,
+  const struct mesh * m,
   const double * m_inner_1,
-  const diffusion_steady_state_discrete_primal_weak * data)
+  const struct diffusion_steady_state_discrete_primal_weak * data)
 {
   int m_cn_0;
   double * f, * u = NULL;
-  matrix_sparse * a;
+  struct matrix_sparse * a;
 
   m_cn_0 = m->cn[0];
 
@@ -74,9 +73,7 @@ double * diffusion_steady_state_discrete_primal_weak_solve(
   if (f == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for f\n",
-      sizeof(double) * m_cn_0);
+    idec_error_message_malloc(sizeof(double) * m_cn_0, "f");
     goto a_free;
   }
 

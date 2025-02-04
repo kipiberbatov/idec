@@ -64,7 +64,7 @@ static double g_neumann(const double * x)
   return 2.;
 }
 
-const diffusion_steady_state_continuous
+const struct diffusion_steady_state_continuous
 diffusion_steady_state_continuous_2d_d03_p01 =
 {
   kappa_1,

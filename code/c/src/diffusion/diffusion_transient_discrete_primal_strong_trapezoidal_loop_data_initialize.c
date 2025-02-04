@@ -4,30 +4,32 @@
 
 #include "color.h"
 #include "diffusion_discrete_set_neumann_rows.h"
+#include "diffusion_transient_discrete_primal_strong.h"
 #include "diffusion_transient_discrete_primal_strong_trapezoidal_loop_data.h"
+#include "double.h"
+#include "idec_error_message.h"
+#include "mesh.h"
 
-diffusion_transient_discrete_primal_strong_trapezoidal_loop_data *
+struct diffusion_transient_discrete_primal_strong_trapezoidal_loop_data *
 diffusion_transient_discrete_primal_strong_trapezoidal_loop_data_initialize(
-  const mesh * m,
-  const matrix_sparse * m_cbd_0,
-  const matrix_sparse * m_cbd_star_1,
-  const diffusion_transient_discrete_primal_strong * data,
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_0,
+  const struct matrix_sparse * m_cbd_star_1,
+  const struct diffusion_transient_discrete_primal_strong * data,
   double time_step)
 {
   int n;
   double * a, * free_part;
-  matrix_sparse * b, * lhs, * rhs;
-  diffusion_transient_discrete_primal_strong_trapezoidal_loop_data * result;
+  struct matrix_sparse * b, * lhs, * rhs;
 
-  result = (diffusion_transient_discrete_primal_strong_trapezoidal_loop_data *)
-    malloc(sizeof(
-      diffusion_transient_discrete_primal_strong_trapezoidal_loop_data));
+  struct diffusion_transient_discrete_primal_strong_trapezoidal_loop_data *
+  result;
+
+  *(void **) (&result) = malloc(sizeof(*result));
   if (result == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for result\n",
-      sizeof(diffusion_transient_discrete_primal_strong_trapezoidal_loop_data));
+    idec_error_message_malloc(sizeof(*result), "result");
     goto end;
   }
 
@@ -63,9 +65,7 @@ diffusion_transient_discrete_primal_strong_trapezoidal_loop_data_initialize(
   if (free_part == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for free_part\n",
-      sizeof(double) * n);
+    idec_error_message_malloc(sizeof(double) * n, "free_part");
     goto lhs_free;
   }
   memcpy(free_part, data->source, sizeof(double) * n);

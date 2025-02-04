@@ -47,7 +47,7 @@ static double g_neumann(const double * x)
   return 0;
 }
 
-const diffusion_transient_continuous
+const struct diffusion_transient_continuous
 diffusion_transient_continuous_2d_d02_p00 =
 {
   pi_0,

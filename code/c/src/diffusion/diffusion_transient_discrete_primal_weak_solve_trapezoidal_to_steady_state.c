@@ -3,9 +3,12 @@
 #include <string.h>
 
 #include "color.h"
+#include "diffusion_transient_discrete_primal_weak.h"
 #include "diffusion_transient_discrete_primal_weak_solve_trapezoidal_next.h"
+#include "diffusion_transient_discrete_primal_weak_trapezoidal_loop_data.h"
 #include "double.h"
-#include "mesh_qc.h"
+#include "idec_error_message.h"
+#include "mesh.h"
 
 /*
 $potential$ stores the final solution $y_0, ..., y_{number_of_steps}$.
@@ -14,9 +17,10 @@ Until error is less than $tolerance$:
   $rhs_final$ is updated using $y_i$ and used to find $y_{i + 1}$.
 */
 static void loop(
-  double_array_sequence_dynamic * potential,
+  struct double_array_sequence_dynamic * potential,
   double * rhs_final,
-  const diffusion_transient_discrete_primal_weak_trapezoidal_loop_data * input,
+  const struct diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *
+    input,
   double tolerance)
 {
   int i, m_cn_0;
@@ -43,8 +47,10 @@ static void loop(
     {
       color_error_position(__FILE__, __LINE__);
       fprintf(stderr,
-        "loop: cannot allocate %ld bytes of memory for potential->values[%d]\n",
-        sizeof(double) * m_cn_0, i + 1);
+        "loop: cannot allocate %s%ld%s bytes of memory for "
+        "potential->values[%s%d%s]\n",
+        color_variable, sizeof(double) * m_cn_0, color_none,
+        color_variable, i + 1, color_none);
       return;
     }
 
@@ -65,19 +71,19 @@ static void loop(
   while (relative_norm >= tolerance);
 }
 
-double_array_sequence_dynamic *
+struct double_array_sequence_dynamic *
 diffusion_transient_discrete_primal_weak_solve_trapezoidal_to_steady_state(
-  const mesh * m,
+  const struct mesh * m,
   const double * m_inner_0,
   const double * m_inner_1,
-  const diffusion_transient_discrete_primal_weak * data,
+  const struct diffusion_transient_discrete_primal_weak * data,
   double time_step,
   double tolerance)
 {
   int m_cn_0;
   double * rhs_final;
-  diffusion_transient_discrete_primal_weak_trapezoidal_loop_data * input;
-  double_array_sequence_dynamic * potential = NULL;
+  struct diffusion_transient_discrete_primal_weak_trapezoidal_loop_data * input;
+  struct double_array_sequence_dynamic * potential = NULL;
 
   input =
   diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
@@ -96,9 +102,7 @@ diffusion_transient_discrete_primal_weak_solve_trapezoidal_to_steady_state(
   if (rhs_final == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytes of memory for rhs_final\n",
-      sizeof(double) * m_cn_0);
+    idec_error_message_malloc(sizeof(double) * m_cn_0, "rhs_final");
     goto input_free;
   }
 

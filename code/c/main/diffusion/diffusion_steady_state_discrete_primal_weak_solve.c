@@ -8,6 +8,7 @@
 #include "double.h"
 #include "diffusion_steady_state_discrete_primal_weak.h"
 #include "idec_error_message.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
@@ -17,8 +18,8 @@ int main(int argc, char ** argv)
   double * potential;
   double ** m_inner;
   FILE * data_file;
-  mesh * m;
-  diffusion_steady_state_discrete_primal_weak * data;
+  struct mesh * m;
+  struct diffusion_steady_state_discrete_primal_weak * data;
 
 #define ARGC 6
   if (argc != ARGC)

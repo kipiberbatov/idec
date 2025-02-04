@@ -3,14 +3,16 @@
 #include "color.h"
 #include "diffusion_steady_state_discrete_flow_from_potential.h"
 #include "diffusion_steady_state_discrete_dual_flow_from_potential.h"
+#include "idec_error_message.h"
+#include "mesh.h"
 
 void diffusion_steady_state_discrete_flow_from_potential(
   double * flow,
-  const mesh * m,
-  const matrix_sparse * m_bd_1,
+  const struct mesh * m,
+  const struct matrix_sparse * m_bd_1,
   const double * kappa_1,
   const double * potential,
-  const matrix_sparse * m_hodge_1)
+  const struct matrix_sparse * m_hodge_1)
 {
   double * dual_flow;
 
@@ -18,9 +20,7 @@ void diffusion_steady_state_discrete_flow_from_potential(
   if (dual_flow == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr,
-      "cannot allocate %ld bytels of memory for dual_flow\n",
-      sizeof(double) * m->cn[1]);
+    idec_error_message_malloc(sizeof(double) * m->cn[1], "dual_flow");
     return;
   }
 

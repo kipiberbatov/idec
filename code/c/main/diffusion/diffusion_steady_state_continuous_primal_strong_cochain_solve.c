@@ -13,17 +13,14 @@
 
 int main(int argc, char ** argv)
 {
-  char * error, * data_name, * lib_name;
-  char * m_format, * m_name;
-  char * m_cbd_0_name;
-  char * m_cbd_star_1_name;
-  FILE * m_cbd_star_1_file;
-  double * result;
-
-  mesh * m;
-  matrix_sparse * m_cbd_0, * m_cbd_star_1;
   void * lib_handle;
-  const diffusion_steady_state_continuous * data;
+  char * error, * data_name, * lib_name, * m_cbd_0_name, * m_cbd_star_1_name,
+       * m_format, * m_name;
+  double * result;
+  FILE * m_cbd_star_1_file;
+  struct mesh * m;
+  struct matrix_sparse * m_cbd_0, * m_cbd_star_1;
+  const struct diffusion_steady_state_continuous * data;
 
   if (argc != 7)
   {
@@ -94,8 +91,7 @@ int main(int argc, char ** argv)
   dlerror();
 
   data_name = argv[6];
-  data = (const diffusion_steady_state_continuous *) dlsym(
-    lib_handle, data_name);
+  *(const void **) (&data) = dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
   {

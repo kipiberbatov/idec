@@ -9,6 +9,7 @@
 #include "diffusion_transient_discrete_primal_strong.h"
 #include "idec_command_line.h"
 #include "int.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
@@ -17,9 +18,9 @@ int main(int argc, char ** argv)
   double time_step;
   double * potential;
   FILE * data_file, * m_cbd_star_1_file;
-  matrix_sparse * m_cbd_0, * m_cbd_star_1;
-  mesh * m;
-  diffusion_transient_discrete_primal_strong * data;
+  struct matrix_sparse * m_cbd_0, * m_cbd_star_1;
+  struct mesh * m;
+  struct diffusion_transient_discrete_primal_strong * data;
 
   idec_command_line no_positional_arguments, option_input_data, option_mesh,
                     option_mesh_format, option_mesh_cbd_0,

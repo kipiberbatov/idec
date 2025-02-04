@@ -9,19 +9,17 @@
 #include "idec_error_message.h"
 #include "mesh.h"
 
-typedef void de_rham_dm1_t(double *, const mesh *, const matrix_sparse *);
-
 int main(int argc, char ** argv)
 {
+  void * lib_handle;
   char * error, * function_name, * lib_name, * m_format, * m_name,
        * output_format;
   int d;
   double * flow;
-  void * lib_handle;
   FILE * m_file;
-  mesh * m;
-  matrix_sparse * m_bd_1;
-  de_rham_dm1_t * function;
+  struct mesh * m;
+  struct matrix_sparse * m_bd_1;
+  void (*function)(double *, const struct mesh *, const struct matrix_sparse *);
 
 #define ARGC 6
   if (argc != ARGC)
@@ -77,7 +75,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  function = (de_rham_dm1_t *) dlsym(lib_handle, function_name);
+  *(void **) (&function) = dlsym(lib_handle, function_name);
   error = dlerror();
   if (error)
   {

@@ -2,21 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <dlfcn.h>
-
 #include "color.h"
 #include "double.h"
 #include "diffusion_steady_state_discrete_primal_strong.h"
 #include "idec_error_message.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
   char * data_name, * m_cbd_0_name, * m_cbd_star_1_name, * m_format, * m_name;
   double * potential;
   FILE * data_file, * m_cbd_star_1_file;
-  matrix_sparse * m_cbd_0, * m_cbd_star_1;
-  mesh * m;
-  diffusion_steady_state_discrete_primal_strong * data;
+  struct matrix_sparse * m_cbd_0, * m_cbd_star_1;
+  struct mesh * m;
+  struct diffusion_steady_state_discrete_primal_strong * data;
 
 #define ARGC 6
   if (argc != ARGC)

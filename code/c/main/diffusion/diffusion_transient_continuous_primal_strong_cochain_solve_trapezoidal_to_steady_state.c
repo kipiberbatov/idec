@@ -7,21 +7,22 @@
 
 #include "color.h"
 #include "diffusion_transient_continuous.h"
+#include "double.h"
 #include "idec_error_message.h"
 #include "int.h"
 #include "mesh.h"
 
 int main(int argc, char ** argv)
 {
+  void * lib_handle;
   char * data_name, * error, * lib_name, * m_cbd_0_name, * m_cbd_star_1_name,
        * m_format, * m_name, * time_step_name;
-  void * lib_handle;
   double time_step;
   FILE * m_cbd_star_1_file;
-  double_array_sequence_dynamic * result;
-  matrix_sparse * m_cbd_0, * m_cbd_star_1;
-  mesh * m;
-  const diffusion_transient_continuous * data;
+  struct double_array_sequence_dynamic * result;
+  struct matrix_sparse * m_cbd_0, * m_cbd_star_1;
+  struct mesh * m;
+  const struct diffusion_transient_continuous * data;
 
 #define ARGC 8
   if (argc != ARGC)
@@ -101,7 +102,7 @@ int main(int argc, char ** argv)
   /* clear any existing errors */
   dlerror();
 
-  data = (const diffusion_transient_continuous *) dlsym(lib_handle, data_name);
+  *(const void **) (&data) = dlsym(lib_handle, data_name);
   error = dlerror();
   if (error)
   {
@@ -124,7 +125,8 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  result = diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal_to_steady_state(
+  result =
+  diffusion_transient_continuous_primal_strong_cochain_solve_trapezoidal_to_steady_state(
     m, m_cbd_0, m_cbd_star_1, data, time_step, 0.004);
   if (errno)
   {

@@ -18,8 +18,8 @@ int main(int argc, char ** argv)
   double * flow, * potential, * dual_potential;
   double ** m_vol;
   FILE * data_file, * m_file, * solution_file;
-  mesh * m;
-  diffusion_steady_state_discrete_mixed_weak * data;
+  struct mesh * m;
+  struct diffusion_steady_state_discrete_mixed_weak * data;
 
 #define ARGC 7
   if (argc != ARGC)

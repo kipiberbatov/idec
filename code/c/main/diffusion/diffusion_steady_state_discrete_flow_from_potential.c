@@ -7,6 +7,7 @@
 #include "diffusion_steady_state_discrete_flow_from_potential.h"
 #include "idec_error_message.h"
 #include "int.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
@@ -14,10 +15,10 @@ int main(int argc, char ** argv)
        * m_hodge_format, * m_hodge_name, * potential_format, * potential_name;
   int d;
   double * flow, * kappa_1, * potential;
-  mesh * m;
-  matrix_sparse * m_bd_1;
-  matrix_sparse ** m_hodge;
   FILE * m_file;
+  struct mesh * m;
+  struct matrix_sparse * m_bd_1;
+  struct matrix_sparse ** m_hodge;
 
 #define ARGC 10
   if (argc != ARGC)

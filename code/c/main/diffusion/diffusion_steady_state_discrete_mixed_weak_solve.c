@@ -8,6 +8,7 @@
 #include "double.h"
 #include "diffusion_steady_state_discrete_mixed_weak.h"
 #include "idec_error_message.h"
+#include "mesh.h"
 
 int main(int argc, char ** argv)
 {
@@ -17,10 +18,10 @@ int main(int argc, char ** argv)
   double * flow, * dual_potential;
   double ** m_inner;
   FILE * data_file, * m_file;
-  matrix_sparse * m_cbd_dm1;
-  matrix_sparse ** m_bd;
-  mesh * m;
-  diffusion_steady_state_discrete_mixed_weak * data;
+  struct matrix_sparse * m_cbd_dm1;
+  struct matrix_sparse ** m_bd;
+  struct mesh * m;
+  struct diffusion_steady_state_discrete_mixed_weak * data;
 
 #define ARGC 6
   if (argc != ARGC)
