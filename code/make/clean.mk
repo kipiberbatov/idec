@@ -154,9 +154,29 @@ canvas_distclean: canvas_clean lib_canvas_clean
 obj_clean:
 	-$(RM) -r build/$(MODE)/obj
 
+.PHONY: obj_src_clean
+obj_src_clean:
+	-$(RM) -r build/$(MODE)/obj/src
+
+.PHONY: obj_main_clean
+obj_main_clean:
+	-$(RM) -r build/$(MODE)/obj/main
+
+.PHONY: obj_plugins_clean
+obj_plugins_clean:
+	-$(RM) -r build/$(MODE)/obj/plugins
+
 .PHONY: lib_clean
 lib_clean:
 	-$(RM) -r build/$(MODE)/lib
+
+.PHONY: lib_src_clean
+lib_src_clean:
+	-$(RM) -r build/$(MODE)/lib/src
+
+.PHONY: lib_plugins_clean
+lib_plugins_clean:
+	-$(RM) -r build/$(MODE)/lib/plugins
 
 .PHONY: bin_clean
 bin_clean:
