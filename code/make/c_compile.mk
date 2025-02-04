@@ -360,7 +360,8 @@ build/$(MODE)/lib/plugins: | build/$(MODE)/lib
 	mkdir -p $@
 
 build/$(MODE)/lib/plugins/libdiffusion$(.DLL): $(_obj_plugins_diffusion)\
-  $(_obj_src_mesh) $(_obj_src_region) $(_obj_src_algebra) $(_obj_src_array)\
+  build/$(MODE)/obj/src/de_rham_0$(.OBJ)\
+  build/$(MODE)/obj/src/de_rham_sequence_0$(.OBJ)\
   | build/$(MODE)/lib/plugins
 	$(CC) -o $@ -fPIC -shared $^ $(LDLIBS)
 
