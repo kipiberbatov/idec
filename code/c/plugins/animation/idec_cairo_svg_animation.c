@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-#include <cairo-pdf.h>
+#include <cairo-svg.h>
 
 #include "color.h"
 #include "idec_cairo_animation_draw_to_file.h"
 
-void idec_cairo_pdf_animation(
+void idec_cairo_svg_animation(
   struct idec_animation * animation,
   int * status,
   int argc,
@@ -21,12 +21,12 @@ void idec_cairo_pdf_animation(
   }
 
   idec_cairo_animation_draw_to_file(
-    animation, status, filename, cairo_pdf_surface_create);
+    animation, status, filename, cairo_svg_surface_create);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot draw animation to PDF file %s%s%s\n",
+      "cannot draw animation to SVG file %s%s%s\n",
       color_variable, filename, color_none);
     return;
   }

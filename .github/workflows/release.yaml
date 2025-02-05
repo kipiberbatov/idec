@@ -41,6 +41,9 @@ jobs:
       - name: Run PDF-outputting demos (Compiling plugins on the way)
         run: make pdf
 
+      - name: Run SVG-outputting demos
+        run: make svg
+
       - name: Upload release directory
         uses: actions/upload-artifact@v4
         with:

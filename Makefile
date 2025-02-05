@@ -24,6 +24,9 @@ build/$(MODE): | build
 ######################### running PDF-outputting demos #########################
 -include code/make/pdf.mk
 
+######################### running SVG-outputting demos #########################
+-include code/make/svg.mk
+
 ############################ running GTK animations ############################
 -include code/make/gtk.mk
 

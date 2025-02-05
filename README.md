@@ -36,7 +36,7 @@ selected at runtime according to the command line arguments);
 continuous diffusion problems;
 - canvas: procedures for drawing shapes on a canvas, currently with Cairo;
 - animation: procedures for producing animations based on the canvas data;
-PDF and GTK animation backends are supported via the Cairo canvas backend.
+PDF, SVG and GTK animation backends are supported via the Cairo canvas backend.
 
 ## Dependencies
 
@@ -46,8 +46,8 @@ build the project and run the text-outputting demos:
 - C compiler (GCC or Clang)
 - GNU make
 
-In order to build the canvas and animation plugins, run PDF-outputting demos
-and GTK animations, you need the following software
+In order to build the canvas and animation plugins, run PDF- and SVG-outputting
+demos and GTK animations, you need the following software
 - pkg-config
 - Cairo
 - GTK+ 3
@@ -127,6 +127,15 @@ and will take (uncompressed) tens of megabytes of disk space.
 Note that although compilation, linking and running text-outputting demos are
 extremely fast (in milliseconds on average for every file),
 generating PDFs may take from a few seconds to a minute for the big animations.
+
+Similarly, you can generate SVGs of various images in a freshly created
+directory **build/release/svg** by typing
+```
+make -j svg
+```
+Unfortunately, SVG animations, although being generated, cannot be read by most
+browsers as they use the unsupported pageSet element for multiple pages.
+(One SVG animation of window with changing colors is generated as an example.)
 
 You can run GTK animations in pop-up windows by typing
 ```
