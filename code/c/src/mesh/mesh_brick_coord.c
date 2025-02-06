@@ -1,5 +1,3 @@
-#include <errno.h>
-#include <stdlib.h>
 #include "int.h"
 #include "mesh_brick_private.h"
 

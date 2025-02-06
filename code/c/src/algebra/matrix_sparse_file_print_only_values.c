@@ -1,4 +1,3 @@
-#include <errno.h>
 #include "double.h"
 #include "matrix_sparse_private.h"
 

@@ -1,4 +1,3 @@
-#include <errno.h>
 #include "int.h"
 #include "jagged_private.h"
 

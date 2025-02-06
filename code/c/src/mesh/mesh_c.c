@@ -1,6 +1,3 @@
-#include <errno.h>
-#include <stdlib.h>
-#include "int.h"
 #include "mesh_private.h"
 
 void mesh_c(int * m_c, int m_dim, const int * m_cn)

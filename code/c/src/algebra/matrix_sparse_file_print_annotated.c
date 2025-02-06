@@ -1,4 +1,3 @@
-#include <errno.h>
 #include "matrix_sparse_private.h"
 
 void matrix_sparse_file_print_annotated(FILE * out, const matrix_sparse * a)
