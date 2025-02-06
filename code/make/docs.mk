@@ -7,8 +7,8 @@ LATEX_COMPILER := TEXINPUTS=./code/latex/src: pdflatex -halt-on-error
 
 docs: build/docs/main.pdf
 
-build/.pdf: $(_pdf)
-	touch $@
+build/.pdf: $(_pdf_mesh) $(_pdf_diffusion_steady_state)
+	echo $^ > $@
 
 build/docs/main.pdf: code/latex/main.tex $(shell find code/latex -name "*.tex")\
   build/.pdf | build/docs
@@ -21,7 +21,7 @@ docs_fast: build/.docs_fast
 build/.docs_fast: code/latex/main.tex $(shell find code/latex -name "*.tex")\
   build/.pdf | build/docs
 	$(LATEX_COMPILER) -output-directory=$| $<
-	touch $@
+	echo $^ > $@
 
 docs_clean:
 	-$(RM) -r build/docs

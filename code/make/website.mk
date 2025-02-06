@@ -20,7 +20,7 @@ website_fast: build/.website_fast
 build/.website_fast: build/website/index.html build/website/style.css\
   build/.docs_fast | build/docs build/website
 	cp $(word 1, $|)/main.pdf $(word 2, $|)
-	touch $@
+	echo $^ > $@
 
 .PHONY: website_clean
 website_clean:
