@@ -1,8 +1,8 @@
 build/$(MODE)/pdf/diffusion: | build/$(MODE)/pdf
 	mkdir -p $@
 
-include code/make/pdf/diffusion_steady_state.mk
-include code/make/pdf/diffusion_transient.mk
+include code/make/pdf/diffusion/steady_state.mk
+include code/make/pdf/diffusion/transient.mk
 
 .PHONY: pdf_diffusion pdf_diffusion_clean pdf_diffusion_distclean
 

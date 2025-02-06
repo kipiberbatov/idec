@@ -21,7 +21,7 @@ build/$(MODE)/gtk/filled_window_rainbow_100.log:\
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
-include code/make/gtk/diffusion_transient.mk
+include code/make/gtk/diffusion.mk
 
 _gtk :=\
   build/$(MODE)/gtk/filled_window_rainbow_100.log\
