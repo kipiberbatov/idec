@@ -1,4 +1,9 @@
-txt_algebra := \
+.PHONY: txt_algebra txt_algebra_clean txt_algeba_distclean
+
+build/$(MODE)/txt/algebra: | build/$(MODE)/txt
+	mkdir -p $@
+
+_txt_algebra := \
   build/$(MODE)/txt/algebra/matrix_sparse_remove_res.txt\
   build/$(MODE)/txt/algebra/matrix_sparse_remove_symmetric_res.txt\
   build/$(MODE)/txt/algebra/matrix_sparse_4_4_copy.txt\
@@ -16,12 +21,6 @@ txt_algebra := \
   build/$(MODE)/txt/algebra/matrix_inverse_example.txt\
   build/$(MODE)/txt/algebra/matrix_times_vector_example.txt\
   build/$(MODE)/txt/algebra/matrix_moore_penrose_inverse_example.txt\
-
-.PHONY: txt_algebra
-txt_algebra: bin_algebra $(txt_algebra) | build/$(MODE)/txt/algebra
-
-build/$(MODE)/txt/algebra: | build/$(MODE)/txt
-	mkdir -p $@
 
 build/$(MODE)/txt/algebra/matrix_sparse_remove_res.txt:\
   build/$(MODE)/bin/matrix_sparse_remove$(.EXE)\
@@ -112,7 +111,10 @@ build/$(MODE)/txt/algebra/matrix_moore_penrose_inverse_example.txt:\
    | build/$(MODE)/txt/algebra
 	$< > $@
 
-.PHONY: txt_algebra_clean
+txt_algebra: bin_algebra $(_txt_algebra)
+
 txt_algebra_clean:
-	-$(RM) $(txt_algebra)
+	-$(RM) $(_txt_algebra)
+
+txt_algebra_distclean:
 	-$(RM) -r build/$(MODE)/txt/algebra

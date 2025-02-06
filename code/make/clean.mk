@@ -182,10 +182,5 @@ lib_plugins_clean:
 bin_clean:
 	-$(RM) -r build/$(MODE)/bin
 
-# txt_<module>_clean is found in -include txt/<module>/txt_<module>.mk
-.PHONY: txt_clean
-txt_clean:
-	-$(RM) -r build/$(MODE)/txt
-
 .PHONY: clean
 clean: obj_clean

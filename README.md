@@ -176,4 +176,4 @@ There are various smaller cleans that will delete certain types of files.
 For instance `make clean` will clean the object files.
 You can look the files in
 [code/make](https://github.com/kipiberbatov/idec/tree/main/code/make)
-to see all the cleaning options (they all end with **_clean**).
+to see all the cleaning options (they end with **_clean** or **_distclean**).
