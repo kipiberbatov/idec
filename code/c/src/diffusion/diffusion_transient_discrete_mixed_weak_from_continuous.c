@@ -5,12 +5,64 @@
 #include "boundary_pseudoscalar_field_discretize.h"
 #include "color.h"
 #include "de_rham.h"
+#include "diffusion_steady_state_discrete_flow_from_potential.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
 #include "double.h"
 #include "idec_error_message.h"
 #include "mesh_qc.h"
 #include "unsigned_approximation.h"
+
+static void set_initial_flow(
+  double * initial_flow,
+  const struct mesh * m,
+  const struct matrix_sparse * m_bd_1,
+  const struct matrix_sparse * m_hodge_1,
+  const struct diffusion_transient_continuous * data_continuous)
+{
+  double * discrete_potential, * dual_conductivity;
+
+  errno = 0;
+
+  dual_conductivity = (double *) malloc(sizeof(double) * m->cn[1]);
+  if (dual_conductivity == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m->cn[1], "dual_conductivity");
+    return;
+  }
+  unsigned_approximation_of_scalar_field_on_nonzero_cells(
+    dual_conductivity, m, data_continuous->kappa_1, 1);
+
+  errno = 0;
+
+  discrete_potential = (double *) malloc(sizeof(double) * m->cn[0]);
+  if (discrete_potential == NULL)
+  {
+    color_error_position(__FILE__, __LINE__);
+    idec_error_message_malloc(sizeof(double) * m->cn[0], "discrete_potential");
+    goto dual_conductivity_free;
+  }
+  de_rham_0(discrete_potential, m, data_continuous->initial);
+
+  errno = 0;
+
+  diffusion_steady_state_discrete_flow_from_potential(initial_flow,
+    m, m_bd_1, dual_conductivity, discrete_potential, m_hodge_1);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "cannot calculate initial flow\n");
+    goto discrete_potential_free;
+  }
+
+  errno = 0;
+
+discrete_potential_free:
+  free(discrete_potential);
+dual_conductivity_free:
+  free(dual_conductivity);
+}
 
 static void discrete_dual_potential_from_continuous_potential(
   double * discrete_dual_potential,
@@ -20,6 +72,8 @@ static void discrete_dual_potential_from_continuous_potential(
 {
   double * discrete_potential;
 
+  errno = 0;
+
   discrete_potential = (double *) malloc(sizeof(double) * m->cn[0]);
   if (discrete_potential == NULL)
   {
@@ -27,9 +81,11 @@ static void discrete_dual_potential_from_continuous_potential(
     idec_error_message_malloc(sizeof(double) * m->cn[0], "discrete_potential");
     return;
   }
+
   de_rham_0(discrete_potential, m, continuous_potential);
   mesh_qc_hodge_star_0(discrete_dual_potential, m, m_vol_d, discrete_potential);
   free(discrete_potential);
+
   errno = 0;
 }
 
@@ -38,7 +94,8 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   const struct mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
-  const struct matrix_sparse * m_cbd_star_d,
+  const struct matrix_sparse * m_bd_1,
+  const struct matrix_sparse * m_hodge_1,
   const struct diffusion_transient_continuous * data_continuous)
 {
   int d;
@@ -105,11 +162,14 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
       "data_discrete->initial_flow");
     goto data_discrete_initial_dual_potential_free;
   }
-  matrix_sparse_vector_multiply_add(data_discrete->initial_flow,
-    m_cbd_star_d, data_discrete->initial_dual_potential);
-  double_array_pointwise_multiply(data_discrete->initial_flow,
-    m->cn[d - 1], data_discrete->kappa_dm1);
-  double_array_multiply_with(data_discrete->initial_flow, m->cn[d - 1], -1.);
+  set_initial_flow(data_discrete->initial_flow,
+    m, m_bd_1, m_hodge_1, data_continuous);
+  if (errno)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate data_discrete->initial_dual_potential\n", stderr);
+    goto data_discrete_initial_flow_free;
+  }
 
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[d]);
   if (data_discrete->source == NULL)

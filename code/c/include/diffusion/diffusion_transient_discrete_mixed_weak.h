@@ -33,7 +33,8 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   const struct mesh * m,
   const double * m_vol_dm1,
   const double * m_vol_d,
-  const struct matrix_sparse * m_cbd_star_d,
+  const struct matrix_sparse * m_bd_1,
+  const struct matrix_sparse * m_hodge_1,
   const struct diffusion_transient_continuous * data_continuous);
 
 void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
