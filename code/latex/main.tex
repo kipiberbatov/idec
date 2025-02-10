@@ -131,7 +131,7 @@
 
 \title{Intrinsic discrete exterior calculus (IDEC)}
 \author{Kiprian Berbatov}
-\date{6 February 2024}
+\date{10 February 2024}
 
 \begin{document}
 
@@ -230,18 +230,21 @@
 \input{heat_transport/continuous/introduction-discussion.tex}
 \input{heat_transport/continuous/model_with_differential_forms-discussion.tex}
 \subsection{Primal strong formulation}
-\phantom{T}
+\subsubsection{Transient}
 \input{heat_transport/continuous/primal_strong_transient-formulation.tex}
+\subsubsection{Steady-state}
 \input{heat_transport/continuous/primal_strong_steady_state-formulation.tex}
 \subsection{Primal weak formulation}
-\phantom{T}
+\subsubsection{Transient}
 \input{heat_transport/continuous/primal_weak_transient-discussion.tex}
 \input{heat_transport/continuous/primal_weak_transient-formulation.tex}
+\subsubsection{Steady-state}
 \input{heat_transport/continuous/primal_weak_steady_state-formulation.tex}
 \subsection{Mixed weak formulation}
-\phantom{T}
+\subsubsection{Transient}
 \input{heat_transport/continuous/mixed_weak_transient-discussion.tex}
 \input{heat_transport/continuous/mixed_weak_transient-formulation.tex}
+\subsubsection{Steady-state}
 \input{heat_transport/continuous/mixed_weak_steady_state-formulation.tex}
 
 \section{Discrete heat transport}
@@ -249,21 +252,24 @@
 \input{restriction_of_free_vector_space-notation.tex}
 \input{generalized-external_normal-notation.tex}
 \subsection{Primal strong formulation}
-\phantom{T}
+\subsubsection{Steady-state}
 \input{heat_transport/discrete/model_with_normals-discussion.tex}
+\subsubsection{Transient}
 \input{heat_transport/discrete/strong_model_with_normals-formulation.tex}
 \input{heat_transport/discrete/strong_model_with_normals_crank_nicolson_scheme-discussion.tex}
 \subsection{Primal weak formulation}
-\phantom{T}
+\subsubsection{Steady-state}
 \input{heat_transport/discrete/primal_weak_steady_state-formulation.tex}
 \input{heat_transport/discrete/primal_weak_steady_state_solve-discussion.tex}
+\subsubsection{Transient}
 \input{heat_transport/discrete/primal_weak_transient-formulation.tex}
 \input{heat_transport/discrete/primal_weak_transient_solve_trapezoidal-discussion.tex}
 \input{heat_transport/discrete/primal_weak_transient_solve_trapezoidal-algorithm.tex}
 \subsection{Mixed weak formulation}
-\phantom{T}
+\subsubsection{Steady-state}
 \input{heat_transport/discrete/mixed_weak_steady_state-formulation.tex}
 \input{heat_transport/discrete/mixed_weak_steady_state_solve-discussion.tex}
+\subsubsection{Transient}
 \input{heat_transport/discrete/mixed_weak_transient-formulation.tex}
 \input{heat_transport/discrete/mixed_weak_transient_solve_trapezoidal-discussion.tex}
 \input{heat_transport/discrete/mixed_weak_transient_solve_trapezoidal-algorithm.tex}
