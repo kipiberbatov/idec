@@ -1,3 +1,5 @@
+.PHONY: pdf pdf_clean pdf_distclean
+
 build/$(MODE)/pdf: | build/$(MODE)
 	mkdir -p $@
 
@@ -22,8 +24,6 @@ _pdf :=\
   build/$(MODE)/pdf/filled_window_rainbow_100.pdf\
   $(_pdf_mesh)\
   $(_pdf_diffusion)\
-
-.PHONY: pdf pdf_clean pdf_distclean
 
 pdf: $(_pdf)
 

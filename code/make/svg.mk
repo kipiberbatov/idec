@@ -1,3 +1,5 @@
+.PHONY: svg svg_clean svg_distclean
+
 build/$(MODE)/svg: | build/$(MODE)
 	mkdir -p $@
 
@@ -20,8 +22,6 @@ include code/make/svg/mesh.mk
 _svg :=\
   build/$(MODE)/svg/filled_window_rainbow_100.svg\
   $(_svg_mesh)\
-
-.PHONY: svg svg_clean svg_distclean
 
 svg: $(_svg)
 

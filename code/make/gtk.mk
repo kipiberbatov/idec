@@ -1,8 +1,10 @@
-TIMELAPSE = 100
-CLOSE_AUTOMATICALLY = 0
+.PHONY: gtk gtk_clean gtk_distclean
 
 build/$(MODE)/gtk: | build/$(MODE)
 	mkdir -p $@
+
+TIMELAPSE = 100
+CLOSE_AUTOMATICALLY = 0
 
 build/$(MODE)/gtk/filled_window_rainbow_100.log:\
   build/$(MODE)/bin/idec_graphics_filled_window$(.EXE)\
@@ -26,8 +28,6 @@ include code/make/gtk/diffusion.mk
 _gtk :=\
   build/$(MODE)/gtk/filled_window_rainbow_100.log\
   $(_gtk_diffusion_transient)
-
-.PHONY: gtk gtk_clean gtk_distclean
 
 gtk: $(_gtk)
 

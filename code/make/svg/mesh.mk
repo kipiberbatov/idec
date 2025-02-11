@@ -1,3 +1,5 @@
+.PHONY: svg_mesh svg_mesh_clean svg_mesh_distclean
+
 build/$(MODE)/svg/mesh: | build/$(MODE)/svg
 	mkdir -p $@
 
@@ -173,8 +175,6 @@ build/$(MODE)/svg/mesh/2d_10_grains_forman_edge_skeleton.svg:\
   --animation-library=$(word 3, $|)\
   --animation-backend=idec_cairo_svg_animation\
   --output=$@
-
-.PHONY: svg_mesh svg_mesh_clean svg_mesh_distclean
 
 svg_mesh: $(_svg_mesh)
 

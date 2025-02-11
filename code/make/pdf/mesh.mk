@@ -1,3 +1,5 @@
+.PHONY: pdf_mesh pdf_mesh_clean pdf_mesh_distclean
+
 build/$(MODE)/pdf/mesh: | build/$(MODE)/pdf
 	mkdir -p $@
 
@@ -173,8 +175,6 @@ build/$(MODE)/pdf/mesh/2d_10_grains_forman_edge_skeleton.pdf:\
   --animation-library=$(word 3, $|)\
   --animation-backend=idec_cairo_pdf_animation\
   --output=$@
-
-.PHONY: pdf_mesh pdf_mesh_clean pdf_mesh_distclean
 
 pdf_mesh: $(_pdf_mesh)
 

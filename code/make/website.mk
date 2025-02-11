@@ -22,7 +22,6 @@ build/.website_fast: build/website/index.html build/website/style.css\
 	cp $(word 1, $|)/main.pdf $(word 2, $|)
 	echo $^ > $@
 
-.PHONY: website_clean
 website_clean:
 	-$(RM) -r build/website
 	-$(RM) build/.website_fast
