@@ -1,3 +1,7 @@
+.PHONY: pdf_diffusion_steady_state\
+        pdf_diffusion_steady_state_clean\
+        pdf_diffusion_steady_state_distclean
+
 build/$(MODE)/pdf/diffusion/steady_state: | build/$(MODE)/pdf/diffusion
 	mkdir -p $@
 
@@ -25,8 +29,6 @@ _pdf_diffusion_steady_state :=\
   $(_pdf_diffusion_steady_state_continuous_2d_d02_p01)\
   $(_pdf_diffusion_steady_state_continuous_2d_d03_p00)\
   $(_pdf_diffusion_steady_state_continuous_2d_d03_p01)\
-
-.PHONY: pdf_diffusion_steady_state pdf_diffusion_steady_state_clean
 
 pdf_diffusion_steady_state: $(_pdf_diffusion_steady_state)
 

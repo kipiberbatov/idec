@@ -1,56 +1,67 @@
-_txt_diffusion_steady_state_continuous_2d_d02_p01 :=\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_exact_2d_10_grains_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_exact_2d_10_grains_forman_flow.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_input.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_flow.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_input.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_flow.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_input.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_solution.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_potential.txt\
+.PHONY: txt_diffusion_steady_state_continuous_2d_d02_p01\
+        txt_diffusion_steady_state_continuous_2d_d02_p01_clean\
+        txt_diffusion_steady_state_continuous_2d_d02_p01_distclean
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_exact_2d_10_grains_forman_potential.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01:\
+  | build/$(MODE)/txt/diffusion/steady_state
+	mkdir -p $@
+
+_txt_diffusion_steady_state_continuous_2d_d02_p01 :=\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grains_forman_potential.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grains_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_input.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_potential.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_input.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_potential.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_input.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_solution.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_potential.txt\
+
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grains_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_exact_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d02_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion/steady_state build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01\
+    build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
   diffusion_steady_state_continuous_2d_d02_p01_potential\
   --raw > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_exact_2d_10_grains_forman_flow.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grains_forman_flow.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d02_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion/steady_state build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01\
+    build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
   diffusion_steady_state_continuous_2d_d02_p01_flow\
   --raw > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_input.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_strong_from_continuous$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d02_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion/steady_state build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01\
+    build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
   diffusion_steady_state_continuous_2d_d02_p01\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_potential.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_strong_solve$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_cbd.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_cbd_star.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_input.txt\
-  | build/$(MODE)/txt/diffusion/steady_state
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_input.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01
 	$<\
   --raw $(word 2, $^)\
   $(word 3, $^)\
@@ -58,13 +69,13 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_coc
   $(word 5, $^)\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_flow.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_flow.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_flow_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_hodge.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_input.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_cochain_2d_10_grains_forman_potential.txt\
-  | build/$(MODE)/txt/diffusion/steady_state
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_input.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_potential.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
@@ -72,12 +83,13 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_strong_coc
   --raw $(word 5, $^)\
   --raw > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_input.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_from_continuous$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_vol.txt\
   build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d02_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion/steady_state build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01\
+    build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
@@ -85,25 +97,25 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cocha
   diffusion_steady_state_continuous_2d_d02_p01\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_potential.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_weak_solve$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_inner.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_input.txt\
-  | build/$(MODE)/txt/diffusion/steady_state
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_input.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
   $(word 4, $^)\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_flow.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_flow.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_flow_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_hodge.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_input.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cochain_2d_10_grains_forman_potential.txt\
-  | build/$(MODE)/txt/diffusion/steady_state
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_input.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_potential.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
@@ -111,12 +123,13 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_primal_weak_cocha
   --raw $(word 5, $^)\
   --raw > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_input.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_from_continuous$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_vol.txt\
   build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d02_p01$(.OBJ)\
-  | build/$(MODE)/txt/diffusion/steady_state build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01\
+    build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
@@ -124,28 +137,37 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochai
   diffusion_steady_state_continuous_2d_d02_p01\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_solution.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_solution.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_solve$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_inner.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_input.txt\
-  | build/$(MODE)/txt/diffusion/steady_state
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_input.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
   $(word 4, $^)\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_potential.txt:\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_vol.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_input.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01_mixed_weak_cochain_2d_10_grains_forman_solution.txt\
-  | build/$(MODE)/txt/diffusion/steady_state
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_input.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_solution.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01
 	$<\
   --raw $(word 2, $^)\
   --raw $(word 3, $^)\
   $(word 4, $^)\
   $(word 5, $^)\
   > $@
+
+txt_diffusion_steady_state_continuous_2d_d02_p01:\
+  $(_txt_diffusion_steady_state_continuous_2d_d02_p01)
+
+txt_diffusion_steady_state_continuous_2d_d02_p01_clean:
+	-$(RM) $(_txt_diffusion_steady_state_continuous_2d_d02_p01)
+
+txt_diffusion_steady_state_continuous_2d_d02_p01_distclean:
+	-$(RM) -r build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01

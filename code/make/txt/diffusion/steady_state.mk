@@ -1,3 +1,7 @@
+.PHONY: txt_diffusion_steady_state\
+        txt_diffusion_steady_state_clean\
+        txt_diffusion_steady_state_distclean
+
 build/$(MODE)/txt/diffusion/steady_state: | build/$(MODE)/txt/diffusion
 	mkdir -p $@
 
@@ -12,6 +16,7 @@ include code/make/txt/diffusion/steady_state/continuous_2d_d02_p00.mk
 include code/make/txt/diffusion/steady_state/continuous_2d_d02_p01.mk
 include code/make/txt/diffusion/steady_state/continuous_2d_d03_p00.mk
 include code/make/txt/diffusion/steady_state/continuous_2d_d03_p01.mk
+include code/make/txt/diffusion/steady_state/continuous_3d_d00_p00.mk
 
 _txt_diffusion_steady_state :=\
   $(_txt_diffusion_steady_state_continuous_2d_d00_p00)\
@@ -25,8 +30,7 @@ _txt_diffusion_steady_state :=\
   $(_txt_diffusion_steady_state_continuous_2d_d02_p01)\
   $(_txt_diffusion_steady_state_continuous_2d_d03_p00)\
   $(_txt_diffusion_steady_state_continuous_2d_d03_p01)\
-
-.PHONY: txt_diffusion_steady_state txt_diffusion_steady_state_clean
+  $(_txt_diffusion_steady_state_continuous_3d_d00_p00)\
 
 txt_diffusion_steady_state: $(_txt_diffusion_steady_state)
 
