@@ -1,18 +1,26 @@
-_gtk_diffusion_transient_continuous_2d_d00_p01 :=\
-  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log\
-  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log\
-  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log\
-  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log\
-  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log\
-  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log\
+.PHONY: gtk_diffusion_transient_continuous_2d_d00_p01\
+        gtk_diffusion_transient_continuous_2d_d00_p01_clean\
+        gtk_diffusion_transient_continuous_2d_d00_p01_distclean
 
-build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log:\
+build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01:\
+  build/$(MODE)/gtk/diffusion/transient
+	mkdir -p $@
+
+_gtk_diffusion_transient_continuous_2d_d00_p01 :=\
+  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log\
+  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log\
+  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log\
+  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log\
+  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log\
+  build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log\
+
+build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log:\
   build/$(MODE)/bin/idec_graphics_mesh_2d_0_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_5_forman.txt\
-  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt\
+  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt\
   build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence$(.OBJ)\
   build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
-  | build/$(MODE)/gtk/diffusion/transient\
+  | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$<\
@@ -28,13 +36,13 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_strong_cochai
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
-build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log:\
+build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log:\
   build/$(MODE)/bin/idec_graphics_mesh_2d_1_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_5_forman.txt\
-  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01_primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.txt\
+  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.txt\
   build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence$(.OBJ)\
   build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
-  | build/$(MODE)/gtk/diffusion/transient\
+  | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$<\
@@ -50,13 +58,13 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_strong_cochai
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
-build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log:\
+build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log:\
   build/$(MODE)/bin/idec_graphics_mesh_2d_0_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_5_forman.txt\
-  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt\
+  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01/primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt\
   build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence$(.OBJ)\
   build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
-  | build/$(MODE)/gtk/diffusion/transient\
+  | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$<\
@@ -72,13 +80,13 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_weak_cochain_
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
-build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log:\
+build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log:\
   build/$(MODE)/bin/idec_graphics_mesh_2d_1_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_5_forman.txt\
-  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01_primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.txt\
+  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01/primal_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.txt\
   build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence$(.OBJ)\
   build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
-  | build/$(MODE)/gtk/diffusion/transient\
+  | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$<\
@@ -94,13 +102,13 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_primal_weak_cochain_
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
-build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log:\
+build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.log:\
   build/$(MODE)/bin/idec_graphics_mesh_2d_0_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_5_forman.txt\
-  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01_mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt\
+  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01/mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt\
   build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence$(.OBJ)\
   build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
-  | build/$(MODE)/gtk/diffusion/transient\
+  | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$<\
@@ -116,13 +124,13 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_mixed_weak_cochain_b
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
-build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log:\
+build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01/mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_flow.log:\
   build/$(MODE)/bin/idec_graphics_mesh_2d_1_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/brick_2d_5_forman.txt\
-  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01_mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_solution.txt\
+  build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p01/mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_solution.txt\
   build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence$(.OBJ)\
   build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
-  | build/$(MODE)/gtk/diffusion/transient\
+  | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$<\
@@ -138,10 +146,11 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01_mixed_weak_cochain_b
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
-.PHONY: gtk_diffusion_transient_continuous_2d_d00_p01
 gtk_diffusion_transient_continuous_2d_d00_p01:\
   $(_gtk_diffusion_transient_continuous_2d_d00_p01)
 
-.PHONY: gtk_diffusion_transient_continuous_2d_d00_p01_clean
 gtk_diffusion_transient_continuous_2d_d00_p01_clean:
 	-$(RM) $(_gtk_diffusion_transient_continuous_2d_d00_p01)
+
+gtk_diffusion_transient_continuous_2d_d00_p01_distclean:
+	-$(RM) -r build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p01
