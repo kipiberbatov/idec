@@ -7,11 +7,13 @@ build/$(MODE)/txt/diffusion/transient: | build/$(MODE)/txt/diffusion
 
 include code/make/txt/diffusion/transient/continuous_2d_d00_p00.mk
 include code/make/txt/diffusion/transient/continuous_2d_d00_p01.mk
+include code/make/txt/diffusion/transient/continuous_2d_d00_p02.mk
 include code/make/txt/diffusion/transient/continuous_2d_d00_p04.mk
 
 _txt_diffusion_transient :=\
   $(_txt_diffusion_transient_continuous_2d_d00_p00)\
   $(_txt_diffusion_transient_continuous_2d_d00_p01)\
+  $(_txt_diffusion_transient_continuous_2d_d00_p02)\
   $(_txt_diffusion_transient_continuous_2d_d00_p04)\
 
 txt_diffusion_transient: $(_txt_diffusion_transient)
