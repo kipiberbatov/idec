@@ -226,78 +226,79 @@
 \input{mesh/flat/summary_of_operators-discussion.tex}
 
 \section{Continuous heat transport}
-\label{section:continuous_heat_transport}
-\input{heat_transport/continuous/introduction-discussion.tex}
-\input{heat_transport/continuous/model_with_differential_forms-discussion.tex}
+\label{section:continuous_diffusion}
+\input{diffusion/continuous/introduction-discussion.tex}
+\input{diffusion/continuous/model_derivation-discussion.tex}
 \subsection{Primal strong formulation}
 \subsubsection{Transient}
-\input{heat_transport/continuous/primal_strong_transient-formulation.tex}
+\input{diffusion/continuous/transient/primal_strong-formulation.tex}
 \subsubsection{Steady-state}
-\input{heat_transport/continuous/primal_strong_steady_state-formulation.tex}
+\input{diffusion/continuous/steady_state/primal_strong-formulation.tex}
 \subsection{Primal weak formulation}
 \subsubsection{Transient}
-\input{heat_transport/continuous/primal_weak_transient-discussion.tex}
-\input{heat_transport/continuous/primal_weak_transient-formulation.tex}
+\input{diffusion/continuous/transient/primal_weak-discussion.tex}
+\input{diffusion/continuous/transient/primal_weak-formulation.tex}
 \subsubsection{Steady-state}
-\input{heat_transport/continuous/primal_weak_steady_state-formulation.tex}
+\input{diffusion/continuous/steady_state/primal_weak-formulation.tex}
 \subsection{Mixed weak formulation}
 \subsubsection{Transient}
-\input{heat_transport/continuous/mixed_weak_transient-discussion.tex}
-\input{heat_transport/continuous/mixed_weak_transient-formulation.tex}
+\input{diffusion/continuous/transient/mixed_weak-discussion.tex}
+\input{diffusion/continuous/transient/mixed_weak-formulation.tex}
 \subsubsection{Steady-state}
-\input{heat_transport/continuous/mixed_weak_steady_state-formulation.tex}
+\input{diffusion/continuous/steady_state/mixed_weak-formulation.tex}
 
 \section{Discrete heat transport}
-\label{section:discrete_heat_transport}
+\label{section:discrete_diffusion}
 \input{restriction_of_free_vector_space-notation.tex}
 \input{generalized-external_normal-notation.tex}
+\input{diffusion/discrete/model_derivation-discussion.tex}
 \subsection{Primal strong formulation}
 \subsubsection{Steady-state}
-\input{heat_transport/discrete/model_with_normals-discussion.tex}
+\input{diffusion/discrete/steady_state/primal_strong_with_normals-discussion.tex}
 \subsubsection{Transient}
-\input{heat_transport/discrete/strong_model_with_normals-formulation.tex}
-\input{heat_transport/discrete/strong_model_with_normals_crank_nicolson_scheme-discussion.tex}
+\input{diffusion/discrete/transient/primal_strong_with_normals-formulation.tex}
+\input{diffusion/discrete/transient/primal_strong_with_normals_solve_trapezoidal-discussion.tex}
 \subsection{Primal weak formulation}
 \subsubsection{Steady-state}
-\input{heat_transport/discrete/primal_weak_steady_state-formulation.tex}
-\input{heat_transport/discrete/primal_weak_steady_state_solve-discussion.tex}
+\input{diffusion/discrete/steady_state/primal_weak-formulation.tex}
+\input{diffusion/discrete/steady_state/primal_weak_solve-discussion.tex}
 \subsubsection{Transient}
-\input{heat_transport/discrete/primal_weak_transient-formulation.tex}
-\input{heat_transport/discrete/primal_weak_transient_solve_trapezoidal-discussion.tex}
-\input{heat_transport/discrete/primal_weak_transient_solve_trapezoidal-algorithm.tex}
+\input{diffusion/discrete/transient/primal_weak-formulation.tex}
+\input{diffusion/discrete/transient/primal_weak_solve_trapezoidal-discussion.tex}
+\input{diffusion/discrete/transient/primal_weak_solve_trapezoidal-algorithm.tex}
 \subsection{Mixed weak formulation}
 \subsubsection{Steady-state}
-\input{heat_transport/discrete/mixed_weak_steady_state-formulation.tex}
-\input{heat_transport/discrete/mixed_weak_steady_state_solve-discussion.tex}
+\input{diffusion/discrete/steady_state/mixed_weak-formulation.tex}
+\input{diffusion/discrete/steady_state/mixed_weak_solve-discussion.tex}
 \subsubsection{Transient}
-\input{heat_transport/discrete/mixed_weak_transient-formulation.tex}
-\input{heat_transport/discrete/mixed_weak_transient_solve_trapezoidal-discussion.tex}
-\input{heat_transport/discrete/mixed_weak_transient_solve_trapezoidal-algorithm.tex}
+\input{diffusion/discrete/transient/mixed_weak-formulation.tex}
+\input{diffusion/discrete/transient/mixed_weak_solve_trapezoidal-discussion.tex}
+\input{diffusion/discrete/transient/mixed_weak_solve_trapezoidal-algorithm.tex}
 
 \section{Examples of transport phenomena (e.g., heat transport)}
 \label{section:examples_of_transport_phenomena}
-\input{heat_transport/continuous/2d_d00_p00-example.tex}
-\input{heat_transport/continuous/2d_d00_p00-figure.tex}
-\input{heat_transport/continuous/2d_d00_p01-example.tex}
-\input{heat_transport/continuous/2d_d00_p01-figure.tex}
-\input{heat_transport/continuous/2d_d00_p02-example.tex}
-\input{heat_transport/continuous/2d_d00_p02-figure.tex}
-\input{heat_transport/continuous/2d_d00_p03-example.tex}
-\input{heat_transport/continuous/2d_d00_p03-figure.tex}
-\input{heat_transport/continuous/2d_d00_p04-example.tex}
-\input{heat_transport/continuous/2d_d00_p04-figure.tex}
-\input{heat_transport/continuous/2d_d00_p05-example.tex}
-\input{heat_transport/continuous/2d_d00_p05-figure.tex}
-\input{heat_transport/continuous/2d_d01_p00-example.tex}
-\input{heat_transport/continuous/2d_d01_p00-figure.tex}
-\input{heat_transport/continuous/2d_d02_p00-example.tex}
-\input{heat_transport/continuous/2d_d02_p00-figure.tex}
-\input{heat_transport/continuous/2d_d02_p01-example.tex}
-\input{heat_transport/continuous/2d_d02_p01-figure.tex}
-\input{heat_transport/continuous/2d_d03_p00-example.tex}
-\input{heat_transport/continuous/2d_d03_p00-figure.tex}
-\input{heat_transport/continuous/2d_d03_p01-example.tex}
-\input{heat_transport/continuous/2d_d03_p01-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p00-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p00-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p01-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p01-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p02-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p02-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p03-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p03-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p04-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p04-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p05-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d00_p05-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d01_p00-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d01_p00-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d02_p00-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d02_p00-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d02_p01-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d02_p01-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d03_p00-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d03_p00-figure.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d03_p01-example.tex}
+\input{diffusion/continuous/steady_state/examples/2d_d03_p01-figure.tex}
 
 \section{Discrete elasticity}
 \label{section:discrete_elasticity}

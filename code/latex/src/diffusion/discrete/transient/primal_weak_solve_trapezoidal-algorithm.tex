@@ -1,0 +1,161 @@
+\begin{algorithm}[Algorithm for solving the transient primal weak formulation
+  for the discrete heat transfer phenomenon using trapezoidal rule for time
+  integration, assuming time-independent input data]
+  \label{idec/diffusion/discrete/transient/primal_weak_solve_trapezoidal-algorithm}
+  Let:
+  \begin{itemize}
+    \item
+      Let $d$ be a positive integer (space dimension);
+    \item
+      $K$ be an oriented quasi-cubical \hyperref[idec:mesh:definition]{mesh} of
+      dimension $d$ representing the material body;
+    \item
+      $[K]$ be the fundamental class of $K$;
+    \item
+      $t_0 [T] \in \R$ be the initial time;
+    \item
+      $\tau [T] \in \R^+$ be the time step;
+    \item
+      $f^d [E T^{-1}] \in C^d K$ be the heat source;
+    \item
+      $u_0 [\Theta] \in C^0 K$ be the initial temperature;
+    \item
+      $\pi_0 [E L^{-d} \Theta^{-1}] \colon I \times C^0 K \to C^0 K$
+      be the heat capacity of the material;
+    \item
+      $\tilde{\kappa}_1 [E L^{2 - d} T^{-1} \Theta^{-1}] \colon C^1 K \to C^1 K$
+      be the thermal conductivity of the material;
+    \item
+      $\partial K = \Gamma_D \cup \Gamma_N$ be the partition of the boundary of
+      $K$ into Dirichlet ($\Gamma_D$) and Neumann ($\Gamma_N$) regions;
+    \item
+      $[\Gamma_N]$ be the fundamental class of $\Gamma_N$, where $\Gamma_N$
+      has the boundary orientation induced from $K$;
+    \item
+      $g_D^0 [\Theta] \in C^0 \Gamma_D$
+      be the prescribed temperature on the Dirichlet boundary;
+    \item
+      $g_N^{d - 1} [E T^{-1}] \in C^{d - 1} \Gamma_N$
+      be the prescribed flow on the Neumann boundary.
+  \end{itemize}
+  Our algorithm has $3$ phases.
+  \begin{enumerate}
+    \item
+      \textbf{Time-independent phase.}
+      Do the following calculations:
+      \begin{itemize}
+        \item
+          $n_0 := \abs{K_0}$;
+        \item
+          the sparse matrix $A \in M_{n_0 \times n_0}(\R)$,
+          \begin{equation}
+            A_{i, j}
+            := \inner{\delta_0 N^j}{\tilde{\kappa}_1 \delta_0 N^i}_{K, 1},\
+            i, j = 0, ..., n_0 - 1;
+          \end{equation}
+        \item
+          the diagonal matrix $B \in M_{n_0 \times n_0}(\R)$,
+          \begin{equation}
+            B_{i, j} := \inner{N^j}{\pi_0 N^i}_{K, 0},\ i, j = 0, ..., n_0 - 1;
+          \end{equation}
+        \item
+          the right-hand side vectors $F, G, H \in \R^{n_0}$,
+          \begin{subequations}
+            \begin{alignat}{1}
+              & F_i := (v^0 \smile f^d)[K], i = 0, ..., n_0 - 1, \\
+              & G_i := (\tr_{\Gamma_N, 0} N^i \smile g_N^{d - 1})[\Gamma_N],
+                i = 0, ..., n_0 - 1, \\
+              & H := F + G;
+            \end{alignat}
+          \end{subequations}
+        \item
+          the sparse matrices (having the same stencil as $A$)
+          $L_\tau, R_\tau \in M_{n_0 \times n_0}(\R)$,
+          \begin{subequations}
+            \begin{alignat}{1}
+              & L_\tau := B - \frac{\tau}{2} A, \\
+              & R_\tau := B + \frac{\tau}{2} A;
+            \end{alignat}
+          \end{subequations}
+        \item
+          the sets $I_D := (\Gamma_D)_0$ and
+          $\overline{I_D} := \{0, ..., n_0 - 1\} \setminus I_D$;
+        \item
+          the restricted matrix $\overline{L_\tau}$, constructed out of $L_\tau$
+          with rows and columns in $I_D$ removed, and the restricted vector
+          $\overline{c_\tau} \in \R^{\abs{\overline{I_D}}}$
+          \begin{equation}
+            \overline{c_\tau}_j
+            := \tau H_j - \sum_{k \in I_D} (R_\tau)_{j, k} g_D^0(N_k),\
+            j \in \overline{I};
+          \end{equation}
+        \item
+          the Cholesky decomposition
+          \begin{equation}
+            \overline{L_\tau} = \overline{S_\tau} \overline{S_\tau}^T,
+          \end{equation}
+          where $\overline{S_\tau}$ is lower-triangular sparse matrix;
+        \item
+          the time independent part of the restricted solution
+          \begin{equation}
+            \overline{z_\tau}
+            := \overline{L_\tau}^{-1} \overline{c_\tau}
+            = \overline{S_\tau}^{-T} \overline{S_\tau}^{-1} \overline{c_\tau}
+          \end{equation}
+          (of course, we do not find the inverses of $\overline{S_\tau}$ and its
+          transpose but apply forward and back substitution);
+        \item
+          the initial coordinates $x^0 \in \R^{n_0}$ of the temperature,
+          \begin{equation}
+            x^0_j := u_0(N_i),\ j = 0, ..., n_0 - 1.
+          \end{equation}
+      \end{itemize}
+    \item
+      \textbf{Time-dependent (loop) phase.}
+      For any $i \geq 0$ (until some predefined final moment is reached or some
+      condition for small error is fulfilled) calculate:
+      \begin{itemize}
+        \item
+          the time-dependent part $\overline{v_\tau}$ of the right-hand side
+          (allocated only once, there is no need to store it on every step),
+          \begin{equation}
+            \overline{v_\tau}^i := \overline{(R_\tau x^i)};
+          \end{equation}
+        \item
+          the time-dependent part $\overline{v_\tau}$ of the solution
+          (allocated only once, there is no need to store it on every step),
+          \begin{equation}
+            \overline{w_\tau}^i :=
+            \overline{S_\tau}^{-T} \overline{S_\tau}^{-1} \overline{v_\tau}
+          \end{equation}
+          (with forward and back substitution);
+        \item
+          the solution $\overline{x}^{i + 1}$ on the non-Dirichlet nodes
+          (allocated only once, there is no need to store it on every step),
+          \begin{equation}
+            \overline{x}^{i + 1} := \overline{w_\tau}^i + \overline{z_\tau};
+          \end{equation}
+        \item
+          the final solution
+          \begin{equation}
+            x^{i + 1}_j :=
+            \begin{cases}
+              \overline{x}^{i + 1}_j, & j \in J \\
+              g_D^0(N_j), & j \in I
+            \end{cases}.
+          \end{equation}
+      \end{itemize}
+    \item
+      \textbf{Post-processing.}
+      For each time moment $t_i$ the flow $(q^{d - 1})^i \in C^{d - 1} K$
+      is calculated by the formula
+      \begin{equation}
+        (q^{d - 1})^i(c_{d - 1}) :=
+        \begin{cases}
+          ((-1)^{d - 1} \star_1 \tilde{\kappa}_1 \delta_0 u^{0,i})(c_{d - 1}),
+            & c_{d - 1} \in K_{d - 1} \setminus (\Gamma_N)_{d - 1} \\
+          g_N^{d - 1}(c_{d - 1}), & c_{d - 1} \in (\Gamma_N)_{d - 1}
+        \end{cases}.
+      \end{equation}
+  \end{enumerate}
+\end{algorithm}
