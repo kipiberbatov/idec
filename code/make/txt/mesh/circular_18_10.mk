@@ -12,7 +12,7 @@ _txt_mesh_circular_18_10 :=\
 
 build/$(MODE)/txt/mesh/circular_18_10.txt:\
   build/$(MODE)/bin/mesh_circular$(.EXE) | build/$(MODE)/txt/mesh
-	$< 4 3 > $@
+	$< 18 10 > $@
 
 build/$(MODE)/txt/mesh/circular_18_10_forman.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
