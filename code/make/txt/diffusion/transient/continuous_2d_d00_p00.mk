@@ -3,7 +3,7 @@
         txt_diffusion_transient_continuous_2d_d00_p00_distclean
 
 build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p00:\
-  build/$(MODE)/txt/diffusion/transient
+  | build/$(MODE)/txt/diffusion/transient
 	mkdir -p $@
 
 _txt_diffusion_transient_continuous_2d_d00_p00 :=\

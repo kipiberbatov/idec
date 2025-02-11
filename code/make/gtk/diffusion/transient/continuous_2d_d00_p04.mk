@@ -3,7 +3,7 @@
         gtk_diffusion_transient_continuous_2d_d00_p04_distclean
 
 build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p04:\
-  build/$(MODE)/gtk/diffusion/transient
+  | build/$(MODE)/gtk/diffusion/transient
 	mkdir -p $@
 
 _gtk_diffusion_transient_continuous_2d_d00_p04 :=\

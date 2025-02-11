@@ -3,7 +3,7 @@
         pdf_diffusion_transient_continuous_2d_d00_p00_distclean
 
 build/$(MODE)/pdf/diffusion/transient/continuous_2d_d00_p00:\
-  build/$(MODE)/pdf/diffusion/transient
+  | build/$(MODE)/pdf/diffusion/transient
 	mkdir -p $@
 
 _pdf_diffusion_transient_continuous_2d_d00_p00 :=\
