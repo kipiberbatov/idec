@@ -3,21 +3,21 @@
   (\Cref{idec/heat_transport/continuous/primal_strong_steady_state-formulation},
    \Cref{idec/heat_transport/continuous/primal_weak_steady_state-formulation},
    \Cref{idec/heat_transport/continuous/mixed_weak_steady_state-formulation})
-  with input data \verb|2d_d00_p02| in the nomenclature of the C codebase.
+  with input data \verb|2d_d00_p00| in the nomenclature of the C codebase.
 
   Concretely,
     $X = [0, 1]^2$,
     $\kappa_1 \equiv 1$,
-    $f = -4 \, d x \wedge d y$,
+    $f \equiv 0$,
     $G_D = \partial X$,
     $G_N = \emptyset$,
-    $g_D(x, y) = x^2 + y^2$.
+    $g_D(x, y) = 0$.
 
   This problem has the following exact solution:
   \begin{subequations}
     \begin{alignat}{3}
-      & u(x, y) && = && x^2 + y^2, \\
-      & q(x, y) && = && - 2 y\, d x + 2 x\, d y.
+      & u && \equiv && 0, \\
+      & q && \equiv && 0.
     \end{alignat}
   \end{subequations}
   Consider a mesh $M$ for $X$ consisting of $10 \times 10$ squares (each axis is
@@ -25,5 +25,5 @@
   squares).
   Its potential and flow on $K$ consisting of the exact solution and the $3$
   discussed cochain methods are shown on
-  \Cref{figure:idec/diffusion/steady_state/continuous_2d_d00_p02/brick_2d_10_forman}.
+  \Cref{figure:idec/diffusion/steady_state/continuous_2d_d00_p00/brick_2d_10_forman}.
 \end{example}

@@ -5,10 +5,14 @@
    \Cref{idec/heat_transport/continuous/mixed_weak_steady_state-formulation})
   with input data \verb|2d_d00_p01| in the nomenclature of the C codebase.
 
-  Concretely, $X = [0, 1]^2$, $\kappa_1 \equiv 1$, $f \equiv 0$,
-  $G_D = \{0, 1\} \times [0, 1]$, $G_N = [0, 1] \times \{0, 1\}$,
-  $g_D(x, y) = \begin{cases} -100, & x = 0 \\ 100, & x = 1 \end{cases}$,
-  $g_N \equiv 0$.
+  Concretely,
+    $X = [0, 1]^2$,
+    $\kappa_1 \equiv 1$,
+    $f \equiv 0$,
+    $G_D = \{0, 1\} \times [0, 1]$,
+    $G_N = [0, 1] \times \{0, 1\}$,
+    $g_D(x, y) = \begin{cases} -100, & x = 0 \\ 100, & x = 1 \end{cases}$,
+    $g_N \equiv 0$.
 
   This problem has the following exact solution:
   \begin{subequations}
@@ -20,6 +24,6 @@
   Consider a mesh $M$ for $X$ consisting of $2 \times 2$ squares (each axis is
   divided into $2$ segments) with Forman subdivision $K$ ($4 \times 4$ squares).
   Its potential and flow on $K$ consisting of the exact solution and the $3$
-  discussed cochain methods is shown on
-  \Cref{figure:idec/diffusion/diffusion/steady_state/continuous_2d_d00_p01/brick_2d_2_forman}.
+  discussed cochain methods are shown on
+  \Cref{figure:idec/diffusion/steady_state/continuous_2d_d00_p01/brick_2d_2_forman}.
 \end{example}
