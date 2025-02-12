@@ -7,7 +7,8 @@ LATEX_COMPILER := TEXINPUTS=./code/latex/src: pdflatex -halt-on-error
 
 docs: build/docs/main.pdf
 
-build/.pdf: $(_pdf_mesh) $(_pdf_diffusion_steady_state)
+build/.pdf: $(_pdf_mesh) $(_pdf_diffusion_steady_state)\
+  $(_pdf_diffusion_transient)
 	echo $^ > $@
 
 build/docs/main.pdf: code/latex/main.tex $(shell find code/latex -name "*.tex")\

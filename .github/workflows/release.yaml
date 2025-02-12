@@ -39,7 +39,7 @@ jobs:
         run: sudo apt-get install -y libgtk-3-dev
 
       - name: Run PDF-outputting demos for LaTeX (Compiling plugins on the way)
-        run: make pdf_mesh pdf_diffusion_steady_state
+        run: make pdf_mesh pdf_diffusion_steady_state pdf_diffusion_transient
 
       - name: Run SVG-outputting demos
         run: make svg

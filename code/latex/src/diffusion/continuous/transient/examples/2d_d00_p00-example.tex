@@ -1,0 +1,34 @@
+\begin{example}
+  Consider the transient continuous heat transport problem
+  (\Cref{idec/diffusion/continuous/transient/primal_strong-formulation},
+   \Cref{idec/diffusion/continuous/transient/primal_weak-formulation},
+   \Cref{idec/diffusion/continuous/transient/mixed_weak-formulation})
+  with input data \verb|2d_d00_p00| in the nomenclature of the C codebase.
+
+  Concretely,
+    $X = [0, 1]^2$,
+    $\pi_0 \equiv 1$,
+    $\kappa_1 \equiv 1$,
+    $u_0(x, y) =
+      \begin{cases}
+        100, & (x, y) = (0.5, 0.5) \\
+        0, & \text{else}
+      \end{cases}$,
+    $f \equiv 0$,
+    $G_D = \partial X$,
+    $G_N = \emptyset$,
+    $g_D(x, y) = 0$.
+
+  This problem has the following exact solution in steady-state:
+  \begin{subequations}
+    \begin{alignat}{3}
+      & u && \equiv && 0, \\
+      & q && \equiv && 0.
+    \end{alignat}
+  \end{subequations}
+  Consider a mesh $M$ for $X$ consisting of $2 \times 2$ squares (each axis is
+  divided into $2$ segments) with Forman subdivision $K$ ($4 \times 4$ squares).
+  Its potential and flow on $K$ consisting of the exact solution and the $3$
+  discussed cochain methods are shown on
+  \Cref{figure:idec/diffusion/transient/continuous_2d_d00_p00/brick_2d_2_forman}.
+\end{example}
