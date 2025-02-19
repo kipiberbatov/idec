@@ -19,7 +19,7 @@ diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
   double time_step)
 {
   int m_cn_0;
-  double * b, * f, * free_part, * g;
+  double * b, * f, * free_part;
   struct matrix_sparse * a, * lhs, * rhs;
   struct diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *
     result;
@@ -80,20 +80,13 @@ diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
     idec_error_message_malloc(sizeof(double) * m_cn_0, "f");
     goto rhs_free;
   }
+
+  /* Initialize RHS vector by production rate contribution */
   mesh_qc_vector_from_integral_of_basis_0_cup_d_cochain(f, m, data->source);
 
-  g = (double *) malloc(sizeof(double) * data->boundary_neumann->a0);
-  if (g == NULL)
-  {
-    color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * data->boundary_neumann->a0, "g");
-    goto f_free;
-  }
+  /* Add contributions from Neumann boundary conditions to RHS vector */
   mesh_qc_vector_from_boundary_integral_of_basis_0_cup_dm1_cochain(
-    g, m, data->boundary_neumann, data->g_neumann);
-
-  double_array_add_sparse_to(f, data->boundary_neumann, g);
-  free(g);
+    f, m, data->boundary_neumann, data->g_neumann);
 
   /* $free_part = time_step * rhs_vector$ */
   free_part = f;
@@ -109,7 +102,6 @@ diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
   return result;
 
   /* cleaning if an error occurs */
-f_free:
   free(f);
 rhs_free:
   matrix_sparse_free(rhs);
