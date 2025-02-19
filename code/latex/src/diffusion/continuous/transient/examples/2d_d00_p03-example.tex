@@ -1,0 +1,32 @@
+\begin{example}
+  Consider the transient continuous heat transport problem
+  (\Cref{idec/diffusion/continuous/transient/primal_strong-formulation},
+   \Cref{idec/diffusion/continuous/transient/primal_weak-formulation},
+   \Cref{idec/diffusion/continuous/transient/mixed_weak-formulation})
+  with input data \verb|2d_d00_p03| in the nomenclature of the C codebase.
+
+  Concretely,
+    $X = [0, 1]^2$,
+    $\pi_0 \equiv 4$,
+    $\kappa_1 \equiv 1$,
+    $u_0(x, y) = 0$,
+    $f \equiv -2\, d x \wedge d y$,
+    $G_D = \{0, 1\} \times [0, 1]$,
+    $G_N = [0, 1] \times \{0, 1\}$,
+    $g_D(x, y) = 0$,
+    $g_N \equiv 0$.
+
+  This problem has the following exact solution in steady-state:
+  \begin{subequations}
+    \begin{alignat}{3}
+      & u(x, y) && = && x (x - 1), \\
+      & q(x, y) && = && 2 (x - 1)\, d y.
+    \end{alignat}
+  \end{subequations}
+  Consider a mesh $M$ for $X$ consisting of $5 \times 5$ squares (each axis is
+  divided into $5$ segments) with Forman subdivision $K$
+  ($10 \times 10$ squares).
+  Its potential and flow on $K$ consisting of the exact solution and the $2$ of
+  the discussed cochain methods (primal strong and mixed weak) are shown on
+  \Cref{figure:idec/diffusion/transient/continuous_2d_d00_p03/brick_2d_5_forman_trapezoidal_0p001_2500}.
+\end{example}
