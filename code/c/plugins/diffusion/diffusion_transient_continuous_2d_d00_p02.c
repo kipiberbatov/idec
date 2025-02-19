@@ -1,14 +1,29 @@
 #include "diffusion_transient_continuous.h"
 
 /*
-Solve the following problem:
-Given a mesh M for the unit square, and the discrete Laplacian, solve:
-  . du/dt = -Laplacian(u) + f    in the interior nodes of M
-  . u = g_d                      at the boundary nodes of M
-  . u(0) = initial               at all nodes of M
-For this example it is assumed that f and g_d are time independent.
-An artificial example with u(t, x_0, x_1) = x_0^2 + x_1^2 is taken.
-This corresponds to f(x_0, x_1) = -4.
+[Example of transient diffusion in 2D via exterior calculus]
+
+Let
+  . M = [0, 1]^2
+  . pi_0 = 1
+  . kappa_1 = 1
+  . u_0(x, y) = x^2 + y^2
+  . f = -4 dx /\ dy
+  . G_D be the boundary of M
+  . G_N = {}
+  . g_D(x, y) = x^2 + y^2
+
+The potential 0-form u and flow 1-form q are solutions to the problem
+  . q = - *_1 kappa_1 d_0 u
+  . D_t Q = d q + f
+  . D_t Q = *_0 (D_t (pi_0 u))
+  . tr_{G_D, 0} u = g_D
+  . tr_{G_N, 1} q = g_N
+  . u(0, x, y) = u_0(x, y)
+
+The steady-state version of this problem has exact solution
+  . u(x, y) = 100 (2 x - 1)
+  . q(x, y) = 200 dy
 */
 
 static double pi_0(const double * x)

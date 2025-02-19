@@ -9,8 +9,8 @@ Let
   . kappa_1 = 1
   . f = 0
   . G be the boundary of M
-  . G_D := {(x, y, z) in G | x in {0, 1}}
-  . G_N := {(x, y, z) in G | y in {0, 1} or z in {0, 1}}
+  . G_D = {(x, y, z) in G | x in {0, 1}}
+  . G_N = {(x, y, z) in G | y in {0, 1} or z in {0, 1}}
   . g_D = {(0, y, z) |-> 100, (1, y, z) |-> 0}
   . g_N = 0
 
@@ -21,8 +21,8 @@ The potential 0-form u and flow 1-form q are solutions to the problem
   . tr_{G_N, 2} q = g_N
 
 This problem has exact solution
-  . u(x, y) = 100 (1 - x)
-  . q(x, y) = -100 dy /\ dz
+  . u(x, y, z) = 100 (1 - x)
+  . q(x, y, z) = -100 dy /\ dz
 */
 
 static double kappa_1(const double * x)

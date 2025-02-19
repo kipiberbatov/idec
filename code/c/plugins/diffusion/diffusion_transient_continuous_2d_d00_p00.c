@@ -10,13 +10,11 @@ Let
   . M = [0, 1]^2
   . pi_0 = 1
   . kappa_1 = 1
-  . u_0 = {(0.5, 0.5) |-> 100, (x, y) |-> 0 for (x, y) != (0.5, 0.5)}
+  . u_0 = {(0.5, 0.5) |-> 100, (x, y) |-> 0 else}
   . f = 0
-  . G be the boundary of M
-  . G_D := G
-  . G_N := {}
+  . G_D be the boundary of M
+  . G_N = {}
   . g_D = 0
-  . g_N = 0
 
 The potential 0-form u and flow 1-form q are solutions to the problem
   . q = - *_1 kappa_1 d_0 u
@@ -24,7 +22,7 @@ The potential 0-form u and flow 1-form q are solutions to the problem
   . D_t Q = *_0 (D_t (pi_0 u))
   . tr_{G_D, 0} u = g_D
   . tr_{G_N, 1} q = g_N
-  . u(t, x, y) = u_0(x, y)
+  . u(0, x, y) = u_0(x, y)
 
 The steady-state version of this problem has exact solution
   . u(x, y) = 0

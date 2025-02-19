@@ -1,5 +1,32 @@
 #include "diffusion_transient_continuous.h"
 
+/*
+[Example of transient diffusion in 2D via exterior calculus]
+
+Let
+  . M = [0, 20] x [0, 15]
+  . pi_0 = 4
+  . kappa_1 = 6
+  . u_0(x, y) = {100 if x = 20, 0 else}
+  . f = 0
+  . G_D = {0, 20} x [0, 15]
+  . G_N = [0, 20] x {0, 15}
+  . g_D = {(0, y) |-> 0, (20, y) |-> 100}
+  . g_N = 0
+
+The potential 0-form u and flow 1-form q are solutions to the problem
+  . q = - *_1 kappa_1 d_0 u
+  . D_t Q = d q + f
+  . D_t Q = *_0 (D_t (pi_0 u))
+  . tr_{G_D, 0} u = g_D
+  . tr_{G_N, 1} q = g_N
+  . u(0, x, y) = u_0(x, y)
+
+This problem has the following exact steady-state solution
+  . u(x, y) = 5 (20 - x)
+  . q(x, y) = -30 dy
+*/
+
 static double pi_0(const double * x)
 {
   return 4.;
@@ -34,6 +61,7 @@ static double g_dirichlet(const double * x)
     return 0.;
   else if (x[0] == 20. && (0. <= x[1] && x[1] <= 15.))
     return 100.;
+  /* unreachable */
   return -100;
 }
 

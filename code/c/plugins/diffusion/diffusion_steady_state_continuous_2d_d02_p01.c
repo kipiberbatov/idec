@@ -8,8 +8,8 @@ Let
   . M = [0, 20] x [0, 15]
   . kappa_1 = 6
   . f = 0
-  . G_D := {0, 20} x [0, 15]
-  . G_N := [0, 20] x {0, 15}
+  . G_D = {0, 20} x [0, 15]
+  . G_N = [0, 20] x {0, 15}
   . g_D = {(0, y) |-> 0, (20, y) |-> 100}
   . g_N = 0
 
@@ -20,8 +20,8 @@ The potential 0-form u and flow 1-form q are solutions to the problem
   . tr_{G_N, 1} q = g_N
 
 This problem has exact solution
-. u(x, y) = 5 x
-. q(x, y) = 30 dy
+  . u(x, y) = 5 x
+  . q(x, y) = 30 dy
 */
 
 static double kappa_1(const double * x)

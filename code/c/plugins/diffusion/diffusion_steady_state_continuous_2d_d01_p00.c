@@ -3,8 +3,6 @@
 #include "de_rham.h"
 #include "diffusion_steady_state_continuous.h"
 
-#define A 5.
-
 /*
 [Example of steady-state diffusion in 2D via exterior calculus]
 
@@ -13,9 +11,8 @@ Let
   . M = "square with nodes {(-A, 0), (0, - A), (A, 0), (0, A)}"
   . kappa_1 = 6
   . f = 0
-  . G be the boundary of M
-  . G_D := "sides ((-A, 0), (0, - A)) and ((A, 0), (0, A))"
-  . G_N := "sides ((0, - A), (A, 0)) and ((0, A), (-A, 0))"
+  . G_D = "sides ((-A, 0), (0, - A)) and ((A, 0), (0, A))"
+  . G_N = "sides ((0, - A), (A, 0)) and ((0, A), (-A, 0))"
   . g_D = 100
   . g_N = 0
 
@@ -26,9 +23,11 @@ The potential 0-form u and flow 1-form q are solutions to the problem
   . tr_{G_N, 1} q = g_N
 
 This problem has exact solution
-. u(x, y) = 50 (1 - (x + y) / A)
-. q(x, y) = (300 / A) (dx - dy)
+  . u(x, y) = 50 (1 - (x + y) / A)
+  . q(x, y) = (300 / A) (dx - dy)
 */
+
+#define A 5.
 
 static double kappa_1(const double * x)
 {

@@ -1,17 +1,30 @@
 #include "diffusion_transient_continuous.h"
 
 /*
-Given a mesh M for the unit cube, and the discrete Laplacian, solve:
-  . d(pi_0 u)/dt = -d_0^* kappa_1 d_0 u + f in the interior nodes of M
-  . u = g_d                                 at the Dirichlet boundary nodes of M
-  . (L^* u). (hat (d u)) = g_n              at the Neumann boundary nodes of M
-  . u(0) = initial                          at all nodes of M
-In this example:
-  . the initial potential at the left face (x[0] = 0) is 100 degrees
-    the initial potential at the right face (x[0] = 1) is 0 degrees
-  . we maintain constant potential at those two face
-  . on the other 4 faces we maintain constant zero flow
-After a finite amount of time the potential will be distributed linearly.
+[Example of transient diffusion in 3D via exterior calculus]
+
+Let
+  . M = [0, 1]^3
+  . pi_0 = 1
+  . kappa_1 = 1
+  . u_0 = {(0, y, z) |-> 100, (x, y, z) |-> 0 if x > 0}
+  . f = 0
+  . G_D = {(x, y, z) in G | x in {0, 1}}
+  . G_N = {(x, y, z) in G | y in {0, 1} or z in {0, 1}}
+  . g_D = {(0, y, z) |-> 100, (1, y, z) |-> 0}
+  . g_N = 0
+
+The potential 0-form u and flow 1-form q are solutions to the problem
+  . q = *_1 kappa_1 d_0 u
+  . D_t Q = d q + f
+  . D_t Q = *_0 (D_t (pi_0 u))
+  . tr_{G_D, 0} u = g_D
+  . tr_{G_N, 1} q = g_N
+  . u(0, x, y, z) = u_0(x, y, z)
+
+The steady-state version of this problem has exact solution
+  . u(x, y, z) = 100 (1 - x)
+  . q(x, y, z) = -100 dy /\ dz
 */
 
 static double pi_0(const double * x)

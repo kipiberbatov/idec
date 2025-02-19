@@ -10,9 +10,8 @@ Let
   . kappa_1 = 1
   . u_0(x, y) = y (y - 1)
   . f = -4 dx /\ dy
-  . G be the boundary of M
-  . G_D := {0, 1} x [0, 1]
-  . G_N := [0, 1] x {0, 1}
+  . G_D = {0, 1} x [0, 1]
+  . G_N = [0, 1] x {0, 1}
   . g_D = y (y - 1)
   . g_N = (1 - 2 x) dx
 
@@ -22,7 +21,7 @@ The potential 0-form u and flow 1-form q are solutions to the problem
   . D_t Q = *_0 (D_t (pi_0 u))
   . tr_{G_D, 0} u = g_D
   . tr_{G_N, 1} q = g_N
-  . u(t, x, y) = u_0(x, y)
+  . u(0, x, y) = u_0(x, y)
 
 This problem has the following exact steady-state solution
   . u(x, y) = x (x - 1) + y (y - 1)

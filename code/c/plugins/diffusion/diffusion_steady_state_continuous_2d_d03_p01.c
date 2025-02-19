@@ -8,8 +8,8 @@ Let
   . kappa_1 = 1
   . f = -4 dx /\ dy
   . G be the boundary of M
-  . G_D := {(x, y) in G | x >= 0}
-  . G_N := {(x, y) in G | x <= 0}
+  . G_D = {(x, y) in G | x >= 0}
+  . G_N = {(x, y) in G | x <= 0}
   . g_D = 1
   . g_N = 2 t dt (with respect to the (x, y) = (cos(t), sin(t)) coordinates)
 
