@@ -12,6 +12,7 @@ include code/make/pdf/diffusion/transient/continuous_2d_d00_p03.mk
 include code/make/pdf/diffusion/transient/continuous_2d_d00_p04.mk
 include code/make/pdf/diffusion/transient/continuous_2d_d00_p05.mk
 include code/make/pdf/diffusion/transient/continuous_2d_d01_p00.mk
+include code/make/pdf/diffusion/transient/continuous_2d_d02_p00.mk
 
 _pdf_diffusion_transient :=\
   $(_pdf_diffusion_transient_continuous_2d_d00_p00)\
@@ -21,6 +22,7 @@ _pdf_diffusion_transient :=\
   $(_pdf_diffusion_transient_continuous_2d_d00_p04)\
   $(_pdf_diffusion_transient_continuous_2d_d00_p05)\
   $(_pdf_diffusion_transient_continuous_2d_d01_p00)\
+  $(_pdf_diffusion_transient_continuous_2d_d02_p00)\
 
 pdf_diffusion_transient: $(_pdf_diffusion_transient)
 
