@@ -23,8 +23,8 @@ The potential 0-form u and flow 1-form q are solutions to the problem
   . u(0, x, y) = u_0(x, y)
 
 This problem has the following exact steady-state solution
-  . u(x, y) = 5 (20 - x)
-  . q(x, y) = -30 dy
+  . u(x, y) = 5 x
+  . q(x, y) = 30 dy
 */
 
 static double pi_0(const double * x)
