@@ -15,11 +15,13 @@
     $G_N = \emptyset$,
     $g_D(x, y) = 0$.
 
-  This problem has the following exact solution in steady-state:
+  This problem has the following exact solution:
   \begin{subequations}
     \begin{alignat}{3}
-      & u(x, y) && = && ?, \\
-      & q(x, y) && = && ?.
+      & u(t, x, y) && = && e^{-2 \pi t^2} \sin(\pi x) \sin(\pi y) \\
+      & q(t, x, y) && =
+      && \pi e^{-2 \pi t^2}
+         (-\sin(\pi x) \cos(\pi y)\, d x + \cos(\pi x) \sin(\pi y)\, d y).
     \end{alignat}
   \end{subequations}
   Consider a mesh $M$ for $X$ consisting of $5 \times 5$ squares (each axis is
