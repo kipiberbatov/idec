@@ -131,8 +131,8 @@ build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p03/mixed_weak_cochain_b
   --mesh=$(word 2, $^)\
   --mesh-inner=$(word 3, $^)\
   --input-data=$(word 4, $^)\
-  --number-of-steps=2500\
   --time-step=0.001\
+  --number-of-steps=2500\
   > $@
 
 build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p03/mixed_weak_cochain_brick_2d_5_forman_trapezoidal_0p001_2500_potential.txt:\
