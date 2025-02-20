@@ -24,7 +24,6 @@ build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p00/primal_strong_cochai
   | build/$(MODE)/txt/diffusion/transient/continuous_2d_d00_p00\
     build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
 	$<\
-  --mesh-format=--raw\
   --mesh=$(word 2, $^)\
   --dynamic-library=$(word 2, $|)\
   --input-data=diffusion_transient_continuous_2d_d00_p00\
