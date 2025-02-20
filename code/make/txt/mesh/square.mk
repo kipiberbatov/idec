@@ -10,6 +10,10 @@ _txt_mesh_square := \
   build/$(MODE)/txt/mesh/square_8_cbd_star.txt\
   build/$(MODE)/txt/mesh/square_8_hodge_coeff.txt\
   build/$(MODE)/txt/mesh/square_8_hodge.txt\
+  build/$(MODE)/txt/mesh/square_8_node_curvature.txt\
+  build/$(MODE)/txt/mesh/square_8_metric_corrected.txt\
+  build/$(MODE)/txt/mesh/square_8_inner_corrected.txt\
+  build/$(MODE)/txt/mesh/square_8_hodge_corrected.txt\
 
 build/$(MODE)/txt/mesh/square_2.txt:\
   build/$(MODE)/bin/forman_boundary$(.EXE)\
@@ -65,6 +69,36 @@ build/$(MODE)/txt/mesh/square_8_hodge.txt:\
   build/$(MODE)/bin/mesh_qc_hodge$(.EXE)\
   build/$(MODE)/txt/mesh/square_8.txt\
   build/$(MODE)/txt/mesh/square_8_inner.txt\
+  build/$(MODE)/txt/mesh/square_8_hodge_coeff.txt\
+  | build/$(MODE)/txt/mesh
+	$^ > $@
+
+build/$(MODE)/txt/mesh/square_8_node_curvature.txt:\
+  build/$(MODE)/bin/mesh_node_curvature$(.EXE)\
+  build/$(MODE)/txt/mesh/square_8.txt\
+  | build/$(MODE)/txt/mesh
+	$< < $(word 2, $^) > $@
+
+build/$(MODE)/txt/mesh/square_8_metric_corrected.txt:\
+  build/$(MODE)/bin/mesh_qc_metric_corrected$(.EXE)\
+  build/$(MODE)/txt/mesh/square_8.txt\
+  build/$(MODE)/txt/mesh/square_8_vol.txt\
+  build/$(MODE)/txt/mesh/square_8_node_curvature.txt\
+  | build/$(MODE)/txt/mesh
+	$^ > $@
+
+build/$(MODE)/txt/mesh/square_8_inner_corrected.txt:\
+  build/$(MODE)/bin/mesh_qc_inner$(.EXE)\
+  build/$(MODE)/txt/mesh/square_8.txt\
+  build/$(MODE)/txt/mesh/square_8_vol.txt\
+  build/$(MODE)/txt/mesh/square_8_metric_corrected.txt\
+  | build/$(MODE)/txt/mesh
+	$^ > $@
+
+build/$(MODE)/txt/mesh/square_8_hodge_corrected.txt:\
+  build/$(MODE)/bin/mesh_qc_hodge$(.EXE)\
+  build/$(MODE)/txt/mesh/square_8.txt\
+  build/$(MODE)/txt/mesh/square_8_inner_corrected.txt\
   build/$(MODE)/txt/mesh/square_8_hodge_coeff.txt\
   | build/$(MODE)/txt/mesh
 	$^ > $@
