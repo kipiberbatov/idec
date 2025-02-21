@@ -14,6 +14,7 @@ include code/make/gtk/diffusion/transient/continuous_2d_d00_p05.mk
 include code/make/gtk/diffusion/transient/continuous_2d_d01_p00.mk
 include code/make/gtk/diffusion/transient/continuous_2d_d02_p00.mk
 include code/make/gtk/diffusion/transient/continuous_2d_d02_p01.mk
+include code/make/gtk/diffusion/transient/continuous_2d_d03_p00.mk
 
 _gtk_diffusion_transient :=\
   $(_gtk_diffusion_transient_continuous_2d_d00_p00)\
@@ -25,6 +26,7 @@ _gtk_diffusion_transient :=\
   $(_gtk_diffusion_transient_continuous_2d_d01_p00)\
   $(_gtk_diffusion_transient_continuous_2d_d02_p00)\
   $(_gtk_diffusion_transient_continuous_2d_d02_p01)\
+  $(_gtk_diffusion_transient_continuous_2d_d03_p00)\
 
 gtk_diffusion_transient: $(_gtk_diffusion_transient)
 

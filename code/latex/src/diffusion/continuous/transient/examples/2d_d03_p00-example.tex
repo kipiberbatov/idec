@@ -1,0 +1,33 @@
+\begin{example}
+  Consider the transient continuous heat transport problem
+  (\Cref{idec/diffusion/continuous/transient/primal_strong-formulation},
+   \Cref{idec/diffusion/continuous/transient/primal_weak-formulation},
+   \Cref{idec/diffusion/continuous/transient/mixed_weak-formulation})
+  with input data \verb|2d_d03_p00| in the nomenclature of the C codebase.
+
+  Concretely,
+    $X = \set{(x, y) \in \R^2}{x^2 + y^2 \leq 1}$,
+    $\pi_0 \equiv 4$,
+    $\kappa_1 \equiv 1$,
+    $u_0(x, y) = 2 - (x^2 + y^2)$,
+    $f \equiv -4\, d x \wedge d y$,
+    $G_D = \partial X$,
+    $G_N = \emptyset$,
+    $g_D \equiv 1$.
+
+  This problem has the following exact solution in steady-state:
+  \begin{subequations}
+    \begin{alignat}{3}
+      & u(x, y) && = && x^2 + y^2, \\
+      & q(x, y) && = && -2 y\, d x + 2 x\, d y.
+    \end{alignat}
+  \end{subequations}
+  Consider a mesh $M$ for $X$ consisting of $n_a$ rays and $n_d$ disks
+  with Forman subdivision $K$.
+  Its potential and flow on $K$ consisting of the exact solution and the $3$
+  discussed cochain methods are shown on
+  \Cref{figure:idec/diffusion/transient/continuous_2d_d03_p00/circular_4_3_forman_trapezoidal_0p05_1000}
+  for $(n_a, n_d) = (4, 3)$.
+
+  {\color{red} At the moment there are problems with the mixed method!!!}
+\end{example}
