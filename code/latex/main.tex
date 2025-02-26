@@ -4,6 +4,7 @@
 \usepackage[fleqn]{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{makecell}
 \usepackage{bookmark}
 \usepackage{hyperref}
 \hypersetup{
@@ -126,12 +127,24 @@
 \newcommand{\usmile}{\underline{\smile}}
 \newcommand{\uwedge}{\underline{\wedge}}
 
+\newcommand{\newterm}[1]{\textbf{#1}}
+
+\newcommand{\amount}{\mathsf{X}}
+\newcommand{\potential}{\mathsf{Y}}
+\newcommand{\mass}{\mathsf{M}}
+\newcommand{\length}{\mathsf{L}}
+\renewcommand{\time}{\mathsf{T}}
+\newcommand{\temperature}{\theta}
+\newcommand{\charge}{\mathsf{C}}
+
+\newcommand{\topStrut}{\rule{0pt}{2.6ex}}
+
 \setcounter{tocdepth}{4}
 \setcounter{secnumdepth}{4}
 
 \title{Intrinsic discrete exterior calculus (IDEC)}
 \author{Kiprian Berbatov}
-\date{21 February 2024}
+\date{26 February 2024}
 
 \begin{document}
 
@@ -323,6 +336,14 @@
 \input{diffusion/continuous/transient/examples/2d_d03_p00-figure.tex}
 \input{diffusion/continuous/transient/examples/2d_d03_p01-example.tex}
 \input{diffusion/continuous/transient/examples/2d_d03_p01-figure.tex}
+
+\section{Continuous electromagnetism}
+\label{section:continuous_electromagnetism}
+\phantom{T}
+\input{electromagnetism/continuous/summary-discussion.tex}
+\input{electromagnetism/continuous/quantities-table.tex}
+\input{electromagnetism/continuous/laws-table.tex}
+\input{electromagnetism/continuous/constitutive_relations-table.tex}
 
 \section{Discrete elasticity}
 \label{section:discrete_elasticity}
