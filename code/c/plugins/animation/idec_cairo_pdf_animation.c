@@ -5,6 +5,11 @@
 #include "color.h"
 #include "idec_cairo_animation_draw_to_file.h"
 
+static void set_version(cairo_surface_t * surface)
+{
+  cairo_pdf_surface_restrict_to_version(surface, CAIRO_PDF_VERSION_1_5);
+}
+
 void idec_cairo_pdf_animation(
   struct idec_animation * animation,
   int * status,
@@ -21,7 +26,7 @@ void idec_cairo_pdf_animation(
   }
 
   idec_cairo_animation_draw_to_file(
-    animation, status, filename, cairo_pdf_surface_create);
+    animation, status, filename, cairo_pdf_surface_create, set_version);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);

@@ -21,7 +21,7 @@ void idec_cairo_svg_animation(
   }
 
   idec_cairo_animation_draw_to_file(
-    animation, status, filename, cairo_svg_surface_create);
+    animation, status, filename, cairo_svg_surface_create, NULL);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);

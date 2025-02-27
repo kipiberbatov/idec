@@ -71,7 +71,8 @@ void idec_cairo_animation_draw_to_file(
   struct idec_animation * animation,
   int * status,
   const char * filename,
-  cairo_surface_t * (*_surface_create)(const char *, double, double))
+  cairo_surface_t * (*_surface_create)(const char *, double, double),
+  void (*_set_version)(cairo_surface_t * surface))
 {
   double height, width;
   cairo_surface_t * surface;
@@ -90,6 +91,9 @@ void idec_cairo_animation_draw_to_file(
       cairo_status_to_string(*status));
     return;
   }
+
+  if(_set_version != NULL)
+    _set_version(surface);
 
   idec_cairo_animation_draw_to_cairo_surface(surface, animation, status);
   if (*status)
