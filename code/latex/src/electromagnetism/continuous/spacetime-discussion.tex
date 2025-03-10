@@ -1,0 +1,30 @@
+\begin{discussion}
+  Let $M$ be a space domain manifold, $I$ be an interval.
+  In the split space and time approach quantities in electromagnetism are
+  represented via bundle-vlued functions
+  $f \in \mathcal{F}(I, \Omega^\bullet M)$.
+  We will instead formulate the laws of electromagnetism in terms of
+  $\Omega^\bullet (I \times M)$ (or more generally, a $4$-dimensional spacetime
+  that is not the Cartesian product of space and time).
+  For any $p \in \N$ we will make use of the following isomorphism:
+  \begin{equation}
+    C^\infty(I, \Omega^p M) \oplus C^\infty(I, \Omega^{p - 1} M)
+    \simeq \Omega^p(I \times M)
+  \end{equation}
+  realised by the following map:
+  \begin{equation}
+    \omega \mapsto
+    \begin{cases}
+      f \pi_M^* \eta, & \omega = f \eta \in C^\infty(I, \Omega^p M) \\
+      f \pi_M^* \eta \wedge d t,
+      & \omega = f \eta \in C^\infty(I, \Omega^{p - 1} M).
+    \end{cases}
+  \end{equation}
+  We form the following pairs and their spacetime versions on 
+  \Cref{table:electromagnetism/continuous/spacetime_quantities}.
+  Consequently, the laws are given on
+  \Cref{table:electromagnetism/continuous/spacetime_laws}.
+  Note that the spacetime formulation is manifestly covariant in the category of
+  Lorentzian $4$-manifolds (pseudo-Riemannian manifolds with $(1, 3)$ signature
+  of the metric).
+\end{discussion}
