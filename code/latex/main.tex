@@ -1,4 +1,4 @@
-\documentclass[fleqn]{article}
+\documentclass{article}
 \usepackage[margin = 0.6in, paper = a4paper]{geometry}
 \usepackage{xcolor}
 \usepackage[fleqn]{amsmath}
@@ -6,6 +6,9 @@
 \usepackage{amsthm}
 \usepackage{makecell}
 \usepackage{bookmark}
+\addtocontents{toc}{\protect{\pdfbookmark[0]{\contentsname}{toc}}}
+\addtocontents{lof}{\protect{\pdfbookmark[0]{\listfigurename}{lof}}}
+\addtocontents{lot}{\protect{\pdfbookmark[0]{\listtablename}{lot}}}
 \usepackage{hyperref}
 \hypersetup{
   pdfauthor = {Kiprian Berbatov},
@@ -18,7 +21,8 @@
   linkcolor = blue,
   citecolor = green,
   urlcolor = cyan,
-  bookmarksnumbered = true
+  bookmarksnumbered = true,
+  bookmarksopen = false
 }
 \usepackage{cleveref}
 \usepackage{graphicx}
@@ -144,7 +148,7 @@
 
 \title{Intrinsic discrete exterior calculus (IDEC)}
 \author{Kiprian Berbatov}
-\date{10 March 2024}
+\date{21 March 2024}
 
 \begin{document}
 
@@ -153,6 +157,25 @@
 \maketitle
 
 \tableofcontents
+\NewCommandCopy\oricontentsline\contentsline
+\makeatletter
+\RenewDocumentCommand\contentsline{mmmm}
+{%
+  \oricontentsline{#1}{#2}{#3}{#4}%
+  {\let\numberline\@gobble
+    \bookmark[
+      rellevel=1,
+      keeplevel,
+      dest=#4,
+    ]{#2}}%
+}
+\makeatother
+
+\listoffigures
+
+\listoftables
+
+\bookmarksetup{startatroot}
 
 \section{Exterior algebra}
 \label{section:exterior_algebra}
