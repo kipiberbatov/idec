@@ -23,13 +23,6 @@
   If $g$ is an inner product on $V$, the pair $(V, g)$ is called an
   \textbf{real inner product space}.
 \end{definition}
-\begin{notation}
-  Let $R$ be a commutative ring with unity and $V$ be a module over $R$.
-  Denote by $V^*$ the \textbf{dual space} of $V$:
-  \begin{equation}
-    V^* := \Hom(V, R).
-  \end{equation}
-\end{notation}
 \begin{proposition}
   Let $(V, g)$ be a finite-dimensional real inner product space.
   Define the map $\tilde{g} \colon V \to V^*$ as follows: for any $v \in V$,
@@ -66,7 +59,7 @@
 \end{definition}
 \begin{definition}
   Let
-    $d \in \N$
+    $d \in \N$,
     $(V, g)$ be a real inner product space of dimension $d$,
     $p \in \{0, ..., d\}$.
   Define the \textbf{inner product on $p$-vectors}
@@ -82,7 +75,9 @@
   For arbitrary $p$-vectors, expand the above definition by bilinearity.
 
   We define the \textbf{exterior algebra inner product}
-  $\Lambda g\ \colon \Lambda V \times \Lambda V \to \R$
+  \begin{equation}
+    \Lambda^\bullet g \colon \Lambda^\bullet V \times \Lambda^\bullet V \to \R
+  \end{equation}
   as follows:
   for $p, q \in \N,\ \omega_p \in \Lambda^p V,\ \eta_q \in \Lambda_q V$,
   \begin{equation}
@@ -95,7 +90,7 @@
 \end{definition}
 \begin{definition}
   Let
-    $d \in \N$
+    $d \in \N$,
     $(V, g)$ be an oriented real inner product space of dimension $d$.
   The \textbf{volume $d$-vector} on $V$ is the unique element of $\Lambda^d V$
   which has norm $1$ and is in the same oriented class as the chosen
@@ -110,7 +105,7 @@
 \end{remark}
 \begin{definition}
   Let
-    $d \in \N$
+    $d \in \N$,
     $(V, g)$ be an oriented real inner product space of dimension $d$,
     $\vol$ be the volume $d$-vector on $\Lambda^d V$,
     $p \in \N$.
@@ -185,7 +180,7 @@
     $(V, g)$ be an oriented real inner product space of dimension $d$,
     $\vol$ be the volume $d$-vector on $\Lambda^d V$,
     $p \in \N$,
-    $\star$ be the Hodge star operator on $\Lambda V$.
+    $\star$ be the Hodge star operator on $\Lambda^\bullet V$.
   Then
   \begin{equation}
     \star_{d - p} \circ \star_p = (-1)^{p (d - p)} \id_{\Lambda^p V}.
