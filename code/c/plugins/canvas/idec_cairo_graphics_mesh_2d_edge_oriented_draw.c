@@ -3,11 +3,14 @@
 
 #include "color.h"
 #include "idec_cairo.h"
+#include "idec_graphics_2d_segment.h"
 #include "idec_graphics_mesh_2d_edge.h"
 
 void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge)
 {
+  struct idec_graphics_2d_segment * segment;
+
   if (edge->color_index == 0)
     return;
   edge->set_color((void *) cr, status, edge->color_index, edge->total_colors);
@@ -17,12 +20,15 @@ void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
     fputs("painting is not possible\n", stderr);
     return;
   }
+  cairo_save(cr);
   cairo_set_line_width(cr, edge->width);
-  cairo_move_to(cr, edge->e0[0], edge->e0[1]);
-  cairo_line_to(cr, edge->e1[0], edge->e1[1]);
+  segment = (struct idec_graphics_2d_segment *) edge->data;
+  cairo_move_to(cr, segment->x0[0], segment->x0[1]);
+  cairo_line_to(cr, segment->x1[0], segment->x1[1]);
   cairo_stroke(cr);
-  cairo_arc(cr, edge->e1[0], edge->e1[1], edge->width, 0, 2 * M_PI);
+  cairo_arc(cr, segment->x1[0], segment->x1[1], edge->width, 0, 2 * M_PI);
   cairo_stroke(cr);
+  cairo_restore(cr);
   *status = cairo_status(cr);
   if (*status)
   {

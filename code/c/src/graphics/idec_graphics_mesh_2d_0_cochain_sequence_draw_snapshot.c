@@ -4,6 +4,7 @@
 #include "idec_animation.h"
 #include "idec_graphics_mesh_2d_0_cochain_sequence.h"
 #include "idec_graphics_mesh_2d_0_cochain_sequence_draw_functions.h"
+#include "idec_graphics_mesh_2d_skeleton.h"
 
 void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
   void * canvas,
@@ -11,12 +12,17 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
   const struct idec_animation * animation)
 {
   struct idec_graphics_mesh_2d_0_cochain_sequence * cochain_sequence;
+  struct idec_graphics_mesh_2d_skeleton skeleton;
 
   const struct idec_graphics_mesh_2d_0_cochain_sequence_draw_functions *
   functions;
 
   *(void **) (&cochain_sequence) = animation->data;
   *(const void **) (&functions) = animation->draw_functions;
+
+  skeleton.line_width = cochain_sequence->line_width;
+  skeleton.coordinates = cochain_sequence->coordinates;
+  skeleton.m = cochain_sequence->m;
 
   functions->set_background_color(canvas, status);
   if (*status)
@@ -26,8 +32,12 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
     return;
   }
 
-  idec_graphics_mesh_2d_0_cochain_sequence_draw_skeleton(
-    canvas, status, cochain_sequence, functions->draw_black_edge);
+  functions->draw_skeleton(
+    canvas,
+    status,
+    &skeleton,
+    functions->draw_curves,
+    functions->draw_black_edge);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);

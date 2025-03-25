@@ -16,11 +16,12 @@ void idec_graphics_mesh_2d_skeleton_draw_snapshot(
   *(void **) (&skeleton) = animation->data;
   *(const void **) (&functions) = animation->draw_functions;
 
-  idec_graphics_mesh_2d_skeleton_draw(
+  functions->draw_skeleton(
     canvas,
     status,
     skeleton,
-    functions->draw_edge);
+    functions->draw_curves,
+    functions->draw_black_edge);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);

@@ -3,14 +3,22 @@
 
 struct idec_graphics_mesh_2d_node;
 struct idec_graphics_mesh_2d_edge;
+struct idec_graphics_mesh_2d_skeleton;
 
 struct idec_graphics_mesh_2d_0_cochain_sequence_draw_functions
 {
   void (*set_background_color)(void *, int *);
-  void (*draw_black_edge)(
-    void *, int *, const struct idec_graphics_mesh_2d_edge *);
   void (*set_color)(void *, int *, int, int);
   void (*draw_node)(void *, int *, const struct idec_graphics_mesh_2d_node *);
+  void (*draw_skeleton)(
+    void *,
+    int *,
+    const struct idec_graphics_mesh_2d_skeleton *,
+    void (**)(void *, int *, const void *),
+    void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *));
+  void (**draw_curves)(void *, int *, const void *);
+  void (*draw_black_edge)(
+    void *, int *, const struct idec_graphics_mesh_2d_edge *);
 };
 
 #endif /* _idec_graphics_mesh_2d_0_cochain_sequence_draw_functions_h */
