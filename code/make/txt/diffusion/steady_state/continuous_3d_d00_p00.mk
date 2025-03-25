@@ -8,7 +8,6 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00:\
 
 _txt_diffusion_steady_state_continuous_3d_d00_p00 :=\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00/exact_brick_3d_2_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00/exact_brick_3d_2_forman_flow.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00/primal_strong_cochain_brick_3d_2_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00/primal_strong_cochain_brick_3d_2_forman_potential.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00/primal_strong_cochain_brick_3d_2_forman_flow.txt\
@@ -29,18 +28,6 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00/exact_brick_3d_2_
   --raw $(word 2, $^)\
   $(word 2, $|)\
   diffusion_steady_state_continuous_3d_d00_p00_potential\
-  --raw > $@
-
-build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00/exact_brick_3d_2_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow$(.EXE)\
-  build/$(MODE)/txt/mesh/brick_3d_2_forman.txt\
-  build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_3d_d00_p00$(.OBJ)\
-  | build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00\
-    build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
-	$<\
-  --raw $(word 2, $^)\
-  $(word 2, $|)\
-  diffusion_steady_state_continuous_3d_d00_p00_flow\
   --raw > $@
 
 build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p00/primal_strong_cochain_brick_3d_2_forman_input.txt:\
