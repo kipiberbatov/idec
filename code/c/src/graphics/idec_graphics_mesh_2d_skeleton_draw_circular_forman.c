@@ -3,9 +3,9 @@
 
 #include "color.h"
 #include "idec_graphics_2d_arc.h"
-#include "idec_graphics_2d_segment.h"
 #include "idec_graphics_mesh_2d_edge.h"
 #include "idec_graphics_mesh_2d_skeleton.h"
+#include "line_2d.h"
 #include "mesh.h"
 
 void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
@@ -22,7 +22,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
   jagged2 cf_1_0;
   mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
-  struct idec_graphics_2d_segment segment;
+  struct line_2d segment;
   struct idec_graphics_2d_arc arc;
 
   void (*draw_segment)(void *, int *, const void *) = draw_curves[0];

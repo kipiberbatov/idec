@@ -3,10 +3,10 @@
 
 #include <cairo.h>
 
-struct idec_graphics_2d_segment;
 struct idec_graphics_2d_arc;
 struct idec_graphics_mesh_2d_edge;
 struct idec_graphics_mesh_2d_node;
+struct line_2d;
 
 void idec_cairo_paint_white(cairo_t * cr, int * status);
 
@@ -21,7 +21,7 @@ void idec_cairo_paint_from_scheme(
   void (*set_color)(void *, int *, int, int));
 
 void idec_cairo_graphics_2d_segment_draw(
-  cairo_t * cr, int * status, const struct idec_graphics_2d_segment * segment);
+  cairo_t * cr, int * status, const struct line_2d * segment);
 
 void idec_cairo_graphics_2d_arc_draw(
   cairo_t * cr, int * status, const struct idec_graphics_2d_arc * arc);

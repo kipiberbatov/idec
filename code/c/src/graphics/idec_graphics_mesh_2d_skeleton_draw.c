@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 #include "color.h"
-#include "idec_graphics_2d_segment.h"
 #include "idec_graphics_mesh_2d_edge.h"
 #include "idec_graphics_mesh_2d_skeleton.h"
+#include "line_2d.h"
 #include "mesh.h"
 
 /* all edges are flat, embedded in 2D */
@@ -20,7 +20,7 @@ void idec_graphics_mesh_2d_skeleton_draw(
   jagged2 cf_1_0;
   mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
-  struct idec_graphics_2d_segment segment;
+  struct line_2d segment;
 
   coordinates = skeleton->coordinates;
   edge.width = skeleton->line_width;

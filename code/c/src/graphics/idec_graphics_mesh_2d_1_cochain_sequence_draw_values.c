@@ -3,13 +3,13 @@
 
 #include "color.h"
 #include "idec_animation_generic_data.h"
-#include "idec_graphics_2d_segment.h"
 #include "idec_graphics_mesh_2d_1_cochain_sequence.h"
 #include "idec_graphics_mesh_2d_edge.h"
+#include "line_2d.h"
 #include "mesh.h"
 
 static void perpendicular_edge_set_coordinates(
-  struct idec_graphics_2d_segment * segment,
+  struct line_2d * segment,
   const struct idec_graphics_mesh_2d_edge * edge,
   const double * e0, const double * e1, double signed_value_ij)
 {
@@ -55,7 +55,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   double * boundary_1, * coordinates, * e0_j, * e1_j, * values_i;
   struct jagged2 cf_1_0;
   struct idec_graphics_mesh_2d_edge edge;
-  struct idec_graphics_2d_segment segment;
+  struct line_2d segment;
 
   boundary_1 = cochain_sequence->boundary_1;
   coordinates = cochain_sequence->coordinates;

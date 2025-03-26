@@ -3,13 +3,13 @@
 
 #include "color.h"
 #include "idec_cairo.h"
-#include "idec_graphics_2d_segment.h"
 #include "idec_graphics_mesh_2d_edge.h"
+#include "line_2d.h"
 
 void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge)
 {
-  struct idec_graphics_2d_segment * segment;
+  struct line_2d * segment;
 
   if (edge->color_index == 0)
     return;
@@ -22,7 +22,7 @@ void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
   }
   cairo_save(cr);
   cairo_set_line_width(cr, edge->width);
-  segment = (struct idec_graphics_2d_segment *) edge->data;
+  segment = (struct line_2d *) edge->data;
   cairo_move_to(cr, segment->x0[0], segment->x0[1]);
   cairo_line_to(cr, segment->x1[0], segment->x1[1]);
   cairo_stroke(cr);
