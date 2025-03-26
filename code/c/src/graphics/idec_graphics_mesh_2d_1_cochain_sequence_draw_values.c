@@ -47,7 +47,8 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   int total_colors,
   void (*set_color)(void *, int *, int, int),
   void (**draw_curves)(void *, int *, const void *),
-  void (*draw_edge)(void *, int *, const struct idec_graphics_mesh_2d_edge *))
+  void (*draw_oriented_edge)(
+    void *, int *, const struct idec_graphics_mesh_2d_edge *))
 {
   int i, j, number_of_edges;
   int * cf_1_0_a1, * cf_1_0_j;
@@ -94,7 +95,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
     perpendicular_edge_set_coordinates(&segment,
       &edge, e0_j, e1_j, signed_value_ij);
     edge.data = (void *) &segment;
-    draw_edge(canvas, status, &edge);
+    draw_oriented_edge(canvas, status, &edge);
     if (*status)
     {
       color_error_position(__FILE__, __LINE__);
