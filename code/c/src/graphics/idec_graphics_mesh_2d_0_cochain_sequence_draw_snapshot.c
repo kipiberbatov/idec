@@ -46,7 +46,7 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
     return;
   }
 
-  idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
+  functions->draw_values(
     canvas, status, cochain_sequence, animation->generic_data->new_index,
     animation->total_colors, functions->set_color, functions->draw_node);
   if (*status)
