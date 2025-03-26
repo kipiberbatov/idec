@@ -7,7 +7,7 @@
 void idec_cairo_set_color_from_scheme_rainbow(
   cairo_t * cr, int * status, int color_index, int total_colors)
 {
-  idec_rgb color;
+  struct idec_rgb color;
 
   idec_rgb_set_from_scheme_rainbow(&color, status, color_index, total_colors);
   if (*status)

@@ -16,8 +16,9 @@ int main(int argc, char ** argv)
   const int close_automatically_default = 0, timelapse_default = 100,
             total_colors_default = 100;
   const double height_default = 500,  width_default = 500;
-  struct idec_animation_generic_data fill;
+  struct idec_animation_generic_data generic_data;
   struct idec_animation animation;
+  struct idec_graphics_filled_window filled_window;
 
   idec_command_line option_animation_backend, option_animation_library,
                     option_canvas_backend, option_canvas_library,
@@ -61,7 +62,7 @@ int main(int argc, char ** argv)
     &option_title, &(animation.title), "--title", "Changing colors");
 
   idec_command_line_set_option_int(
-    &option_total_colors, &(fill.total_steps), "--total-colors",
+    &option_total_colors, &(generic_data.total_steps), "--total-colors",
     &total_colors_default);
 
   idec_command_line_set_option_int(
@@ -69,10 +70,10 @@ int main(int argc, char ** argv)
     "--timelapse", &timelapse_default);
 
   idec_command_line_set_option_double(
-    &option_width, &(fill.width), "--width", &width_default);
+    &option_width, &(generic_data.width), "--width", &width_default);
 
   idec_command_line_set_option_double(
-    &option_height, &(fill.height), "--height", &height_default);
+    &option_height, &(generic_data.height), "--height", &height_default);
 
   idec_command_line_set_option_int(
     &option_close_automatically, &(animation.close_automatically),
@@ -91,10 +92,10 @@ int main(int argc, char ** argv)
     goto end;
   }
 
-  fill.new_index = 0;
-  animation.data = NULL;
-  animation.generic_data = (void *) &fill;
-  animation.total_colors = fill.total_steps;
+  generic_data.new_index = 0;
+  animation.data = (void *) &filled_window;
+  animation.generic_data = (void *) &generic_data;
+  animation.total_colors = generic_data.total_steps;
   animation.update_new_index = update_index;
   animation.draw_snapshot = idec_graphics_filled_window_draw_snapshot;
 

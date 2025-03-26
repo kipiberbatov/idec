@@ -5,6 +5,11 @@
 
 struct idec_animation;
 
+struct idec_graphics_filled_window
+{
+  void * color;
+};
+
 void idec_graphics_filled_window_draw_snapshot(
   void * canvas,
   int * status,

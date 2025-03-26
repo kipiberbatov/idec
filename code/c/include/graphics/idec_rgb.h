@@ -8,7 +8,9 @@ typedef struct idec_rgb
   double blue;
 } idec_rgb;
 
-void
-idec_rgb_set_from_scheme_rainbow(idec_rgb * color, int * status, int i, int n);
+void idec_rgb_set_from_scheme_rainbow(
+  struct idec_rgb * color, int * status, int i, int n);
+
+void idec_rgb_allocate_color(struct idec_rgb ** color, int * status);
 
 #endif /* _idec_rgb_h */
