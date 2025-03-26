@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include "color.h"
-#include "idec_animation_generic_data.h"
 #include "idec_graphics_mesh_2d_0_cochain_sequence.h"
 #include "idec_graphics_mesh_2d_node.h"
 
@@ -9,12 +8,12 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_0_cochain_sequence * cochain_sequence,
-  const struct idec_animation_generic_data * generic_data,
+  int i,
   int total_colors,
   void (*set_color)(void *, int *, int, int),
   void (*draw_node)(void *, int *, const struct idec_graphics_mesh_2d_node *))
 {
-  int i, j, number_of_nodes;
+  int j, number_of_nodes;
   double color_coefficient, max, min, denominator;
   double * coordinates, * point_sizes, * values_i;
   struct idec_graphics_mesh_2d_node node;
@@ -28,7 +27,6 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
   point_sizes = cochain_sequence->point_sizes;
   coordinates = cochain_sequence->coordinates;
 
-  i = generic_data->new_index;
   values_i = cochain_sequence->values + number_of_nodes * i;
   if (denominator == 0.)
   {

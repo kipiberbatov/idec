@@ -2,7 +2,6 @@
 #include <stdio.h>
 
 #include "color.h"
-#include "idec_animation_generic_data.h"
 #include "idec_graphics_mesh_2d_1_cochain_sequence.h"
 #include "idec_graphics_mesh_2d_edge.h"
 #include "line_2d.h"
@@ -43,14 +42,14 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_1_cochain_sequence * cochain_sequence,
-  const struct idec_animation_generic_data * generic_data,
+  int i,
   int total_colors,
   void (*set_color)(void *, int *, int, int),
   void (**draw_curves)(void *, int *, const void *),
   void (*draw_oriented_edge)(
     void *, int *, const struct idec_graphics_mesh_2d_edge *))
 {
-  int i, j, number_of_edges;
+  int j, number_of_edges;
   int * cf_1_0_a1, * cf_1_0_j;
   double color_coefficient, denominator, min, max, signed_value_ij;
   double * boundary_1, * coordinates, * e0_j, * e1_j, * values_i;
@@ -80,7 +79,6 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   cf_1_0_a1 = cf_1_0.a1;
   cf_1_0_j = cf_1_0.a2;
 
-  i = generic_data->new_index;
   values_i = cochain_sequence->values + number_of_edges * i;
 
   for (j = 0; j < number_of_edges; ++j)

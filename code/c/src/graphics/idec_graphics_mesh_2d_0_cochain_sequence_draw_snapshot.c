@@ -2,6 +2,7 @@
 
 #include "color.h"
 #include "idec_animation.h"
+#include "idec_animation_generic_data.h"
 #include "idec_graphics_mesh_2d_0_cochain_sequence.h"
 #include "idec_graphics_mesh_2d_0_cochain_sequence_draw_functions.h"
 #include "idec_graphics_mesh_2d_skeleton.h"
@@ -46,7 +47,7 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
   }
 
   idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
-    canvas, status, cochain_sequence, animation->generic_data,
+    canvas, status, cochain_sequence, animation->generic_data->new_index,
     animation->total_colors, functions->set_color, functions->draw_node);
   if (*status)
   {
