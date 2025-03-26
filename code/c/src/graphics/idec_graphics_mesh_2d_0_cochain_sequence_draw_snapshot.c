@@ -14,9 +14,8 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
 {
   struct idec_graphics_mesh_2d_0_cochain_sequence * cochain_sequence;
   struct idec_graphics_mesh_2d_skeleton skeleton;
-
   const struct idec_graphics_mesh_2d_0_cochain_sequence_draw_functions *
-  functions;
+    functions;
 
   *(void **) (&cochain_sequence) = animation->data;
   *(const void **) (&functions) = animation->draw_functions;
@@ -47,8 +46,12 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_snapshot(
   }
 
   functions->draw_values(
-    canvas, status, cochain_sequence, animation->generic_data->new_index,
-    animation->total_colors, functions->set_color, functions->draw_node);
+    canvas,
+    status,
+    cochain_sequence,
+    animation->generic_data->new_index,
+    animation->total_colors,
+    functions);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);

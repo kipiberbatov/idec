@@ -17,6 +17,9 @@ idec_cairo_paint_rgb(cairo_t * cr, int * status, const struct idec_rgb * color);
 void idec_cairo_set_color_from_scheme_rainbow(
   cairo_t * cr, int * status, int color_index, int total_colors);
 
+void idec_cairo_set_source_rgb(
+  cairo_t * cr, int * status, const struct idec_rgb * color);
+
 void idec_cairo_paint_from_scheme(
   cairo_t * cr,
   int * status,
@@ -31,7 +34,10 @@ void idec_cairo_graphics_2d_arc_draw(
   cairo_t * cr, int * status, const struct arc_2d * arc);
 
 void idec_cairo_graphics_mesh_2d_node_draw(
-  cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_node * node);
+  cairo_t * cr,
+  int * status,
+  const struct idec_graphics_mesh_2d_node * node,
+  void (*set_source)(void *, int *, const void *));
 
 void idec_cairo_graphics_mesh_2d_edge_black_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge);

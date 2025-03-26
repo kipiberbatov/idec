@@ -3,11 +3,9 @@
 
 struct idec_graphics_mesh_2d_node
 {
-  int total_colors;
-  int color_index;
   double * coordinates;
   double size;
-  void (*set_color)(void *, int *, int, int);
+  void * color;
 };
 
 #endif /* _idec_graphics_mesh_2d_node_h */

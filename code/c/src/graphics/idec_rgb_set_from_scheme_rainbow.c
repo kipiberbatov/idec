@@ -79,3 +79,23 @@ idec_rgb_set_from_scheme_rainbow(idec_rgb * color, int * status, int i, int n)
   k = i / k_n;
   color_subschemes[k](color, k_i, k_n);
 }
+
+void idec_rgb_set_from_scheme_rainbow_no_checks(
+  struct idec_rgb * color, int i, int n)
+{
+  int k_n, k_i, k, size;
+  void (*(color_subschemes[]))(idec_rgb *, int, int) =
+  {
+    red_to_yellow,
+    yellow_to_green,
+    green_to_cyan,
+    cyan_to_blue,
+    blue_to_magenta
+  };
+
+  size = sizeof(color_subschemes) / sizeof(*color_subschemes);
+  k_n = n / size;
+  k_i = i % k_n;
+  k = i / k_n;
+  color_subschemes[k](color, k_i, k_n);
+}

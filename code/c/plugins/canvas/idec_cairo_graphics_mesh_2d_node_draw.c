@@ -8,16 +8,17 @@
 void idec_cairo_graphics_mesh_2d_node_draw(
   cairo_t * cr,
   int * status,
-  const struct idec_graphics_mesh_2d_node * node)
+  const struct idec_graphics_mesh_2d_node * node,
+  void (*set_source)(void *, int *, const void *))
 {
   double * coordinates = node->coordinates;
 
   cairo_save(cr);
-  node->set_color((void *) cr, status, node->color_index, node->total_colors);
+  set_source((void *) cr, status, node->color);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot set color\n", stderr);
+    fputs("cannot set Cairo source\n", stderr);
     return;
   }
   cairo_arc(cr, coordinates[0], coordinates[1], node->size, 0, 2 * M_PI);
