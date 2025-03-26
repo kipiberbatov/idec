@@ -3,7 +3,7 @@
 
 #include <cairo.h>
 
-struct idec_graphics_2d_arc;
+struct arc_2d;
 struct idec_graphics_mesh_2d_edge;
 struct idec_graphics_mesh_2d_node;
 struct line_2d;
@@ -24,7 +24,7 @@ void idec_cairo_graphics_2d_segment_draw(
   cairo_t * cr, int * status, const struct line_2d * segment);
 
 void idec_cairo_graphics_2d_arc_draw(
-  cairo_t * cr, int * status, const struct idec_graphics_2d_arc * arc);
+  cairo_t * cr, int * status, const struct arc_2d * arc);
 
 void idec_cairo_graphics_mesh_2d_node_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_node * node);

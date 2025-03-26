@@ -1,8 +1,8 @@
 #include <math.h>
 #include <stdio.h>
 
+#include "arc_2d.h"
 #include "color.h"
-#include "idec_graphics_2d_arc.h"
 #include "idec_graphics_mesh_2d_edge.h"
 #include "idec_graphics_mesh_2d_skeleton.h"
 #include "line_2d.h"
@@ -23,7 +23,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
   mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
   struct line_2d segment;
-  struct idec_graphics_2d_arc arc;
+  struct arc_2d arc;
 
   void (*draw_segment)(void *, int *, const void *) = draw_curves[0];
   void (*draw_arc)(void *, int *, const void *) = draw_curves[1];
