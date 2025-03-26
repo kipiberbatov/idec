@@ -58,24 +58,22 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   struct idec_graphics_mesh_2d_edge edge;
   struct line_2d segment;
 
-  boundary_1 = cochain_sequence->boundary_1;
-  coordinates = cochain_sequence->coordinates;
   min = cochain_sequence->min_value;
   max = cochain_sequence->max_value;
   denominator = max - min;
+  if (denominator == 0.)
+    return;
+  color_coefficient = (double) (total_colors - 1) / denominator;
+
+  boundary_1 = cochain_sequence->boundary_1;
+  coordinates = cochain_sequence->coordinates;
 
   edge.width = cochain_sequence->line_width;
-  /* temporary hack to show flows on bad meshes */
   if (edge.width < 2.5)
     edge.width = 2.5;
   edge.total_colors = total_colors;
   edge.set_color = set_color;
   edge.draw_curve = draw_curves[0];
-
-  if (denominator == 0.)
-    edge.color_index = 0;
-  else
-    color_coefficient = (double) (total_colors - 1) / denominator;
 
   mesh_cf_part2(&cf_1_0, cochain_sequence->m, 1, 0);
   number_of_edges = cf_1_0.a0;
@@ -87,20 +85,22 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
 
   for (j = 0; j < number_of_edges; ++j)
   {
-    if (denominator != 0.)
-      edge.color_index = (int) ((fabs(values_i[j]) - min) * color_coefficient);
-    signed_value_ij = boundary_1[2 * j] * values_i[j];
-    e0_j = coordinates + 2 * cf_1_0_j[0];
-    e1_j = coordinates + 2 * cf_1_0_j[1];
-    perpendicular_edge_set_coordinates(&segment,
-      &edge, e0_j, e1_j, signed_value_ij);
-    edge.data = (void *) &segment;
-    draw_oriented_edge(canvas, status, &edge);
-    if (*status)
+    edge.color_index = (int) ((fabs(values_i[j]) - min) * color_coefficient);
+    if (edge.color_index)
     {
-      color_error_position(__FILE__, __LINE__);
-      fputs("cannot paint an edge\n", stderr);
-      return;
+      signed_value_ij = boundary_1[2 * j] * values_i[j];
+      e0_j = coordinates + 2 * cf_1_0_j[0];
+      e1_j = coordinates + 2 * cf_1_0_j[1];
+      perpendicular_edge_set_coordinates(&segment,
+        &edge, e0_j, e1_j, signed_value_ij);
+      edge.data = (void *) &segment;
+      draw_oriented_edge(canvas, status, &edge);
+      if (*status)
+      {
+        color_error_position(__FILE__, __LINE__);
+        fputs("cannot paint an edge\n", stderr);
+        return;
+      }
     }
     cf_1_0_j += cf_1_0_a1[j];
   }
