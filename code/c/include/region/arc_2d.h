@@ -11,4 +11,10 @@ struct arc_2d
   double beta;
 };
 
+struct line_2d;
+
+void arc_2d_set_flow_rate_direction(
+  struct line_2d * flow_rate_direction,
+  const struct arc_2d * arc, double sign, double size);
+
 #endif /* _arc_2d_h */

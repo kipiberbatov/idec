@@ -18,7 +18,7 @@ idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence_circular_forman =
   (void (*)(void **, int *)) idec_rgb_allocate_color,
   free,
   (void (*)(void *, int *)) idec_cairo_paint_white,
-  idec_graphics_mesh_2d_1_cochain_sequence_draw_values,
+  idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman,
   idec_rgb_check_color_scheme_rainbow,
   (void (*)(void *, int , int)) idec_rgb_set_from_scheme_rainbow_no_checks,
   (void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *,
