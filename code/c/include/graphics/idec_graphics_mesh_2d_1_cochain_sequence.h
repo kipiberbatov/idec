@@ -15,18 +15,18 @@ struct idec_graphics_mesh_2d_1_cochain_sequence
   double max_value;
 };
 
-struct idec_graphics_mesh_2d_edge;
-struct idec_animation;
+struct idec_graphics_mesh_2d_1_cochain_sequence_draw_functions;
 
 void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_1_cochain_sequence * cochain_sequence,
+  const struct idec_graphics_mesh_2d_1_cochain_sequence_draw_functions *
+    functions,
   int i,
-  int total_colors,
-  void (*set_color)(void *, int *, int, int),
-  void (**draw_curves)(void *, int *, const void *),
-  void (*draw_edge)(void *, int *, const struct idec_graphics_mesh_2d_edge *));
+  int total_colors);
+
+struct idec_animation;
 
 void idec_graphics_mesh_2d_1_cochain_sequence_draw_snapshot(
   void * canvas,

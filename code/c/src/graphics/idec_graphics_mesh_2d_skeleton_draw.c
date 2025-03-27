@@ -20,7 +20,7 @@ void idec_graphics_mesh_2d_skeleton_draw(
   jagged2 cf_1_0;
   mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
-  struct line_2d segment;
+  struct line_2d line;
 
   coordinates = skeleton->coordinates;
   edge.width = skeleton->line_width;
@@ -34,11 +34,11 @@ void idec_graphics_mesh_2d_skeleton_draw(
   {
     x0 = coordinates + 2 * cf_1_0_i[0];
     x1 = coordinates + 2 * cf_1_0_i[1];
-    segment.x0[0] = x0[0];
-    segment.x0[1] = x0[1];
-    segment.x1[0] = x1[0];
-    segment.x1[1] = x1[1];
-    edge.data = (void *) &segment;
+    line.x0[0] = x0[0];
+    line.x0[1] = x0[1];
+    line.x1[0] = x1[0];
+    line.x1[1] = x1[1];
+    edge.data = (void *) &line;
     draw_edge(canvas, status, &edge);
     if (*status)
     {

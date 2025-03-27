@@ -4,7 +4,7 @@
 
 static void (*draw_curves[2])(void *, int *, const void *) = 
 {
-  (void (*)(void *, int *, const void *)) idec_cairo_graphics_2d_segment_draw,
+  (void (*)(void *, int *, const void *)) idec_cairo_graphics_2d_line_draw,
   (void (*)(void *, int *, const void *)) idec_cairo_graphics_2d_arc_draw
 };
 

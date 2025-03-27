@@ -40,7 +40,7 @@ void forman_coordinates_circular(double * m_forman_coordinates, const mesh * m)
   theta = M_PI * 2 / na;
   for (i = 0; i < nd; ++i)
   {
-    /* segments */
+    /* rays */
     u = r0 * (double) (2 * i + 1) / 2.;
     for (j = 0; j < na; ++j)
     {

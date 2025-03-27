@@ -14,21 +14,11 @@ void idec_cairo_paint_white(cairo_t * cr, int * status);
 void
 idec_cairo_paint_rgb(cairo_t * cr, int * status, const struct idec_rgb * color);
 
-void idec_cairo_set_color_from_scheme_rainbow(
-  cairo_t * cr, int * status, int color_index, int total_colors);
-
 void idec_cairo_set_source_rgb(
   cairo_t * cr, int * status, const struct idec_rgb * color);
 
-void idec_cairo_paint_from_scheme(
-  cairo_t * cr,
-  int * status,
-  int color_index,
-  int total_colors,
-  void (*set_color)(void *, int *, int, int));
-
-void idec_cairo_graphics_2d_segment_draw(
-  cairo_t * cr, int * status, const struct line_2d * segment);
+void idec_cairo_graphics_2d_line_draw(
+  cairo_t * cr, int * status, const struct line_2d * line);
 
 void idec_cairo_graphics_2d_arc_draw(
   cairo_t * cr, int * status, const struct arc_2d * arc);

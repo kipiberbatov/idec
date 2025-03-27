@@ -3,11 +3,9 @@
 
 struct idec_graphics_mesh_2d_edge
 {
-  int total_colors;
-  int color_index;
-  double width;
   void * data;
-  void (*set_color)(void *, int *, int, int);
+  double width;
+  void * color;
   void (*draw_curve)(void *, int *, const void *);
 };
 

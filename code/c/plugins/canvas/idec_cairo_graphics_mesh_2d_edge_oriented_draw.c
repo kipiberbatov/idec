@@ -9,23 +9,14 @@
 void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge)
 {
-  struct line_2d * segment;
-
-  segment = (struct line_2d *) edge->data;
+  struct line_2d * line = (struct line_2d *) edge->data;
 
   cairo_save(cr);
-  edge->set_color((void *) cr, status, edge->color_index, edge->total_colors);
-  if (*status)
-  {
-    color_error_position(__FILE__, __LINE__);
-    fputs("painting is not possible\n", stderr);
-    return;
-  }
   cairo_set_line_width(cr, edge->width);
-  cairo_move_to(cr, segment->x0[0], segment->x0[1]);
-  cairo_line_to(cr, segment->x1[0], segment->x1[1]);
+  cairo_move_to(cr, line->x0[0], line->x0[1]);
+  cairo_line_to(cr, line->x1[0], line->x1[1]);
   cairo_stroke(cr);
-  cairo_arc(cr, segment->x1[0], segment->x1[1], edge->width, 0, 2 * M_PI);
+  cairo_arc(cr, line->x1[0], line->x1[1], edge->width, 0, 2 * M_PI);
   cairo_stroke(cr);
   cairo_restore(cr);
   *status = cairo_status(cr);

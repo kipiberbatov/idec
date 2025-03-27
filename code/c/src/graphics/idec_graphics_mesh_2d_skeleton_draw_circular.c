@@ -22,10 +22,10 @@ void idec_graphics_mesh_2d_skeleton_draw_circular(
   jagged2 cf_1_0;
   mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
-  struct line_2d segment;
+  struct line_2d line;
   struct arc_2d arc;
 
-  void (*draw_segment)(void *, int *, const void *) = draw_curves[0];
+  void (*draw_line)(void *, int *, const void *) = draw_curves[0];
   void (*draw_arc)(void *, int *, const void *) = draw_curves[1];
 
   coordinates = skeleton->coordinates;
@@ -58,22 +58,22 @@ void idec_graphics_mesh_2d_skeleton_draw_circular(
   index = 0;
   for (i = 0; i < nd; ++i)
   {
-    /* segments */
-    edge.data = (void *) &segment;
-    edge.draw_curve = draw_segment;
+    /* rays */
+    edge.data = (void *) &line;
+    edge.draw_curve = draw_line;
     for (j = 0; j < na; ++j)
     {
       x0 = coordinates + 2 * cf_1_0_index[0];
       x1 = coordinates + 2 * cf_1_0_index[1];
-      segment.x0[0] = x0[0];
-      segment.x0[1] = x0[1];
-      segment.x1[0] = x1[0];
-      segment.x1[1] = x1[1];
+      line.x0[0] = x0[0];
+      line.x0[1] = x0[1];
+      line.x1[0] = x1[0];
+      line.x1[1] = x1[1];
       draw_edge(canvas, status, &edge);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);
-        fprintf(stderr, "cannot draw edge as a segment for index %d\n", index);
+        fprintf(stderr, "cannot draw edge as a line for index %d\n", index);
         return;
       }
       ++index;
