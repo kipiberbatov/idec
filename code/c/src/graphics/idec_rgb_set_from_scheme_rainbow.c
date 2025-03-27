@@ -3,46 +3,46 @@
 #include "color.h"
 #include "idec_rgb.h"
 
-static void red_to_yellow(idec_rgb * color, int i, int n)
+static void red_to_yellow(struct idec_rgb * color, int i, int n)
 {
   color->red = 1.;
   color->green = (double) i / (double) n;
   color->blue = 0.;
 }
 
-static void yellow_to_green(idec_rgb * color, int i, int n)
+static void yellow_to_green(struct idec_rgb * color, int i, int n)
 {
   color->red = 1. - (double) i / (double) n;
   color->green = 1.;
   color->blue = 0.;
 }
 
-static void green_to_cyan(idec_rgb * color, int i, int n)
+static void green_to_cyan(struct idec_rgb * color, int i, int n)
 {
   color->red = 0.;
   color->green = 1.;
   color->blue = (double) i / (double) n;
 }
 
-static void cyan_to_blue(idec_rgb * color, int i, int n)
+static void cyan_to_blue(struct idec_rgb * color, int i, int n)
 {
   color->red = 0.;
   color->green = 1. - (double) i / (double) n;
   color->blue = 1.;
 }
 
-static void blue_to_magenta(idec_rgb * color, int i, int n)
+static void blue_to_magenta(struct idec_rgb * color, int i, int n)
 {
   color->red = (double) i / (double) n;
   color->green = 0.;
   color->blue = 1.;
 }
 
-void
-idec_rgb_set_from_scheme_rainbow(idec_rgb * color, int * status, int i, int n)
+void idec_rgb_set_from_scheme_rainbow(
+  struct idec_rgb * color, int * status, int i, int n)
 {
   int k_n, k_i, k, size;
-  void (*(color_subschemes[]))(idec_rgb *, int, int) =
+  void (*(color_subschemes[]))(struct idec_rgb *, int, int) =
   {
     red_to_yellow,
     yellow_to_green,
@@ -84,7 +84,7 @@ void idec_rgb_set_from_scheme_rainbow_no_checks(
   struct idec_rgb * color, int i, int n)
 {
   int k_n, k_i, k, size;
-  void (*(color_subschemes[]))(idec_rgb *, int, int) =
+  void (*(color_subschemes[]))(struct idec_rgb *, int, int) =
   {
     red_to_yellow,
     yellow_to_green,

@@ -7,7 +7,7 @@
 
 void idec_rgb_allocate_color(struct idec_rgb ** color, int * status)
 {
-  *color = (idec_rgb *) malloc(sizeof(struct idec_rgb));
+  *color = (struct idec_rgb *) malloc(sizeof(struct idec_rgb));
   if (*color == NULL)
   {
     color_error_position(__FILE__, __LINE__);
