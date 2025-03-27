@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "color.h"
 #include "idec_graphics_mesh_2d_1_cochain_sequence.h"
@@ -8,53 +9,22 @@
 #include "line_2d.h"
 #include "mesh.h"
 
-static void perpendicular_edge_set_coordinates(
-  struct line_2d * line,
-  const struct idec_graphics_mesh_2d_edge * edge,
-  const double * e0, const double * e1, double signed_value_ij)
-{
-  double v0, v1, v_norm, z0, z1;
-
-  v0 = e1[1] - e0[1];
-  v1 = e0[0] - e1[0];
-  v_norm = sqrt(v0 * v0 + v1 * v1);
-  v0 = (v0 / v_norm) * edge->width * 4;
-  v1 = (v1 / v_norm) * edge->width * 4;
-  z0 = (e0[0] + e1[0]) / 2;
-  z1 = (e0[1] + e1[1]) / 2;
-
-  if (signed_value_ij < 0)
-  {
-    line->x0[0] = z0 - v0;
-    line->x0[1] = z1 - v1;
-    line->x1[0] = z0 + v0;
-    line->x1[1] = z1 + v1;
-  }
-  else
-  {
-    line->x0[0] = z0 + v0;
-    line->x0[1] = z1 + v1;
-    line->x1[0] = z0 - v0;
-    line->x1[1] = z1 - v1;
-  }
-}
-
 void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_1_cochain_sequence * cochain_sequence,
-  const struct idec_graphics_mesh_2d_1_cochain_sequence_draw_functions
-    * functions,
+  const struct idec_graphics_mesh_2d_1_cochain_sequence_draw_functions *
+    functions,
   int i,
   int total_colors)
 {
   int color_index, j, number_of_edges;
   int * cf_1_0_a1, * cf_1_0_j;
-  double color_coefficient, denominator, min, max, signed_value_ij;
-  double * boundary_1, * coordinates, * e0_j, * e1_j, * values_i;
+  double color_coefficient, denominator, min, max, sign, size;
+  double * boundary_1, * coordinates, * values_i;
   struct jagged2 cf_1_0;
   struct idec_graphics_mesh_2d_edge edge;
-  struct line_2d line;
+  struct line_2d flow_rate_direction, line;
   void (*set_color)(void *, int, int) = functions->set_color;
   void (*get_color)(void *, const void *) = functions->get_color;
   void (*draw_oriented_edge)(void *, int *,
@@ -98,6 +68,8 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
     return;
   }
 
+  size = edge.width * 8;
+  edge.data = (void *) &flow_rate_direction;
   values_i = cochain_sequence->values + number_of_edges * i;
   for (j = 0; j < number_of_edges; ++j)
   {
@@ -105,12 +77,10 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
     if (color_index)
     {
       set_color(edge.color, color_index, total_colors);
-      signed_value_ij = boundary_1[2 * j] * values_i[j];
-      e0_j = coordinates + 2 * cf_1_0_j[0];
-      e1_j = coordinates + 2 * cf_1_0_j[1];
-      perpendicular_edge_set_coordinates(&line,
-        &edge, e0_j, e1_j, signed_value_ij);
-      edge.data = (void *) &line;
+      memcpy(line.x0, coordinates + 2 * cf_1_0_j[0], sizeof(double) * 2);
+      memcpy(line.x1, coordinates + 2 * cf_1_0_j[1], sizeof(double) * 2);
+      sign = boundary_1[2 * j + 1] * values_i[j] > 0 ? 1 : -1;
+      line_2d_set_flow_rate_direction(&flow_rate_direction, &line, sign, size);
       draw_oriented_edge(canvas, status, &edge, get_color);
       if (*status)
       {

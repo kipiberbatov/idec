@@ -381,6 +381,12 @@ build/$(MODE)/lib/plugins/libcanvas$(.DLL): $(_obj_plugins_canvas)\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw$(.OBJ)\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw_circular$(.OBJ)\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw_circular_forman$(.OBJ)\
+  build/$(MODE)/obj/src/line_2d_midpoint$(.OBJ)\
+  build/$(MODE)/obj/src/line_2d_direction_90_degrees$(.OBJ)\
+  build/$(MODE)/obj/src/line_2d_oriented_set_from_center_and_direction$(.OBJ)\
+  build/$(MODE)/obj/src/line_2d_set_flow_rate_direction$(.OBJ)\
+  build/$(MODE)/obj/src/vector_2d_norm$(.OBJ)\
+  build/$(MODE)/obj/src/vector_2d_scalar_multiply$(.OBJ)\
   build/$(MODE)/obj/src/mesh_cf_part2$(.OBJ)\
   build/$(MODE)/obj/src/jagged4_part2$(.OBJ)\
   build/$(MODE)/obj/src/int_array_total_sum$(.OBJ)\
