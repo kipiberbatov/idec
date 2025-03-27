@@ -20,8 +20,9 @@ struct idec_graphics_mesh_2d_1_cochain_sequence_draw_functions
   void (*check_color_scheme)(int *, int);
   void (*set_color)(void *, int, int);
   void (*draw_oriented_edge)(
-    void *, int *, const struct idec_graphics_mesh_2d_edge *);
-  void (*set_source)(void *, int *, const void *);
+    void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, const void *));
+  void (*get_color)(void *, const void *);
   void (*draw_skeleton)(
     void *,
     int *,

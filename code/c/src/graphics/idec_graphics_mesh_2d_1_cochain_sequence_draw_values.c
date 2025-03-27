@@ -56,9 +56,10 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   struct idec_graphics_mesh_2d_edge edge;
   struct line_2d line;
   void (*set_color)(void *, int, int) = functions->set_color;
-  void (*set_source)(void *, int *, const void *) = functions->set_source;
+  void (*get_color)(void *, const void *) = functions->get_color;
   void (*draw_oriented_edge)(void *, int *,
-    const struct idec_graphics_mesh_2d_edge *) = functions->draw_oriented_edge;
+    const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, const void *)) = functions->draw_oriented_edge;
 
   min = cochain_sequence->min_value;
   max = cochain_sequence->max_value;
@@ -110,14 +111,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
       perpendicular_edge_set_coordinates(&line,
         &edge, e0_j, e1_j, signed_value_ij);
       edge.data = (void *) &line;
-      set_source(canvas, status, edge.color);
-      if (*status)
-      {
-        color_error_position(__FILE__, __LINE__);
-        fputs("cannot set source\n", stderr);
-        goto color_free;
-      }
-      draw_oriented_edge(canvas, status, &edge);
+      draw_oriented_edge(canvas, status, &edge, get_color);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);

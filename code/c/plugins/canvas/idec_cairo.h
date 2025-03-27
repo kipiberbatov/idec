@@ -14,9 +14,6 @@ void idec_cairo_paint_white(cairo_t * cr, int * status);
 void
 idec_cairo_paint_rgb(cairo_t * cr, int * status, const struct idec_rgb * color);
 
-void idec_cairo_set_source_rgb(
-  cairo_t * cr, int * status, const struct idec_rgb * color);
-
 void idec_cairo_graphics_2d_line_draw(
   cairo_t * cr, int * status, const struct line_2d * line);
 
@@ -32,6 +29,7 @@ void idec_cairo_graphics_mesh_2d_edge_black_draw(
   void (*draw_curve)(void *, int *, const void *));
 
 void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
-  cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge);
+  cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge,
+  void (*get_color)(void *, const void *));
 
 #endif /* _idec_cairo_h */
