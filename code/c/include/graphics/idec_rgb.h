@@ -8,6 +8,11 @@ struct idec_rgb
   double blue;
 };
 
+extern void (* const * idec_rgb_color_scheme_rainbow_regions)(
+  struct idec_rgb *, int, int);
+
+extern const int idec_rgb_color_scheme_rainbow_regions_size;
+
 void idec_rgb_set_from_scheme_rainbow(
   struct idec_rgb * color, int * status, int i, int n);
 
