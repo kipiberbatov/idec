@@ -375,6 +375,7 @@ build/$(MODE)/lib/plugins/libcanvas$(.DLL): $(_obj_plugins_canvas)\
   build/$(MODE)/obj/src/idec_rgb_check_color_scheme_rainbow$(.OBJ)\
   build/$(MODE)/obj/src/idec_rgb_color_scheme_rainbow$(.OBJ)\
   build/$(MODE)/obj/src/idec_rgb_set_from_scheme_rainbow$(.OBJ)\
+  build/$(MODE)/obj/src/idec_rgb_get_color_rgb$(.OBJ)\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_0_cochain_sequence_draw_values$(.OBJ)\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_1_cochain_sequence_draw_values$(.OBJ)\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw$(.OBJ)\

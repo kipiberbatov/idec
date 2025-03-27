@@ -24,10 +24,8 @@ void idec_cairo_graphics_2d_arc_draw(
   cairo_t * cr, int * status, const struct arc_2d * arc);
 
 void idec_cairo_graphics_mesh_2d_node_draw(
-  cairo_t * cr,
-  int * status,
-  const struct idec_graphics_mesh_2d_node * node,
-  void (*set_source)(void *, int *, const void *));
+  cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_node * node,
+  void (*get_color)(void *, const void *));
 
 void idec_cairo_graphics_mesh_2d_edge_black_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge,

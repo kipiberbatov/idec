@@ -23,4 +23,6 @@ void idec_rgb_check_color_scheme_rainbow(int * status, int n);
 
 void idec_rgb_allocate_color(struct idec_rgb ** color, int * status);
 
+void idec_rgb_get_color_rgb(struct idec_rgb * rgb_color, const void * color);
+
 #endif /* _idec_rgb_h */

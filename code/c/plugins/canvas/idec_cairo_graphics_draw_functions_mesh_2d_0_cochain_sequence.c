@@ -21,9 +21,8 @@ idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence =
   idec_rgb_check_color_scheme_rainbow,
   (void (*)(void *, int , int)) idec_rgb_set_from_scheme_rainbow_no_checks,
   (void (*)(void *, int *, const struct idec_graphics_mesh_2d_node *,
-    void (*)(void *, int *, const void *)))
-    idec_cairo_graphics_mesh_2d_node_draw,
-  (void (*)(void *, int *, const void *)) idec_cairo_set_source_rgb,
+    void (*)(void *, const void *))) idec_cairo_graphics_mesh_2d_node_draw,
+  (void (*)(void *, const void *)) idec_rgb_get_color_rgb,
   idec_graphics_mesh_2d_skeleton_draw,
   draw_curves,
   (void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *,

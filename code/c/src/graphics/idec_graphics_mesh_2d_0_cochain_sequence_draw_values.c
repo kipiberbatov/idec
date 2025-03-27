@@ -20,9 +20,9 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
   double * coordinates, * point_sizes, * values_i;
   struct idec_graphics_mesh_2d_node node;
   void (*set_color)(void *, int, int) = functions->set_color;
-  void (*set_source)(void *, int *, const void *) = functions->set_source;
+  void (*get_color)(void *, const void *) = functions->get_color;
   void (*draw_node)(void *, int *, const struct idec_graphics_mesh_2d_node *,
-    void (*)(void *, int *, const void *)) = functions->draw_node;
+    void (*)(void *, const void *)) = functions->draw_node;
 
   min = cochain_sequence->min_value;
   max = cochain_sequence->max_value;
@@ -57,7 +57,7 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
     {
       node.size = point_sizes[j];
       node.coordinates = coordinates + 2 * j;
-      draw_node(canvas, status, &node, set_source);
+      draw_node(canvas, status, &node, get_color);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);
@@ -75,7 +75,7 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
       node.size = point_sizes[j];
       node.coordinates = coordinates + 2 * j;
       set_color(node.color, color_index, total_colors);
-      draw_node(canvas, status, &node, set_source);
+      draw_node(canvas, status, &node, get_color);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);
