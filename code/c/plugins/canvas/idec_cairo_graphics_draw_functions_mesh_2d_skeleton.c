@@ -12,6 +12,7 @@ idec_cairo_graphics_draw_functions_mesh_2d_skeleton =
 {
   idec_graphics_mesh_2d_skeleton_draw,
   draw_curves,
-  (void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *))
+  (void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, int *, const void *)))
     idec_cairo_graphics_mesh_2d_edge_black_draw
 };

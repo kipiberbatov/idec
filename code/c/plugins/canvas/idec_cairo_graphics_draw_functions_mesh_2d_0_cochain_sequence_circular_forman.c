@@ -27,6 +27,7 @@ idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence_circular_forman =
   (void (*)(void *, int *, const void *)) idec_cairo_set_source_rgb,
   idec_graphics_mesh_2d_skeleton_draw_circular_forman,
   draw_curves,
-  (void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *))
+  (void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, int *, const void *)))
     idec_cairo_graphics_mesh_2d_edge_black_draw
 };

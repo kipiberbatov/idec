@@ -6,10 +6,10 @@
 #include "idec_graphics_mesh_2d_0_cochain_sequence_draw_functions.h"
 #include "idec_rgb.h"
 
-static void
-do_nothing(void * cr, int * status, const struct idec_graphics_mesh_2d_edge * e)
-{
-}
+static void do_nothing(
+  void * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge,
+  void (*draw_curve)(void *, int *, const void *))
+{}
 
 static void (*draw_curves[1])(void *, int *, const void *) = 
 {

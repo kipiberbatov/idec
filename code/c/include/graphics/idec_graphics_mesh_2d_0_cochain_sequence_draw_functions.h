@@ -29,10 +29,12 @@ struct idec_graphics_mesh_2d_0_cochain_sequence_draw_functions
     int *,
     const struct idec_graphics_mesh_2d_skeleton *,
     void (**)(void *, int *, const void *),
-    void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *));
+    void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, int *, const void *)));
   void (**draw_curves)(void *, int *, const void *);
   void (*draw_black_edge)(
-    void *, int *, const struct idec_graphics_mesh_2d_edge *);
+    void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, int *, const void *));
 };
 
 #endif /* _idec_graphics_mesh_2d_0_cochain_sequence_draw_functions_h */

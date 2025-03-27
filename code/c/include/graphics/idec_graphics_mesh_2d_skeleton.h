@@ -17,21 +17,27 @@ void idec_graphics_mesh_2d_skeleton_draw(
   int * status,
   const struct idec_graphics_mesh_2d_skeleton * skeleton,
   void (**draw_curves)(void *, int *, const void *),
-  void (*draw_edge)(void *, int *, const struct idec_graphics_mesh_2d_edge *));
+  void (*draw_black_edge)(
+    void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, int *, const void *)));
 
 void idec_graphics_mesh_2d_skeleton_draw_circular(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_skeleton * skeleton,
   void (**draw_curves)(void *, int *, const void *),
-  void (*draw_edge)(void *, int *, const struct idec_graphics_mesh_2d_edge *));
+  void (*draw_black_edge)(
+    void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, int *, const void *)));
 
 void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_skeleton * skeleton,
   void (**draw_curves)(void *, int *, const void *),
-  void (*draw_edge)(void *, int *, const struct idec_graphics_mesh_2d_edge *));
+  void (*draw_black_edge)(
+    void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, int *, const void *)));
 
 void idec_graphics_mesh_2d_skeleton_draw_snapshot(
   void * canvas,

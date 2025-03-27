@@ -12,7 +12,9 @@ void idec_graphics_mesh_2d_skeleton_draw(
   int * status,
   const struct idec_graphics_mesh_2d_skeleton * skeleton,
   void (**draw_curves)(void *, int *, const void *),
-  void (*draw_edge)(void *, int *, const struct idec_graphics_mesh_2d_edge *))
+  void (*draw_black_edge)(
+    void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, int *, const void *)))
 {
   int i, number_of_edges;
   int * cf_1_0_a1, * cf_1_0_i;
@@ -21,10 +23,10 @@ void idec_graphics_mesh_2d_skeleton_draw(
   mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
   struct line_2d line;
+  void (*draw_line)(void *, int *, const void *) = draw_curves[0];
 
   coordinates = skeleton->coordinates;
   edge.width = skeleton->line_width;
-  edge.draw_curve = draw_curves[0];
   m = skeleton->m;
   mesh_cf_part2(&cf_1_0, m, 1, 0);
   number_of_edges = cf_1_0.a0;
@@ -39,7 +41,7 @@ void idec_graphics_mesh_2d_skeleton_draw(
     line.x1[0] = x1[0];
     line.x1[1] = x1[1];
     edge.data = (void *) &line;
-    draw_edge(canvas, status, &edge);
+    draw_black_edge(canvas, status, &edge, draw_line);
     if (*status)
     {
       color_error_position(__FILE__, __LINE__);

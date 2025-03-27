@@ -30,7 +30,8 @@ void idec_cairo_graphics_mesh_2d_node_draw(
   void (*set_source)(void *, int *, const void *));
 
 void idec_cairo_graphics_mesh_2d_edge_black_draw(
-  cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge);
+  cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge,
+  void (*draw_curve)(void *, int *, const void *));
 
 void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge);

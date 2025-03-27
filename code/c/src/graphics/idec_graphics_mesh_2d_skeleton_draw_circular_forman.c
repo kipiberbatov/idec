@@ -13,7 +13,9 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
   int * status,
   const struct idec_graphics_mesh_2d_skeleton * skeleton,
   void (**draw_curves)(void *, int *, const void *),
-  void (*draw_edge)(void *, int *, const struct idec_graphics_mesh_2d_edge *))
+  void (*draw_black_edge)(
+    void *, int *, const struct idec_graphics_mesh_2d_edge *,
+    void (*)(void *, int *, const void *)))
 {
   int end_index, i, j, index, na, nd;
   int * cf_1_0_index, * m_cn;
@@ -53,7 +55,6 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
   {
     /* rays */
     edge.data = (void *) &line;
-    edge.draw_curve = draw_line;
     for (j = 0; j < na; ++j)
     {
       x0 = coordinates + 2 * cf_1_0_index[0];
@@ -62,7 +63,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
       line.x0[1] = x0[1];
       line.x1[0] = x1[0];
       line.x1[1] = x1[1];
-      draw_edge(canvas, status, &edge);
+      draw_black_edge(canvas, status, &edge, draw_line);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);
@@ -75,13 +76,12 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
 
     /* arcs */
     edge.data = (void *) &arc;
-    edge.draw_curve = draw_arc;
     arc.r = r0 * 2 * i;
     for (j = 0; j < na; ++j)
     {
       arc.alpha = j * theta;
       arc.beta = (j + 1) * theta;
-      draw_edge(canvas, status, &edge);
+      draw_black_edge(canvas, status, &edge, draw_arc);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);
@@ -100,8 +100,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
     arc.alpha = 2 * j * theta;
     arc.beta = (2 * j + 1) * theta;
     edge.data = (void *) &arc;
-    edge.draw_curve = draw_arc;
-    draw_edge(canvas, status, &edge);
+    draw_black_edge(canvas, status, &edge, draw_arc);
     if (*status)
     {
       color_error_position(__FILE__, __LINE__);
@@ -118,8 +117,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
     line.x1[0] = x1[0];
     line.x1[1] = x1[1];
     edge.data = (void *) &line;
-    edge.draw_curve = draw_line;
-    draw_edge(canvas, status, &edge);
+    draw_black_edge(canvas, status, &edge, draw_line);
     if (*status)
     {
       color_error_position(__FILE__, __LINE__);
@@ -132,8 +130,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
     arc.alpha = (2 * j + 1) * theta;
     arc.beta = (2 * j + 2) * theta;
     edge.data = (void *) &arc;
-    edge.draw_curve = draw_arc;
-    draw_edge(canvas, status, &edge);
+    draw_black_edge(canvas, status, &edge, draw_arc);
     if (*status)
     {
       color_error_position(__FILE__, __LINE__);
@@ -157,8 +154,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
       line.x1[0] = x1[0];
       line.x1[1] = x1[1];
       edge.data = (void *) &line;
-      edge.draw_curve = draw_line;
-      draw_edge(canvas, status, &edge);
+      draw_black_edge(canvas, status, &edge, draw_line);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);
@@ -171,8 +167,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
       arc.alpha = 2 * j * theta;
       arc.beta = (2 * j + 1) * theta;
       edge.data = (void *) &arc;
-      edge.draw_curve = draw_arc;
-      draw_edge(canvas, status, &edge);
+      draw_black_edge(canvas, status, &edge, draw_arc);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);
@@ -189,8 +184,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
       line.x1[0] = x1[0];
       line.x1[1] = x1[1];
       edge.data = (void *) &line;
-      edge.draw_curve = draw_line;
-      draw_edge(canvas, status, &edge);
+      draw_black_edge(canvas, status, &edge, draw_line);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);
@@ -203,8 +197,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
       arc.alpha = (2 * j + 1) * theta;
       arc.beta = (2 * j + 2) * theta;
       edge.data = (void *) &arc;
-      edge.draw_curve = draw_arc;
-      draw_edge(canvas, status, &edge);
+      draw_black_edge(canvas, status, &edge, draw_arc);
       if (*status)
       {
         color_error_position(__FILE__, __LINE__);
