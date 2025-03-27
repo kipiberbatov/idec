@@ -62,7 +62,7 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
       {
         color_error_position(__FILE__, __LINE__);
         fputs("cannot draw node\n", stderr);
-        return;
+        goto color_free;
       }
     }
   }
@@ -80,9 +80,10 @@ void idec_graphics_mesh_2d_0_cochain_sequence_draw_values(
       {
         color_error_position(__FILE__, __LINE__);
         fputs("cannot draw node\n", stderr);
-        return;
+        goto color_free;
       }
     }
   }
+color_free:
   functions->deallocate_color(node.color);
 }
