@@ -19,10 +19,11 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   int total_colors)
 {
   int color_index, j, number_of_edges;
-  int * cf_1_0_a1, * cf_1_0_j;
+  int * cf_1_0_j;
   double color_coefficient, denominator, min, max, sign, size;
   double * boundary_1, * coordinates, * values_i;
   struct jagged2 cf_1_0;
+  struct mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
   struct line_2d flow_rate_direction, line;
   void (*set_color)(void *, int, int) = functions->set_color;
@@ -45,9 +46,9 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   if (edge.width < 2.5)
     edge.width = 2.5;
 
-  mesh_cf_part2(&cf_1_0, cochain_sequence->m, 1, 0);
+  m = cochain_sequence->m;
+  mesh_cf_part2(&cf_1_0, m, 1, 0);
   number_of_edges = cf_1_0.a0;
-  cf_1_0_a1 = cf_1_0.a1;
   cf_1_0_j = cf_1_0.a2;
 
   functions->check_color_scheme(status, total_colors);
@@ -68,7 +69,8 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
     return;
   }
 
-  size = edge.width * 8;
+  size = edge.width * 48. / sqrt((double) m->cn[0]);
+  edge.width = size / 6.;
   edge.data = (void *) &flow_rate_direction;
   values_i = cochain_sequence->values + number_of_edges * i;
   for (j = 0; j < number_of_edges; ++j)
@@ -79,7 +81,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
       set_color(edge.color, color_index, total_colors);
       memcpy(line.x0, coordinates + 2 * cf_1_0_j[0], sizeof(double) * 2);
       memcpy(line.x1, coordinates + 2 * cf_1_0_j[1], sizeof(double) * 2);
-      sign = boundary_1[2 * j + 1] * values_i[j] > 0 ? 1 : -1;
+      sign = boundary_1[2 * j + 1] * values_i[j] > 0. ? 1. : -1.;
       line_2d_set_flow_rate_direction(&flow_rate_direction, &line, sign, size);
       draw_oriented_edge(canvas, status, &edge, get_color);
       if (*status)
@@ -89,7 +91,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
         goto color_free;
       }
     }
-    cf_1_0_j += cf_1_0_a1[j];
+    cf_1_0_j += 2;
   }
 color_free:
   functions->deallocate_color(edge.color);

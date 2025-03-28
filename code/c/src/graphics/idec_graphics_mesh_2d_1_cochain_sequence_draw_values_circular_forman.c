@@ -85,7 +85,8 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
   arc.x0 = cx;
   arc.y0 = cy;
 
-  size = edge.width * 8;
+  size = edge.width * 48. / sqrt((double) m_cn[0]);
+  edge.width = size / 6.;
   edge.data = (void *) &flow_rate_direction;
   values_i = cochain_sequence->values + cf_1_0.a0 * i;
   index = 0;
@@ -100,7 +101,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
       if (color_index)
       {
         set_color(edge.color, color_index, total_colors);
-        sign = boundary_1[2 * index + 1] * values_i[index] > 0 ? 1 : -1;
+        sign = boundary_1[2 * index + 1] * values_i[index] > 0. ? 1. : -1.;
         memcpy(line.x0, coordinates + 2 * cf_1_0_index[0], sizeof(double) * 2);
         memcpy(line.x1, coordinates + 2 * cf_1_0_index[1], sizeof(double) * 2);
         line_2d_set_flow_rate_direction(&flow_rate_direction, &line, sign,size);
@@ -124,7 +125,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
       if (color_index)
       {
         set_color(edge.color, color_index, total_colors);
-        sign = boundary_1[2 * index + 1] * values_i[index] > 0 ? 1 : -1;
+        sign = boundary_1[2 * index + 1] * values_i[index] > 0. ? 1. : -1.;
         if (j % 2 == 0)
           sign = -sign;
         arc.alpha = j * theta;
@@ -153,7 +154,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
     if (color_index)
     {
       set_color(edge.color, color_index, total_colors);
-      sign = boundary_1[2 * index + 1] * values_i[index] < 0 ? 1 : -1;
+      sign = boundary_1[2 * index + 1] * values_i[index] < 0. ? 1. : -1.;
       arc.alpha = 2 * j * theta;
       arc.beta = (2 * j + 1) * theta;
       arc_2d_set_flow_rate_direction(&flow_rate_direction, &arc, sign, size);
@@ -172,7 +173,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
     if (color_index)
     {
       set_color(edge.color, color_index, total_colors);
-      sign = boundary_1[2 * index + 1] * values_i[index] > 0 ? 1 : -1;
+      sign = boundary_1[2 * index + 1] * values_i[index] > 0. ? 1. : -1.;
       memcpy(line.x0, coordinates + 2 * cf_1_0_index[0], sizeof(double) * 2);
       memcpy(line.x1, coordinates + 2 * cf_1_0_index[1], sizeof(double) * 2);
       line_2d_set_flow_rate_direction(&flow_rate_direction, &line, sign, size);
@@ -191,7 +192,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
     if (color_index)
     {
       set_color(edge.color, color_index, total_colors);
-      sign = boundary_1[2 * index + 1] * values_i[index] > 0 ? 1 : -1;
+      sign = boundary_1[2 * index + 1] * values_i[index] > 0. ? 1. : -1.;
       arc.alpha = (2 * j + 1) * theta;
       arc.beta = (2 * j + 2) * theta;
       arc_2d_set_flow_rate_direction(&flow_rate_direction, &arc, sign, size);
@@ -217,7 +218,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
       if (color_index)
       {
         set_color(edge.color, color_index, total_colors);
-        sign = boundary_1[2 * index + 1] * values_i[index] > 0 ? 1 : -1;
+        sign = boundary_1[2 * index + 1] * values_i[index] > 0. ? 1. : -1.;
         memcpy(line.x0, coordinates + 2 * cf_1_0_index[0], sizeof(double) * 2);
         memcpy(line.x1, coordinates + 2 * cf_1_0_index[1], sizeof(double) * 2);
         line_2d_set_flow_rate_direction(&flow_rate_direction, &line, sign,size);
@@ -236,7 +237,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
       if (color_index)
       {
         set_color(edge.color, color_index, total_colors);
-        sign = boundary_1[2 * index + 1] * values_i[index] < 0 ? 1 : -1;
+        sign = boundary_1[2 * index + 1] * values_i[index] < 0. ? 1. : -1.;
         arc.alpha = 2 * j * theta;
         arc.beta = (2 * j + 1) * theta;
         arc_2d_set_flow_rate_direction(&flow_rate_direction, &arc, sign, size);
@@ -255,7 +256,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
       if (color_index)
       {
         set_color(edge.color, color_index, total_colors);
-        sign = boundary_1[2 * index + 1] * values_i[index] < 0 ? 1 : -1;
+        sign = boundary_1[2 * index + 1] * values_i[index] < 0. ? 1. : -1.;
         memcpy(line.x0, coordinates + 2 * cf_1_0_index[0], sizeof(double) * 2);
         memcpy(line.x1, coordinates + 2 * cf_1_0_index[1], sizeof(double) * 2);
         line_2d_set_flow_rate_direction(&flow_rate_direction, &line, sign,size);
@@ -274,7 +275,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
       if (color_index)
       {
         set_color(edge.color, color_index, total_colors);
-        sign = boundary_1[2 * index + 1] * values_i[index] > 0 ? 1 : -1;
+        sign = boundary_1[2 * index + 1] * values_i[index] > 0. ? 1. : -1.;
         arc.alpha = (2 * j + 1) * theta;
         arc.beta = (2 * j + 2) * theta;
         arc_2d_set_flow_rate_direction(&flow_rate_direction, &arc, sign, size);

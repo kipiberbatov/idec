@@ -26,6 +26,7 @@ void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
   cairo_line_to(cr, line->x1[0], line->x1[1]);
   cairo_stroke(cr);
   cairo_arc(cr, line->x1[0], line->x1[1], width, 0, 2 * M_PI);
+  cairo_fill(cr);
   cairo_stroke(cr);
   cairo_restore(cr);
   *status = cairo_status(cr);
