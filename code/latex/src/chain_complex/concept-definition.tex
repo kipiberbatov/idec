@@ -1,0 +1,15 @@
+\begin{definition}
+  Let
+    $R$ be a commutative ring with unity,
+    $\{A_p\}_{p = -\infty}^\infty$ be a set of $R$-modules,
+    $\{\partial_p \colon A_p \to A_{p - 1}\}_{p = -\infty}^\infty$ be linear
+      maps.
+  Define
+    $A_\bullet := \bigoplus_{p = -\infty}^\infty A_p$ and
+    $\partial \colon A_\bullet \to A_\bullet$ to be the unique $R$-linear map
+      such that for any $p \in \Z$ and any $a \in A_p$,
+      $\partial a = \partial_p a$.
+  We say that $(A_\bullet, \partial)$ is a \textbf{chain complex} if
+  $\partial^2 = 0$.
+  Equivalently, for any $p \in \Z$, $\partial_p \circ \partial_{p + 1} = 0$.
+\end{definition}

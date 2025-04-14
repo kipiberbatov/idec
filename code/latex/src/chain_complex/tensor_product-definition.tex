@@ -1,0 +1,20 @@
+\begin{definition}
+  \label{idec/chain_complex/tensor_product-definition}
+  Let $(A_\bullet, \partial^A)$ and $(B_\bullet, \partial^B)$
+  be chain complexes.
+  Their \textbf{tensor product}
+  \begin{equation}
+    (C_\bullet, \partial^C)
+    := (A_\bullet, \partial^A) \otimes (B_\bullet, \partial^B)
+  \end{equation}
+  is defined as follows: for any $r \in \Z$,
+  \begin{equation}
+    C_r = \bigoplus_{p = -\infty}^\infty A_p \otimes B_{r - p},
+  \end{equation}
+  while the map $\partial^C$ is defined for basis elements
+  $a \otimes b \in A_p \otimes B_q \subseteq C_{p + q}$,
+  \begin{equation}
+    \partial^C(a \otimes b)
+    := \partial^A a \otimes b + (-1)^p a \otimes \partial^B b.
+  \end{equation}
+\end{definition}
