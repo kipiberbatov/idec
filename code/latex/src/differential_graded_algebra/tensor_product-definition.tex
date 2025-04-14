@@ -1,0 +1,28 @@
+\begin{definition}
+  \label{idec/differential_graded_algebra/tensor_product-definition}
+  Let $(A^\bullet, \delta^A, \smile^A)$ and $(B^\bullet, \delta^B, \smile^B)$ be
+  differential graded algebras.
+  Their \textbf{tensor product}
+  \begin{equation}
+    (C^\bullet, \delta^C, \smile^C)
+    := (A^\bullet, \delta^A, \smile^A) \otimes (B^\bullet, \delta^B, \smile^B)
+  \end{equation}
+  is defined as follows: for any $r \in \Z$,
+  \begin{equation}
+    C^r = \bigoplus_{p = -\infty}^\infty A^p \otimes B^{r - p},
+  \end{equation}
+  the map $\delta^C$ is defined for basis elements
+  $a \otimes b \in A^p \otimes B^q \subseteq C^{p + q}$ as
+  \begin{equation}
+    \delta^C(a \otimes b)
+    := \delta^A a \otimes b + (-1)^p a \otimes \delta^B b,
+  \end{equation}
+  while the product is defined for basis elements
+  $a \otimes b \in A^p \otimes B^q \subseteq C^{p + q}$ and
+  $a' \otimes b' \in A^{p'} \otimes B^{q'} \subseteq C^{p' + q'}$
+  as
+  \begin{equation}
+    (a \otimes b) \smile^C (a' \otimes b')
+    := (-1)^{q p'} (a \smile^A a') \otimes (b \smile^B b').
+  \end{equation}
+\end{definition}

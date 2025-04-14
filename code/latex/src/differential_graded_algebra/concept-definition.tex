@@ -1,0 +1,26 @@
+\begin{definition}
+  Let
+    $R$ be a commutative ring with unity,
+    $\{A^p\}_{p = -\infty}^\infty$ be a set of $R$-modules,
+    $\{\delta_p \colon A^p \to A^{p + 1}\}_{p = -\infty}^\infty$ be linear
+      maps,
+    $\{\smile_{p, q} \colon
+      A^p \times A^q \to A^{p + q}\}_{p, q = - \infty}^\infty$
+      be bilinear maps.
+  Define
+    $A^\bullet := \bigoplus_{p = -\infty}^\infty A^p$ and
+    $\delta \colon A^\bullet \to A^\bullet$ to be the unique $R$-linear map
+      such that for any $p \in \Z$ and any $\pi \in A^p$,
+      $\delta \pi = \delta_p \pi$,
+    $\smile \colon A^\bullet \times A^\bullet \to A^\bullet$ to be the unique
+    $R$-bilinear map
+      such that for any $p, q \in \Z$ and any $(\pi, \rho) \in A^p \times A^q$,
+      $\pi \smile \rho = \pi \smile_{p, q} \rho$.
+  We say that $(A^\bullet, \delta, \smile)$ is a
+  \textbf{differential graded algebra} if
+  $\delta^2 = 0$ and for any $p \in \Z$, $\pi \in A^p$, $\rho \in A^\bullet$,
+  \begin{equation}
+    \delta(\pi \smile \rho)
+    = \delta \pi \smile \rho + (-1)^p \pi \smile \delta \rho.
+  \end{equation}
+\end{definition}
