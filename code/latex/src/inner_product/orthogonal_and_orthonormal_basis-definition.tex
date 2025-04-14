@@ -1,0 +1,26 @@
+\begin{definition}
+  Let
+    $d \in \N$,
+    $(V, g)$ be a real inner product space of dimension $d$,
+    $e = \{e_0, ..., e_{d - 1}\}$ be a basis of $V$.
+  We say that $e$ is an \textbf{orthogonal basis} if any two disjoint elements
+  are orthogonal, i.e., for all $i, j \in \{0, ..., d - 1\}$,
+  if $i \neq j$, then
+  \begin{equation}
+    g(e_i, e_j) = 0.
+  \end{equation}
+  The basis $e$ is called \textbf{orthonormal}, if it is orthogonal and
+  for any $i \in \{0, ..., d - 1\}$,
+  \begin{equation}
+     g(e_i, e_i) = 1.
+  \end{equation}
+  An equivalent way of saying that $e$ is orthonormal is by using the Kronecker
+  delta symbol: for all $i, j \in \{0, ..., d - 1\}$,
+  \begin{equation}
+    g(e_i, e_j) = \delta_{i, j} :=
+    \begin{cases}
+      0, & \text{if $i \neq j$} \\
+      1, & \text{if $i = j$}
+    \end{cases}.
+  \end{equation}
+\end{definition}

@@ -1,0 +1,25 @@
+\begin{definition}
+  Let $V$ be a vector space over $\R$.
+  An \textbf{inner product} on $V$ is a function
+  $g \colon V \times V \to \R$ that is:
+  \begin{enumerate}
+    \item
+      bilinear, i.e., for all $\lambda, \mu \in \R$, $u, v, w \in V$:
+      \begin{equation}
+        g(\lambda u + \mu v, w) = \lambda g(u, w) + \mu g(v, w),\
+        g(w, \lambda u + \mu v) = \lambda g(w, u) + \mu g(w, v);
+      \end{equation}
+    \item
+      symmetric, i.e., for all $u, v \in V$,
+      \begin{equation}
+        g(u, v) = g(v, u);
+      \end{equation}
+    \item
+      positive definite: for all $v \in V \setminus \{0\}$,
+      \begin{equation}
+        g(v, v) > 0.
+      \end{equation}
+  \end{enumerate}
+  If $g$ is an inner product on $V$, the pair $(V, g)$ is called an
+  \textbf{real inner product space}.
+\end{definition}
