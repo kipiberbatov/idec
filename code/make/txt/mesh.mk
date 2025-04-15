@@ -15,6 +15,7 @@ build/$(MODE)/txt/mesh: | build/$(MODE)/txt
 -include code/make/txt/mesh/2d_10_grains.mk
 -include code/make/txt/mesh/circular_4_3.mk
 -include code/make/txt/mesh/circular_18_10.mk
+-include code/make/txt/mesh/hemisphere_4_3.mk
 -include code/make/txt/mesh/brick_3d_1.mk
 -include code/make/txt/mesh/brick_3d_2.mk
 -include code/make/txt/mesh/brick_3d_5.mk
@@ -91,6 +92,7 @@ _txt_mesh :=\
   $(_txt_mesh_square)\
   $(_txt_mesh_2d_10_grains)\
   $(_txt_mesh_circular)\
+  $(_txt_mesh_hemisphere_4_3)\
   $(_txt_mesh_square_pyramid)\
 
 txt_mesh: bin_mesh $(_txt_mesh)
