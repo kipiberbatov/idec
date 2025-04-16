@@ -17,9 +17,9 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
     void *, int *, const struct idec_graphics_mesh_2d_edge *,
     void (*)(void *, int *, const void *)))
 {
-  int end_index, i, j, index, na, nd;
+  int i, j, index, na, nd;
   int * cf_1_0_index, * m_cn;
-  double cx, cy, r, r0, rx, ry, theta;
+  double cx, cy, rx, ry, theta;
   double * coordinates, * x0, * x1;
   jagged2 cf_1_0;
   mesh * m;
@@ -39,13 +39,8 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
 
   na = 2 * (2 * m_cn[0] - m_cn[1] - 2);
   nd = (m_cn[0] - 1) / na;
-  end_index = na * nd / 4;
   cx = coordinates[0];
   cy = coordinates[1];
-  rx = coordinates[2 * end_index] - cx;
-  ry = coordinates[2 * end_index + 1] - cy;
-  r = sqrt(rx * rx + ry * ry);
-  r0 = r / nd;
   theta = M_PI * 2 / na;
   arc.x0 = cx;
   arc.y0 = cy;
@@ -76,7 +71,10 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
 
     /* arcs */
     edge.data = (void *) &arc;
-    arc.r = r0 * 2 * i;
+    x0 = coordinates + 2 * cf_1_0_index[0];
+    rx = x0[0] - cx;
+    ry = x0[1] - cy;
+    arc.r = sqrt(rx * rx + ry * ry);
     for (j = 0; j < na; ++j)
     {
       arc.alpha = j * theta;
@@ -94,7 +92,10 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
   }
 
   /* inner circle: arc-ray-arc */
-  arc.r = r0;
+  x0 = coordinates + 2 * cf_1_0_index[0];
+  rx = x0[0] - cx;
+  ry = x0[1] - cy;
+  arc.r = sqrt(rx * rx + ry * ry);
   for (j = 0; j < na / 2; ++j)
   {
     arc.alpha = 2 * j * theta;
@@ -144,7 +145,10 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
   /* outer circles: ray-arc-ray-arc */
   for (i = 1; i < nd / 2; ++i)
   {
-    arc.r = r0 * (2 * i + 1);
+    x0 = coordinates + 2 * cf_1_0_index[2];
+    rx = x0[0] - cx;
+    ry = x0[1] - cy;
+    arc.r = sqrt(rx * rx + ry * ry);
     for (j = 0; j < na / 2; ++j)
     {
       x0 = coordinates + 2 * cf_1_0_index[0];
