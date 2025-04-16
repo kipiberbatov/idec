@@ -22,14 +22,14 @@ void idec_cairo_graphics_2d_arc_draw(
 
 void idec_cairo_graphics_mesh_2d_node_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_node * node,
-  void (*get_color)(void *, const void *));
+  void (*get_color)(struct idec_rgb *, const void *));
 
 void idec_cairo_graphics_mesh_2d_edge_black_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge,
-  void (*draw_curve)(void *, int *, const void *));
+  void (*draw_curve)(cairo_t *, int *, const void *));
 
 void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge,
-  void (*get_color)(void *, const void *));
+  void (*get_color)(struct idec_rgb *, const void *));
 
 #endif /* _idec_cairo_h */

@@ -6,12 +6,12 @@
 
 void idec_cairo_graphics_mesh_2d_edge_black_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge,
-  void (*draw_curve)(void *, int *, const void *))
+  void (*draw_curve)(cairo_t *, int *, const void *))
 {
   cairo_save(cr);
   cairo_set_source_rgb(cr, 0, 0, 0);
   cairo_set_line_width(cr, edge->width);
-  draw_curve((void *) cr, status, edge->data);
+  draw_curve(cr, status, edge->data);
   if (*status)
   {
     color_error_position(__FILE__, __LINE__);

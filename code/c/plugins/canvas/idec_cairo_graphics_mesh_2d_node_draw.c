@@ -9,15 +9,15 @@
 /* must use get_color along with idec_rgb */
 void idec_cairo_graphics_mesh_2d_node_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_node * node,
-  void (*get_color)(void *, const void *))
+  void (*get_color)(struct idec_rgb *, const void *))
 {
   double r;
-  double * x = node->coordinates;
+  double * x;
   struct idec_rgb color;
 
   r = node->size;
   x = node->coordinates;
-  get_color((void *) &color, node->color);
+  get_color(&color, node->color);
 
   cairo_save(cr);
   cairo_set_source_rgb(cr, color.red, color.green, color.blue);

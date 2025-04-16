@@ -9,7 +9,7 @@
 
 void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
   cairo_t * cr, int * status, const struct idec_graphics_mesh_2d_edge * edge,
-  void (*get_color)(void *, const void *))
+  void (*get_color)(struct idec_rgb *, const void *))
 {
   double width;
   struct line_2d * line;
@@ -17,7 +17,7 @@ void idec_cairo_graphics_mesh_2d_edge_oriented_draw(
 
   width = edge->width;
   line = (struct line_2d *) edge->data;
-  get_color((void *) &color, edge->color);
+  get_color(&color, edge->color);
 
   cairo_save(cr);
   cairo_set_source_rgb(cr, color.red, color.green, color.blue);
