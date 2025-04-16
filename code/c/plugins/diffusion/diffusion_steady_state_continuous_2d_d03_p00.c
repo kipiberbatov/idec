@@ -7,10 +7,10 @@
 [Example of steady-state diffusion in 2D via exterior calculus]
 
 Let
-  . M = {(x, y) in R^2 | x^2 + y^2 = 1}
+  . M = {(x, y) in R^2 | x^2 + y^2 <= 1}
   . kappa_1 = 1
   . f = -4 dx /\ dy
-  . G_D be the boundary of M
+  . G_D be the boundary of M, i.e., G_D = {(x, y) in R^2 | x^2 + y^2 = 1}
   . G_N = {}
   . g_D = 1
 
