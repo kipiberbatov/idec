@@ -7,6 +7,7 @@
 #include "idec_graphics_mesh_2d_skeleton.h"
 #include "line_2d.h"
 #include "mesh.h"
+#include "vector_2d.h"
 
 void idec_graphics_mesh_2d_skeleton_draw_circular(
   void * canvas,
@@ -19,7 +20,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular(
 {
   int i, j, index, na, nd, product;
   int * cf_1_0_index, * m_cf_a3_2_0, * m_cn;
-  double cx, cy, r, r0, rx, ry, theta;
+  double cx, cy, rx, ry, theta;
   double * coordinates, * x0, * x1;
   jagged2 cf_1_0;
   mesh * m;
@@ -49,10 +50,6 @@ void idec_graphics_mesh_2d_skeleton_draw_circular(
   nd = product / na;
   cx = coordinates[0];
   cy = coordinates[1];
-  rx = coordinates[2 * m_cn[0] - 2] - cx;
-  ry = coordinates[2 * m_cn[0] - 1] - cy;
-  r = sqrt(rx * rx + ry * ry);
-  r0 = r / nd;
   theta = M_PI * 2 / na;
   arc.x0 = cx;
   arc.y0 = cy;
@@ -83,7 +80,10 @@ void idec_graphics_mesh_2d_skeleton_draw_circular(
 
     /* arcs */
     edge.data = (void *) &arc;
-    arc.r = r0 * (i + 1);
+    x0 = coordinates + 2 * cf_1_0_index[0];
+    rx = x0[0] - cx;
+    ry = x0[1] - cy;
+    arc.r = sqrt(rx * rx + ry * ry);
     for (j = 0; j < na; ++j)
     {
       arc.alpha = j * theta;
