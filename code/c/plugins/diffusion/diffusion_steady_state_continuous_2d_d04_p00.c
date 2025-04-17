@@ -13,20 +13,16 @@ Let
   . kappa_1 = KAPPA
   . ~f(theta, phi) = 6 KAPPA cos(2 phi) sin^3(theta) d theta /\ d phi, i.e.,
     f(x, y, z) = 6 KAPPA (x^2 - y^2) vol
-  . G be the boundary of M, i.e.,
-    G = {(cos(phi), sin(phi), 0) | 0 <= phi <= 2 pi}
-  . G_D = {(x, y, z) in G_D | y <= 0}
-  . G_N = {(x, y, z) in G_D | y >= 0}
+  . G_D be the boundary of M, i.e.,
+    G_D = {(cos(phi), sin(phi), 0) | 0 <= phi <= 2 pi}
+  . G_N = {}
   . ~g_D(theta, phi)|_{theta = pi / 2} = cos(2 phi), i.e.,
     g_D(x, y, z)|_{z = 0} = x^2 - y^2
-  . ~g_N(theta, phi) = 0, i.e.,
-    g_N(x, y, z) = 0
 
 The potential 0-form u and flow 1-form q are solutions to the problem
   . q = - *_1 kappa_1 d_0 u
   . d q = -f
   . tr_{G_D, 0} u = g_D
-  . tr_{G_N, 1} q = g_N
 
 This problem has exact solution
   . ~u(theta, phi) = sin^2(theta) cos(2 phi), i.e.,
@@ -34,8 +30,6 @@ This problem has exact solution
   . ~q(theta, phi) = KAPPA (2 sin(theta) sin(2 phi) d theta
                             + sin(theta) sin(2 theta) cos(2 phi) d phi)
 */
-
-// (x, y, z) = (sin(theta) cos(phi), sin(theta) sin(phi), cos(theta))
 
 #define EPSILON 0.00001
 #define KAPPA 2.
@@ -62,7 +56,7 @@ static double source(const double * x)
 
 static int boundary_dirichlet(const double * x)
 {
-  return on_unit_circle(x) && x[1] < EPSILON;
+  return on_unit_circle(x);
 }
 
 static double g_dirichlet(const double * x)
@@ -71,11 +65,6 @@ static double g_dirichlet(const double * x)
 }
 
 static int boundary_neumann(const double * x)
-{
-  return on_unit_circle(x) && x[1] > -EPSILON;
-}
-
-static double g_neumann(const double * x)
 {
   return 0;
 }
@@ -88,7 +77,7 @@ diffusion_steady_state_continuous_2d_d04_p00 =
   boundary_dirichlet,
   g_dirichlet,
   boundary_neumann,
-  g_neumann
+  NULL
 };
 
 static double u(const double * x)
