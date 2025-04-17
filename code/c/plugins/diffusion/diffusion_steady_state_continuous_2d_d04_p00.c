@@ -188,9 +188,9 @@ void diffusion_steady_state_continuous_2d_d04_p00_exact_flow_circular(
       d0 = cos((4 * j + 1) * phi);
       d1 = cos((4 * j + 3) * phi);
       s1 = sin(2 * (2 * j + 1) * phi);
-      flow_rate[index + 0] = + signs[2 * index + 0] * m0 * s1; /* meridian */
+      flow_rate[index + 0] = - signs[2 * index + 0] * m0 * s1; /* meridian */
       flow_rate[index + 1] = - signs[2 * index + 2] * p1 * d0; /* parallel */
-      flow_rate[index + 2] = - signs[2 * index + 4] * m1 * s1; /* meridian */
+      flow_rate[index + 2] = + signs[2 * index + 4] * m1 * s1; /* meridian */
       flow_rate[index + 3] = + signs[2 * index + 6] * p1 * d1; /* parallel */
       index += 4;
     }
