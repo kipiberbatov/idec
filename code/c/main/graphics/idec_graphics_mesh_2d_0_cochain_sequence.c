@@ -209,13 +209,40 @@ int main(int argc, char ** argv)
   window_margin.top = generic_data.height * coefficient_top;
   window_margin.bottom = generic_data.height * coefficient_bottom;
   data.coordinates = new_coordinates;
-  frame_internal_info_for_set_of_points(
-    &data,
-    m->cn[0],
-    m->coord,
-    generic_data.width,
-    generic_data.height,
-    &window_margin);
+  if (m->dim_embedded == 3)
+  {
+    int i;
+    double * m_coord_2d = malloc(sizeof(double) * 2 * m->cn[0]);
+    if (m_coord_2d == NULL)
+    {
+      color_error_position(__FILE__, __LINE__);
+      idec_error_message_malloc(sizeof(double) * 2 * m->cn[0], "m_coord_2d");
+      status = 1;
+      goto new_coordinates_free;
+    }
+    for (i = 0; i < m->cn[0]; ++i)
+    {
+      m_coord_2d[2 * i] = m->coord[3 * i];
+      m_coord_2d[2 * i + 1] = m->coord[3 * i + 1];
+    }
+    frame_internal_info_for_set_of_points(
+      &data,
+      m->cn[0],
+      m_coord_2d,
+      generic_data.width,
+      generic_data.height,
+      &window_margin);
+    free(m_coord_2d);
+  }
+  /* default case: 2D region in R^2 */
+  else
+    frame_internal_info_for_set_of_points(
+      &data,
+      m->cn[0],
+      m->coord,
+      generic_data.width,
+      generic_data.height,
+      &window_margin);
 
   if (data.point_size < 2.5)
     data.point_size = 2.5;

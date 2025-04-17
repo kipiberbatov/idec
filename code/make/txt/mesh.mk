@@ -16,6 +16,7 @@ build/$(MODE)/txt/mesh: | build/$(MODE)/txt
 -include code/make/txt/mesh/circular_4_3.mk
 -include code/make/txt/mesh/circular_18_10.mk
 -include code/make/txt/mesh/hemisphere_4_3.mk
+-include code/make/txt/mesh/hemisphere_6_6.mk
 -include code/make/txt/mesh/brick_3d_1.mk
 -include code/make/txt/mesh/brick_3d_2.mk
 -include code/make/txt/mesh/brick_3d_5.mk
@@ -49,6 +50,17 @@ txt_mesh_circular: $(_txt_mesh_circular)
 
 txt_mesh_circular_clean:
 	-$(RM) $(_txt_mesh_circular)
+
+_txt_mesh_hemisphere:=\
+  $(_txt_mesh_hemisphere_4_3)\
+  $(_txt_mesh_hemisphere_6_6)\
+
+.PHONY: txt_mesh_hemisphere txt_mesh_hemisphere_clean
+
+txt_mesh_hemisphere: $(_txt_mesh_hemisphere)
+
+txt_mesh_hemisphere_clean:
+	-$(RM) $(_txt_mesh_hemisphere)
 
 _txt_mesh_brick_3d:=\
   $(_txt_mesh_brick_3d_1)\
@@ -92,7 +104,7 @@ _txt_mesh :=\
   $(_txt_mesh_square)\
   $(_txt_mesh_2d_10_grains)\
   $(_txt_mesh_circular)\
-  $(_txt_mesh_hemisphere_4_3)\
+  $(_txt_mesh_hemisphere)\
   $(_txt_mesh_square_pyramid)\
 
 txt_mesh: bin_mesh $(_txt_mesh)
