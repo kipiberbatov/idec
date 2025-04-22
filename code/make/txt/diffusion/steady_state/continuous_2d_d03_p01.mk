@@ -11,6 +11,8 @@ _txt_diffusion_steady_state_continuous_2d_d03_p01 :=\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/exact_circular_4_3_forman_flow.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cochain_circular_4_3_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cochain_circular_4_3_forman_potential.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cochain_circular_4_3_forman_potential_difference_with_exact.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cochain_circular_4_3_forman_flow_rate_difference_with_exact.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cochain_circular_4_3_forman_flow.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/mixed_weak_cochain_circular_4_3_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/mixed_weak_cochain_circular_4_3_forman_solution.txt\
@@ -87,6 +89,28 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cocha
   --steady-state-primal-weak-raw $(word 4, $^)\
   --raw $(word 5, $^)\
   --raw > $@
+
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cochain_circular_4_3_forman_potential_difference_with_exact.txt:\
+  build/$(MODE)/bin/double_array_subtract$(.EXE)\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cochain_circular_4_3_forman_potential.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/exact_circular_4_3_forman_potential.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01
+	$<\
+  --size=49\
+  --minuend=$(word 2, $^)\
+  --subtrahend=$(word 3, $^)\
+  --output=$@
+
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cochain_circular_4_3_forman_flow_rate_difference_with_exact.txt:\
+  build/$(MODE)/bin/double_array_subtract$(.EXE)\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/primal_weak_cochain_circular_4_3_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/exact_circular_4_3_forman_flow.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01
+	$<\
+  --size=92\
+  --minuend=$(word 2, $^)\
+  --subtrahend=$(word 3, $^)\
+  --output=$@
 
 build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d03_p01/mixed_weak_cochain_circular_4_3_forman_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_from_continuous$(.EXE)\

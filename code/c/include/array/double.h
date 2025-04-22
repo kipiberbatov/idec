@@ -38,6 +38,8 @@ void double_array_add_sparse_to(
 
 void double_array_negate(double * b, int n, const double * a);
 
+void double_array_subtract(double * a, int n, const double * b);
+
 void double_array_multiply_with(double * a, int d, double lambda);
 
 void double_array_pointwise_multiply(double * b, int n, const double * a);
@@ -55,6 +57,9 @@ double double_array_dot_product(int d, const double * a, const double * b);
 double double_array_norm(int d, const double * a);
 
 void double_array_normalize(double * res, int d, const double * a);
+
+double
+double_array_lebesgue_norm(double * res, double p, int d, const double * a);
 
 void double_array_difference(
   double * res, int d, const double * a, const double * b);
