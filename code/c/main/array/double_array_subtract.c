@@ -70,6 +70,7 @@ int main(int argc, char ** argv)
     fprintf(stderr,
       "the array size is %s%d%s but it must be at least 0\n",
       color_variable, n, color_none);
+    status = 1;
     goto end;
   }
 
