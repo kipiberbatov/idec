@@ -16,7 +16,7 @@ int main(int argc, char ** argv)
        * solution_name;
   int d, m_cn_dm1, m_cn_0, m_cn_d, number_of_steps, s, size, status;
   int * m_cn;
-  double * flow, * potential, * dual_potential;
+  double * flow_rate, * potential, * dual_potential;
   double ** m_vol;
   FILE * data_file, * m_file, * solution_file;
   struct mesh * m;
@@ -150,17 +150,17 @@ int main(int argc, char ** argv)
     goto data_free;
   }
 
-  flow = double_matrix_file_scan(solution_file,
+  flow_rate = double_matrix_file_scan(solution_file,
     number_of_steps + 1, m_cn_dm1, "--raw");
-  if (flow == NULL)
+  if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan flow from file %s in format --raw\n", solution_name);
+      "cannot scan flow_rate from file %s in format --raw\n", solution_name);
     fclose(solution_file);
     goto data_free;
   }
-  free(flow);
+  free(flow_rate);
 
   dual_potential = double_matrix_file_scan(solution_file,
     number_of_steps + 1, m_cn_d, "--raw");

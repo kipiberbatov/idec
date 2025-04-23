@@ -7,7 +7,7 @@
 #include "color.h"
 #include "double.h"
 #include "diffusion_transient_continuous.h"
-#include "diffusion_transient_discrete_dual_flow_from_potential.h"
+#include "diffusion_transient_discrete_dual_flow_rate_from_potential.h"
 #include "idec_error_message.h"
 #include "int.h"
 #include "unsigned_approximation.h"
@@ -15,11 +15,11 @@
 int main(int argc, char ** argv)
 {
   void * lib_handle;
-  char * data_name, * error, * dual_flow_format, * lib_name, * m_format,
+  char * data_name, * error, * dual_flow_rate_format, * lib_name, * m_format,
        * m_name, * m_bd_1_name, * number_of_steps_name, * potential_format,
        * potential_name;
   int number_of_steps;
-  double * dual_flow, * kappa_1, * potential;
+  double * dual_flow_rate, * kappa_1, * potential;
   FILE * m_file, * m_bd_1_file;
   struct mesh * m;
   struct matrix_sparse * m_bd_1;
@@ -41,7 +41,7 @@ int main(int argc, char ** argv)
   number_of_steps_name = argv[6];
   potential_format = argv[7];
   potential_name = argv[8];
-  dual_flow_format = argv[9];
+  dual_flow_rate_format = argv[9];
 
   m_file = fopen(m_name, "r");
   if (m_file == NULL)
@@ -146,28 +146,29 @@ int main(int argc, char ** argv)
   }
   unsigned_approximation_of_scalar_field_on_1_cells(kappa_1, m, data->kappa_1);
 
-  dual_flow = (double *) malloc(
+  dual_flow_rate = (double *) malloc(
     sizeof(double) * m->cn[1] * (number_of_steps + 1));
-  if (dual_flow == NULL)
+  if (dual_flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     idec_error_message_malloc(sizeof(double) * m->cn[1] * (number_of_steps + 1),
-      "dual_flow");
+      "dual_flow_rate");
     goto kappa_1_free;
   }
 
-  diffusion_transient_discrete_dual_flow_from_potential(
-    dual_flow, m, m_bd_1, kappa_1, number_of_steps, potential);
+  diffusion_transient_discrete_dual_flow_rate_from_potential(
+    dual_flow_rate, m, m_bd_1, kappa_1, number_of_steps, potential);
 
-  double_matrix_file_print(
-    stdout, number_of_steps + 1, m->cn[1], dual_flow, dual_flow_format);
+  double_matrix_file_print(stdout,
+    number_of_steps + 1, m->cn[1], dual_flow_rate, dual_flow_rate_format);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot print dual_flow in format %s\n", dual_flow_format);
+    fprintf(stderr, "cannot print dual_flow_rate in format %s\n",
+      dual_flow_rate_format);
   }
 
-  free(dual_flow);
+  free(dual_flow_rate);
 kappa_1_free:
   free(kappa_1);
 potential_free:

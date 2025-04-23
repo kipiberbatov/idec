@@ -14,7 +14,7 @@ void diffusion_transient_discrete_mixed_weak_file_print_raw(
   double_array_file_print(out,
     data->number_of_cells_d, data->initial_dual_potential, "--raw");
   double_array_file_print(out,
-    data->number_of_cells_dm1, data->initial_flow, "--raw");
+    data->number_of_cells_dm1, data->initial_flow_rate, "--raw");
   double_array_file_print(out, data->number_of_cells_d, data->source, "--raw");
   jagged1_file_print(out, data->boundary_dirichlet_dm1, "--raw");
   jagged1_file_print(out, data->boundary_dirichlet_0, "--raw");

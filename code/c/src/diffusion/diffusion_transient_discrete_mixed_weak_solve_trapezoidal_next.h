@@ -4,11 +4,11 @@
 struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data;
 
 void diffusion_transient_discrete_mixed_weak_solve_trapezoidal_next(
-  double * flow_next,
+  double * flow_rate_next,
   double * dual_potential_next,
   double * y,
-  double * flow_reduced,
-  const double * flow_current,
+  double * flow_rate_reduced,
+  const double * flow_rate_current,
   const double * dual_potential_current,
   const struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data *
     input);

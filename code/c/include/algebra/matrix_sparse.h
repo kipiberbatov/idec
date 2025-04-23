@@ -301,9 +301,9 @@ $
   (b q)[k] = f[k],              text{for all $k$};
   q[boundary_neumann->a1[i_local]] = g_neumann[i_local]
 $
-for $q = flow$ and $u = potential$ */
+for $q = flow_rate$ and $u = potential$ */
 void matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
-  double * flow,
+  double * flow_rate,
   double * dual_potential,
   const double * a,
   const matrix_sparse * b,

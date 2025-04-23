@@ -16,7 +16,7 @@ double * double_array_file_scan(FILE * in, int n, const char * format)
     a = double_array_file_scan_raw(in, n);
   else if (!strcmp(format, "--steady-state-primal-weak-raw"))
     a = double_array_file_scan_steady_state_primal_weak_raw(in, n);
-  else if (!strcmp(format, "--steady-state-mixed-weak-solution-flow-raw"))
+  else if (!strcmp(format, "--steady-state-mixed-weak-solution-flow-rate-raw"))
     a = double_array_file_scan_steady_state_primal_weak_raw(in, n);
   else if (!strcmp(format, "--steady-state-primal-strong-raw"))
     a = double_array_file_scan_steady_state_primal_weak_raw(in, n);

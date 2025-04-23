@@ -16,7 +16,7 @@ int main(int argc, char ** argv)
   int d, m_cn_dm1, m_cn_d, number_of_steps, size, status;
   int * m_cn;
   double time_step;
-  double * dual_potential, * flow;
+  double * dual_potential, * flow_rate;
   double ** m_inner;
   FILE * data_file, * m_file;
   struct matrix_sparse * m_cbd_dm1;
@@ -171,12 +171,13 @@ int main(int argc, char ** argv)
   }
   fclose(data_file);
 
-  flow = (double *) malloc(sizeof(double) * (number_of_steps + 1) * m_cn_dm1);
-  if (flow == NULL)
+  flow_rate
+  = (double *) malloc(sizeof(double) * (number_of_steps + 1) * m_cn_dm1);
+  if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     idec_error_message_malloc(sizeof(double) * (number_of_steps + 1) * m_cn_dm1,
-      "flow");
+      "flow_rate");
     goto data_free;
   }
 
@@ -187,29 +188,29 @@ int main(int argc, char ** argv)
     color_error_position(__FILE__, __LINE__);
     idec_error_message_malloc(sizeof(double) * (number_of_steps + 1) * m_cn_d,
       "dual_potential");
-    goto flow_free;
+    goto flow_rate_free;
   }
 
   diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
-    flow, dual_potential,
+    flow_rate, dual_potential,
     m, m_cbd_dm1, m_inner[d - 1], m_inner[d], data, time_step, number_of_steps);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot find flow and dual_potential\n", stderr);
+    fputs("cannot find flow_rate and dual_potential\n", stderr);
     goto dual_potential_free;
   }
 
   double_matrix_file_print(
-    stdout, number_of_steps + 1, m_cn_dm1, flow, "--raw");
+    stdout, number_of_steps + 1, m_cn_dm1, flow_rate, "--raw");
   fputc('\n', stdout);
   double_matrix_file_print(
     stdout, number_of_steps + 1, m_cn_d, dual_potential, "--raw");
 
 dual_potential_free:
   free(dual_potential);
-flow_free:
-  free(flow);
+flow_rate_free:
+  free(flow_rate);
 data_free:
   diffusion_transient_discrete_mixed_weak_free(data);
 m_inner_free:

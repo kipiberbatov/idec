@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
   char * data_name, * m_inner_format, * m_inner_name, * m_format, * m_name;
   int d;
   int * m_cn;
-  double * flow, * dual_potential;
+  double * flow_rate, * dual_potential;
   double ** m_inner;
   FILE * data_file, * m_file;
   struct matrix_sparse * m_cbd_dm1;
@@ -115,11 +115,11 @@ int main(int argc, char ** argv)
   }
   fclose(data_file);
 
-  flow = (double *) malloc(sizeof(double) * m->cn[d - 1]);
-  if (flow == NULL)
+  flow_rate = (double *) malloc(sizeof(double) * m->cn[d - 1]);
+  if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "flow");
+    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "flow_rate");
     goto data_free;
   }
 
@@ -128,27 +128,27 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     idec_error_message_malloc(sizeof(double) * m->cn[d], "dual_potential");
-    goto flow_free;
+    goto flow_rate_free;
   }
 
   diffusion_steady_state_discrete_mixed_weak_solve(
-    flow, dual_potential, m, m_cbd_dm1, m_inner[d - 1], m_inner[d], data);
+    flow_rate, dual_potential, m, m_cbd_dm1, m_inner[d - 1], m_inner[d], data);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot find flow and potential\n", stderr);
+    fputs("cannot find flow_rate and potential\n", stderr);
     goto dual_potential_free;
   }
 
   fprintf(stdout, "%d\n", m->cn[d - 1]);
   fprintf(stdout, "%d\n", m->cn[d]);
-  double_array_file_print(stdout, m->cn[d - 1], flow, "--raw");
+  double_array_file_print(stdout, m->cn[d - 1], flow_rate, "--raw");
   double_array_file_print(stdout, m->cn[d], dual_potential, "--raw");
 
 dual_potential_free:
   free(dual_potential);
-flow_free:
-  free(flow);
+flow_rate_free:
+  free(flow_rate);
 data_free:
   diffusion_steady_state_discrete_mixed_weak_free(data);
 m_inner_free:

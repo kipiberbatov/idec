@@ -37,7 +37,7 @@
       be the prescribed temperature on the Dirichlet boundary;
     \item
       $g_N^{d - 1} [E T^{-1}] \in C^{d - 1} \Gamma_N$
-      be the prescribed flow on the Neumann boundary.
+      be the prescribed flow rate on the Neumann boundary.
   \end{itemize}
   Our algorithm has $3$ phases.
   \begin{enumerate}
@@ -141,7 +141,7 @@
               + \widetilde{\bf F};
           \end{equation}
         \item
-          the time-independent part of the heat flow
+          the time-independent part of the heat flow rate
           $\overline{\bf P} \in \R^{\abs{\overline{J}}}$,
           \begin{equation}
             \overline{\bf P} := \overline{\bf A}^{-1} \overline{\bf G};
@@ -158,10 +158,10 @@
         \item
           the initial coordinates
           ${\bf U}^0 \in \R^{n_d}$ of the dual temperature,
-          and ${\bf Q}^0 \in \R^{n_{d - 1}}$ of the heat flow:
+          and ${\bf Q}^0 \in \R^{n_{d - 1}}$ of the heat flow rate:
           \begin{subequations}
             \begin{alignat}{2}
-              & {\bf Q}^0_i := ({\bf {\rm flow}}({\bf u}_0))_i,\
+              & {\bf Q}^0_i := ({\bf {\rm flow\_rate}}({\bf u}_0))_i,\
               && i = 0, ..., n_{d - 1} - 1, \\
               %
               & {\bf U}^0_k := ({\bf \star}_0 {\bf u}_0)_k,\
@@ -189,7 +189,7 @@
       {\bf L}_\tau,\ {\bf V}_\tau,\ \overline{\bf P}$.
       Temporary mutable variables include the vectors
       ${\bf Y}_\tau^s,\ {\bf W}_\tau^s,\ \overline{\bf Q}^{s + 1}$.
-      The output consists of the coordinates ${\bf Q}$ of the heat flow,
+      The output consists of the coordinates ${\bf Q}$ of the heat flow rate,
       and the coordinates ${\bf U}$ of dual temperature.
       ${\bf Q}$ and ${\bf U}$ are either pre-allocated as arrays of size
       $(\verb|number_of_time_steps| + 1) \times n_p$
@@ -227,7 +227,7 @@
             := \overline{\bf P} - \overline{\bf B}^T {\bf U}^{s + 1}$;
           \hfill\refstepcounter{equation}\textup{(\theequation)}
         \item
-          the heat flow ${\bf Q}^{s + 1} \in \R^{n_{d - 1}}$
+          the heat flow rate ${\bf Q}^{s + 1} \in \R^{n_{d - 1}}$
           (stored for all $s$),
           \begin{equation}
             {\bf Q}^{s + 1}_j :=

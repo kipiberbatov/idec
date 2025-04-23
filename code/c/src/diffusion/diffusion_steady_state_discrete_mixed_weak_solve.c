@@ -9,7 +9,7 @@
 #include "mesh_qc.h"
 
 void diffusion_steady_state_discrete_mixed_weak_solve(
-  double * flow,
+  double * flow_rate,
   double * dual_potential,
   const struct mesh * m,
   const struct matrix_sparse * m_cbd_dm1,
@@ -90,12 +90,12 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   }
 
   matrix_sparse_mixed_constrained_linear_solve_with_diagonal_top_left_matrix(
-    flow, dual_potential,
+    flow_rate, dual_potential,
     a, b, g, f, data->boundary_neumann_dm1, data->g_neumann_dm1);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot find flow and potential\n", stderr);
+    fputs("cannot find flow_rate and potential\n", stderr);
     goto f_free;
   }
 

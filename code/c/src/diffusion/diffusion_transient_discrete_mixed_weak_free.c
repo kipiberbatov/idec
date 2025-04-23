@@ -12,7 +12,7 @@ void diffusion_transient_discrete_mixed_weak_free(
   jagged1_free(data->boundary_dirichlet_0);
   jagged1_free(data->boundary_dirichlet_dm1);
   free(data->source);
-  free(data->initial_flow);
+  free(data->initial_flow_rate);
   free(data->initial_dual_potential);
   free(data->kappa_dm1);
   free(data->pi_d);

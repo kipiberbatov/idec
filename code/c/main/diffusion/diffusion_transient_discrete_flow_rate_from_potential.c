@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "double.h"
-#include "diffusion_transient_discrete_flow_from_potential.h"
+#include "diffusion_transient_discrete_flow_rate_from_potential.h"
 #include "idec_command_line.h"
 #include "idec_error_message.h"
 #include "int.h"
@@ -11,16 +11,17 @@
 
 int main(int argc, char ** argv)
 {
-  char * flow_format, * kappa_1_format, * kappa_1_name, * m_format, * m_name,
-       * m_hodge_format, * m_hodge_name, * potential_format, * potential_name;
+  char * flow_rate_format, * kappa_1_format, * kappa_1_name, * m_format,
+       * m_name, * m_hodge_format, * m_hodge_name, * potential_format,
+       * potential_name;
   int d, m_cn_dm1, number_of_steps, size, status;
-  double * flow, * kappa_1, * potential;
+  double * flow_rate, * kappa_1, * potential;
   FILE * m_file;
   struct mesh * m;
   struct matrix_sparse * m_bd_1;
   struct matrix_sparse ** m_hodge;
 
-  idec_command_line no_positional_arguments, option_flow_format,
+  idec_command_line no_positional_arguments, option_flow_rate_format,
                     option_kappa_1, option_kappa_1_format, option_mesh,
                     option_mesh_format, option_mesh_hodge,
                     option_mesh_hodge_format, option_number_of_steps,
@@ -37,7 +38,7 @@ int main(int argc, char ** argv)
     &option_potential,
     &option_potential_format,
     &option_number_of_steps,
-    &option_flow_format,
+    &option_flow_rate_format,
     &no_positional_arguments
   };
 
@@ -68,7 +69,7 @@ int main(int argc, char ** argv)
     &option_number_of_steps, &number_of_steps, "--number-of-steps", NULL);
 
   idec_command_line_set_option_string(
-    &option_flow_format, &flow_format, "--flow-format", "--raw");
+    &option_flow_rate_format, &flow_rate_format, "--flow_rate-format", "--raw");
 
   /* there are no positional arguments */
   idec_command_line_set_option_no_arguments(
@@ -155,35 +156,36 @@ int main(int argc, char ** argv)
     goto kappa_1_free;
   }
 
-  flow = (double *) calloc((number_of_steps + 1) * m_cn_dm1, sizeof(double));
-  if (flow == NULL)
+  flow_rate
+  = (double *) calloc((number_of_steps + 1) * m_cn_dm1, sizeof(double));
+  if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     idec_error_message_malloc(
-      sizeof(double) * (number_of_steps + 1) * m_cn_dm1, "flow");
+      sizeof(double) * (number_of_steps + 1) * m_cn_dm1, "flow_rate");
     goto potential_free;
   }
 
-  diffusion_transient_discrete_flow_from_potential(
-    flow, m, m_bd_1, kappa_1, potential, m_hodge[1], number_of_steps);
+  diffusion_transient_discrete_flow_rate_from_potential(
+    flow_rate, m, m_bd_1, kappa_1, potential, m_hodge[1], number_of_steps);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot calculate flow %s\n", stderr);
-    goto flow_free;
+    fputs("cannot calculate flow_rate %s\n", stderr);
+    goto flow_rate_free;
   }
 
   double_matrix_file_print(
-    stdout, number_of_steps + 1, m_cn_dm1, flow, flow_format);
+    stdout, number_of_steps + 1, m_cn_dm1, flow_rate, flow_rate_format);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot print flow in format %s\n", flow_format);
-    goto flow_free;
+    fprintf(stderr, "cannot print flow_rate in format %s\n", flow_rate_format);
+    goto flow_rate_free;
   }
 
-flow_free:
-  free(flow);
+flow_rate_free:
+  free(flow_rate);
 potential_free:
   free(potential);
 kappa_1_free:

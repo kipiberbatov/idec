@@ -16,7 +16,7 @@ Let
   . G_N = {}
   . g_D = 0
 
-The potential 0-form u and flow 1-form q are solutions to the problem
+The potential 0-form u and flow rate 1-form q are solutions to the problem
   . q = - *_1 kappa_1 d_0 u
   . D_t Q = d q + f
   . D_t Q = *_0 (D_t (pi_0 u))
@@ -97,13 +97,13 @@ void diffusion_transient_continuous_2d_d00_p00_potential(
   de_rham_sequence_0(potential, m, 0., step, number_of_steps, u);
 }
 
-void diffusion_transient_continuous_2d_d00_p00_flow(
-  double * flow, const struct mesh * m, double step, int number_of_steps,
+void diffusion_transient_continuous_2d_d00_p00_flow_rate(
+  double * flow_rate, const struct mesh * m, double step, int number_of_steps,
   const struct matrix_sparse * m_bd_1)
 {
   int i, m_cn_1;
 
   m_cn_1 = m->cn[1];
   for (i = 0; i < m_cn_1 * (number_of_steps + 1); ++i)
-    flow[i] = 0.;
+    flow_rate[i] = 0.;
 }

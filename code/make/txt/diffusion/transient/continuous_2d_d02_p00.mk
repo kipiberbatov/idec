@@ -9,10 +9,10 @@ build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00:\
 _txt_diffusion_transient_continuous_2d_d02_p00 :=\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_input.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_potential.txt\
-  build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow.txt\
+  build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_input.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_potential.txt\
-  build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow.txt\
+  build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2d_10_grains_forman_input.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_solution.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_potential.txt
@@ -45,8 +45,8 @@ build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochai
   --number-of-steps=1000\
   > $@
 
-build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow.txt:\
-  build/$(MODE)/bin/diffusion_transient_discrete_flow_from_potential$(.EXE)\
+build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_transient_discrete_flow_rate_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_hodge.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_input.txt\
@@ -89,8 +89,8 @@ build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_
   --number-of-steps=1000\
   > $@
 
-build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow.txt:\
-  build/$(MODE)/bin/diffusion_transient_discrete_flow_from_potential$(.EXE)\
+build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_transient_discrete_flow_rate_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_hodge.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_input.txt\

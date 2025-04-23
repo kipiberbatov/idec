@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
   char * error, * data_name, * lib_name, * m_inner_name, * m_name, * m_vol_name;
   int d;
   int * m_cn;
-  double * flow, * dual_potential;
+  double * flow_rate, * dual_potential;
   double ** m_inner, ** m_vol;
   FILE * m_file;
   struct matrix_sparse * m_cbd_dm1;
@@ -121,11 +121,11 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  flow = (double *) malloc(sizeof(double) * m->cn[d - 1]);
-  if (flow == NULL)
+  flow_rate = (double *) malloc(sizeof(double) * m->cn[d - 1]);
+  if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot allocate memory for flow\n", stderr);
+    fputs("cannot allocate memory for flow_rate\n", stderr);
     goto lib_close;
   }
 
@@ -134,23 +134,23 @@ int main(int argc, char ** argv)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot allocate memory for dual_potential\n", stderr);
-    goto flow_free;
+    goto flow_rate_free;
   }
 
   diffusion_steady_state_continuous_mixed_weak_cochain_solve(
-    flow, dual_potential,
+    flow_rate, dual_potential,
     m, m_cbd_dm1, m_vol[d - 1], m_vol[d], m_inner[d - 1], m_inner[d], data);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot find flow and potential\n", stderr);
+    fputs("cannot find flow_rate and potential\n", stderr);
     goto dual_potential_free;
   }
 
 dual_potential_free:
   free(dual_potential);
-flow_free:
-  free(flow);
+flow_rate_free:
+  free(flow_rate);
 lib_close:
   dlclose(lib_handle);
 m_inner_free:

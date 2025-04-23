@@ -19,11 +19,11 @@ static void double_array_diagonal_matrix_multiply_add(
 #define progress 0
 
 void diffusion_transient_discrete_mixed_weak_solve_trapezoidal_next(
-  double * flow_next,
+  double * flow_rate_next,
   double * dual_potential_next,
   double * y,
-  double * flow_reduced,
-  const double * flow_current,
+  double * flow_rate_reduced,
+  const double * flow_rate_current,
   const double * dual_potential_current,
   const struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data *
     input)
@@ -48,7 +48,7 @@ void diffusion_transient_discrete_mixed_weak_solve_trapezoidal_next(
   double_array_file_print(stderr, m_cn_d, y, "--raw");
 #endif
 
-  matrix_sparse_vector_multiply_add(y, input->b, flow_current);
+  matrix_sparse_vector_multiply_add(y, input->b, flow_rate_current);
 
 #if progress
   fputs("\n" color_red "y = b q^s:" color_none "\n", stderr);
@@ -85,24 +85,24 @@ void diffusion_transient_discrete_mixed_weak_solve_trapezoidal_next(
 #endif
 
   /* calculate q_bar^s := p_bar - b_bar^T u^{s + 1} */
-  memcpy(flow_reduced, input->p_bar, sizeof(double) * m_cn_dm1_bar);
+  memcpy(flow_rate_reduced, input->p_bar, sizeof(double) * m_cn_dm1_bar);
   matrix_sparse_vector_multiply_add(
-    flow_reduced, input->negative_b_bar_transpose, dual_potential_next);
+    flow_rate_reduced, input->negative_b_bar_transpose, dual_potential_next);
 
 #if progress
   fputs("\n" color_red "q_bar^s := p_bar - b_bar^T u^{s + 1}:" color_none "\n",
     stderr);
-  double_array_file_print(stderr, m_cn_dm1_bar, flow_reduced, "--raw");
+  double_array_file_print(stderr, m_cn_dm1_bar, flow_rate_reduced, "--raw");
 #endif
 
   /* calculate q^{s + 1} from q_bar^s and Neumann boundary conditions */
   double_array_assemble_from_sparse_array(
-    flow_next, input->boundary_neumann_dm1_bar, flow_reduced);
-  double_array_assemble_from_sparse_array(
-    flow_next, input->data->boundary_neumann_dm1, input->data->g_neumann_dm1);
+    flow_rate_next, input->boundary_neumann_dm1_bar, flow_rate_reduced);
+  double_array_assemble_from_sparse_array(flow_rate_next,
+    input->data->boundary_neumann_dm1, input->data->g_neumann_dm1);
 
 #if progress
   fputs("\n" color_red "q^{s + 1}:" color_none "\n", stderr);
-  double_array_file_print(stderr, m_cn_dm1, flow_next, "--raw");
+  double_array_file_print(stderr, m_cn_dm1, flow_rate_next, "--raw");
 #endif
 }

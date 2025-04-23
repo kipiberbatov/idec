@@ -4,17 +4,18 @@
 
 #include "color.h"
 #include "double.h"
-#include "diffusion_steady_state_discrete_flow_from_potential.h"
+#include "diffusion_steady_state_discrete_flow_rate_from_potential.h"
 #include "idec_error_message.h"
 #include "int.h"
 #include "mesh.h"
 
 int main(int argc, char ** argv)
 {
-  char * flow_format, * kappa_1_format, * kappa_1_name, * m_format, * m_name,
-       * m_hodge_format, * m_hodge_name, * potential_format, * potential_name;
+  char * flow_rate_format, * kappa_1_format, * kappa_1_name, * m_format,
+       * m_name, * m_hodge_format, * m_hodge_name, * potential_format,
+       * potential_name;
   int d;
-  double * flow, * kappa_1, * potential;
+  double * flow_rate, * kappa_1, * potential;
   FILE * m_file;
   struct mesh * m;
   struct matrix_sparse * m_bd_1;
@@ -36,7 +37,7 @@ int main(int argc, char ** argv)
   kappa_1_name = argv[6];
   potential_format = argv[7];
   potential_name = argv[8];
-  flow_format = argv[9];
+  flow_rate_format = argv[9];
 
   m_file = fopen(m_name, "r");
   if (m_file == NULL)
@@ -103,27 +104,27 @@ int main(int argc, char ** argv)
     goto kappa_1_free;
   }
 
-  flow = (double *) calloc(m->cn[d - 1], sizeof(double));
-  if (flow == NULL)
+  flow_rate = (double *) calloc(m->cn[d - 1], sizeof(double));
+  if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "flow");
+    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "flow_rate");
     goto potential_free;
   }
 
-  diffusion_steady_state_discrete_flow_from_potential(
-    flow, m, m_bd_1, kappa_1, potential, m_hodge[1]);
+  diffusion_steady_state_discrete_flow_rate_from_potential(
+    flow_rate, m, m_bd_1, kappa_1, potential, m_hodge[1]);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot calculate flow %s\n", stderr);
-    goto flow_free;
+    fputs("cannot calculate flow_rate %s\n", stderr);
+    goto flow_rate_free;
   }
 
-  double_array_file_print(stdout, m->cn[d - 1], flow, flow_format);
+  double_array_file_print(stdout, m->cn[d - 1], flow_rate, flow_rate_format);
 
-flow_free:
-  free(flow);
+flow_rate_free:
+  free(flow_rate);
 potential_free:
   free(potential);
 kappa_1_free:

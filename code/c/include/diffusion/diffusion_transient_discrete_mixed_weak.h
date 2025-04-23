@@ -16,7 +16,7 @@ struct diffusion_transient_discrete_mixed_weak
   double * pi_d;
   double * kappa_dm1;
   double * initial_dual_potential;
-  double * initial_flow;
+  double * initial_flow_rate;
   double * source;
   struct jagged1 * boundary_dirichlet_dm1;
   struct jagged1 * boundary_dirichlet_0;
@@ -38,7 +38,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   const struct diffusion_transient_continuous * data_continuous);
 
 void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
-  double * flow,
+  double * flow_rate,
   double * dual_potential,
   const struct mesh * m,
   const struct matrix_sparse * m_cbd_dm1,
@@ -50,7 +50,7 @@ void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
 
 
 void diffusion_transient_discrete_mixed_weak_solve_trapezoidal_to_steady_state(
-  struct double_array_sequence_dynamic * flow,
+  struct double_array_sequence_dynamic * flow_rate,
   struct double_array_sequence_dynamic * dual_potential,
   const struct mesh * m,
   const double * m_inner_0,

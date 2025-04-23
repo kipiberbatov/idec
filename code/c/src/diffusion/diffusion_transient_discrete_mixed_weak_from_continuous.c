@@ -5,7 +5,7 @@
 #include "boundary_pseudoscalar_field_discretize.h"
 #include "color.h"
 #include "de_rham.h"
-#include "diffusion_steady_state_discrete_flow_from_potential.h"
+#include "diffusion_steady_state_discrete_flow_rate_from_potential.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
 #include "double.h"
@@ -13,8 +13,8 @@
 #include "mesh_qc.h"
 #include "unsigned_approximation.h"
 
-static void set_initial_flow(
-  double * initial_flow,
+static void set_initial_flow_rate(
+  double * initial_flow_rate,
   const struct mesh * m,
   const struct matrix_sparse * m_bd_1,
   const struct matrix_sparse * m_hodge_1,
@@ -47,12 +47,12 @@ static void set_initial_flow(
 
   errno = 0;
 
-  diffusion_steady_state_discrete_flow_from_potential(initial_flow,
+  diffusion_steady_state_discrete_flow_rate_from_potential(initial_flow_rate,
     m, m_bd_1, dual_conductivity, discrete_potential, m_hodge_1);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot calculate initial flow\n");
+    fprintf(stderr, "cannot calculate initial flow_rate\n");
     goto discrete_potential_free;
   }
 
@@ -154,21 +154,22 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
     goto data_discrete_initial_dual_potential_free;
   }
 
-  data_discrete->initial_flow = (double *) calloc(m->cn[d - 1], sizeof(double));
-  if (data_discrete->initial_flow == NULL)
+  data_discrete->initial_flow_rate
+  = (double *) calloc(m->cn[d - 1], sizeof(double));
+  if (data_discrete->initial_flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     idec_error_message_malloc(sizeof(double) * m->cn[d - 1],
-      "data_discrete->initial_flow");
+      "data_discrete->initial_flow_rate");
     goto data_discrete_initial_dual_potential_free;
   }
-  set_initial_flow(data_discrete->initial_flow,
+  set_initial_flow_rate(data_discrete->initial_flow_rate,
     m, m_bd_1, m_hodge_1, data_continuous);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot calculate data_discrete->initial_dual_potential\n", stderr);
-    goto data_discrete_initial_flow_free;
+    goto data_discrete_initial_flow_rate_free;
   }
 
   data_discrete->source = (double *) malloc(sizeof(double) * m->cn[d]);
@@ -177,7 +178,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
     color_error_position(__FILE__, __LINE__);
     idec_error_message_malloc(sizeof(double) * m->cn[d],
       "data_discrete->source");
-    goto data_discrete_initial_flow_free;
+    goto data_discrete_initial_flow_rate_free;
   }
   de_rham_nonzero(
     data_discrete->source, m, m->dim, m_vol_d, data_continuous->source);
@@ -245,7 +246,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
     data_discrete->boundary_neumann_dm1,
     data_continuous->g_neumann);
 
-  double_array_assemble_from_sparse_array(data_discrete->initial_flow,
+  double_array_assemble_from_sparse_array(data_discrete->initial_flow_rate,
     data_discrete->boundary_neumann_dm1, data_discrete->g_neumann_dm1);
 
   return data_discrete;
@@ -262,8 +263,8 @@ data_discrete_boundary_dirichlet_dm1_free:
   jagged1_free(data_discrete->boundary_dirichlet_dm1);
 data_discrete_source_free:
   free(data_discrete->source);
-data_discrete_initial_flow_free:
-  free(data_discrete->initial_flow);
+data_discrete_initial_flow_rate_free:
+  free(data_discrete->initial_flow_rate);
 data_discrete_initial_dual_potential_free:
   free(data_discrete->initial_dual_potential);
 data_discrete_kappa_dm1_free:

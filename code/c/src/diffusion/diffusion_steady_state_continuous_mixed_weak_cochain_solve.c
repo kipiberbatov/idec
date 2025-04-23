@@ -8,7 +8,7 @@
 #include "mesh.h"
 
 void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
-  double * flow,
+  double * flow_rate,
   double * dual_potential,
   const struct mesh * m,
   const struct matrix_sparse * m_cbd_dm1,
@@ -30,7 +30,8 @@ void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
   }
 
   diffusion_steady_state_discrete_mixed_weak_solve(
-    flow, dual_potential, m, m_cbd_dm1, m_inner_dm1, m_inner_d, data_discrete);
+    flow_rate, dual_potential,
+    m, m_cbd_dm1, m_inner_dm1, m_inner_d, data_discrete);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);

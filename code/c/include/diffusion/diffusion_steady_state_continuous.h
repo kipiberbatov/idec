@@ -31,7 +31,7 @@ double * diffusion_steady_state_continuous_primal_weak_cochain_solve(
 
 /******************************** mixed weak *********************************/
 void diffusion_steady_state_continuous_mixed_weak_cochain_solve(
-  double * flow,
+  double * flow_rate,
   double * dual_potential,
   const struct mesh * m,
   const struct matrix_sparse * m_bd_d,

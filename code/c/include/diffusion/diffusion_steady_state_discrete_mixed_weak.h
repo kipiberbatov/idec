@@ -32,7 +32,7 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
   const struct diffusion_steady_state_continuous * data_continuous);
 
 void diffusion_steady_state_discrete_mixed_weak_solve(
-  double * flow,
+  double * flow_rate,
   double * dual_potential,
   const struct mesh * m,
   const struct matrix_sparse * m_bd_d,

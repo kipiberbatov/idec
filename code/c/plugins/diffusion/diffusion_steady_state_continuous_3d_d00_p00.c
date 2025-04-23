@@ -14,7 +14,7 @@ Let
   . g_D = {(0, y, z) |-> 100, (1, y, z) |-> 0}
   . g_N = 0
 
-The potential 0-form u and flow 1-form q are solutions to the problem
+The potential 0-form u and flow rate 1-form q are solutions to the problem
   . q = *_1 kappa_1 d_0 u
   . d q = -f
   . tr_{G_D, 0} u = g_D

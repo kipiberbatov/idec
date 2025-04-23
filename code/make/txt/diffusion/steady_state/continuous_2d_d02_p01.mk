@@ -8,13 +8,13 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01:\
 
 _txt_diffusion_steady_state_continuous_2d_d02_p01 :=\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grains_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grains_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grains_forman_flow_rate.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_flow_rate.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_flow_rate.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_solution.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/mixed_weak_cochain_2d_10_grains_forman_potential.txt\
@@ -31,8 +31,8 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grain
   diffusion_steady_state_continuous_2d_d02_p01_potential\
   --raw > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grains_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow$(.EXE)\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grains_forman_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow_rate$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d02_p01$(.OBJ)\
   | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01\
@@ -40,7 +40,7 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grain
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
-  diffusion_steady_state_continuous_2d_d02_p01_flow\
+  diffusion_steady_state_continuous_2d_d02_p01_flow_rate\
   --raw > $@
 
 build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_input.txt:\
@@ -69,8 +69,8 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_coc
   $(word 5, $^)\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_from_potential$(.EXE)\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_rate_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_hodge.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_input.txt\
@@ -109,8 +109,8 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cocha
   $(word 4, $^)\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_from_potential$(.EXE)\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_rate_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/mesh/2d_10_grains_forman_hodge.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_weak_cochain_2d_10_grains_forman_input.txt\

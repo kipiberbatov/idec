@@ -63,12 +63,12 @@ diffusion_transient_discrete_mixed_weak_file_scan_raw(FILE * in)
     goto data_kappa_dm1_free;
   }
 
-  data->initial_flow = double_array_file_scan(in,
+  data->initial_flow_rate = double_array_file_scan(in,
     data->number_of_cells_dm1, "--raw");
-  if (data->initial_flow == NULL)
+  if (data->initial_flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot scan data->initial_flow\n", stderr);
+    fputs("cannot scan data->initial_flow_rate\n", stderr);
     goto data_initial_dual_potential_free;
   }
 
@@ -77,7 +77,7 @@ diffusion_transient_discrete_mixed_weak_file_scan_raw(FILE * in)
   {
     color_error_position(__FILE__, __LINE__);
     fputs("cannot scan data->source\n", stderr);
-    goto data_initial_flow_free;
+    goto data_initial_flow_rate_free;
   }
 
   data->boundary_dirichlet_dm1 = jagged1_file_scan(in, "--raw");
@@ -135,8 +135,8 @@ data_boundary_dirichlet_dm1_free:
   jagged1_free(data->boundary_dirichlet_dm1);
 data_source_free:
   free(data->source);
-data_initial_flow_free:
-  free(data->initial_flow);
+data_initial_flow_rate_free:
+  free(data->initial_flow_rate);
 data_initial_dual_potential_free:
   free(data->initial_dual_potential);
 data_kappa_dm1_free:

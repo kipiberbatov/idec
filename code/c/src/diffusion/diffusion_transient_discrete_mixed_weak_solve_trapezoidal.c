@@ -9,10 +9,10 @@
 #include "mesh_qc.h"
 
 static void loop(
-  double * flow,
+  double * flow_rate,
   double * dual_potential,
   double * y,
-  double * flow_reduced,
+  double * flow_rate_reduced,
   const struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data *
     input,
   int number_of_steps)
@@ -25,18 +25,18 @@ static void loop(
   for (i = 0; i < number_of_steps; ++i)
   {
     diffusion_transient_discrete_mixed_weak_solve_trapezoidal_next(
-      flow + m_cn_dm1 * (i + 1),
+      flow_rate + m_cn_dm1 * (i + 1),
       dual_potential + m_cn_d * (i + 1),
       y,
-      flow_reduced,
-      flow + m_cn_dm1 * i,
+      flow_rate_reduced,
+      flow_rate + m_cn_dm1 * i,
       dual_potential + m_cn_d * i,
       input);
   }
 }
 
 void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
-  double * flow,
+  double * flow_rate,
   double * dual_potential,
   const struct mesh * m,
   const struct matrix_sparse * m_cbd_dm1,
@@ -47,7 +47,7 @@ void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
   int number_of_steps)
 {
   int d, m_cn_dm1, m_cn_dm1_bar, m_cn_d;
-  double * flow_reduced, * y;
+  double * flow_rate_reduced, * y;
   struct diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data * input;
 
   d = m->dim;
@@ -73,21 +73,22 @@ void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
     goto input_free;
   }
 
-  flow_reduced = (double *) malloc(sizeof(double) * m_cn_dm1_bar);
-  if (flow_reduced == NULL)
+  flow_rate_reduced = (double *) malloc(sizeof(double) * m_cn_dm1_bar);
+  if (flow_rate_reduced == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_dm1_bar, "flow_reduced");
+    idec_error_message_malloc(sizeof(double) * m_cn_dm1_bar,
+                              "flow_rate_reduced");
     goto y_free;
   }
 
   /* initialization */
-  memcpy(flow, data->initial_flow, sizeof(double) * m_cn_dm1);
+  memcpy(flow_rate, data->initial_flow_rate, sizeof(double) * m_cn_dm1);
   memcpy(dual_potential, data->initial_dual_potential, sizeof(double) * m_cn_d);
 
-  loop(flow, dual_potential, y, flow_reduced, input, number_of_steps);
+  loop(flow_rate, dual_potential, y, flow_rate_reduced, input, number_of_steps);
 
-  free(flow_reduced);
+  free(flow_rate_reduced);
 y_free:
   free(y);
 input_free:

@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
   char * error, * function_name, * lib_name, * m_format, * m_name,
        * output_format;
   int d;
-  double * flow;
+  double * flow_rate;
   FILE * m_file;
   struct mesh * m;
   struct matrix_sparse * m_bd_1;
@@ -84,18 +84,18 @@ int main(int argc, char ** argv)
     goto lib_close;
   }
 
-  flow = (double *) malloc(sizeof(double) * m->cn[d - 1]);
-  if (flow == NULL)
+  flow_rate = (double *) malloc(sizeof(double) * m->cn[d - 1]);
+  if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "flow");
+    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "flow_rate");
     goto lib_close;
   }
 
-  function(flow, m, m_bd_1);
-  double_array_file_print(stdout, m->cn[d - 1], flow, output_format);
+  function(flow_rate, m, m_bd_1);
+  double_array_file_print(stdout, m->cn[d - 1], flow_rate, output_format);
 
-  free(flow);
+  free(flow_rate);
 lib_close:
   dlclose(lib_handle);
 m_bd_1_free:

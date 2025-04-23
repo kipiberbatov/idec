@@ -108,7 +108,7 @@ On a parallel P = {theta_0} * [phi_a, phi_b], phi_b - phi_a = phi_1,
           = K sin(phi_1) sin(theta_0) sin(2 theta_0) cos(phi_a + phi_b)
 
 */
-void diffusion_steady_state_continuous_2d_d04_p00_exact_flow_circular(
+void diffusion_steady_state_continuous_2d_d04_p00_exact_flow_rate_circular(
   double * flow_rate,
   const struct mesh * m,
   const struct matrix_sparse * m_bd_1)

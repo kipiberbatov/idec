@@ -8,18 +8,18 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00:\
 
 _txt_diffusion_steady_state_continuous_2d_d04_p00 :=\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_4_3_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_4_3_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_4_3_forman_flow_rate.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_4_3_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_4_3_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_4_3_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_4_3_forman_flow_rate.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/mixed_weak_cochain_hemisphere_4_3_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/mixed_weak_cochain_hemisphere_4_3_forman_solution.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/mixed_weak_cochain_hemisphere_4_3_forman_potential.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_6_6_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_6_6_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_6_6_forman_flow_rate.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_6_6_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_6_6_forman_potential.txt\
-  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_6_6_forman_flow.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_6_6_forman_flow_rate.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/mixed_weak_cochain_hemisphere_6_6_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/mixed_weak_cochain_hemisphere_6_6_forman_solution.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/mixed_weak_cochain_hemisphere_6_6_forman_potential.txt\
@@ -36,8 +36,8 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_
   diffusion_steady_state_continuous_2d_d04_p00_exact_potential_circular\
   --raw > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_4_3_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow$(.EXE)\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_4_3_forman_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow_rate$(.EXE)\
   build/$(MODE)/txt/mesh/hemisphere_4_3_forman.txt\
   build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d04_p00$(.OBJ)\
   | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00\
@@ -45,7 +45,7 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
-  diffusion_steady_state_continuous_2d_d04_p00_exact_flow_circular\
+  diffusion_steady_state_continuous_2d_d04_p00_exact_flow_rate_circular\
   --raw > $@
 
 build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_4_3_forman_input.txt:\
@@ -74,8 +74,8 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cocha
   $(word 4, $^)\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_4_3_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_from_potential$(.EXE)\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_4_3_forman_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_rate_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/hemisphere_4_3_forman.txt\
   build/$(MODE)/txt/mesh/hemisphere_4_3_forman_hodge.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_4_3_forman_input.txt\
@@ -140,8 +140,8 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_
   diffusion_steady_state_continuous_2d_d04_p00_exact_potential_circular\
   --raw > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_6_6_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow$(.EXE)\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_6_6_forman_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow_rate$(.EXE)\
   build/$(MODE)/txt/mesh/hemisphere_6_6_forman.txt\
   build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d04_p00$(.OBJ)\
   | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00\
@@ -149,7 +149,7 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/exact_hemisphere_
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
-  diffusion_steady_state_continuous_2d_d04_p00_exact_flow_circular\
+  diffusion_steady_state_continuous_2d_d04_p00_exact_flow_rate_circular\
   --raw > $@
 
 build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_6_6_forman_input.txt:\
@@ -178,8 +178,8 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cocha
   $(word 4, $^)\
   > $@
 
-build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_6_6_forman_flow.txt:\
-  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_from_potential$(.EXE)\
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_6_6_forman_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_flow_rate_from_potential$(.EXE)\
   build/$(MODE)/txt/mesh/hemisphere_6_6_forman.txt\
   build/$(MODE)/txt/mesh/hemisphere_6_6_forman_hodge.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d04_p00/primal_weak_cochain_hemisphere_6_6_forman_input.txt\

@@ -14,7 +14,7 @@ Let
   . G_N = {}
   . g_D = 1
 
-The potential 0-form u and flow 1-form q are solutions to the problem
+The potential 0-form u and flow rate 1-form q are solutions to the problem
   . q = - *_1 kappa_1 d_0 u
   . d q = -f
   . tr_{G_D, 0} u = g_D
@@ -86,9 +86,11 @@ void diffusion_steady_state_continuous_2d_d03_p00_exact_potential_circular(
   de_rham_0(potential, m, norm_2d_squared);
 }
 
-/* Exact flow on the Forman subdivision */
-void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
-  double * flow, const struct mesh * m, const struct matrix_sparse * m_bd_1)
+/* Exact flow_rate on the Forman subdivision */
+void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_rate_circular(
+  double * flow_rate,
+  const struct mesh * m,
+  const struct matrix_sparse * m_bd_1)
 {
   int i, index, j, na, nd;
   int * topology;
@@ -113,15 +115,15 @@ void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
     /* rays */
     for (j = 0; j < na; ++j)
     {
-      flow[index] = 0;
+      flow_rate[index] = 0;
       ++index;
     }
     /* arcs */
     value = coefficient * (double) (4 * i * i);
     for (j = 0; j < na / 2; ++j)
     {
-      flow[index + 0] = - value * m_bd_1_values[2 * index];
-      flow[index + 1] =   value * m_bd_1_values[2 * index + 2];
+      flow_rate[index + 0] = - value * m_bd_1_values[2 * index];
+      flow_rate[index + 1] =   value * m_bd_1_values[2 * index + 2];
       index += 2;
     }
   }
@@ -129,9 +131,9 @@ void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
   value = coefficient;
   for (j = 0; j < na / 2; ++j)
   {
-    flow[index + 0] = - value * m_bd_1_values[2 * index + 0]; /* arc */
-    flow[index + 1] = 0;                                      /* ray */
-    flow[index + 2] =   value * m_bd_1_values[2 * index + 4]; /* arc */
+    flow_rate[index + 0] = - value * m_bd_1_values[2 * index + 0]; /* arc */
+    flow_rate[index + 1] = 0;                                      /* ray */
+    flow_rate[index + 2] =   value * m_bd_1_values[2 * index + 4]; /* arc */
     index += 3;
   }
   /* outer faces to edges */
@@ -140,10 +142,10 @@ void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_circular(
     value = coefficient * (double) ((2 * i - 1) * (2 * i - 1));
     for (j = 0; j < na / 2; ++j)
     {
-      flow[index + 0] = 0;                                      /* ray */
-      flow[index + 1] = - value * m_bd_1_values[2 * index + 2]; /* arc */
-      flow[index + 2] = 0;                                      /* ray */
-      flow[index + 3] =   value * m_bd_1_values[2 * index + 6]; /* arc */
+      flow_rate[index + 0] = 0;                                      /* ray */
+      flow_rate[index + 1] = - value * m_bd_1_values[2 * index + 2]; /* arc */
+      flow_rate[index + 2] = 0;                                      /* ray */
+      flow_rate[index + 3] =   value * m_bd_1_values[2 * index + 6]; /* arc */
       index += 4;
     }
   }

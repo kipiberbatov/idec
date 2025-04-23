@@ -15,7 +15,7 @@ Let
   . g_D = y (y - 1)
   . g_N = (1 - 2 x) dx
 
-The potential 0-form u and flow 1-form q are solutions to the problem
+The potential 0-form u and flow rate 1-form q are solutions to the problem
   . q = - *_1 kappa_1 d_0 u
   . D_t Q = d q + f
   . D_t Q = *_0 (D_t (pi_0 u))

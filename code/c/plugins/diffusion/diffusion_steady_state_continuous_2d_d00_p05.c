@@ -14,7 +14,7 @@ Let
   . G_N = {}
   . g_D = 0
 
-The potential 0-form u and flow 1-form q are solutions to the problem
+The potential 0-form u and flow rate 1-form q are solutions to the problem
   . q = - *_1 kappa_1 d_0 u
   . d q = -f
   . tr_{G_D, 0} u = g_D
@@ -82,8 +82,10 @@ void diffusion_steady_state_continuous_2d_d00_p05_potential(
   de_rham_0(potential, m, u);
 }
 
-void diffusion_steady_state_continuous_2d_d00_p05_flow(
-  double * flow, const struct mesh * m, const struct matrix_sparse * m_bd_1)
+void diffusion_steady_state_continuous_2d_d00_p05_flow_rate(
+  double * flow_rate,
+  const struct mesh * m,
+  const struct matrix_sparse * m_bd_1)
 {
   int i, j0, j1, m_cn_1;
   int * m_cf_1_0;
@@ -110,6 +112,6 @@ void diffusion_steady_state_continuous_2d_d00_p05_flow(
     z0 = u / v * (cos(M_PI * (x0 + y0)) - cos(M_PI * (x1 + y1)));
     z1 = v / u * (cos(M_PI * (x0 - y0)) - cos(M_PI * (x1 - y1)));
     value = (z0 + z1) / (4 * M_PI * M_PI);
-    flow[i] = value * m_bd_1_values[2 * i + 1];
+    flow_rate[i] = value * m_bd_1_values[2 * i + 1];
   }
 }

@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
        * solution_name;
   int d, m_cn_dm1, m_cn_d;
   int * m_cn;
-  double * flow, * potential, * dual_potential;
+  double * flow_rate, * potential, * dual_potential;
   double ** m_vol;
   FILE * data_file, * m_file, * solution_file;
   struct mesh * m;
@@ -106,16 +106,16 @@ int main(int argc, char ** argv)
   m_cn_dm1 = int_file_scan(solution_file);
   m_cn_d = int_file_scan(solution_file);
 
-  flow = double_array_file_scan(solution_file, m_cn_dm1, "--raw");
-  if (flow == NULL)
+  flow_rate = double_array_file_scan(solution_file, m_cn_dm1, "--raw");
+  if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot scan flow from file in format --raw %s\n", solution_name);
+      "cannot scan flow_rate from file in format --raw %s\n", solution_name);
     fclose(solution_file);
     goto data_free;
   }
-  free(flow);
+  free(flow_rate);
 
   dual_potential = double_array_file_scan(solution_file, m_cn_d, "--raw");
   if (dual_potential == NULL)

@@ -10,7 +10,7 @@ double * double_matrix_file_scan(FILE * in, int m, int n, const char * format)
 
   if (!strcmp(format, "--raw"))
     a = double_matrix_file_scan_raw(in, m, n);
-  else if (!strcmp(format, "--steady-state-mixed-weak-solution-flow-raw"))
+  else if (!strcmp(format, "--steady-state-mixed-weak-solution-flow-rate-raw"))
     a = double_array_file_scan_steady_state_primal_weak_raw(in, m * n);
   else
   {
