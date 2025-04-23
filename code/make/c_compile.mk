@@ -362,6 +362,10 @@ build/$(MODE)/lib/plugins: | build/$(MODE)/lib
 build/$(MODE)/lib/plugins/libdiffusion$(.DLL): $(_obj_plugins_diffusion)\
   build/$(MODE)/obj/src/de_rham_0$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_sequence_0$(.OBJ)\
+  build/$(MODE)/obj/src/int_array_total_sum$(.OBJ)\
+  build/$(MODE)/obj/src/jagged4_part2$(.OBJ)\
+  build/$(MODE)/obj/src/jagged2_part$(.OBJ)\
+  build/$(MODE)/obj/src/mesh_cf_part2$(.OBJ)\
   | build/$(MODE)/lib/plugins
 	$(CC) -o $@ -fPIC -shared $^ $(LDLIBS)
 

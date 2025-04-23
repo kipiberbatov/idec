@@ -8,15 +8,20 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01:\
 
 _txt_diffusion_steady_state_continuous_3d_d00_p01 :=\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/exact_brick_3d_2_forman_potential.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/exact_brick_3d_2_forman_flow_rate.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_strong_cochain_brick_3d_2_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_strong_cochain_brick_3d_2_forman_potential.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_strong_cochain_brick_3d_2_forman_flow_rate.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cochain_brick_3d_2_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cochain_brick_3d_2_forman_potential.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cochain_brick_3d_2_forman_flow_rate.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cochain_brick_3d_2_forman_potential_difference_with_exact.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cochain_brick_3d_2_forman_flow_rate_difference_with_exact.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_solution.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_potential.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_potential_difference_with_exact.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_flow_rate_difference_with_exact.txt\
 
 build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/exact_brick_3d_2_forman_potential.txt:\
   build/$(MODE)/bin/diffusion_steady_state_continuous_exact_potential$(.EXE)\
@@ -28,6 +33,18 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/exact_brick_3d_2_
   --raw $(word 2, $^)\
   $(word 2, $|)\
   diffusion_steady_state_continuous_3d_d00_p01_potential\
+  --raw > $@
+
+build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/exact_brick_3d_2_forman_flow_rate.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_continuous_exact_flow_rate$(.EXE)\
+  build/$(MODE)/txt/mesh/brick_3d_2_forman.txt\
+  build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_3d_d00_p01$(.OBJ)\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01\
+    build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
+	$<\
+  --raw $(word 2, $^)\
+  $(word 2, $|)\
+  diffusion_steady_state_continuous_3d_d00_p01_flow_rate\
   --raw > $@
 
 build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_strong_cochain_brick_3d_2_forman_input.txt:\
@@ -110,6 +127,28 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cocha
   --raw $(word 5, $^)\
   --raw > $@
 
+build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cochain_brick_3d_2_forman_potential_difference_with_exact.txt:\
+  build/$(MODE)/bin/double_array_subtract$(.EXE)\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cochain_brick_3d_2_forman_potential.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/exact_brick_3d_2_forman_potential.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01
+	$<\
+  --size=125\
+  --minuend=$(word 2, $^)\
+  --subtrahend=$(word 3, $^)\
+  --output=$@
+
+build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cochain_brick_3d_2_forman_flow_rate_difference_with_exact.txt:\
+  build/$(MODE)/bin/double_array_subtract$(.EXE)\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/primal_weak_cochain_brick_3d_2_forman_flow_rate.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/exact_brick_3d_2_forman_flow_rate.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01
+	$<\
+  --size=240\
+  --minuend=$(word 2, $^)\
+  --subtrahend=$(word 3, $^)\
+  --output=$@
+
 build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_mixed_weak_from_continuous$(.EXE)\
   build/$(MODE)/txt/mesh/brick_3d_2_forman.txt\
@@ -149,6 +188,29 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochai
   $(word 4, $^)\
   $(word 5, $^)\
   > $@
+
+build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_potential_difference_with_exact.txt:\
+  build/$(MODE)/bin/double_array_subtract$(.EXE)\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_potential.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/exact_brick_3d_2_forman_potential.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01
+	$<\
+  --size=125\
+  --minuend=$(word 2, $^)\
+  --subtrahend=$(word 3, $^)\
+  --output=$@
+
+build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_flow_rate_difference_with_exact.txt:\
+  build/$(MODE)/bin/double_array_subtract$(.EXE)\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/mixed_weak_cochain_brick_3d_2_forman_solution.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01/exact_brick_3d_2_forman_flow_rate.txt\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_3d_d00_p01
+	$<\
+  --size=240\
+  --minuend-format=--steady-state-mixed-weak-solution-flow-rate-raw\
+  --minuend=$(word 2, $^)\
+  --subtrahend=$(word 3, $^)\
+  --output=$@
 
 txt_diffusion_steady_state_continuous_3d_d00_p01:\
   $(_txt_diffusion_steady_state_continuous_3d_d00_p01)

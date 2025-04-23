@@ -88,3 +88,72 @@ void diffusion_steady_state_continuous_3d_d00_p01_potential(
 {
   de_rham_0(potential, m, u);
 }
+
+static int check_equal_components(
+  const double x0[3], const double x1[3],
+  const double x2[3], const double x3[3])
+{
+  if (x0[0] == x1[0] && x1[0] == x2[0] && x2[0] == x3[0])
+    return 0;
+  if (x0[1] == x1[1] && x1[1] == x2[1] && x2[1] == x3[1])
+    return 1;
+  if (x0[2] == x1[2] && x1[2] == x2[2] && x2[2] == x3[2])
+    return 2;
+  return -1;
+}
+
+static int
+face_perpendicular_axis(const jagged2 * m_cf_2_0, const double * m_coord, int i)
+{
+  const double * x0, * x1, * x2, * x3;
+  jagged1 m_cf_2_0_i;
+
+  jagged2_part1(&m_cf_2_0_i, m_cf_2_0, i);
+  x0 = m_coord + 3 * m_cf_2_0_i.a1[0];
+  x1 = m_coord + 3 * m_cf_2_0_i.a1[1];
+  x2 = m_coord + 3 * m_cf_2_0_i.a1[2];
+  x3 = m_coord + 3 * m_cf_2_0_i.a1[3];
+  return check_equal_components(x0, x1, x2, x3);
+}
+
+static int integer_cube_root(int n)
+{
+  int i = 1;
+  while (1)
+  {
+    if (i * i * i == n)
+      return i;
+    ++i;
+  }
+  return -1;
+}
+
+void diffusion_steady_state_continuous_3d_d00_p01_flow_rate(
+  double * flow_rate,
+  const struct mesh * m,
+  const struct matrix_sparse * m_cbd_2)
+{
+  int i, index, n, m_cn_2, p;
+  int * m_cbd_2_cols_total;
+  double face_area, value;
+  double * m_cbd_2_values, * m_coord;
+  jagged1 m_cf_2_0_i;
+  jagged2 m_cf_2_0;
+
+  m_cbd_2_values = m_cbd_2->values;
+  m_cbd_2_cols_total = m_cbd_2->cols_total;
+  n = integer_cube_root(m->cn[3]);
+  face_area = 1. / (double) (n * n);
+  m_cn_2 = m->cn[2];
+  m_coord = m->coord;
+  mesh_cf_part2(&m_cf_2_0, m, 2, 0);
+  index = 0;
+  for (i = 0; i < m_cn_2; ++i)
+  {
+    p = face_perpendicular_axis(&m_cf_2_0, m_coord, i);
+    jagged2_part1(&m_cf_2_0_i, &m_cf_2_0, i);
+    value = 4 * face_area * m_coord[3 * m_cf_2_0_i.a1[0] + p];
+    flow_rate[i] = m_cbd_2_values[index] * value;
+    index += m_cbd_2_cols_total[i + 1] - m_cbd_2_cols_total[i];
+  }
+}
