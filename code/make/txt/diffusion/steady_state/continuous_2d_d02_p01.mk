@@ -44,7 +44,7 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/exact_2d_10_grain
 	$<\
   --raw $(word 2, $^)\
   $(word 2, $|)\
-  diffusion_steady_state_continuous_2d_d02_p01_flow\
+  diffusion_steady_state_continuous_2d_d02_p01_flow_rate\
   --raw > $@
 
 build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d02_p01/primal_strong_cochain_2d_10_grains_forman_input.txt:\

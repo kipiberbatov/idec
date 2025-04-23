@@ -53,7 +53,7 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p03/primal_strong_cochai
   --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
   --animation-library=$(word 3, $|)\
   --animation-backend=idec_cairo_gtk_animation\
-  --title=2d_d00_p03_primal_strong_brick_2d_5_forman_flow\
+  --title=2d_d00_p03_primal_strong_brick_2d_5_forman_flow_rate\
   --close-automatically=$(CLOSE_AUTOMATICALLY)\
   --timelapse=$(TIMELAPSE)\
   --output=$@
@@ -97,7 +97,7 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p03/primal_weak_cochain_
   --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
   --animation-library=$(word 3, $|)\
   --animation-backend=idec_cairo_gtk_animation\
-  --title=2d_d00_p03_primal_weak_brick_2d_5_forman_flow\
+  --title=2d_d00_p03_primal_weak_brick_2d_5_forman_flow_rate\
   --close-automatically=$(CLOSE_AUTOMATICALLY)\
   --timelapse=$(TIMELAPSE)\
   --output=$@
@@ -141,7 +141,7 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d00_p03/mixed_weak_cochain_b
   --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
   --animation-library=$(word 3, $|)\
   --animation-backend=idec_cairo_gtk_animation\
-  --title=2d_d00_p03_mixed_weak_brick_2d_5_forman_flow\
+  --title=2d_d00_p03_mixed_weak_brick_2d_5_forman_flow_rate\
   --close-automatically=$(CLOSE_AUTOMATICALLY)\
   --timelapse=$(TIMELAPSE)\
   --output=$@
