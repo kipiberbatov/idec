@@ -58,8 +58,7 @@ double double_array_norm(int d, const double * a);
 
 void double_array_normalize(double * res, int d, const double * a);
 
-double
-double_array_lebesgue_norm(double * res, double p, int d, const double * a);
+double double_array_lebesgue_norm(double p, int d, const double * a);
 
 void double_array_difference(
   double * res, int d, const double * a, const double * b);

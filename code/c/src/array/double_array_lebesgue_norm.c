@@ -2,8 +2,7 @@
 
 #include "double.h"
 
-double
-double_array_lebesgue_norm(double * res, double p, int d, const double * a)
+double double_array_lebesgue_norm(double p, int d, const double * a)
 {
   int i;
   double result = 0;
