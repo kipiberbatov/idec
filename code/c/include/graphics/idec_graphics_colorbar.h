@@ -3,8 +3,10 @@
 
 enum idec_graphics_colorbar_direction;
 struct idec_graphics_colorbar_draw_functions;
+struct idec_graphics_rectangle;
 
-void idec_graphics_colorbar_draw_values(
+void idec_graphics_colorbar_draw_rectangles(
+  struct idec_graphics_rectangle * rectangle,
   void * canvas,
   int * status,
   double width,

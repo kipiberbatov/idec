@@ -12,7 +12,7 @@ idec_cairo_graphics_draw_functions_colorbar =
 {
   (void (*)(void **, int *)) idec_rgb_allocate_color,
   free,
-  idec_graphics_colorbar_draw_values,
+  idec_graphics_colorbar_draw_rectangles,
   idec_rgb_check_color_scheme_rainbow,
   (void (*)(void *, int , int)) idec_rgb_set_from_scheme_rainbow_no_checks,
   (void (*)(void *, int *, const struct idec_graphics_rectangle *,

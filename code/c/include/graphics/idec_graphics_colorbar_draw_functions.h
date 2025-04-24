@@ -8,7 +8,8 @@ struct idec_graphics_colorbar_draw_functions
 {
   void (*allocate_color)(void **, int *);
   void (*deallocate_color)(void *);
-  void (*draw_values)(
+  void (*draw_rectangles)(
+    struct idec_graphics_rectangle *,
     void *,
     int *,
     double,
