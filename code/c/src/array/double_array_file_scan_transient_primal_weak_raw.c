@@ -39,7 +39,9 @@ double * double_array_file_scan_transient_primal_weak_raw(FILE * in, int n)
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot scan array of length %d\n", n0);
+    fprintf(stderr,
+      "cannot scan array of length %s%d%s\n",
+      color_variable, n0, color_none);
     return NULL;
   }
   free(a);
@@ -48,7 +50,9 @@ double * double_array_file_scan_transient_primal_weak_raw(FILE * in, int n)
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot scan array of length %d\n", n);
+    fprintf(stderr,
+      "cannot scan array of length %s%d%s\n",
+      color_variable, n, color_none);
     return NULL;
   }
 
