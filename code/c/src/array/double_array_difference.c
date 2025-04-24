@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 
 void double_array_difference(
   double * res, int d, const double * a, const double * b)

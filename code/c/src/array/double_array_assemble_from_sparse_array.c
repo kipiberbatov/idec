@@ -1,4 +1,5 @@
 #include "double.h"
+#include "jagged.h"
 
 void double_array_assemble_from_sparse_array(
   double * b, const jagged1 * positions, const double * a)

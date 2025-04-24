@@ -3,7 +3,8 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
+#include "double_array2.h"
 #include "mesh_qc.h"
 
 static void mesh_qc_metric_corrected_file_print_only_values(

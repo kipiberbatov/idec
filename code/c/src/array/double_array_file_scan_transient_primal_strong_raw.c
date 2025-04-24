@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double_private.h"
+#include "double_array_private.h"
 #include "int.h"
 
 double * double_array_file_scan_transient_primal_strong_raw(FILE * in, int n)

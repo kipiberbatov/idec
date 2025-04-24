@@ -1,7 +1,7 @@
 #include <errno.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "simplex.h"
 
 static void simplex_measure_file_print(FILE * out, const simplex * r)

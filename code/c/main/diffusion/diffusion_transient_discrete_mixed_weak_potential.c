@@ -4,7 +4,9 @@
 
 #include "color.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
-#include "double.h"
+#include "double_array.h"
+#include "double_array2.h"
+#include "double_matrix.h"
 #include "idec_command_line.h"
 #include "idec_error_message.h"
 #include "int.h"

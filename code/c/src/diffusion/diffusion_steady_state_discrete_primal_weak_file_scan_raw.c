@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "diffusion_steady_state_discrete_primal_weak.h"
-#include "double.h"
+#include "double_array.h"
 #include "int.h"
 #include "jagged.h"
 

@@ -1,7 +1,7 @@
 #include <errno.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "quasi_cube.h"
 
 static void quasi_cube_measure_file_print(FILE * out, const quasi_cube * r)

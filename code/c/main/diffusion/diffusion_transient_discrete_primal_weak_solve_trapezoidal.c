@@ -3,7 +3,8 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array2.h"
+#include "double_matrix.h"
 #include "diffusion_transient_discrete_primal_weak.h"
 #include "idec_command_line.h"
 #include "int.h"

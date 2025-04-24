@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
-#include "double.h"
+
+#include "double_array.h"
 #include "matrix_sparse_private.h"
 
 /*

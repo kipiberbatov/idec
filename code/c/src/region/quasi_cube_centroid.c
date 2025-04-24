@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 #include "int.h"
 #include "quasi_cube_private.h"
 #include "simplex.h"

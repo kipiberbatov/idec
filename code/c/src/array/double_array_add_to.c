@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 
 void double_array_add_to(double * a, int d, const double * b)
 {

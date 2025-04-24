@@ -7,6 +7,8 @@
 
 #include "color.h"
 #include "double.h"
+#include "double_array_sequence_dynamic.h"
+#include "double_array2.h"
 #include "diffusion_transient_continuous.h"
 #include "mesh.h"
 

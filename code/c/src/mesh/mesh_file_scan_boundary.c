@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "mesh.h"
 
 static void mesh_boundary_p_cols_total(

@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "diffusion_discrete_set_neumann_rows.h"
 #include "idec_error_message.h"
 #include "matrix.h"

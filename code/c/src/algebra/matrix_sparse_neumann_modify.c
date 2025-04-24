@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 #include "matrix_sparse.h"
 
 void matrix_sparse_neumann_modify(

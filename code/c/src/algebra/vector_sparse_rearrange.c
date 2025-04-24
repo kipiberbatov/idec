@@ -4,8 +4,9 @@
 
 #include "array_indexed.h"
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "int.h"
+#include "jagged.h"
 #include "vector_sparse.h"
 
 void vector_sparse_rearrange(vector_sparse * b)

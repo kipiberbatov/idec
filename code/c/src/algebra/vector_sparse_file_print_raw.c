@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 #include "int.h"
 #include "vector_sparse_private.h"
 

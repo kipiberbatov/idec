@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "idec_error_message.h"
 #include "mesh.h"
 #include "mesh_measures.h"

@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 
 double double_array_dot_product(int d, const double * a, const double * b)
 {

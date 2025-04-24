@@ -1,5 +1,5 @@
 #include "diffusion_transient_discrete_mixed_weak.h"
-#include "double.h"
+#include "double_array.h"
 #include "jagged.h"
 
 void diffusion_transient_discrete_mixed_weak_file_print_raw(

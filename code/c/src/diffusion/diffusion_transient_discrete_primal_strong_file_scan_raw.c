@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "diffusion_transient_discrete_primal_strong.h"
-#include "double.h"
+#include "double_array.h"
 #include "int.h"
 #include "jagged.h"
 

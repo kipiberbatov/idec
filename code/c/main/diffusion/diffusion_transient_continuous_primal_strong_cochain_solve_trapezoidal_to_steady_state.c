@@ -8,6 +8,7 @@
 #include "color.h"
 #include "diffusion_transient_continuous.h"
 #include "double.h"
+#include "double_array_sequence_dynamic.h"
 #include "idec_error_message.h"
 #include "int.h"
 #include "mesh.h"

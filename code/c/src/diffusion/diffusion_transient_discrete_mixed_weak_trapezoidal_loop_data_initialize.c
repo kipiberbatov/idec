@@ -5,7 +5,7 @@
 #include "color.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
 #include "diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data.h"
-#include "double.h"
+#include "double_array.h"
 #include "idec_error_message.h"
 #include "mesh_qc.h"
 

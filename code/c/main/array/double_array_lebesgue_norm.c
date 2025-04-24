@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "idec_command_line.h"
 
 int main(int argc, char ** argv)

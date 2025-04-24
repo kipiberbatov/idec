@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "double.h"
+#include "double_array_sequence_dynamic.h"
 
 void double_array_sequence_dynamic_free(double_array_sequence_dynamic * a)
 {

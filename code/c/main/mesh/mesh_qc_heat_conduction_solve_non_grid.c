@@ -4,6 +4,8 @@
 
 #include "color.h"
 #include "double.h"
+#include "double_array.h"
+#include "double_matrix.h"
 #include "int.h"
 #include "matrix_sparse.h"
 #include "mesh_qc.h"

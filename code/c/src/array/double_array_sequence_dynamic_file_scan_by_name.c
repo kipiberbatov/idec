@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array_sequence_dynamic.h"
 
 double_array_sequence_dynamic *
 double_array_sequence_dynamic_file_scan_by_name(const char * name)
@@ -14,7 +14,9 @@ double_array_sequence_dynamic_file_scan_by_name(const char * name)
   if (in == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot open file %s: %s\n", name, strerror(errno));
+    fprintf(stderr,
+      "cannot open file %s%s%s: %s\n",
+      color_variable, name, color_none, strerror(errno));
     return NULL;
   }
 
@@ -22,7 +24,9 @@ double_array_sequence_dynamic_file_scan_by_name(const char * name)
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "cannot scan file %s\n", name);
+    fprintf(stderr,
+      "cannot scan file %s%s%s\n",
+      color_variable, name, color_none);
     goto in_close;
   }
 

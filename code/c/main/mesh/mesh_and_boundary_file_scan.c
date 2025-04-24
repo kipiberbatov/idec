@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "idec_command_line.h"
 #include "mesh_and_boundary.h"
 

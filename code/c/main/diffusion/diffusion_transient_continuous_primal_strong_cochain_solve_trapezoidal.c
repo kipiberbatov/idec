@@ -7,6 +7,7 @@
 
 #include "color.h"
 #include "double.h"
+#include "double_matrix.h"
 #include "diffusion_transient_continuous.h"
 #include "int.h"
 #include "mesh.h"

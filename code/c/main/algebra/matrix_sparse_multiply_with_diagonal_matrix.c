@@ -1,7 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include "matrix_sparse.h"
-#include "double.h"
+#include "double_array.h"
 
 /*
 matrix_sparse_multiply_with_diagonal_matrix --raw <matrix_sparse_input> \

@@ -1,5 +1,4 @@
-#include "double.h"
-#include "int.h"
+#include "double_array.h"
 #include "vector_sparse_private.h"
 
 void vector_sparse_file_print_only_values(FILE * out, const vector_sparse * a)

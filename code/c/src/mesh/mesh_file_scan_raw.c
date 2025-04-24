@@ -1,8 +1,8 @@
 #include <errno.h>
 #include <stdlib.h>
-#include "double.h"
 
 #include "color.h"
+#include "double_matrix.h"
 #include "idec_error_message.h"
 #include "int.h"
 #include "mesh_private.h"

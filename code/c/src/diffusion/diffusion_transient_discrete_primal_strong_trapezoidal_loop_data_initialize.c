@@ -6,7 +6,7 @@
 #include "diffusion_discrete_set_neumann_rows.h"
 #include "diffusion_transient_discrete_primal_strong.h"
 #include "diffusion_transient_discrete_primal_strong_trapezoidal_loop_data.h"
-#include "double.h"
+#include "double_array.h"
 #include "idec_error_message.h"
 #include "mesh.h"
 

@@ -4,7 +4,6 @@
 #include <dlfcn.h>
 
 #include "color.h"
-#include "double.h"
 #include "diffusion_transient_discrete_primal_strong.h"
 #include "idec_command_line.h"
 #include "mesh.h"

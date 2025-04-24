@@ -1,7 +1,7 @@
 #include <errno.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array2.h"
 #include "mesh_qc.h"
 #include "idec_command_line.h"
 

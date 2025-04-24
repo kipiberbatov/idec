@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "matrix_sparse.h"
 
 void matrix_sparse_mixed_linear_solve_with_diagonal_top_left_matrix(

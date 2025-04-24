@@ -5,7 +5,7 @@
 #include <dlfcn.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array2.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
 #include "idec_command_line.h"
 #include "mesh.h"

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "mesh.h"
 
 /* finds the full unit angle in d dimensions (d = 0,1,2,3), i.e.,

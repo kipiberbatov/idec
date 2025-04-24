@@ -2,7 +2,8 @@
 #include <string.h>
 
 #include "color.h"
-#include "double_private.h"
+#include "double_matrix.h"
+#include "double_matrix_private.h"
 
 void double_matrix_file_print(
   FILE * out, int m, int n, const double * a, const char * format)

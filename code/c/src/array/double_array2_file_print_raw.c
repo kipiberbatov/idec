@@ -1,4 +1,5 @@
-#include "double_private.h"
+#include "double_array_private.h"
+#include "double_array2_private.h"
 
 void
 double_array2_file_print_raw(FILE * out, int a0, const int * a1, double ** a2)

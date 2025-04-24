@@ -1,4 +1,5 @@
-#include "double.h"
+#include "double_array_private.h"
+#include "double_array_sequence_dynamic.h"
 
 void double_array_sequence_dynamic_file_print(
   FILE * out,
@@ -15,5 +16,5 @@ void double_array_sequence_dynamic_file_print(
   if (length == 0)
     return;
   for (i = 0; i < length; ++i)
-    double_array_file_print(out, dimension, values[i], "--raw");
+    double_array_file_print_raw(out, dimension, values[i]);
 }

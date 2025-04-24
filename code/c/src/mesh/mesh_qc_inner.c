@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
-#include "double.h"
+
+#include "double_array2.h"
 #include "mesh_qc.h"
 #include "vector_sparse.h"
 

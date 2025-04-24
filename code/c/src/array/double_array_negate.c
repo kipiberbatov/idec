@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 
 void double_array_negate(double * b, int n, const double * a)
 {

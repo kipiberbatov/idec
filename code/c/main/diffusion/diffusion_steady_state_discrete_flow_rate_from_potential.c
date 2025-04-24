@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "diffusion_steady_state_discrete_flow_rate_from_potential.h"
 #include "idec_error_message.h"
 #include "int.h"

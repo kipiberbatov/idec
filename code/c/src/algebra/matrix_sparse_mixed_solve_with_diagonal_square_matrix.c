@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "double.h"
+#include "double_array.h"
 #include "matrix_sparse.h"
 
 /*

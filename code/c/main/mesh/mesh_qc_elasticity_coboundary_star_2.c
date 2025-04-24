@@ -3,6 +3,8 @@
 
 #include "color.h"
 #include "double.h"
+#include "double_array.h"
+#include "double_array2.h"
 #include "mesh_qc.h"
 
 static void mesh_qc_elasticity_coboundary_star_2_file_print_raw(

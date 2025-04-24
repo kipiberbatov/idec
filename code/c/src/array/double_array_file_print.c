@@ -2,7 +2,8 @@
 #include <string.h>
 
 #include "color.h"
-#include "double_private.h"
+#include "double_array.h"
+#include "double_array_private.h"
 
 void double_array_file_print(
   FILE * out, int n, const double * a, const char * format)

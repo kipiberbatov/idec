@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "mesh.h"
 
 static void mesh_node_curvature_file_print_raw(FILE * out, const mesh * m)

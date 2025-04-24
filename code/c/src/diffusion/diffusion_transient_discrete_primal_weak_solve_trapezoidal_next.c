@@ -5,7 +5,7 @@
 #include "diffusion_transient_discrete_primal_weak.h"
 #include "diffusion_transient_discrete_primal_weak_solve_trapezoidal_next.h"
 #include "diffusion_transient_discrete_primal_weak_trapezoidal_loop_data.h"
-#include "double.h"
+#include "double_array.h"
 #include "matrix_sparse.h"
 
 void diffusion_transient_discrete_primal_weak_solve_trapezoidal_next(

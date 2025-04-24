@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "double.h"
+#include "double_array.h"
 #include "int.h"
 #include "mesh_qc.h"
 

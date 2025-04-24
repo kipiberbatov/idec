@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "matrix_sparse_private.h"
 
 static void dirichlet_bc_apply(

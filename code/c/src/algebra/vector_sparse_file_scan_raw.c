@@ -2,9 +2,10 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "idec_error_message.h"
 #include "int.h"
+#include "jagged.h"
 #include "vector_sparse_private.h"
 
 static int all_values_in_range(

@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 
 double * double_array_file_scan_by_name(
   const char * name, int n, const char * format)

@@ -5,7 +5,8 @@
 
 /* internal headers */
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
+#include "double_matrix.h"
 #include "frame.h"
 #include "idec_animation.h"
 #include "idec_animation_generic_data.h"

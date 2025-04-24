@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 
 void double_array_assign_identity(double * a, int n)
 {

@@ -1,6 +1,6 @@
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_primal_strong.h"
-#include "double.h"
+#include "double_array_sequence_dynamic.h"
 #include "mesh.h"
 
 double_array_sequence_dynamic *

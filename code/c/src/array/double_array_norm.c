@@ -1,5 +1,5 @@
 #include <math.h>
-#include "double.h"
+#include "double_array.h"
 
 double double_array_norm(int d, const double * a)
 {

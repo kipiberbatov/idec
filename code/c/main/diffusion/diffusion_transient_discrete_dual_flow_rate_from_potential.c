@@ -5,7 +5,8 @@
 #include <dlfcn.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
+#include "double_matrix.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_dual_flow_rate_from_potential.h"
 #include "idec_error_message.h"

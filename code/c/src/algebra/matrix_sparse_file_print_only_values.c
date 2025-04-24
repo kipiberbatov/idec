@@ -1,4 +1,5 @@
 #include "double.h"
+#include "double_array.h"
 #include "matrix_sparse_private.h"
 
 void matrix_sparse_file_print_only_values(FILE * out, const matrix_sparse * a)

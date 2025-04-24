@@ -4,7 +4,6 @@
 
 /* internal headers */
 #include "color.h"
-#include "double.h"
 #include "frame.h"
 #include "idec_animation.h"
 #include "idec_animation_generic_data.h"

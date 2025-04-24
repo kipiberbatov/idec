@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "double.h"
+#include "double_array2.h"
 #include "mesh_and_boundary.h"
 
 void mesh_and_boundary_free(mesh_and_boundary * m_and_bd)

@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 #include "matrix.h"
 
 static void example_0(void)

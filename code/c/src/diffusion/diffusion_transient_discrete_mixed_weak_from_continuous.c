@@ -8,7 +8,7 @@
 #include "diffusion_steady_state_discrete_flow_rate_from_potential.h"
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
-#include "double.h"
+#include "double_array.h"
 #include "idec_error_message.h"
 #include "mesh_qc.h"
 #include "unsigned_approximation.h"

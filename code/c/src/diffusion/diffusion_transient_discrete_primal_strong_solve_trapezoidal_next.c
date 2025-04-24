@@ -4,7 +4,7 @@
 #include "color.h"
 #include "diffusion_transient_discrete_primal_strong.h"
 #include "diffusion_transient_discrete_primal_strong_solve_trapezoidal_next.h"
-#include "double.h"
+#include "double_array.h"
 #include "matrix_sparse.h"
 
 void diffusion_transient_discrete_primal_strong_solve_trapezoidal_next(

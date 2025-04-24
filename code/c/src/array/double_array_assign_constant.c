@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 
 void double_array_assign_constant(double * a, int n, double c)
 {

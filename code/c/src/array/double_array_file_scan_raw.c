@@ -4,7 +4,7 @@
 
 #include "color.h"
 #include "double.h"
-#include "double_private.h"
+#include "double_array_private.h"
 #include "idec_error_message.h"
 
 double * double_array_file_scan_raw(FILE * in, int n)

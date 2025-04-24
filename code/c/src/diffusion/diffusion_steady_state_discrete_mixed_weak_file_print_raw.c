@@ -1,5 +1,5 @@
 #include "diffusion_steady_state_discrete_mixed_weak.h"
-#include "double.h"
+#include "double_array.h"
 #include "jagged.h"
 
 void diffusion_steady_state_discrete_mixed_weak_file_print_raw(

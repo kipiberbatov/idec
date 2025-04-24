@@ -1,4 +1,4 @@
-#include "double.h"
+#include "double_array.h"
 
 double double_array_total_sum(int n, const double * a)
 {

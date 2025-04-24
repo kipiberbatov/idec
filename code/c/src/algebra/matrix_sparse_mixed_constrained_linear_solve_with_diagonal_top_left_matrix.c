@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "matrix_sparse.h"
 
 static void set_f_new(

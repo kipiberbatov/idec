@@ -2,7 +2,8 @@
 #include <string.h>
 
 #include "color.h"
-#include "double_private.h"
+#include "double_array2.h"
+#include "double_array2_private.h"
 
 double ** double_array2_file_scan(
   FILE * in, int a0, const int * a1, const char * format)

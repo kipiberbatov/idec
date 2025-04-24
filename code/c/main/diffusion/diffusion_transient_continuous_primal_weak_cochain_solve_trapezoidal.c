@@ -5,6 +5,8 @@
 
 #include "color.h"
 #include "double.h"
+#include "double_array2.h"
+#include "double_matrix.h"
 #include "diffusion_transient_continuous.h"
 #include "idec_error_message.h"
 #include "int.h"

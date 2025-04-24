@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_matrix.h"
 
 double * double_matrix_file_scan_by_name(
   const char * name, int m, int n, const char * format)

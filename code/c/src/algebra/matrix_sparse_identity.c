@@ -1,7 +1,8 @@
 #include <errno.h>
 #include <stdlib.h>
+
+#include "double_array.h"
 #include "int.h"
-#include "double.h"
 #include "matrix_sparse.h"
 
 matrix_sparse * matrix_sparse_identity(int n)

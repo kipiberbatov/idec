@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "double.h"
+#include "double_array2.h"
 
 void double_array2_free(double ** arr, int n)
 {

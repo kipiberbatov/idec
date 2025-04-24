@@ -1,6 +1,6 @@
 #include <math.h>
 
-#include "double.h"
+#include "double_array.h"
 
 double double_array_lebesgue_norm(double p, int d, const double * a)
 {

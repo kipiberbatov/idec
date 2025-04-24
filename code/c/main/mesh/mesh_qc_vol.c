@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "mesh_qc.h"
 
 static void mesh_qc_vol_file_print_raw(FILE * out, const mesh_qc * m)

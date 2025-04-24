@@ -6,7 +6,7 @@
 #include <dlfcn.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
 #include "diffusion_steady_state_continuous.h"
 #include "int.h"
 #include "mesh.h"

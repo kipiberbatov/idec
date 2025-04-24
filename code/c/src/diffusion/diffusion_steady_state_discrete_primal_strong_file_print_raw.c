@@ -1,5 +1,5 @@
 #include "diffusion_steady_state_discrete_primal_strong.h"
-#include "double.h"
+#include "double_array.h"
 #include "jagged.h"
 
 void diffusion_steady_state_discrete_primal_strong_file_print_raw(

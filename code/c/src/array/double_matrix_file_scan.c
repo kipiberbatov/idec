@@ -2,7 +2,9 @@
 #include <string.h>
 
 #include "color.h"
-#include "double_private.h"
+#include "double_array_private.h"
+#include "double_matrix.h"
+#include "double_matrix_private.h"
 
 double * double_matrix_file_scan(FILE * in, int m, int n, const char * format)
 {

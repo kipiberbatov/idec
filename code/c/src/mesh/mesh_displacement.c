@@ -1,7 +1,8 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "double.h"
+#include "double_array.h"
+#include "double_array2.h"
 #include "mesh.h"
 
 static void mesh_displacement_values(double ** result,

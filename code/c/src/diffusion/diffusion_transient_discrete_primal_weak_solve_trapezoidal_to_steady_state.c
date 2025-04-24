@@ -6,7 +6,8 @@
 #include "diffusion_transient_discrete_primal_weak.h"
 #include "diffusion_transient_discrete_primal_weak_solve_trapezoidal_next.h"
 #include "diffusion_transient_discrete_primal_weak_trapezoidal_loop_data.h"
-#include "double.h"
+#include "double_array.h"
+#include "double_array_sequence_dynamic.h"
 #include "idec_error_message.h"
 #include "mesh.h"
 

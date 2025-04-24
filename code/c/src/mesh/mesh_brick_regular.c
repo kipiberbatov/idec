@@ -1,5 +1,6 @@
 #include <errno.h>
-#include "double.h"
+
+#include "double_array.h"
 #include "int.h"
 #include "mesh_brick.h"
 

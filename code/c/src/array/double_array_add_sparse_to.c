@@ -1,4 +1,5 @@
 #include "double.h"
+#include "jagged.h"
 
 void double_array_add_sparse_to(
   double * f, const jagged1 * indices, const double * g)

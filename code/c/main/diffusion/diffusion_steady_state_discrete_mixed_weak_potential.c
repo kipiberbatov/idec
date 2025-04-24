@@ -4,7 +4,8 @@
 
 #include "color.h"
 #include "diffusion_steady_state_discrete_mixed_weak.h"
-#include "double.h"
+#include "double_array.h"
+#include "double_array2.h"
 #include "idec_error_message.h"
 #include "int.h"
 #include "mesh_qc.h"
