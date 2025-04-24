@@ -17,11 +17,13 @@ build/$(MODE)/pdf/filled_window_rainbow_100.pdf:\
   --animation-backend=idec_cairo_pdf_animation\
   --output=$@
 
+include code/make/pdf/colorbar.mk
 include code/make/pdf/mesh.mk
 include code/make/pdf/diffusion.mk
 
 _pdf :=\
   build/$(MODE)/pdf/filled_window_rainbow_100.pdf\
+  $(_pdf_colorbar)\
   $(_pdf_mesh)\
   $(_pdf_diffusion)\
 
