@@ -1,8 +1,6 @@
 #ifndef _idec_graphics_filled_window_h
 #define _idec_graphics_filled_window_h
 
-#include "mesh.h"
-
 struct idec_animation;
 
 struct idec_graphics_filled_window
