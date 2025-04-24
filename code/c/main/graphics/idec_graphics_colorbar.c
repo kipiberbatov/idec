@@ -8,7 +8,6 @@
 #include "idec_command_line.h"
 #include "idec_graphics_colorbar.h"
 #include "idec_graphics_colorbar_direction.h"
-#include "idec_graphics_rectangle.h"
 
 static void update_index(int * i){++*i;}
 
