@@ -1,7 +1,7 @@
 #include "int.h"
 #include "jagged.h"
 
-void jagged4_part2(jagged2 * res, const jagged4 * arr, int i1, int i2)
+int jagged3_part3(const jagged3 * arr, int i1, int i2, int i3)
 {
   int p1, p2, p3;
 
@@ -11,9 +11,8 @@ void jagged4_part2(jagged2 * res, const jagged4 * arr, int i1, int i2)
   /* undefined behaviour if (i2 < 0 || i2 >= arr->a1[i1]) */
   p2 = int_array_total_sum(p1 + i2, arr->a2);
 
-  p3 = int_array_total_sum(p2, arr->a3);
+  /* undefined behaviour if (i3 < 0 || i3 >= arr->a2[p1 + i2]) */
+  p3 = arr->a3[p2 + i3];
 
-  res->a0 = arr->a2[p1 +i2];
-  res->a1 = arr->a3 + p2;
-  res->a2 = arr->a4 + p3;
+  return p3;
 }
