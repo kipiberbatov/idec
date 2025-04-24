@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "color.h"
+#include "double.h"
 #include "double_private.h"
 #include "idec_error_message.h"
 

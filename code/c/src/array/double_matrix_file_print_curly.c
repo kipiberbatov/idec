@@ -1,3 +1,4 @@
+#include "double.h"
 #include "double_private.h"
 
 void double_matrix_file_print_curly(FILE * out, int m, int n, const double * a)

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "color.h"
+#include "double.h"
 #include "double_private.h"
 
 double * double_matrix_file_scan_raw(FILE * in, int m, int n)
