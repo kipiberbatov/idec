@@ -6,7 +6,7 @@
 
 Let
   . M = [0, 20] x [0, 15]
-  . kappa_1 = 6
+  . kappa_1 = KAPPA
   . f = 0
   . G_D = {0, 20} x [0, 15]
   . G_N = [0, 20] x {0, 15}
@@ -21,12 +21,14 @@ The potential 0-form u and flow rate 1-form q are solutions to the problem
 
 This problem has exact solution
   . u(x, y) = 5 x
-  . q(x, y) = 30 dy
+  . q(x, y) = 5 KAPPA dy
 */
+
+#define KAPPA 6.
 
 static double kappa_1(const double * x)
 {
-  return 6.;
+  return KAPPA;
 }
 
 static double source(const double * x)
@@ -102,6 +104,6 @@ void diffusion_steady_state_continuous_2d_d02_p01_flow_rate(
     j1 = m_cf_1_0[2 * i + 1];
     y0 = m_coord[2 * j0 + 1];
     y1 = m_coord[2 * j1 + 1];
-    flow_rate[i] = 30. * (y1 - y0) * m_bd_1_values[2 * i + 1];
+    flow_rate[i] = 5. * KAPPA * (y1 - y0) * m_bd_1_values[2 * i + 1];
   }
 }
