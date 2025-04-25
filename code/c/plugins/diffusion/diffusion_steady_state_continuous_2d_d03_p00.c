@@ -71,13 +71,11 @@ diffusion_steady_state_continuous_2d_d03_p00 =
   NULL
 };
 
-static double norm_2d_squared(const double * point)
-{
-  double x, y;
+static double square(double x){return x * x;}
 
-  x = point[0];
-  y = point[1];
-  return x * x + y * y;
+static double norm_2d_squared(const double * x)
+{
+  return square(x[0]) + square(x[1]);
 }
 
 void diffusion_steady_state_continuous_2d_d03_p00_exact_potential_circular(

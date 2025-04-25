@@ -86,7 +86,7 @@ diffusion_transient_continuous_2d_d00_p00 =
   g_neumann
 };
 
-static double u(double t, const double * point)
+static double u(double t, const double * x)
 {
   return 0.;
 }

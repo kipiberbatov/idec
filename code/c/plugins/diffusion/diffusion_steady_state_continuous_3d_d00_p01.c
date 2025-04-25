@@ -78,9 +78,9 @@ diffusion_steady_state_continuous_3d_d00_p01 =
   g_neumann
 };
 
-static double u(const double * point)
+static double u(const double * x)
 {
-  return square(point[0]) + square(point[1]) + square(point[2]);
+  return square(x[0]) + square(x[1]) + square(x[2]);
 }
 
 void diffusion_steady_state_continuous_3d_d00_p01_potential(

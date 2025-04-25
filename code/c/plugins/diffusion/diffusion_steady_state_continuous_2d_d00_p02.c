@@ -59,13 +59,11 @@ diffusion_steady_state_continuous_2d_d00_p02 =
   NULL
 };
 
-static double u(const double * point)
-{
-  double x, y;
+static double square(double x){return x * x;}
 
-  x = point[0];
-  y = point[1];
-  return x * x + y * y;
+static double u(const double * x)
+{
+  return square(x[0]) + square(x[1]);
 }
 
 void diffusion_steady_state_continuous_2d_d00_p02_potential(

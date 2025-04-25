@@ -50,11 +50,6 @@ static int boundary_neumann(const double * x)
   return 0;
 }
 
-// static double g_neumann(const double * x)
-// {
-//   return 0.;
-// }
-
 const struct diffusion_steady_state_continuous
 diffusion_steady_state_continuous_2d_d00_p05 =
 {
@@ -64,16 +59,11 @@ diffusion_steady_state_continuous_2d_d00_p05 =
   g_dirichlet,
   boundary_neumann,
   NULL
-  // g_neumann
 };
 
-static double u(const double * point)
+static double u(const double * x)
 {
-  double x, y;
-
-  x = point[0];
-  y = point[1];
-  return sin(M_PI * x) * sin(M_PI * y) / (2 * M_PI * M_PI);
+  return sin(M_PI * x[0]) * sin(M_PI * x[1]) / (2 * M_PI * M_PI);
 }
 
 void diffusion_steady_state_continuous_2d_d00_p05_potential(

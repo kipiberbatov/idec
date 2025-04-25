@@ -59,7 +59,7 @@ diffusion_steady_state_continuous_2d_d00_p00 =
   NULL
 };
 
-static double u(const double * point)
+static double u(const double * x)
 {
   return 0.;
 }
