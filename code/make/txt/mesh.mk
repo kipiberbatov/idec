@@ -9,6 +9,7 @@ build/$(MODE)/txt/mesh: | build/$(MODE)/txt
 -include code/make/txt/mesh/brick_2d_5.mk
 -include code/make/txt/mesh/brick_2d_10.mk
 -include code/make/txt/mesh/rectangle_20_15_brick_5_3.mk
+-include code/make/txt/mesh/parallelogram_20_15_degrees_45_grid_5_3.mk
 -include code/make/txt/mesh/two_triangles.mk
 -include code/make/txt/mesh/triangle_and_square.mk
 -include code/make/txt/mesh/pentagon.mk
@@ -100,6 +101,7 @@ txt_mesh_brick_clean:
 _txt_mesh :=\
   $(_txt_mesh_brick)\
   $(_txt_mesh_rectangle_20_15_brick_5_3)\
+  $(_txt_mesh_parallelogram_20_15_degrees_45_grid_5_3)\
   $(_txt_mesh_two_triangles)\
   $(_txt_mesh_triangle_and_square)\
   $(_txt_mesh_pentagon)\

@@ -15,6 +15,8 @@ _svg_mesh :=\
   build/$(MODE)/svg/mesh/brick_2d_10_forman_edge_skeleton.svg\
   build/$(MODE)/svg/mesh/rectangle_20_15_brick_5_3_edge_skeleton.svg\
   build/$(MODE)/svg/mesh/rectangle_20_15_brick_5_3_forman_edge_skeleton.svg\
+  build/$(MODE)/svg/mesh/parallelogram_20_15_degrees_45_grid_5_3_edge_skeleton.svg\
+  build/$(MODE)/svg/mesh/parallelogram_20_15_degrees_45_grid_5_3_forman_edge_skeleton.svg\
   build/$(MODE)/svg/mesh/square_edge_skeleton.svg\
   build/$(MODE)/svg/mesh/square_2_edge_skeleton.svg\
   build/$(MODE)/svg/mesh/square_4_edge_skeleton.svg\
@@ -199,6 +201,38 @@ build/$(MODE)/svg/mesh/rectangle_20_15_brick_5_3_edge_skeleton.svg:\
 build/$(MODE)/svg/mesh/rectangle_20_15_brick_5_3_forman_edge_skeleton.svg:\
   build/$(MODE)/bin/idec_graphics_mesh_2d_skeleton$(.EXE)\
   build/$(MODE)/txt/mesh/rectangle_20_15_brick_5_3_forman.txt\
+  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_skeleton$(.OBJ)\
+  build/$(MODE)/obj/plugins/idec_cairo_svg_animation$(.OBJ)\
+  | build/$(MODE)/svg/mesh\
+    build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
+    build/$(MODE)/lib/plugins/libanimation$(.DLL)
+	$< \
+  --mesh=$(word 2, $^)\
+  --canvas-library=$(word 2, $|)\
+  --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_skeleton\
+  --animation-library=$(word 3, $|)\
+  --animation-backend=idec_cairo_svg_animation\
+  --output=$@
+
+build/$(MODE)/svg/mesh/parallelogram_20_15_degrees_45_grid_5_3_edge_skeleton.svg:\
+  build/$(MODE)/bin/idec_graphics_mesh_2d_skeleton$(.EXE)\
+  build/$(MODE)/txt/mesh/parallelogram_20_15_degrees_45_grid_5_3.txt\
+  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_skeleton$(.OBJ)\
+  build/$(MODE)/obj/plugins/idec_cairo_svg_animation$(.OBJ)\
+  | build/$(MODE)/svg/mesh\
+    build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
+    build/$(MODE)/lib/plugins/libanimation$(.DLL)
+	$< \
+  --mesh=$(word 2, $^)\
+  --canvas-library=$(word 2, $|)\
+  --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_skeleton\
+  --animation-library=$(word 3, $|)\
+  --animation-backend=idec_cairo_svg_animation\
+  --output=$@
+
+build/$(MODE)/svg/mesh/parallelogram_20_15_degrees_45_grid_5_3_forman_edge_skeleton.svg:\
+  build/$(MODE)/bin/idec_graphics_mesh_2d_skeleton$(.EXE)\
+  build/$(MODE)/txt/mesh/parallelogram_20_15_degrees_45_grid_5_3_forman.txt\
   build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_skeleton$(.OBJ)\
   build/$(MODE)/obj/plugins/idec_cairo_svg_animation$(.OBJ)\
   | build/$(MODE)/svg/mesh\
