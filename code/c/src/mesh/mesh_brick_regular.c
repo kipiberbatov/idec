@@ -1,21 +1,21 @@
-#include <errno.h>
-
+#include "color.h"
 #include "double_array.h"
 #include "int.h"
 #include "mesh_brick.h"
 
 mesh * mesh_brick_regular(int d, int n)
 {
-  int n_list[MAX_DIM];
+  int partitions[MAX_DIM];
   double brick_lengths[MAX_DIM];
   mesh * m;
 
-  int_array_assign_constant(n_list, d, n);
+  int_array_assign_constant(partitions, d, n);
   double_array_assign_constant(brick_lengths, d, 1.);
-  m = mesh_brick(d, brick_lengths, n_list);
-  if (errno)
+  m = mesh_brick(d, brick_lengths, partitions);
+  if (m == NULL)
   {
-    fputs("mesh_brick_regular - cannot calculate m\n", stderr);
+    color_error_position(__FILE__, __LINE__);
+    fputs("cannot calculate m\n", stderr);
     return NULL;
   }
   return m;

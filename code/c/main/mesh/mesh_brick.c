@@ -7,14 +7,14 @@
 #include "mesh_brick.h"
 
 static void mesh_brick_file_print_raw(
-  FILE * out, int d, const double * brick_lengths, const int * n)
+  FILE * out, int d, const double * brick_lengths, const int * partitions)
 {
   int p;
   int m_bd_sizes[MAX_DIM];
   mesh * m;
   int ** m_bd;
 
-  m = mesh_brick(d, brick_lengths, n);
+  m = mesh_brick(d, brick_lengths, partitions);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
@@ -26,7 +26,7 @@ static void mesh_brick_file_print_raw(
   for (p = 1; p <= d; ++p)
     m_bd_sizes[p - 1] = mesh_boundary_nonzero_max(m, p);
 
-  m_bd = mesh_brick_boundary(m->dim, n, m_bd_sizes);
+  m_bd = mesh_brick_boundary(m->dim, partitions, m_bd_sizes);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
@@ -47,7 +47,7 @@ end:
 int main(int argc, char ** argv)
 {
   int d, p;
-  int n[MAX_DIM];
+  int partitions[MAX_DIM];
   double brick_lengths[MAX_DIM];
 
   if (argc == 1)
@@ -67,10 +67,14 @@ int main(int argc, char ** argv)
     return errno;
   }
 
-  if (d < 0)
+  if (d > MAX_DIM || d < 0)
   {
     color_error_position(__FILE__, __LINE__);
-    fprintf(stderr, "dimension must be nonnegative; instead it is %d\n", d);
+    if (d > MAX_DIM)
+      fprintf(stderr, "dimension %d is too big; limit is %d\n", d, MAX_DIM);
+    else
+      fprintf(stderr, "dimension is too%d but it must be nonnegative\n", d);
+    errno = EINVAL;
     return errno;
   }
 
@@ -90,7 +94,7 @@ int main(int argc, char ** argv)
     if (errno)
     {
       color_error_position(__FILE__, __LINE__);
-      fprintf(stderr, "cannot scan brick_length[%d] from string %s\n",
+      fprintf(stderr, "cannot scan brick_lengths[%d] from string %s\n",
         p, argv[2 + p]);
       return errno;
     }
@@ -98,17 +102,17 @@ int main(int argc, char ** argv)
 
   for (p = 0; p < d; ++p)
   {
-    n[p] = int_string_scan(argv[2 + d + p]);
+    partitions[p] = int_string_scan(argv[2 + d + p]);
     if (errno)
     {
       color_error_position(__FILE__, __LINE__);
-      fprintf(stderr, "cannot scan axis_partition[%d] from string %s\n",
+      fprintf(stderr, "cannot scan partitions[%d] from string %s\n",
         p, argv[2 + d + p]);
       return errno;
     }
   }
 
-  mesh_brick_file_print_raw(stdout, d, brick_lengths, n);
+  mesh_brick_file_print_raw(stdout, d, brick_lengths, partitions);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);

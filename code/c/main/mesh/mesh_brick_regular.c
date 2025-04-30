@@ -2,13 +2,14 @@
 #include <stdlib.h>
 
 #include "color.h"
+#include "idec_error_message.h"
 #include "int.h"
 #include "mesh_brick.h"
 
 static void mesh_brick_regular_file_print_raw(FILE * out, int d, int n)
 {
   int p;
-  int m_bd_sizes[MAX_DIM], n_list[MAX_DIM];
+  int m_bd_sizes[MAX_DIM], partitions[MAX_DIM];
   mesh * m;
   int ** m_bd;
 
@@ -21,11 +22,11 @@ static void mesh_brick_regular_file_print_raw(FILE * out, int d, int n)
   }
   mesh_file_print(out, m, "--raw");
 
-  int_array_assign_constant(n_list, d, n);
+  int_array_assign_constant(partitions, d, n);
   for (p = 1; p <= d; ++p)
     m_bd_sizes[p - 1] = mesh_boundary_nonzero_max(m, p);
 
-  m_bd = mesh_brick_boundary(m->dim, n_list, m_bd_sizes);
+  m_bd = mesh_brick_boundary(m->dim, partitions, m_bd_sizes);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
@@ -46,15 +47,16 @@ int main(int argc, char ** argv)
 {
   int d, n;
 
+#define ARGC 3
   if (argc != 3)
   {
-    errno = EIO;
     color_error_position(__FILE__, __LINE__);
-    fputs("the number of command-line arguments must be 3.\n", stderr);
+    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    errno = EIO;
     goto end;
   }
 
-  sscanf(argv[1], "%d", &d);
+  d = int_string_scan(argv[1]);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
@@ -62,11 +64,30 @@ int main(int argc, char ** argv)
     goto end;
   }
 
-  sscanf(argv[2], "%d", &n);
+  if (d > MAX_DIM || d < 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    if (d > MAX_DIM)
+      fprintf(stderr, "dimension %d is too big; limit is %d\n", d, MAX_DIM);
+    else
+      fprintf(stderr, "dimension is too%d but it must be nonnegative\n", d);
+    errno = EINVAL;
+    goto end;
+  }
+
+  n = int_string_scan(argv[2]);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot scan number of divisions n\n", stderr);
+    fputs("cannot scan number of partitions n\n", stderr);
+    goto end;
+  }
+
+  if (n <= 0)
+  {
+    color_error_position(__FILE__, __LINE__);
+    fprintf(stderr, "number of partitions %d must be positive\n", n);
+    errno = EINVAL;
     goto end;
   }
 
@@ -74,7 +95,7 @@ int main(int argc, char ** argv)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot calculate and print the mesh m\n", stderr);
+    fputs("cannot generate and print mesh m\n", stderr);
     goto end;
   }
 
