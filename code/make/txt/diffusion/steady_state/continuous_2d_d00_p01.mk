@@ -9,6 +9,7 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01:\
 _txt_diffusion_steady_state_continuous_2d_d00_p01 :=\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01/exact_brick_2d_2_forman_potential.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01/exact_brick_2d_2_forman_flow_rate.txt\
+  build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01/cochain_brick_2d_2_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_2_forman_input.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_2_forman_potential.txt\
   build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_2_forman_flow_rate.txt\
@@ -42,6 +43,22 @@ build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01/exact_brick_2d_2_
   $(word 2, $|)\
   diffusion_steady_state_continuous_2d_d00_p01_flow_rate\
   --raw > $@
+
+build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01/cochain_brick_2d_2_forman_input.txt:\
+  build/$(MODE)/bin/diffusion_steady_state_discrete_from_continuous$(.EXE)\
+  build/$(MODE)/txt/mesh/brick_2d_2_forman.txt\
+  build/$(MODE)/txt/mesh/brick_2d_2_forman_vol.txt\
+  build/$(MODE)/obj/plugins/diffusion_steady_state_continuous_2d_d00_p01$(.OBJ)\
+  build/$(MODE)/obj/plugins/diffusion_steady_state_discrete_pre_processing_standard$(.OBJ)\
+  | build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01\
+    build/$(MODE)/lib/plugins/libdiffusion$(.DLL)
+	$<\
+  --mesh=$(word 2, $^)\
+  --mesh-measures=$(word 3, $^)\
+  --dynamic-library=$(word 2, $|)\
+  --data=diffusion_steady_state_continuous_2d_d00_p01\
+  --pre-processing=diffusion_steady_state_discrete_pre_processing_standard\
+  --output=$@
 
 build/$(MODE)/txt/diffusion/steady_state/continuous_2d_d00_p01/primal_strong_cochain_brick_2d_2_forman_input.txt:\
   build/$(MODE)/bin/diffusion_steady_state_discrete_primal_strong_from_continuous$(.EXE)\

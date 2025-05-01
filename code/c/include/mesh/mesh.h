@@ -62,6 +62,16 @@ jagged1 * mesh_boundary_cells(const mesh * m, const jagged1 * m_bd_hyperfaces);
 jagged1 * mesh_almost_boundary_cells(
   const mesh * m, const jagged1 * m_bd_cells, int p);
 
+void mesh_boundary_hyperface_get_lower_faces(
+  struct jagged1 ** skeleton_p,
+  int * status,
+  const struct mesh * m,
+  const struct jagged1 * boundary_subset,
+  int p);
+
+void mesh_boundary_dm1(
+  struct jagged1 ** m_boundary_dm1, int * status, const struct mesh * m);
+
 /******************************* mesh_boundary ********************************/
 int mesh_boundary_nonzero_max(const mesh * m, int p);
 void mesh_boundary_cols_total(int * m_bd_cols_total, const mesh * m, int p);

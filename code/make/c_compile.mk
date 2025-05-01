@@ -360,12 +360,20 @@ build/$(MODE)/lib/plugins: | build/$(MODE)/lib
 	mkdir -p $@
 
 build/$(MODE)/lib/plugins/libdiffusion$(.DLL): $(_obj_plugins_diffusion)\
+  build/$(MODE)/obj/src/boundary_scalar_field_discretize$(.OBJ)\
+  build/$(MODE)/obj/src/boundary_pseudoscalar_field_discretize$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_0$(.OBJ)\
+  build/$(MODE)/obj/src/de_rham_nonzero$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_sequence_0$(.OBJ)\
   build/$(MODE)/obj/src/int_array_total_sum$(.OBJ)\
+  build/$(MODE)/obj/src/jagged1_free$(.OBJ)\
   build/$(MODE)/obj/src/jagged2_part1$(.OBJ)\
   build/$(MODE)/obj/src/jagged4_part2$(.OBJ)\
   build/$(MODE)/obj/src/mesh_cf_part2$(.OBJ)\
+  build/$(MODE)/obj/src/mesh_boundary_hyperfaces_from_constraint$(.OBJ)\
+  build/$(MODE)/obj/src/polytope_coordinates_arithmetic_mean$(.OBJ)\
+  build/$(MODE)/obj/src/unsigned_approximation_of_scalar_field_on_1_cells$(.OBJ)\
+  build/$(MODE)/obj/src/unsigned_approximation_of_scalar_field_on_hyperfaces$(.OBJ)\
   | build/$(MODE)/lib/plugins
 	$(CC) -o $@ -fPIC -shared $^ $(LDLIBS)
 
