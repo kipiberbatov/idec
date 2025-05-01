@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+#include "color.h"
+#include "idec_error_message.h"
+
+void idec_error_message_cannot_calculate(const char * name)
+{
+  fprintf(stderr,
+    "cannot calculate variable %s%s%s\n",
+    color_variable, name, color_none);
+}
