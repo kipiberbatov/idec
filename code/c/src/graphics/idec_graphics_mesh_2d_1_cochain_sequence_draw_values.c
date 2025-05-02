@@ -20,7 +20,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
 {
   int color_index, j, number_of_edges;
   int * cf_1_0_j;
-  double color_coefficient, denominator, min, max, sign, size;
+  double color_coefficient, max, sign, size;
   double * boundary_1, * coordinates, * values_i;
   struct jagged2 cf_1_0;
   struct mesh * m;
@@ -32,12 +32,10 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
     const struct idec_graphics_mesh_2d_edge *,
     void (*)(void *, const void *)) = functions->draw_oriented_edge;
 
-  min = cochain_sequence->min_value;
   max = cochain_sequence->max_value;
-  denominator = max - min;
-  if (denominator == 0.)
+  if (max == 0)
     return;
-  color_coefficient = (double) (total_colors - 1) / denominator;
+  color_coefficient = (double) (total_colors - 1) / max;
 
   boundary_1 = cochain_sequence->boundary_1;
   coordinates = cochain_sequence->coordinates;
@@ -75,7 +73,7 @@ void idec_graphics_mesh_2d_1_cochain_sequence_draw_values(
   values_i = cochain_sequence->values + number_of_edges * i;
   for (j = 0; j < number_of_edges; ++j)
   {
-    color_index = (int) ((fabs(values_i[j]) - min) * color_coefficient);
+    color_index = (int) fabs(values_i[j] * color_coefficient);
     if (color_index)
     {
       set_color(edge.color, color_index, total_colors);
