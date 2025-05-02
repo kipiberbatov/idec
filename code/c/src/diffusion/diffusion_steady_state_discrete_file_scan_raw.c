@@ -47,7 +47,7 @@ void diffusion_steady_state_discrete_file_scan_raw(
   if (errno)
   {
     idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("data->number_of_cells_1");
+    idec_error_message_cannot_calculate("data->number_of_cells_d");
     *status = errno;
     goto end;
   }
@@ -63,7 +63,7 @@ void diffusion_steady_state_discrete_file_scan_raw(
   }
 
   data->dual_conductivity = double_array_file_scan(
-    in, data->number_of_cells_dm1, "--raw");
+    in, data->number_of_cells_1, "--raw");
   if (data->dual_conductivity == NULL)
   {
     idec_error_message_position_in_code(__FILE__, __LINE__);
@@ -130,6 +130,8 @@ void diffusion_steady_state_discrete_file_scan_raw(
   }
 
   *result = data;
+
+  return;
 
   /* cleaning if an error occurs */
 boundary_neumann_dm1_free:
