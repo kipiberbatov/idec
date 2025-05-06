@@ -224,6 +224,7 @@ build/$(MODE)/pdf/mesh/parallelogram_20_15_degrees_45_grid_5_3_edge_skeleton.pdf
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$< \
   --mesh=$(word 2, $^)\
+  --height=250\
   --canvas-library=$(word 2, $|)\
   --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_skeleton\
   --animation-library=$(word 3, $|)\
@@ -240,6 +241,7 @@ build/$(MODE)/pdf/mesh/parallelogram_20_15_degrees_45_grid_5_3_forman_edge_skele
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$< \
   --mesh=$(word 2, $^)\
+  --height=250\
   --canvas-library=$(word 2, $|)\
   --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_skeleton\
   --animation-library=$(word 3, $|)\

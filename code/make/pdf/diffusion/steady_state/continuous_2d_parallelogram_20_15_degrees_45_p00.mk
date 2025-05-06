@@ -25,6 +25,7 @@ build/$(MODE)/pdf/diffusion/steady_state/continuous_2d_parallelogram_20_15_degre
   --mesh=$(word 2, $^)\
   --number-of-time-steps=0\
   --cochain-sequence=$(word 3, $^)\
+  --height=250\
   --canvas-library=$(word 2, $|)\
   --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence\
   --animation-library=$(word 3, $|)\
@@ -44,6 +45,7 @@ build/$(MODE)/pdf/diffusion/steady_state/continuous_2d_parallelogram_20_15_degre
   --mesh=$(word 2, $^)\
   --number-of-time-steps=0\
   --cochain-sequence=$(word 3, $^)\
+  --height=250\
   --canvas-library=$(word 2, $|)\
   --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
   --animation-library=$(word 3, $|)\
@@ -63,6 +65,7 @@ build/$(MODE)/pdf/diffusion/steady_state/continuous_2d_parallelogram_20_15_degre
   --mesh=$(word 2, $^)\
   --number-of-time-steps=0\
   --cochain-sequence=$(word 3, $^)\
+  --height=250\
   --canvas-library=$(word 2, $|)\
   --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence\
   --animation-library=$(word 3, $|)\
@@ -83,6 +86,7 @@ build/$(MODE)/pdf/diffusion/steady_state/continuous_2d_parallelogram_20_15_degre
   --number-of-time-steps=0\
   --cochain-sequence-format=--steady-state-mixed-weak-solution-flow-rate-raw\
   --cochain-sequence=$(word 3, $^)\
+  --height=250\
   --canvas-library=$(word 2, $|)\
   --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
   --animation-library=$(word 3, $|)\
