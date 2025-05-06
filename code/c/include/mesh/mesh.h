@@ -118,6 +118,13 @@ jagged1 * mesh_boundary_hyperfaces_from_constraint(
   const mesh * m,
   int (*constraint)(const double *));
 
+void mesh_boundary_hyperfaces_from_constraint_1(
+  struct jagged1 ** result,
+  int * status,
+  const struct mesh * m,
+  const struct jagged1 * m_boundary_dm1,
+  int (*constraint)(const double *));
+
 jagged1 * mesh_boundary_neumann_minus_dirichlet_nodes(
   const mesh * m,
   int (*boundary_neumann_continuous)(const double *),
