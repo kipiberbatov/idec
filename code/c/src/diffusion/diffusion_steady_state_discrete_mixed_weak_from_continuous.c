@@ -40,7 +40,7 @@ diffusion_steady_state_discrete_mixed_weak_from_continuous(
   if (errno)
     goto data_discrete_kappa_dm1_free;
   de_rham_nonzero(
-    data_discrete->source_d, m, m->dim, m_vol_d, data_continuous->source);
+    data_discrete->source_d, m, d, m_vol_d, data_continuous->source);
 
   data_discrete->boundary_dirichlet_dm1
   = mesh_boundary_hyperfaces_from_constraint(

@@ -22,6 +22,8 @@ double * double_array_file_scan(FILE * in, int n, const char * format)
     scanner = double_array_file_scan_steady_state_primal_weak_raw;
   else if (!strcmp(format, "--steady-state-primal-strong-raw"))
     scanner = double_array_file_scan_steady_state_primal_weak_raw;
+  else if (!strcmp(format, "--steady-state-dual-conductivity-raw"))
+    scanner = double_array_file_scan_steady_state_dual_conductivity_raw;
   else if (!strcmp(format, "transient-primal-strong-raw"))
     scanner = double_array_file_scan_transient_primal_strong_raw;
   else if (!strcmp(format, "transient-primal-weak-raw"))

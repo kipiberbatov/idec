@@ -49,9 +49,14 @@ static double kappa_1(const double * x)
   return KAPPA;
 }
 
+static double double_cube(double x){return x * x * x;}
+
+/* with coefficient before d theta /\ d phi in spherical coordinates */
 static double source(const double * x)
 {
-  return 6 * KAPPA * (double_square(x[0]) - double_square(x[1]));
+  double theta = x[0];
+  double phi = x[1];
+  return 6 * KAPPA * cos(2 * phi) * double_cube(sin(theta));
 }
 
 static int boundary_dirichlet(const double * x)

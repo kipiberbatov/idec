@@ -364,6 +364,7 @@ build/$(MODE)/lib/plugins/libdiffusion$(.DLL): $(_obj_plugins_diffusion)\
   build/$(MODE)/obj/src/boundary_pseudoscalar_field_discretize$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_0$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_top_dimension$(.OBJ)\
+  build/$(MODE)/obj/src/de_rham_2_hemisphere_polar_forman$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_boundary_0$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_nonzero$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_sequence_0$(.OBJ)\

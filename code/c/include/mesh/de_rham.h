@@ -33,4 +33,10 @@ void de_rham_sequence_0(
   int number_of_steps,
   double (*f)(double, const double *));
 
+void de_rham_2_hemisphere_polar_forman(
+  double * x,
+  const mesh * m,
+  const double * m_vol_d,
+  double (*f)(const double *));
+
 #endif /* _de_rham_h */
