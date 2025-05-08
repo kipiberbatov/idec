@@ -18,6 +18,7 @@ include code/make/pdf/diffusion/steady_state/continuous_2d_d03_p00.mk
 include code/make/pdf/diffusion/steady_state/continuous_2d_d03_p01.mk
 include code/make/pdf/diffusion/steady_state/continuous_2d_d04_p00.mk
 include code/make/pdf/diffusion/steady_state/continuous_2d_d04_p01.mk
+include code/make/pdf/diffusion/steady_state/continuous_2d_d04_p02.mk
 include code/make/pdf/diffusion/steady_state/continuous_2d_parallelogram_20_15_degrees_45_p00.mk
 
 _pdf_diffusion_steady_state :=\
@@ -34,6 +35,7 @@ _pdf_diffusion_steady_state :=\
   $(_pdf_diffusion_steady_state_continuous_2d_d03_p01)\
   $(_pdf_diffusion_steady_state_continuous_2d_d04_p00)\
   $(_pdf_diffusion_steady_state_continuous_2d_d04_p01)\
+  $(_pdf_diffusion_steady_state_continuous_2d_d04_p02)\
   $(_pdf_diffusion_steady_state_continuous_2d_parallelogram_20_15_degrees_45_p00)\
 
 pdf_diffusion_steady_state: $(_pdf_diffusion_steady_state)
