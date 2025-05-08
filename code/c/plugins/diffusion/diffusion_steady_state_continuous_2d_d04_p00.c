@@ -9,7 +9,7 @@
 Let
   . M = {(x, y, z) in R^3 | x^2 + y^2 + z^2 = 1, z >= 0}, i.e.,
     M = {(sin(theta) cos(phi), sin(theta) sin(phi), cos(theta))
-         | 0 <= theta <= pi /2, 0 <= phi <= 2 pi}
+         | 0 <= theta <= pi / 2, 0 <= phi <= 2 pi}
   . kappa_1 = KAPPA
   . ~f(theta, phi) = 6 KAPPA cos(2 phi) sin^3(theta) d theta /\ d phi, i.e.,
     f(x, y, z) = 6 KAPPA (x^2 - y^2) vol
