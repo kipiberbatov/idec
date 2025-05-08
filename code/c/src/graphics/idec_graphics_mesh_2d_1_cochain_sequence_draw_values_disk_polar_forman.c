@@ -10,7 +10,7 @@
 #include "line_2d.h"
 #include "mesh.h"
 
-void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman(
+void idec_graphics_mesh_2d_1_cochain_sequence_draw_values_polar_forman(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_1_cochain_sequence * cochain_sequence,

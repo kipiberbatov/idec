@@ -1,10 +1,10 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "mesh_hemisphere.h"
+#include "mesh_hemisphere_polar.h"
 
 /* na is the number of meridians, nd is the number of parallels */
-void mesh_hemisphere_coordinates(
+void mesh_hemisphere_polar_coordinates(
   double * m_coord, int na, int nd,
   double radius, double x0, double y0, double z0)
 {

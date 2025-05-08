@@ -131,8 +131,8 @@ static void forman_areas(double * vol_2, int na, int nd, double s_0)
   forman_areas_of_faces_to_nodes(vol_2, &index, na, nd, s_0);
 }
 
-/* m is the Forman mesh of a circular mesh */
-void mesh_measures_circular_forman(
+/* m is the Forman mesh of a polar mesh */
+void mesh_measures_disk_polar_forman(
   double *** m_measures, int * status, const struct mesh * m)
 {
   int end_index, na, nd, p;

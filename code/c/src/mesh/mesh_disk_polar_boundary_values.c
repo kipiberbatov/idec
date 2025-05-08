@@ -1,6 +1,6 @@
-#include "mesh_circular.h"
+#include "mesh_disk_polar.h"
 
-void mesh_circular_boundary_values(double * m_boundary_values, int na, int nd)
+void mesh_disk_polar_boundary_values(double * m_boundary_values, int na, int nd)
 {
   int i, index, j, m_cn_1;
 

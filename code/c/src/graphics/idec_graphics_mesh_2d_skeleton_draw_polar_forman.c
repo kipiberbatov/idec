@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "arc_2d.h"
 #include "color.h"
@@ -8,7 +9,7 @@
 #include "line_2d.h"
 #include "mesh.h"
 
-void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
+void idec_graphics_mesh_2d_skeleton_draw_polar_forman(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_skeleton * skeleton,
@@ -20,7 +21,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
   int i, j, index, na, nd;
   int * cf_1_0_index, * m_cn;
   double cx, cy, rx, ry, theta;
-  double * coordinates, * x0, * x1;
+  double * coordinates, * x0;
   jagged2 cf_1_0;
   mesh * m;
   struct idec_graphics_mesh_2d_edge edge;
@@ -46,18 +47,15 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
   arc.y0 = cy;
 
   index = 0;
+  /* edges to nodes */
   for (i = 1; i <= nd / 2; ++i)
   {
     /* rays */
     edge.data = (void *) &line;
     for (j = 0; j < na; ++j)
     {
-      x0 = coordinates + 2 * cf_1_0_index[0];
-      x1 = coordinates + 2 * cf_1_0_index[1];
-      line.x0[0] = x0[0];
-      line.x0[1] = x0[1];
-      line.x1[0] = x1[0];
-      line.x1[1] = x1[1];
+      memcpy(line.x0, coordinates + 2 * cf_1_0_index[0], sizeof(double) * 2);
+      memcpy(line.x1, coordinates + 2 * cf_1_0_index[1], sizeof(double) * 2);
       draw_black_edge(canvas, status, &edge, draw_line);
       if (*status)
       {
@@ -111,12 +109,8 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
     ++index;
     cf_1_0_index += 2;
 
-    x0 = coordinates + 2 * cf_1_0_index[0];
-    x1 = coordinates + 2 * cf_1_0_index[1];
-    line.x0[0] = x0[0];
-    line.x0[1] = x0[1];
-    line.x1[0] = x1[0];
-    line.x1[1] = x1[1];
+    memcpy(line.x0, coordinates + 2 * cf_1_0_index[0], sizeof(double) * 2);
+    memcpy(line.x1, coordinates + 2 * cf_1_0_index[1], sizeof(double) * 2);
     edge.data = (void *) &line;
     draw_black_edge(canvas, status, &edge, draw_line);
     if (*status)
@@ -151,12 +145,8 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
     arc.r = sqrt(rx * rx + ry * ry);
     for (j = 0; j < na / 2; ++j)
     {
-      x0 = coordinates + 2 * cf_1_0_index[0];
-      x1 = coordinates + 2 * cf_1_0_index[1];
-      line.x0[0] = x0[0];
-      line.x0[1] = x0[1];
-      line.x1[0] = x1[0];
-      line.x1[1] = x1[1];
+      memcpy(line.x0, coordinates + 2 * cf_1_0_index[0], sizeof(double) * 2);
+      memcpy(line.x1, coordinates + 2 * cf_1_0_index[1], sizeof(double) * 2);
       edge.data = (void *) &line;
       draw_black_edge(canvas, status, &edge, draw_line);
       if (*status)
@@ -181,12 +171,8 @@ void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
       ++index;
       cf_1_0_index += 2;
 
-      x0 = coordinates + 2 * cf_1_0_index[0];
-      x1 = coordinates + 2 * cf_1_0_index[1];
-      line.x0[0] = x0[0];
-      line.x0[1] = x0[1];
-      line.x1[0] = x1[0];
-      line.x1[1] = x1[1];
+      memcpy(line.x0, coordinates + 2 * cf_1_0_index[0], sizeof(double) * 2);
+      memcpy(line.x1, coordinates + 2 * cf_1_0_index[1], sizeof(double) * 2);
       edge.data = (void *) &line;
       draw_black_edge(canvas, status, &edge, draw_line);
       if (*status)

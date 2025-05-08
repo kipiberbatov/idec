@@ -394,10 +394,10 @@ build/$(MODE)/lib/plugins/libcanvas$(.DLL): $(_obj_plugins_canvas)\
   build/$(MODE)/obj/src/idec_rgb_get_color_rgb$(.OBJ)\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_0_cochain_sequence_draw_values$(.OBJ)\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_1_cochain_sequence_draw_values$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_mesh_2d_1_cochain_sequence_draw_values_circular_forman$(.OBJ)\
+  build/$(MODE)/obj/src/idec_graphics_mesh_2d_1_cochain_sequence_draw_values_polar_forman$(.OBJ)\
   build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw_circular$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw_circular_forman$(.OBJ)\
+  build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw_polar$(.OBJ)\
+  build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw_polar_forman$(.OBJ)\
   build/$(MODE)/obj/src/idec_graphics_colorbar_draw_rectangles$(.OBJ)\
   build/$(MODE)/obj/src/line_2d_midpoint$(.OBJ)\
   build/$(MODE)/obj/src/line_2d_direction_90_degrees$(.OBJ)\

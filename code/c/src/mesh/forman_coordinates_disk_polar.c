@@ -3,8 +3,9 @@
 
 #include "forman_coordinates_private.h"
 
-/* Calculate the centroids of the Forman subdivision of mesh_circular() */
-void forman_coordinates_circular(double * m_forman_coordinates, const mesh * m)
+/* Calculate the centroids of the Forman subdivision of mesh_disk_polar() */
+void
+forman_coordinates_disk_polar(double * m_forman_coordinates, const mesh * m)
 {
   int i, index, j, na, nd, m_dim_embedded, product;
   int * m_cf_a3_2_0, * m_cn;

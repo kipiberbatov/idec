@@ -90,7 +90,8 @@ static double u(const double * x)
   return double_square(x[0]) - double_square(x[1]);
 }
 
-void diffusion_steady_state_continuous_2d_d04_p00_exact_potential_circular(
+void
+diffusion_steady_state_continuous_2d_d04_p00_exact_potential_hemisphere_polar(
   double * potential, const struct mesh * m)
 {
   de_rham_0(potential, m, u);
@@ -113,7 +114,8 @@ On a parallel P = {theta_0} * [phi_a, phi_b], phi_b - phi_a = phi_1,
           = K sin(phi_1) sin(theta_0) sin(2 theta_0) cos(phi_a + phi_b)
 
 */
-void diffusion_steady_state_continuous_2d_d04_p00_exact_flow_rate_circular(
+void
+diffusion_steady_state_continuous_2d_d04_p00_exact_flow_rate_hemisphere_polar(
   double * flow_rate,
   const struct mesh * m,
   const struct matrix_sparse * m_bd_1)

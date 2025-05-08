@@ -3,10 +3,10 @@
 #include "color.h"
 #include "idec_error_message.h"
 #include "int.h"
-#include "mesh_circular.h"
+#include "mesh_disk_polar.h"
 #include "mesh_private.h"
 
-static void mesh_circular_cells_number(int * m_cn, int na, int nd)
+static void mesh_disk_polar_cells_number(int * m_cn, int na, int nd)
 {
   int product = na * nd;
   m_cn[0] = product + 1;
@@ -14,7 +14,7 @@ static void mesh_circular_cells_number(int * m_cn, int na, int nd)
   m_cn[2] = product;
 }
 
-void mesh_circular_only_topology(mesh * m, int na, int nd)
+void mesh_disk_polar_only_topology(mesh * m, int na, int nd)
 {
   int m_c_size;
 
@@ -27,7 +27,7 @@ void mesh_circular_only_topology(mesh * m, int na, int nd)
     idec_error_message_malloc(sizeof(int) * 3, "m->cn");
     goto end;
   }
-  mesh_circular_cells_number(m->cn, na, nd);
+  mesh_disk_polar_cells_number(m->cn, na, nd);
 
   m_c_size = int_array_total_sum(3, m->cn);
   m->c = (int *) malloc(sizeof(int) * m_c_size);
@@ -39,7 +39,7 @@ void mesh_circular_only_topology(mesh * m, int na, int nd)
   }
   mesh_c(m->c, 2, m->cn);
 
-  m->cf = mesh_circular_cells_to_faces(na, nd, m->cn);
+  m->cf = mesh_disk_polar_cells_to_faces(na, nd, m->cn);
   if (m->cf == NULL)
   {
     color_error_position(__FILE__, __LINE__);

@@ -3,7 +3,7 @@
 #include "color.h"
 #include "idec_error_message.h"
 #include "int.h"
-#include "mesh_circular.h"
+#include "mesh_disk_polar.h"
 #include "mesh_private.h"
 
 /*
@@ -11,7 +11,7 @@
 (2, 0) -> 3 ($na$ times), 4 ($na * (nd - 1)$ times)
 (2, 1) -> 3 ($na$ times), 4 ($na * (nd - 1)$ times)
 */
-static void mesh_circular_cells_to_faces_a3(int * m_cf_a3, int na, int nd)
+static void mesh_disk_polar_cells_to_faces_a3(int * m_cf_a3, int na, int nd)
 {
   int index;
 
@@ -67,7 +67,7 @@ static void mesh_circular_cells_to_faces_a3(int * m_cf_a3, int na, int nd)
       na * i + j -> (na, 2 * na, 3 * na, 2 * na + 1) + j + 2 * (i - 1) * na
     na * (i + 1) - 1 -> (- 1, na - 1, 2 * na - 1, 0) + 2 * i * na
 */
-static void mesh_circular_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
+static void mesh_disk_polar_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
 {
   int i, index, j, offset;
 
@@ -181,7 +181,7 @@ static void mesh_circular_cells_to_faces_a4(int * m_cf_a4, int na, int nd)
   }
 }
 
-jagged4 * mesh_circular_cells_to_faces(int na, int nd, const int * m_cn)
+jagged4 * mesh_disk_polar_cells_to_faces(int na, int nd, const int * m_cn)
 {
   int m_cf_a2_size, m_cf_a3_size, m_cf_a4_size;
   jagged4 * m_cf;
@@ -222,7 +222,7 @@ jagged4 * mesh_circular_cells_to_faces(int na, int nd, const int * m_cn)
     idec_error_message_malloc(sizeof(int) * m_cf_a3_size, "m_cf->a3");
     goto m_cf_a2_free;
   }
-  mesh_circular_cells_to_faces_a3(m_cf->a3, na, nd);
+  mesh_disk_polar_cells_to_faces_a3(m_cf->a3, na, nd);
 
   m_cf_a4_size = int_array_total_sum(m_cf_a3_size, m_cf->a3);
   m_cf->a4 = (int *) malloc(sizeof(int) * m_cf_a4_size);
@@ -232,7 +232,7 @@ jagged4 * mesh_circular_cells_to_faces(int na, int nd, const int * m_cn)
     idec_error_message_malloc(sizeof(int) * m_cf_a4_size, "m_cf->a4");
     goto m_cf_a3_free;
   }
-  mesh_circular_cells_to_faces_a4(m_cf->a4, na, nd);
+  mesh_disk_polar_cells_to_faces_a4(m_cf->a4, na, nd);
 
   return m_cf;
 

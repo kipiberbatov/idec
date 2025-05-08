@@ -9,9 +9,9 @@ static void (*draw_curves[2])(void *, int *, const void *) =
 };
 
 const struct idec_graphics_mesh_2d_skeleton_draw_functions
-idec_cairo_graphics_draw_functions_mesh_2d_skeleton_circular_forman =
+idec_cairo_graphics_draw_functions_mesh_2d_skeleton_polar =
 {
-  idec_graphics_mesh_2d_skeleton_draw_circular_forman,
+  idec_graphics_mesh_2d_skeleton_draw_polar,
   draw_curves,
   (void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *,
     void (*)(void *, int *, const void *)))

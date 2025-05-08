@@ -78,14 +78,14 @@ static double norm_2d_squared(const double * x)
   return square(x[0]) + square(x[1]);
 }
 
-void diffusion_steady_state_continuous_2d_d03_p00_exact_potential_circular(
+void diffusion_steady_state_continuous_2d_d03_p00_exact_potential_disk_polar(
   double * potential, const struct mesh * m)
 {
   de_rham_0(potential, m, norm_2d_squared);
 }
 
 /* Exact flow_rate on the Forman subdivision */
-void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_rate_circular(
+void diffusion_steady_state_continuous_2d_d03_p00_exact_flow_rate_disk_polar(
   double * flow_rate,
   const struct mesh * m,
   const struct matrix_sparse * m_bd_1)

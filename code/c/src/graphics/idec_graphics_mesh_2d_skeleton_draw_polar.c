@@ -9,7 +9,7 @@
 #include "mesh.h"
 #include "vector_2d.h"
 
-void idec_graphics_mesh_2d_skeleton_draw_circular(
+void idec_graphics_mesh_2d_skeleton_draw_polar(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_skeleton * skeleton,

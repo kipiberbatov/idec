@@ -1,8 +1,8 @@
 #include <math.h>
 
-#include "mesh_circular.h"
+#include "mesh_disk_polar.h"
 
-void mesh_circular_coordinates(
+void mesh_disk_polar_coordinates(
   double * m_coord, int na, int nd, double radius, double x0, double y0)
 {
   int i, j, offset;

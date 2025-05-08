@@ -3,9 +3,12 @@
 
 #include "color.h"
 #include "idec_error_message.h"
-#include "mesh_circular.h"
+#include "mesh_disk_polar.h"
+#include "mesh_hemisphere_polar.h"
 
-mesh * mesh_circular(int na, int nd, double radius, double x0, double y0)
+mesh * mesh_hemisphere_polar(
+  int na, int nd, double radius,
+  double x0, double y0, double z0)
 {
   mesh * m;
 
@@ -17,24 +20,24 @@ mesh * mesh_circular(int na, int nd, double radius, double x0, double y0)
     goto end;
   }
 
-  mesh_circular_only_topology(m, na, nd);
+  mesh_disk_polar_only_topology(m, na, nd);
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
     fprintf(stderr,
-      "cannot calculate circular mesh topology for na = %d, nd = %d\n", na, nd);
+      "cannot calculate polar mesh topology for na = %d, nd = %d\n", na, nd);
     goto m_free;
   }
 
-  m->dim_embedded = 2;
-  m->coord = (double *) malloc(sizeof(double) * 2 * m->cn[0]);
+  m->dim_embedded = 3;
+  m->coord = (double *) malloc(sizeof(double) * 3 * m->cn[0]);
   if (m->coord == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * 2 * m->cn[0], "m->coord");
+    idec_error_message_malloc(sizeof(double) * 3 * m->cn[0], "m->coord");
     goto m_topology_free;
   }
-  mesh_circular_coordinates(m->coord, na, nd, radius, x0, y0);
+  mesh_hemisphere_polar_coordinates(m->coord, na, nd, radius, x0, y0, z0);
 
   return m;
 

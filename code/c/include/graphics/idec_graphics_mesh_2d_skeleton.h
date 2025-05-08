@@ -21,7 +21,7 @@ void idec_graphics_mesh_2d_skeleton_draw(
     void *, int *, const struct idec_graphics_mesh_2d_edge *,
     void (*)(void *, int *, const void *)));
 
-void idec_graphics_mesh_2d_skeleton_draw_circular(
+void idec_graphics_mesh_2d_skeleton_draw_polar(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_skeleton * skeleton,
@@ -30,7 +30,7 @@ void idec_graphics_mesh_2d_skeleton_draw_circular(
     void *, int *, const struct idec_graphics_mesh_2d_edge *,
     void (*)(void *, int *, const void *)));
 
-void idec_graphics_mesh_2d_skeleton_draw_circular_forman(
+void idec_graphics_mesh_2d_skeleton_draw_polar_forman(
   void * canvas,
   int * status,
   const struct idec_graphics_mesh_2d_skeleton * skeleton,

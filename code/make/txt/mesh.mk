@@ -15,10 +15,10 @@ build/$(MODE)/txt/mesh: | build/$(MODE)/txt
 -include code/make/txt/mesh/pentagon.mk
 -include code/make/txt/mesh/square.mk
 -include code/make/txt/mesh/2d_10_grains.mk
--include code/make/txt/mesh/circular_4_3.mk
--include code/make/txt/mesh/circular_18_10.mk
--include code/make/txt/mesh/hemisphere_4_3.mk
--include code/make/txt/mesh/hemisphere_6_6.mk
+-include code/make/txt/mesh/disk_polar_4_3.mk
+-include code/make/txt/mesh/disk_polar_18_10.mk
+-include code/make/txt/mesh/hemisphere_polar_4_3.mk
+-include code/make/txt/mesh/hemisphere_polar_6_6.mk
 -include code/make/txt/mesh/brick_3d_1.mk
 -include code/make/txt/mesh/brick_3d_2.mk
 -include code/make/txt/mesh/brick_3d_5.mk
@@ -42,27 +42,27 @@ txt_mesh_brick_2d: $(_txt_mesh_brick_2d)
 txt_mesh_brick_2d_clean:
 	-$(RM) $(_txt_mesh_brick_2d)
 
-_txt_mesh_circular:=\
-  $(_txt_mesh_circular_4_3)\
-  $(_txt_mesh_circular_18_10)\
+_txt_mesh_disk_polar:=\
+  $(_txt_mesh_disk_polar_4_3)\
+  $(_txt_mesh_disk_polar_18_10)\
 
-.PHONY: txt_mesh_circular txt_mesh_circular_clean
+.PHONY: txt_mesh_disk_polar txt_mesh_disk_polar_clean
 
-txt_mesh_circular: $(_txt_mesh_circular)
+txt_mesh_disk_polar: $(_txt_mesh_disk_polar)
 
-txt_mesh_circular_clean:
-	-$(RM) $(_txt_mesh_circular)
+txt_mesh_disk_polar_clean:
+	-$(RM) $(_txt_mesh_disk_polar)
 
-_txt_mesh_hemisphere:=\
-  $(_txt_mesh_hemisphere_4_3)\
-  $(_txt_mesh_hemisphere_6_6)\
+_txt_mesh_hemisphere_polar:=\
+  $(_txt_mesh_hemisphere_polar_4_3)\
+  $(_txt_mesh_hemisphere_polar_6_6)\
 
-.PHONY: txt_mesh_hemisphere txt_mesh_hemisphere_clean
+.PHONY: txt_mesh_hemisphere_polar txt_mesh_hemisphere_polar_clean
 
-txt_mesh_hemisphere: $(_txt_mesh_hemisphere)
+txt_mesh_hemisphere_polar: $(_txt_mesh_hemisphere_polar)
 
-txt_mesh_hemisphere_clean:
-	-$(RM) $(_txt_mesh_hemisphere)
+txt_mesh_hemisphere_polar_clean:
+	-$(RM) $(_txt_mesh_hemisphere_polar)
 
 _txt_mesh_brick_3d:=\
   $(_txt_mesh_brick_3d_1)\
@@ -107,8 +107,8 @@ _txt_mesh :=\
   $(_txt_mesh_pentagon)\
   $(_txt_mesh_square)\
   $(_txt_mesh_2d_10_grains)\
-  $(_txt_mesh_circular)\
-  $(_txt_mesh_hemisphere)\
+  $(_txt_mesh_disk_polar)\
+  $(_txt_mesh_hemisphere_polar)\
   $(_txt_mesh_square_pyramid)\
 
 txt_mesh: bin_mesh $(_txt_mesh)

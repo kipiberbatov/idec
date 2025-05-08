@@ -3,10 +3,8 @@
 
 #include "color.h"
 #include "double_array.h"
-#include "idec_error_message.h"
 #include "int.h"
-#include "mesh_circular.h"
-#include "mesh_hemisphere.h"
+#include "mesh_disk_polar.h"
 
 int main(int argc, char ** argv)
 {
@@ -14,11 +12,12 @@ int main(int argc, char ** argv)
   double * m_bd_values;
   mesh * m;
 
-#define ARGC 3
-  if (argc != ARGC)
+  if (argc != 3)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    fprintf(stderr,
+      "number of command-line arguments should be 3;"
+      "instead it is %d\n", argc);
     goto end;
   }
 
@@ -26,7 +25,7 @@ int main(int argc, char ** argv)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot scan number of meridians na\n", stderr);
+    fputs("cannot scan number of angles na\n", stderr);
     goto end;
   }
 
@@ -34,11 +33,11 @@ int main(int argc, char ** argv)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    fputs("cannot scan number of parallels nd\n", stderr);
+    fputs("cannot scan number of disks nd\n", stderr);
     goto end;
   }
 
-  m = mesh_hemisphere(na, nd, 1., 0., 0., 0.);
+  m = mesh_disk_polar(na, nd, 1, 0, 0);
   if (m == NULL)
   {
     color_error_position(__FILE__, __LINE__);
@@ -56,7 +55,7 @@ int main(int argc, char ** argv)
       sizeof(double) * m_bd_values_size);
     goto m_free;
   }
-  mesh_circular_boundary_values(m_bd_values, na, nd);
+  mesh_disk_polar_boundary_values(m_bd_values, na, nd);
 
   mesh_file_print(stdout, m, "--raw");
   double_array_file_print(stdout, m_bd_values_size, m_bd_values, "--raw");

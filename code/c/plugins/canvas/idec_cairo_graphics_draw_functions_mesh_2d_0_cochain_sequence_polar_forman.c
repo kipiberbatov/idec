@@ -13,7 +13,7 @@ static void (*draw_curves[2])(void *, int *, const void *) =
 };
 
 const struct idec_graphics_mesh_2d_0_cochain_sequence_draw_functions
-idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence_circular_forman =
+idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence_polar_forman =
 {
   (void (*)(void **, int *)) idec_rgb_allocate_color,
   free,
@@ -24,7 +24,7 @@ idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence_circular_forman =
   (void (*)(void *, int *, const struct idec_graphics_mesh_2d_node *,
     void (*)(void *, const void *))) idec_cairo_graphics_mesh_2d_node_draw,
   (void (*)(void *, const void *)) idec_rgb_get_color_rgb,
-  idec_graphics_mesh_2d_skeleton_draw_circular_forman,
+  idec_graphics_mesh_2d_skeleton_draw_polar_forman,
   draw_curves,
   (void (*)(void *, int *, const struct idec_graphics_mesh_2d_edge *,
     void (*)(void *, int *, const void *)))

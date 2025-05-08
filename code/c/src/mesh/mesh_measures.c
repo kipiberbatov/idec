@@ -15,10 +15,10 @@ void mesh_measures(double *** m_measures, int * status,
     measurer = mesh_measures_default;
   else if (!strcmp(method, "simplicial-or-quasi-cubical"))
     measurer = mesh_measures_simplicial_or_quasi_cubical;
-  else if (!strcmp(method, "circular-forman"))
-    measurer = mesh_measures_circular_forman;
+  else if (!strcmp(method, "polar-forman"))
+    measurer = mesh_measures_disk_polar_forman;
   else if (!strcmp(method, "hemisphere-forman"))
-    measurer = mesh_measures_hemisphere_forman;
+    measurer = mesh_measures_hemisphere_polar_forman;
   else
     measurer = NULL;
 

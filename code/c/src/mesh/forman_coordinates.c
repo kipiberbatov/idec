@@ -9,8 +9,8 @@ void forman_coordinates(
 {
   if (!strcmp(format, "--standard"))
     forman_coordinates_standard(m_forman_coordinates, m);
-  else if (!strcmp(format, "--circular"))
-    forman_coordinates_circular(m_forman_coordinates, m);
+  else if (!strcmp(format, "--polar"))
+    forman_coordinates_disk_polar(m_forman_coordinates, m);
   else if (!strcmp(format, "--centroid"))
     forman_coordinates_centroid(m_forman_coordinates, m);
   else

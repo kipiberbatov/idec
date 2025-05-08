@@ -151,8 +151,8 @@ static void forman_areas(
     vol_2, &index, na, nd, r_squred_times_phi, theta);
 }
 
-/* m is the Forman mesh of a circular mesh of a hemisphere */
-void mesh_measures_hemisphere_forman(
+/* m is the Forman mesh of a polar mesh of a hemisphere */
+void mesh_measures_hemisphere_polar_forman(
   double *** m_measures, int * status, const struct mesh * m)
 {
   int end_index, na, nd, p;
