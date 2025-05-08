@@ -1,0 +1,45 @@
+\begin{example}
+  \label{idec/diffusion/continuous/steady_state/examples/2d_d04_p03-example}
+  Consider the steady-state continuous heat transport problem
+  (\Cref{idec/diffusion/continuous/steady_state/primal_strong-formulation},
+   \Cref{idec/diffusion/continuous/steady_state/primal_weak-formulation},
+   \Cref{idec/diffusion/continuous/steady_state/mixed_weak-formulation})
+  with input data \verb|2d_d04_p03| in the nomenclature of the C codebase.
+
+  Let $X = \set{(x, y, z) \in \R^3}{x^2 + y^2 + z^2 = 1,\ z \geq 0}$ be a
+  hemisphere with the induced metric.
+  Use spherical coordinates
+  \begin{equation}
+    (x, y, z)
+    = (\sin \theta \cos \varphi, \sin \theta \sin \varphi, \cos \theta),\
+    0 \leq \theta \leq \pi / 2,\
+    0 \leq \varphi \leq 2 \pi.
+  \end{equation}
+  The input data is given in spherical coordinates as follows:
+    $\kappa_1 \equiv 2$,
+    $\tilde{f}(\theta, \phi) = - \kappa \cos \theta\, d \theta \wedge d \phi$,
+    $G_D = \set{(x, y, z) \in \partial X}{y \leq 0}$,
+    $G_N = \set{(x, y, z) \in \partial X}{y \geq 0}$,
+    $\tilde{g}_D(\theta, \phi) = \pi / 2$,
+    $\tilde{g}_N(\theta, \phi) = \kappa\, d \phi$.
+
+  This problem has the following exact solution:
+  \begin{subequations}
+    \begin{alignat}{3}
+      & u(\theta, \phi) && = && \theta, \\
+      & \tilde{q}(\theta, \varphi) && = && \kappa \sin \theta\, d \phi
+    \end{alignat}
+  \end{subequations}
+  Consider a mesh $M$ for $X$ consisting of $n_a$ meridians and $n_d$ parallels
+  with Forman subdivision $K$.
+  Its potential and flow rate on the $xy$-projection of $K$ consisting of the
+  exact solution and the $2$ of the discussed cochain methods (no primal strong)
+  are shown on
+  \Cref{figure:idec/diffusion/steady_state/continuous_2d_d04_p03/hemisphere_polar_4_3_forman_potential},
+  \Cref{figure:idec/diffusion/steady_state/continuous_2d_d04_p03/hemisphere_polar_4_3_forman_flow_rate}
+  ($(n_a, n_d) = (4, 3)$)
+  and
+  \Cref{figure:idec/diffusion/steady_state/continuous_2d_d04_p03/hemisphere_polar_6_6_forman_potential},
+  \Cref{figure:idec/diffusion/steady_state/continuous_2d_d04_p03/hemisphere_polar_6_6_forman_flow_rate}
+  ($(n_a, n_d) = (6, 6)$).
+\end{example}
