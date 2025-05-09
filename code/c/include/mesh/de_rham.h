@@ -39,4 +39,22 @@ void de_rham_2_hemisphere_polar_forman(
   const double * m_vol_d,
   double (*f)(const double *));
 
+void de_rham_2_hemisphere_polar_forman_generic(
+  double * x,
+  const mesh * m,
+  double (*f)(const double *),
+  double (*average_value)(const void *, double (*)(const double *)));
+
+void de_rham_2_hemisphere_polar_forman_gauss_1(
+  double * x,
+  const mesh * m,
+  const double * m_vol_d,
+  double (*f)(const double *));
+
+void de_rham_2_hemisphere_polar_forman_gauss_2(
+  double * x,
+  const mesh * m,
+  const double * m_vol_d,
+  double (*f)(const double *));
+
 #endif /* _de_rham_h */

@@ -9,7 +9,7 @@ diffusion_steady_state_discrete_pre_processing_hemisphere_polar_forman =
 {
   unsigned_approximation_of_scalar_field_on_hyperfaces,
   unsigned_approximation_of_scalar_field_on_1_cells,
-  de_rham_2_hemisphere_polar_forman,
+  de_rham_2_hemisphere_polar_forman_gauss_1,
   mesh_boundary_hyperfaces_from_constraint_1,
   de_rham_boundary_0,
   boundary_pseudoscalar_field_discretize

@@ -365,9 +365,14 @@ build/$(MODE)/lib/plugins/libdiffusion$(.DLL): $(_obj_plugins_diffusion)\
   build/$(MODE)/obj/src/de_rham_0$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_top_dimension$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_2_hemisphere_polar_forman$(.OBJ)\
+  build/$(MODE)/obj/src/de_rham_2_hemisphere_polar_forman_gauss_1$(.OBJ)\
+  build/$(MODE)/obj/src/de_rham_2_hemisphere_polar_forman_gauss_2$(.OBJ)\
+  build/$(MODE)/obj/src/de_rham_2_hemisphere_polar_forman_generic$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_boundary_0$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_nonzero$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_sequence_0$(.OBJ)\
+  build/$(MODE)/obj/src/idec_rectangle_numerical_integration_average_value_gauss_1$(.OBJ)\
+  build/$(MODE)/obj/src/idec_rectangle_numerical_integration_average_value_gauss_2$(.OBJ)\
   build/$(MODE)/obj/src/int_array_total_sum$(.OBJ)\
   build/$(MODE)/obj/src/jagged1_free$(.OBJ)\
   build/$(MODE)/obj/src/jagged2_part1$(.OBJ)\
