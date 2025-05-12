@@ -27,11 +27,13 @@ static void forman_cf_a3_level_5_zero_middle(int * m_forman_cf_a3_index,
 static void forman_cf_a3_level_3_zero(int * m_forman_cf_a3, int * index,
   const mesh * m, const jagged2 * m_cf_p_s, int p, int m_cn_p, int s)
 {
-  int i, l, l_local, m_cf_p_s_a1_i;
+  int _index, i, l, l_local, m_cf_p_s_a1_i;
   int * m_cf_p_s_a1, * m_cf_p_s_i;
 
   m_cf_p_s_a1 = m_cf_p_s->a1;
   m_cf_p_s_i = m_cf_p_s->a2;
+
+  _index = *index;
   for (i = 0; i < m_cn_p; ++i)
   {
     m_cf_p_s_a1_i = m_cf_p_s_a1[i];
@@ -43,15 +45,16 @@ static void forman_cf_a3_level_3_zero(int * m_forman_cf_a3, int * index,
        * c(p, i) = c(q, j) = c(r, k) > c(s, l) -- end
        * total -> 2 subfaces (minimal and maximal)
        */
-      m_forman_cf_a3[*index] = 2;
+      m_forman_cf_a3[_index] = 2;
 
       /* c(p, i) > c(q, j) = c(r, k) > c(s, l) -> add middle subfaces */
-      forman_cf_a3_level_5_zero_middle(m_forman_cf_a3 + *index, m, p, s, i, l);
+      forman_cf_a3_level_5_zero_middle(m_forman_cf_a3 + _index, m, p, s, i, l);
 
-      ++*index;
+      ++_index;
     }
     m_cf_p_s_i += m_cf_p_s_a1_i;
   }
+  *index = _index;
 }
 
 static void forman_cf_a3_level_5_nonzero_begin(int * m_forman_cf_a3_index,
@@ -135,18 +138,20 @@ static void forman_cf_a3_level_5_nonzero_end(int * m_forman_cf_a3_index,
 static void forman_cf_a3_level_3_nonzero(int * m_forman_cf_a3, int * index,
   const mesh * m, const jagged2 * m_cf_p_s, int p, int m_cn_p, int s, int q_f)
 {
-  int i, l, l_local, m_cf_p_s_a1_i;
+  int _index, i, l, l_local, m_cf_p_s_a1_i;
   int * m_cf_p_s_a1, * m_cf_p_s_i, * m_forman_cf_a3_index;
 
   m_cf_p_s_a1 = m_cf_p_s->a1;
   m_cf_p_s_i = m_cf_p_s->a2;
+
+  _index = *index;
   for (i = 0; i < m_cn_p; ++i)
   {
     m_cf_p_s_a1_i = m_cf_p_s_a1[i];
     for (l_local = 0; l_local < m_cf_p_s_a1_i; ++l_local)
     {
       l = m_cf_p_s_i[l_local];
-      m_forman_cf_a3_index = m_forman_cf_a3 + *index;
+      m_forman_cf_a3_index = m_forman_cf_a3 + _index;
 
       /* initialize */
       *m_forman_cf_a3_index = 0;
@@ -163,17 +168,19 @@ static void forman_cf_a3_level_3_nonzero(int * m_forman_cf_a3, int * index,
       forman_cf_a3_level_5_nonzero_end(m_forman_cf_a3_index,
         m, p, s, q_f, i, l);
 
-      ++*index;
+      ++_index;
     }
     m_cf_p_s_i += m_cf_p_s_a1_i;
   }
+  *index = _index;
 }
 
 static void forman_cf_a3_dimension_at_most_2(
   int * m_forman_cf_a3, int * index, const int * m_forman_cn)
 {
-  int m_forman_cn_pf, p_f, q_f, pf_minus_qf, subfaces_total;
+  int _index, m_forman_cn_pf, p_f, q_f, pf_minus_qf, subfaces_total;
 
+  _index = *index;
   /* all 1-cells are edges, all 2-cells are quadrilaterals */
   for (p_f = 1; p_f <= 2; ++p_f)
   {
@@ -182,11 +189,12 @@ static void forman_cf_a3_dimension_at_most_2(
     {
       pf_minus_qf = p_f - q_f;
       subfaces_total = (1 << pf_minus_qf) * int_binomial(p_f, pf_minus_qf);
-      int_array_assign_constant(m_forman_cf_a3 + *index, m_forman_cn_pf,
+      int_array_assign_constant(m_forman_cf_a3 + _index, m_forman_cn_pf,
                                 subfaces_total);
-      *index += m_forman_cn_pf;
+      _index += m_forman_cn_pf;
     }
   }
+  *index = _index;
 }
 
 static void forman_cf_a3_dimension_at_least_3(

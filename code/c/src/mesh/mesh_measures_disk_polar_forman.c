@@ -11,20 +11,22 @@
 static void forman_lengths_of_edges_to_nodes(
   double * vol_1, int * index, int na, int nd, double r0, double a0)
 {
-  int i;
+  int _index, i;
   double a;
 
+  _index = *index;
   for (i = 1; i <= nd / 2; ++i)
   {
     /* rays */
-    double_array_assign_constant(vol_1 + *index, na, r0);
-    *index += na;
+    double_array_assign_constant(vol_1 + _index, na, r0);
+    _index += na;
 
     /* arcs */
     a = a0 * 2 * i;
-    double_array_assign_constant(vol_1 + *index, na, a);
-    *index += na;
+    double_array_assign_constant(vol_1 + _index, na, a);
+    _index += na;
   }
+  *index = _index;
 }
 
 static void forman_lengths_of_faces_to_edges_in_inner_circle(
@@ -32,14 +34,15 @@ static void forman_lengths_of_faces_to_edges_in_inner_circle(
 {
   int _index, j;
 
+  _index = *index;
   for (j = 0; j < na / 2; ++j)
   {
-    _index = *index;
     vol_1[_index + 0] = a0; /* arc */
     vol_1[_index + 1] = r0; /* ray */
     vol_1[_index + 2] = a0; /* arc */
-    *index += 3;
+    _index += 3;
   }
+  *index = _index;
 }
 
 static void forman_lengths_of_faces_to_edges_in_outer_circles(
@@ -48,19 +51,20 @@ static void forman_lengths_of_faces_to_edges_in_outer_circles(
   int _index, i, j;
   double a;
 
+  _index = *index;
   for (i = 1; i < nd / 2; ++i)
   {
     a = a0 * (2 * i + 1);
     for (j = 0; j < na / 2; ++j)
     {
-      _index = *index;
       vol_1[_index + 0] = r0; /* ray */
       vol_1[_index + 1] = a;  /* arc */
       vol_1[_index + 2] = r0; /* ray */
       vol_1[_index + 3] = a;  /* arc */
-      *index += 4;
+      _index += 4;
     }
   }
+  *index = _index;
 }
 
 static void forman_lengths_of_faces_to_edges(
@@ -86,14 +90,15 @@ static void forman_areas_of_faces_to_nodes_in_inner_circle(
 
   s_i0 = 2 * s_0;
   s_i1 = 3 * s_0;
+  _index = *index;
   for (j = 0; j < na / 2; ++j)
   {
-    _index = *index;
     vol_2[_index + 0] = s_i0;  /* (0, r0) */
     vol_2[_index + 1] = s_i1;  /* (r0, r1) */
     vol_2[_index + 2] = s_i1;  /* (r0, r1) */
-    *index += 3;
+    _index += 3;
   }
+  *index = _index;
 }
 
 static void forman_areas_of_faces_to_nodes_in_outer_circles(
@@ -102,20 +107,21 @@ static void forman_areas_of_faces_to_nodes_in_outer_circles(
   int _index, i, j;
   double s_i0, s_i1;
 
+  _index = *index;
   for (i = 1; i < nd / 2; ++i)
   {
     s_i0 = (4 * i + 1) * s_0;
     s_i1 = (4 * i + 3) * s_0;
     for (j = 0; j < na / 2; ++j)
     {
-      _index = *index;
       vol_2[_index + 0] = s_i0; /* (r[2 i + 0], r[2 i + 1]) */
       vol_2[_index + 1] = s_i1; /* (r[2 i + 1], r[2 i + 2]) */
       vol_2[_index + 2] = s_i1; /* (r[2 i + 0], r[2 i + 1]) */
       vol_2[_index + 3] = s_i0; /* (r[2 i + 1], r[2 i + 2]) */
-      *index += 4;
+      _index += 4;
     }
   }
+  *index = _index;
 }
 
 static void forman_areas_of_faces_to_nodes(

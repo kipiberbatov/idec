@@ -45,24 +45,25 @@ static void forman_boundary_values_general_l3_begin(
   int i,
   int l)
 {
-  int j, j_local, m_cf_p_pm1_i_a0;
+  int _index, j, j_local, m_cf_p_pm1_i_a0;
   int * m_cf_p_pm1_i_a1;
   jagged1 m_cf_pm1_s_j;
 
   m_cf_p_pm1_i_a0 = m_cf_p_pm1_i->a0;
   m_cf_p_pm1_i_a1 = m_cf_p_pm1_i->a1;
 
+  _index = *index;
   for (j_local = 0; j_local < m_cf_p_pm1_i_a0; ++j_local)
   {
     j = m_cf_p_pm1_i_a1[j_local];
     jagged2_part1(&m_cf_pm1_s_j, m_cf_pm1_s, j);
     if (jagged1_member(&m_cf_pm1_s_j, l))
     {
-
-      m_boundary_values[*index] = matrix_sparse_part(m_bd_p, j, i);
-      ++*index;
+      m_boundary_values[_index] = matrix_sparse_part(m_bd_p, j, i);
+      ++_index;
     }
   }
+  *index = _index;
 }
 
 static void forman_boundary_values_general_l3_end(
@@ -75,23 +76,25 @@ static void forman_boundary_values_general_l3_end(
   int l,
   int sign)
 {
-  int k, k_local, m_cf_p_sp1_i_a0;
+  int _index, k, k_local, m_cf_p_sp1_i_a0;
   int * m_cf_p_sp1_i_a1;
   jagged1 m_cf_sp1_s_k;
 
   m_cf_p_sp1_i_a0 = m_cf_p_sp1_i->a0;
   m_cf_p_sp1_i_a1 = m_cf_p_sp1_i->a1;
 
+  _index = *index;
   for (k_local = 0; k_local < m_cf_p_sp1_i_a0; ++k_local)
   {
     k = m_cf_p_sp1_i_a1[k_local];
     jagged2_part1(&m_cf_sp1_s_k, m_cf_sp1_s, k);
     if (jagged1_member(&m_cf_sp1_s_k, l))
     {
-      m_boundary_values[*index] = sign * matrix_sparse_part(m_bd_sp1, l, k);
-      ++*index;
+      m_boundary_values[_index] = sign * matrix_sparse_part(m_bd_sp1, l, k);
+      ++_index;
     }
   }
+  *index = _index;
 }
 
 /* p_f >= 2 */
