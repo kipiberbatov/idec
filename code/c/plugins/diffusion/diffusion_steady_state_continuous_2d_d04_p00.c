@@ -171,7 +171,7 @@ diffusion_steady_state_continuous_2d_d04_p00_exact_flow_rate_hemisphere_polar(
   /* faces to edges -> all parallels are "odd" */
 
   /* inner faces to edges */
-  m1 = (4 * KAPPA) * sin(theta / 2) * sin(3. * theta / 2.);
+  m1 = c_m * sin(3. * theta / 2.);
   p1 = c_p * sin(theta) * sin(2 * theta);
   for (j = 0; j < na / 2; ++j)
   {
