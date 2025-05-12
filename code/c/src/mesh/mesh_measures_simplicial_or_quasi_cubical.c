@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_measures.h"
 #include "mesh_qc.h"
 
@@ -19,7 +19,7 @@ void mesh_measures_simplicial_or_quasi_cubical(
   if (*m_measures == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double *) * (d + 1), "*m_measures");
+    cmc_error_message_malloc(sizeof(double *) * (d + 1), "*m_measures");
     *status = 1;
     return;
   }

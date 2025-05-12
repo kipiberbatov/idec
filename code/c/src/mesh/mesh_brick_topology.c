@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_brick_private.h"
 #include "mesh_private.h"
@@ -15,7 +15,7 @@ mesh * mesh_brick_topology(int d, const int * partitions)
   if (m == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(mesh), "m");
+    cmc_error_message_malloc(sizeof(mesh), "m");
     goto end;
   }
 
@@ -25,7 +25,7 @@ mesh * mesh_brick_topology(int d, const int * partitions)
   if (m->cn == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(mesh), "m");
+    cmc_error_message_malloc(sizeof(mesh), "m");
     goto m_free;
   }
   mesh_brick_cn(m->cn, m->dim, partitions);
@@ -35,7 +35,7 @@ mesh * mesh_brick_topology(int d, const int * partitions)
   if (m->c == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_c_size, "m->c");
+    cmc_error_message_malloc(sizeof(int) * m_c_size, "m->c");
     goto m_cn_free;
   }
   mesh_c(m->c, m->dim, m->cn);

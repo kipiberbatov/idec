@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "jagged_private.h"
 
@@ -14,7 +14,7 @@ jagged1 * jagged1_file_scan_raw(FILE * in)
   if (arr == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(jagged1), "arr");
+    cmc_error_message_malloc(sizeof(jagged1), "arr");
     goto end;
   }
 

@@ -7,17 +7,17 @@ _svg_filled_window :=\
   build/$(MODE)/svg/filled_window/rainbow_100.svg\
 
 build/$(MODE)/svg/filled_window/rainbow_100.svg:\
-  build/$(MODE)/bin/idec_graphics_filled_window$(.EXE)\
-  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_filled_window$(.OBJ)\
-  build/$(MODE)/obj/plugins/idec_cairo_svg_animation$(.OBJ)\
+  build/$(MODE)/bin/cmc_graphics_filled_window$(.EXE)\
+  build/$(MODE)/obj/plugins/cmc_cairo_graphics_draw_functions_filled_window$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_svg_animation$(.OBJ)\
   | build/$(MODE)/svg/filled_window\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
 	$<\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_graphics_draw_functions_filled_window\
+  --canvas-backend=cmc_cairo_graphics_draw_functions_filled_window\
   --animation-library=$(word 3, $|)\
-  --animation-backend=idec_cairo_svg_animation\
+  --animation-backend=cmc_cairo_svg_animation\
   --output=$@
 
 svg_filled_window: $(_svg_filled_window)

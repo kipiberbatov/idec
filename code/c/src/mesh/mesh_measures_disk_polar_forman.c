@@ -4,7 +4,7 @@
 
 #include "color.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh.h"
 #include "mesh_measures.h"
 
@@ -150,7 +150,7 @@ void mesh_measures_disk_polar_forman(
   if (*m_measures == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double *) * 3, "*m_measures");
+    cmc_error_message_malloc(sizeof(double *) * 3, "*m_measures");
     *status = 1;
     return;
   }

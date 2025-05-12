@@ -15,11 +15,11 @@ _gtk_diffusion_transient_continuous_2d_d02_p00 :=\
   build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.log\
 
 build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_potential.log:\
-  build/$(MODE)/bin/idec_graphics_mesh_2d_0_cochain_sequence$(.EXE)\
+  build/$(MODE)/bin/cmc_graphics_mesh_2d_0_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_potential.txt\
-  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence$(.OBJ)\
-  build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_gtk_animation$(.OBJ)\
   | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
@@ -28,20 +28,20 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochai
   --number-of-time-steps=1000\
   --cochain-sequence=$(word 3, $^)\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence\
+  --canvas-backend=cmc_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence\
   --animation-library=$(word 3, $|)\
-  --animation-backend=idec_cairo_gtk_animation\
+  --animation-backend=cmc_cairo_gtk_animation\
   --title=2d_d02_p00_primal_strong_2d_10_grains_forman_potential\
   --close-automatically=$(CLOSE_AUTOMATICALLY)\
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
 build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.log:\
-  build/$(MODE)/bin/idec_graphics_mesh_2d_1_cochain_sequence$(.EXE)\
+  build/$(MODE)/bin/cmc_graphics_mesh_2d_1_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.txt\
-  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence$(.OBJ)\
-  build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_gtk_animation$(.OBJ)\
   | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
@@ -50,20 +50,20 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/primal_strong_cochai
   --number-of-time-steps=1000\
   --cochain-sequence=$(word 3, $^)\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
+  --canvas-backend=cmc_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
   --animation-library=$(word 3, $|)\
-  --animation-backend=idec_cairo_gtk_animation\
+  --animation-backend=cmc_cairo_gtk_animation\
   --title=2d_d02_p00_primal_strong_2d_10_grains_forman_flow_rate\
   --close-automatically=$(CLOSE_AUTOMATICALLY)\
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
 build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_potential.log:\
-  build/$(MODE)/bin/idec_graphics_mesh_2d_0_cochain_sequence$(.EXE)\
+  build/$(MODE)/bin/cmc_graphics_mesh_2d_0_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_potential.txt\
-  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence$(.OBJ)\
-  build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_gtk_animation$(.OBJ)\
   | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
@@ -72,20 +72,20 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_
   --number-of-time-steps=1000\
   --cochain-sequence=$(word 3, $^)\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence\
+  --canvas-backend=cmc_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence\
   --animation-library=$(word 3, $|)\
-  --animation-backend=idec_cairo_gtk_animation\
+  --animation-backend=cmc_cairo_gtk_animation\
   --title=2d_d02_p00_primal_weak_2d_10_grains_forman_potential\
   --close-automatically=$(CLOSE_AUTOMATICALLY)\
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
 build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.log:\
-  build/$(MODE)/bin/idec_graphics_mesh_2d_1_cochain_sequence$(.EXE)\
+  build/$(MODE)/bin/cmc_graphics_mesh_2d_1_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.txt\
-  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence$(.OBJ)\
-  build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_gtk_animation$(.OBJ)\
   | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
@@ -94,20 +94,20 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/primal_weak_cochain_
   --number-of-time-steps=1000\
   --cochain-sequence=$(word 3, $^)\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
+  --canvas-backend=cmc_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
   --animation-library=$(word 3, $|)\
-  --animation-backend=idec_cairo_gtk_animation\
+  --animation-backend=cmc_cairo_gtk_animation\
   --title=2d_d02_p00_primal_weak_2d_10_grains_forman_flow_rate\
   --close-automatically=$(CLOSE_AUTOMATICALLY)\
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
 build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_potential.log:\
-  build/$(MODE)/bin/idec_graphics_mesh_2d_0_cochain_sequence$(.EXE)\
+  build/$(MODE)/bin/cmc_graphics_mesh_2d_0_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_potential.txt\
-  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence$(.OBJ)\
-  build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_gtk_animation$(.OBJ)\
   | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
@@ -116,20 +116,20 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2
   --number-of-time-steps=1000\
   --cochain-sequence=$(word 3, $^)\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence\
+  --canvas-backend=cmc_cairo_graphics_draw_functions_mesh_2d_0_cochain_sequence\
   --animation-library=$(word 3, $|)\
-  --animation-backend=idec_cairo_gtk_animation\
+  --animation-backend=cmc_cairo_gtk_animation\
   --title=2d_d02_p00_mixed_weak_2d_10_grains_forman_potential\
   --close-automatically=$(CLOSE_AUTOMATICALLY)\
   --timelapse=$(TIMELAPSE)\
   --output=$@
 
 build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_flow_rate.log:\
-  build/$(MODE)/bin/idec_graphics_mesh_2d_1_cochain_sequence$(.EXE)\
+  build/$(MODE)/bin/cmc_graphics_mesh_2d_1_cochain_sequence$(.EXE)\
   build/$(MODE)/txt/mesh/2d_10_grains_forman.txt\
   build/$(MODE)/txt/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2d_10_grains_forman_trapezoidal_0p05_1000_solution.txt\
-  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence$(.OBJ)\
-  build/$(MODE)/obj/plugins/idec_cairo_gtk_animation$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_gtk_animation$(.OBJ)\
   | build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
@@ -138,9 +138,9 @@ build/$(MODE)/gtk/diffusion/transient/continuous_2d_d02_p00/mixed_weak_cochain_2
   --number-of-time-steps=1000\
   --cochain-sequence=$(word 3, $^)\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
+  --canvas-backend=cmc_cairo_graphics_draw_functions_mesh_2d_1_cochain_sequence\
   --animation-library=$(word 3, $|)\
-  --animation-backend=idec_cairo_gtk_animation\
+  --animation-backend=cmc_cairo_gtk_animation\
   --title=2d_d02_p00_mixed_weak_2d_10_grains_forman_flow_rate\
   --close-automatically=$(CLOSE_AUTOMATICALLY)\
   --timelapse=$(TIMELAPSE)\

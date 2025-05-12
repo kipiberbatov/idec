@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "matrix_sparse.h"
 
 /* read a sparse matrix and vector from a file, multiply and print them */
@@ -18,7 +18,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    cmc_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     return EINVAL;
   }
 
@@ -52,7 +52,7 @@ int main(int argc, char ** argv)
   if (y == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m, "y");
+    cmc_error_message_malloc(sizeof(double) * m, "y");
     goto x_free;
   }
 

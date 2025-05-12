@@ -4,7 +4,7 @@
 
 #include "color.h"
 #include "forman_private.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_private.h"
 
@@ -19,7 +19,7 @@ jagged4 * forman_cf(const mesh * m, const int * m_forman_cn)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(jagged4), "m_forman_cf");
+    cmc_error_message_malloc(sizeof(jagged4), "m_forman_cf");
     goto end;
   }
 
@@ -28,7 +28,7 @@ jagged4 * forman_cf(const mesh * m, const int * m_forman_cn)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * d, "m_forman_cf->a1");
+    cmc_error_message_malloc(sizeof(int) * d, "m_forman_cf->a1");
     goto m_forman_cf_free;
   }
   mesh_cf_a1(m_forman_cf->a1, d);
@@ -38,7 +38,7 @@ jagged4 * forman_cf(const mesh * m, const int * m_forman_cn)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_forman_cf_a2_size,
+    cmc_error_message_malloc(sizeof(int) * m_forman_cf_a2_size,
                               "m_forman_cf->a2");
     goto m_forman_cf_a1_free;
   }
@@ -50,7 +50,7 @@ jagged4 * forman_cf(const mesh * m, const int * m_forman_cn)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_forman_cf_a3_size,
+    cmc_error_message_malloc(sizeof(int) * m_forman_cf_a3_size,
                               "m_forman_cf->a3");
     goto m_forman_cf_a2_free;
   }
@@ -62,7 +62,7 @@ jagged4 * forman_cf(const mesh * m, const int * m_forman_cn)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_forman_cf_a4_size,
+    cmc_error_message_malloc(sizeof(int) * m_forman_cf_a4_size,
                               "m_forman_cf->a4");
     goto m_forman_cf_a3_free;
   }

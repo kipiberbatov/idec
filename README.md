@@ -1,14 +1,14 @@
-# IDEC
-Intrinsic Discrete Exterior Calculus
+# CMC
+Combinatorial Mesh Calculus
 
 Software library implementing the operations in
 <https://arxiv.org/abs/2201.03704> and its applications.
 At the moment diffusion in strong and weak formulations is being implemented.
 
-The project is hosted on GitHub at <https://github.com/kipiberbatov/idec>.
+The project is hosted on GitHub at <https://github.com/kipiberbatov/cmc>.
 
 The project produces its own website, hosted at
-<https://kipiberbatov.github.io/idec>.
+<https://kipiberbatov.github.io/cmc>.
 
 ## Modules
 - array: functions working on integers and floating point numbers and
@@ -91,8 +91,8 @@ Via the command line vavigate to your preferred location on your computer.
 Type the following:
 
 ```
-git clone https://github.com/kipiberbatov/idec
-cd idec
+git clone https://github.com/kipiberbatov/cmc
+cd cmc
 make -j
 ```
 
@@ -102,17 +102,17 @@ After running `make -j` the result is a directory **build/release**
 Inside **build/release** (substitute **release** with **debug** in debug mode)
 the following directories are created:
 - **build/release/obj** where source files from
-[code/c/src](https://github.com/kipiberbatov/idec/tree/main/code/c/src)
+[code/c/src](https://github.com/kipiberbatov/cmc/tree/main/code/c/src)
 are compiled into object files;
 - **build/release/lib** where object files from **build/release/obj**
 are archived;
 - **build/release/bin** where source files from
-[code/c/main](https://github.com/kipiberbatov/idec/tree/main/code/c/main)
+[code/c/main](https://github.com/kipiberbatov/cmc/tree/main/code/c/main)
 are compiled and linked against libraries in **build/release/lib**;
 - **build/release/txt** where text-outputting demos are run using
 executables from **build/release/bin**,
 manually written input data from
-[data](https://github.com/kipiberbatov/idec/tree/main/data),
+[data](https://github.com/kipiberbatov/cmc/tree/main/data),
 and already generated files from **build/release/txt**.
 
 You can generate PDFs of various images and animations (e.g., meshes, cochains)
@@ -163,9 +163,9 @@ make website
 ```
 This will create a **build/website** directory with all the web assets.
 In fact this is the way the website
-<https://kipiberbatov.github.io/idec>
+<https://kipiberbatov.github.io/cmc>
 is deployed as is evident by the file
-[.github/workflows/github-pages.yaml](https://github.com/kipiberbatov/idec/blob/main/.github/workflows/github-pages.yaml).
+[.github/workflows/github-pages.yaml](https://github.com/kipiberbatov/cmc/blob/main/.github/workflows/github-pages.yaml).
 
 You can clean the generated files (the build directory) using
 ```
@@ -175,5 +175,5 @@ make distclean
 There are various smaller cleans that will delete certain types of files.
 For instance `make clean` will clean the object files.
 You can look the files in
-[code/make](https://github.com/kipiberbatov/idec/tree/main/code/make)
+[code/make](https://github.com/kipiberbatov/cmc/tree/main/code/make)
 to see all the cleaning options (they end with **_clean** or **_distclean**).

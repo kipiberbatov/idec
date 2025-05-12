@@ -4,7 +4,7 @@
 
 #include "color.h"
 #include "double_array2.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "matrix_sparse.h"
 
@@ -22,7 +22,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    cmc_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EIO;
     goto end;
   }
@@ -61,7 +61,7 @@ int main(int argc, char ** argv)
   if (m_cn == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * (d + 1), "m_cn");
+    cmc_error_message_malloc(sizeof(int) * (d + 1), "m_cn");
     goto m_laplacian_free;
   }
   for (p = 0; p <= d; ++p)

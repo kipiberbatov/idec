@@ -4,9 +4,9 @@
 #include "diffusion_steady_state_discrete_file_print_raw.h"
 #include "diffusion_steady_state_discrete_free.h"
 #include "diffusion_steady_state_discrete_from_continuous.h"
-#include "idec_command_line.h"
-#include "idec_error_message.h"
-#include "idec_memory.h"
+#include "cmc_command_line.h"
+#include "cmc_error_message.h"
+#include "cmc_memory.h"
 #include "mesh.h"
 
 struct diffusion_steady_state_discrete_pre_processing;
@@ -27,12 +27,12 @@ int main(int argc, char ** argv)
   struct diffusion_steady_state_discrete * data_discrete;
   const struct diffusion_steady_state_discrete_pre_processing * pre_processing;
 
-  idec_command_line option_data_continuous_name, option_lib_name, 
+  cmc_command_line option_data_continuous_name, option_lib_name, 
     option_mesh_format, option_mesh_name, option_no_positional_arguments,
     option_pre_processing_name, option_m_vol_format, option_m_vol_name,
     option_output_format, option_output_name;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_mesh_format,
     &option_mesh_name,
@@ -46,45 +46,45 @@ int main(int argc, char ** argv)
     &option_no_positional_arguments
   };
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_format, &m_format, "--mesh-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_name, &m_name, "--mesh", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_m_vol_format, &m_vol_format, "--mesh-measures-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_m_vol_name, &m_vol_name, "--mesh-measures", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_lib_name, &lib_name, "--dynamic-library", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_data_continuous_name, &data_continuous_name, "--data", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_pre_processing_name, &pre_processing_name,
     "--pre-processing", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_output_format, &output_format, "--output-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_output_name, &output_name, "--output", NULL);
   option_output_name.minimal_number_of_arguments = 0;
 
   /* there are no positional arguments */
-  idec_command_line_set_option_no_arguments(
+  cmc_command_line_set_option_no_arguments(
     &option_no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, size, argc, argv);
+  cmc_command_line_parse(options, &status, size, argc, argv);
   if (status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fputs("cannot parse command line options\n", stderr);
     return status;
   }
@@ -92,8 +92,8 @@ int main(int argc, char ** argv)
   m = mesh_file_scan_by_name(m_name, m_format);
   if (m == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("m");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("m");
     status = 1;
     goto end;
   }
@@ -104,8 +104,8 @@ int main(int argc, char ** argv)
   m->fc = mesh_fc(m);
   if (m->fc == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("m->fc");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("m->fc");
     status = 1;
     goto m_free;
   }
@@ -113,8 +113,8 @@ int main(int argc, char ** argv)
   mesh_boundary_dm1(&m_boundary_dm1, &status, m);
   if (status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("m_boundary_dm1");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("m_boundary_dm1");
     goto m_free;
   }
 
@@ -122,8 +122,8 @@ int main(int argc, char ** argv)
     m_vol_name, d + 1, m_cn, m_vol_format);
   if (m_vol == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("m_vol");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("m_vol");
     status = 1;
     goto m_free;
   }
@@ -131,7 +131,7 @@ int main(int argc, char ** argv)
   lib_handle = dlopen(lib_name, RTLD_LAZY);
   if (lib_handle == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr, "cannot open dynamic library %s\n", lib_name);
     status = 1;
     goto m_vol_free;
@@ -143,7 +143,7 @@ int main(int argc, char ** argv)
   error = dlerror();
   if (error)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr, "%s\n", error);
     status = 1;
     goto lib_close;
@@ -153,7 +153,7 @@ int main(int argc, char ** argv)
   error = dlerror();
   if (error)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr, "%s\n", error);
     status = 1;
     goto lib_close;
@@ -163,8 +163,8 @@ int main(int argc, char ** argv)
     m, m_boundary_dm1, m_vol[d - 1], m_vol[d], data_continuous, pre_processing);
   if (data_discrete == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("data_discrete");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("data_discrete");
     goto lib_close;
   }
 
@@ -175,7 +175,7 @@ int main(int argc, char ** argv)
     output = fopen(output_name, "w");
     if (output == NULL)
     {
-      idec_error_message_position_in_code(__FILE__, __LINE__);
+      cmc_error_message_position_in_code(__FILE__, __LINE__);
       fprintf(stderr, "cannot open file %s for writing \n", output_name);
       status = 1;
       goto data_discrete_free;

@@ -1,5 +1,5 @@
-#include "idec_error_message.h"
-#include "idec_memory.h"
+#include "cmc_error_message.h"
+#include "cmc_memory.h"
 #include "mesh.h"
 
 static int mesh_boundary_dm1_a0(const struct jagged2 * m_fc_dm1_d)
@@ -47,23 +47,23 @@ void mesh_boundary_dm1(
   d = m->dim;
   mesh_fc_part2(&m_fc_dm1_d, m, d - 1, d);
 
-  idec_memory_allocate(
+  cmc_memory_allocate(
     (void **) m_boundary_dm1, status, sizeof(struct jagged1));
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_memory_allocate("m_boundary_dm1");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_memory_allocate("m_boundary_dm1");
     return;
   }
 
   m_boundary_dm1_a0 = mesh_boundary_dm1_a0(&m_fc_dm1_d);
-  idec_memory_allocate(
+  cmc_memory_allocate(
     (void **) &m_boundary_dm1_a1, status, sizeof(int) * m_boundary_dm1_a0);
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_memory_allocate("m_boundary_dm1_a1");
-    idec_memory_free(*m_boundary_dm1);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_memory_allocate("m_boundary_dm1_a1");
+    cmc_memory_free(*m_boundary_dm1);
     return;
   }
   mesh_boundary_dm1_a1(m_boundary_dm1_a1, &m_fc_dm1_d);

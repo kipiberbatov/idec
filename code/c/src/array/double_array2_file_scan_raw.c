@@ -4,7 +4,7 @@
 #include "double_array_private.h"
 #include "double_array2.h"
 #include "double_array2_private.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 
 double ** double_array2_file_scan_raw(FILE * in, int a0, const int * a1)
 {
@@ -15,7 +15,7 @@ double ** double_array2_file_scan_raw(FILE * in, int a0, const int * a1)
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double *) * a0, "a");
+    cmc_error_message_malloc(sizeof(double *) * a0, "a");
     return NULL;
   }
   for (i = 0; i < a0; ++i)

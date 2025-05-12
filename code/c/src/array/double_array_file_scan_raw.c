@@ -5,7 +5,7 @@
 #include "color.h"
 #include "double.h"
 #include "double_array_private.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 
 double * double_array_file_scan_raw(FILE * in, int n)
 {
@@ -16,7 +16,7 @@ double * double_array_file_scan_raw(FILE * in, int n)
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * n, "a");
+    cmc_error_message_malloc(sizeof(double) * n, "a");
     return NULL;
   }
 

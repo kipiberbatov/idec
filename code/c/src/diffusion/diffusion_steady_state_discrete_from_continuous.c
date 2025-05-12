@@ -2,8 +2,8 @@
 #include "diffusion_steady_state_discrete.h"
 #include "diffusion_steady_state_discrete_from_continuous.h"
 #include "diffusion_steady_state_discrete_pre_processing.h"
-#include "idec_error_message.h"
-#include "idec_memory.h"
+#include "cmc_error_message.h"
+#include "cmc_memory.h"
 #include "mesh.h"
 
 void diffusion_steady_state_discrete_from_continuous(
@@ -31,44 +31,44 @@ void diffusion_steady_state_discrete_from_continuous(
   m_cn_d = m_cn[d];
 
   /* result */
-  idec_memory_allocate((void **) result, status, sizeof(**result));
+  cmc_memory_allocate((void **) result, status, sizeof(**result));
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_memory_allocate("result");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_memory_allocate("result");
     goto end;
   }
 
   /* conductivity */
-  idec_memory_allocate(
+  cmc_memory_allocate(
     (void **) &conductivity, status, sizeof(double) * m_cn_dm1);
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_memory_allocate("conductivity");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_memory_allocate("conductivity");
     goto result_free;
   }
   functions->get_conductivity(conductivity, m, data_continuous->kappa_1);
 
   /* dual_conductivity */
-  idec_memory_allocate(
+  cmc_memory_allocate(
     (void **) &dual_conductivity, status, sizeof(double) * m_cn_1);
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_memory_allocate("conductivity");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_memory_allocate("conductivity");
     goto conductivity_free;
   }
   functions->get_dual_conductivity(
     dual_conductivity, m, data_continuous->kappa_1);
 
   /* production_rate */
-  idec_memory_allocate(
+  cmc_memory_allocate(
     (void **) &production_rate, status, sizeof(double) * m_cn_d);
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_memory_allocate("production_rate");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_memory_allocate("production_rate");
     goto dual_conductivity_free;
   }
   functions->get_production_rate(
@@ -83,8 +83,8 @@ void diffusion_steady_state_discrete_from_continuous(
     data_continuous->boundary_dirichlet);
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("boundary_dirichlet_dm1");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("boundary_dirichlet_dm1");
     goto production_rate_free;
   }
 
@@ -93,20 +93,20 @@ void diffusion_steady_state_discrete_from_continuous(
     &boundary_dirichlet_0, status, m, boundary_dirichlet_dm1, 0);
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("boundary_dirichlet_0");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("boundary_dirichlet_0");
     goto boundary_dirichlet_dm1_free;
   }
 
   /* g_dirichlet */
-  idec_memory_allocate(
+  cmc_memory_allocate(
     (void **) &g_dirichlet,
     status,
     sizeof(double) * boundary_dirichlet_0->a0);
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("boundary_dirichlet_0");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("boundary_dirichlet_0");
     goto boundary_dirichlet_0_free;
   }
   functions->get_g_dirichlet(
@@ -116,19 +116,19 @@ void diffusion_steady_state_discrete_from_continuous(
                                             boundary_dirichlet_dm1);
   if (boundary_neumann_dm1 == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("boundary_neumann_dm1");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("boundary_neumann_dm1");
     *status = 1;
     goto g_dirichlet_free;
   }
 
   /* g_neumann_dm1 */
-  idec_memory_allocate(
+  cmc_memory_allocate(
     (void **) &g_neumann, status, sizeof(double) * boundary_neumann_dm1->a0);
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_memory_allocate("data_discrete->g_neumann");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_memory_allocate("data_discrete->g_neumann");
     goto boundary_neumann_dm1_free;
   }
   functions->get_g_neumann(
@@ -154,23 +154,23 @@ void diffusion_steady_state_discrete_from_continuous(
   return;
 
   /* cleaning if an error occurs */
-  idec_memory_free(g_neumann);
+  cmc_memory_free(g_neumann);
 boundary_neumann_dm1_free:
   jagged1_free(boundary_neumann_dm1);
 g_dirichlet_free:
-  idec_memory_free(g_dirichlet);
+  cmc_memory_free(g_dirichlet);
 boundary_dirichlet_0_free:
   jagged1_free(boundary_dirichlet_0);
 boundary_dirichlet_dm1_free:
   jagged1_free(boundary_dirichlet_dm1);
 production_rate_free:
-  idec_memory_free(production_rate);
+  cmc_memory_free(production_rate);
 dual_conductivity_free:
-  idec_memory_free(dual_conductivity);
+  cmc_memory_free(dual_conductivity);
 conductivity_free:
-  idec_memory_free(conductivity);
+  cmc_memory_free(conductivity);
 result_free:
-  idec_memory_free(*result);
+  cmc_memory_free(*result);
 end:
   return;
 }

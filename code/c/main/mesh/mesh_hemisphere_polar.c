@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_disk_polar.h"
 #include "mesh_hemisphere_polar.h"
@@ -18,7 +18,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    cmc_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     goto end;
   }
 

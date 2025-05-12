@@ -5,7 +5,7 @@
 #include "color.h"
 #include "diffusion_steady_state_discrete_mixed_weak.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_qc.h"
 
 void diffusion_steady_state_discrete_mixed_weak_solve(
@@ -28,7 +28,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "a");
+    cmc_error_message_malloc(sizeof(double) * m->cn[d - 1], "a");
     return;
   }
   mesh_qc_matrix_diagonal_from_inner_of_basis_dm1_cup_inverse_pi_2_basis_dm1(
@@ -47,7 +47,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   if (g_dirichlet_0_big == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[0], "g_dirichlet_0_big");
+    cmc_error_message_malloc(sizeof(double) * m->cn[0], "g_dirichlet_0_big");
     goto b_free;
   }
   double_array_assemble_from_sparse_array(
@@ -57,7 +57,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   if (g == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "g");
+    cmc_error_message_malloc(sizeof(double) * m->cn[d - 1], "g");
     goto g_dirichlet_0_big_free;
   }
   mesh_qc_vector_from_boundary_integral_of_basis_dm1_cup_0_cochain(
@@ -67,7 +67,7 @@ void diffusion_steady_state_discrete_mixed_weak_solve(
   if (f == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d], "f");
+    cmc_error_message_malloc(sizeof(double) * m->cn[d], "f");
     goto g_free;
   }
   mesh_qc_vector_from_inner_of_basis_d_cup_d_cochain(

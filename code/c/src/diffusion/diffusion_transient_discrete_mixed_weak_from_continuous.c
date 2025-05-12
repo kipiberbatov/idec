@@ -9,7 +9,7 @@
 #include "diffusion_transient_continuous.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_qc.h"
 #include "unsigned_approximation.h"
 
@@ -28,7 +28,7 @@ static void set_initial_flow_rate(
   if (dual_conductivity == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[1], "dual_conductivity");
+    cmc_error_message_malloc(sizeof(double) * m->cn[1], "dual_conductivity");
     return;
   }
   unsigned_approximation_of_scalar_field_on_nonzero_cells(
@@ -40,7 +40,7 @@ static void set_initial_flow_rate(
   if (discrete_potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[0], "discrete_potential");
+    cmc_error_message_malloc(sizeof(double) * m->cn[0], "discrete_potential");
     goto dual_conductivity_free;
   }
   de_rham_0(discrete_potential, m, data_continuous->initial);
@@ -78,7 +78,7 @@ static void discrete_dual_potential_from_continuous_potential(
   if (discrete_potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[0], "discrete_potential");
+    cmc_error_message_malloc(sizeof(double) * m->cn[0], "discrete_potential");
     return;
   }
 
@@ -107,7 +107,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   if (data_discrete == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(*data_discrete), "data_discrete");
+    cmc_error_message_malloc(sizeof(*data_discrete), "data_discrete");
     goto end;
   }
 
@@ -118,7 +118,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   if (data_discrete->pi_d == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d], "data_discrete->pi_d");
+    cmc_error_message_malloc(sizeof(double) * m->cn[d], "data_discrete->pi_d");
     goto data_discrete_free;
   }
   unsigned_approximation_of_scalar_field_on_nonzero_cells(
@@ -128,7 +128,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   if (data_discrete->kappa_dm1 == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d - 1],
+    cmc_error_message_malloc(sizeof(double) * m->cn[d - 1],
       "data_discrete->kappa_dm1");
     goto data_discrete_pi_d_free;
   }
@@ -140,7 +140,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   if (data_discrete->initial_dual_potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d],
+    cmc_error_message_malloc(sizeof(double) * m->cn[d],
       "data_discrete->initial_dual_potential");
     goto data_discrete_kappa_dm1_free;
   }
@@ -159,7 +159,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   if (data_discrete->initial_flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d - 1],
+    cmc_error_message_malloc(sizeof(double) * m->cn[d - 1],
       "data_discrete->initial_flow_rate");
     goto data_discrete_initial_dual_potential_free;
   }
@@ -176,7 +176,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   if (data_discrete->source == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d],
+    cmc_error_message_malloc(sizeof(double) * m->cn[d],
       "data_discrete->source");
     goto data_discrete_initial_flow_rate_free;
   }
@@ -207,7 +207,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   if (data_discrete->g_dirichlet_0 == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(
+    cmc_error_message_malloc(
       sizeof(double) * data_discrete->boundary_dirichlet_0->a0,
       "data_discrete->g_dirichlet_0");
     goto data_discrete_boundary_dirichlet_0_free;
@@ -234,7 +234,7 @@ diffusion_transient_discrete_mixed_weak_from_continuous(
   if (data_discrete->g_neumann_dm1 == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(
+    cmc_error_message_malloc(
       sizeof(double) * data_discrete->boundary_neumann_dm1->a0,
       "data_discrete->g_neumann_dm1");
     goto data_discrete_boundary_neumann_dm1_free;

@@ -5,7 +5,7 @@
 #include "color.h"
 #include "diffusion_steady_state_discrete_primal_weak.h"
 #include "double.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_qc.h"
 
 static double * matrix_sparse_symmetric_constrained_solve(
@@ -31,7 +31,7 @@ static double * matrix_sparse_symmetric_constrained_solve(
   if (u == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * a->cols, "u");
+    cmc_error_message_malloc(sizeof(double) * a->cols, "u");
     return NULL;
   }
   memcpy(u, f, sizeof(double) * a->cols);
@@ -73,7 +73,7 @@ double * diffusion_steady_state_discrete_primal_weak_solve(
   if (f == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_0, "f");
+    cmc_error_message_malloc(sizeof(double) * m_cn_0, "f");
     goto a_free;
   }
 

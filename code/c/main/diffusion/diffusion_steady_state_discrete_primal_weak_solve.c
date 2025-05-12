@@ -8,7 +8,7 @@
 #include "double_array.h"
 #include "double_array2.h"
 #include "diffusion_steady_state_discrete_primal_weak.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh.h"
 
 int main(int argc, char ** argv)
@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    cmc_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }

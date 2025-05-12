@@ -1,5 +1,5 @@
 #include "de_rham.h"
-#include "idec_rectangle.h"
+#include "cmc_rectangle.h"
 
 void de_rham_2_hemisphere_polar_forman_gauss_1(
   double * x,
@@ -9,5 +9,5 @@ void de_rham_2_hemisphere_polar_forman_gauss_1(
 {
   de_rham_2_hemisphere_polar_forman_generic(x, m, f,
     (double (*)(const void *, double (*)(const double *)))
-    idec_rectangle_numerical_integration_average_value_gauss_1);
+    cmc_rectangle_numerical_integration_average_value_gauss_1);
 }

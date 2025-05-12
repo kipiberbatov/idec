@@ -3,7 +3,7 @@
 #include "color.h"
 #include "double_array2.h"
 #include "mesh_qc.h"
-#include "idec_command_line.h"
+#include "cmc_command_line.h"
 
 int main(int argc, char ** argv)
 {
@@ -12,10 +12,10 @@ int main(int argc, char ** argv)
   double ** m_measures;
   mesh * m;
 
-  idec_command_line no_positional_arguments, option_mesh, option_mesh_format,
+  cmc_command_line no_positional_arguments, option_mesh, option_mesh_format,
                     option_mesh_measures, option_output_format;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_mesh_format,
     &option_mesh,
@@ -24,24 +24,24 @@ int main(int argc, char ** argv)
     &no_positional_arguments
   };
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_format, &m_format, "--mesh-format", "--raw");
 
-  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+  cmc_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
 
-  idec_command_line_set_option_string(&option_mesh_measures, &m_measures_name,
+  cmc_command_line_set_option_string(&option_mesh_measures, &m_measures_name,
     "--mesh-measures-function", "default");
 
-  idec_command_line_set_option_string(&option_output_format,
+  cmc_command_line_set_option_string(&option_output_format,
     &output_format, "--output-format", "raw");
 
   /* there are no positional arguments */
-  idec_command_line_set_option_no_arguments(
+  cmc_command_line_set_option_no_arguments(
     &no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, size, argc, argv);
+  cmc_command_line_parse(options, &status, size, argc, argv);
   if (status)
   {
     color_error_position(__FILE__, __LINE__);

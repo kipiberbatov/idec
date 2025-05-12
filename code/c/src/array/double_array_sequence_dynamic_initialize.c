@@ -2,7 +2,7 @@
 
 #include "color.h"
 #include "double_array_sequence_dynamic.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 
 double_array_sequence_dynamic * double_array_sequence_dynamic_initialize(int n)
 {
@@ -14,7 +14,7 @@ double_array_sequence_dynamic * double_array_sequence_dynamic_initialize(int n)
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(type_size, "a");
+    cmc_error_message_malloc(type_size, "a");
     goto end;
   }
 
@@ -26,7 +26,7 @@ double_array_sequence_dynamic * double_array_sequence_dynamic_initialize(int n)
   if (a->values == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double *) * a->capacity, "a->values");
+    cmc_error_message_malloc(sizeof(double *) * a->capacity, "a->values");
     goto a_free;
   }
 
@@ -34,7 +34,7 @@ double_array_sequence_dynamic * double_array_sequence_dynamic_initialize(int n)
   if (a->values[0] == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double *) * n, "a->values[0]");
+    cmc_error_message_malloc(sizeof(double *) * n, "a->values[0]");
     goto a_values_free;
   }
   return a;

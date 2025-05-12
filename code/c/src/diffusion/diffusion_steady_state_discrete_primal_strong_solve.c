@@ -6,7 +6,7 @@
 #include "double_array.h"
 #include "diffusion_discrete_set_neumann_rows.h"
 #include "diffusion_steady_state_discrete_primal_strong.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh.h"
 
 double * diffusion_steady_state_discrete_primal_strong_solve(
@@ -32,7 +32,7 @@ double * diffusion_steady_state_discrete_primal_strong_solve(
   if (result == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * n, "result");
+    cmc_error_message_malloc(sizeof(double) * n, "result");
     goto lhs_free;
   }
   memcpy(result, data->source, sizeof(double) * n);

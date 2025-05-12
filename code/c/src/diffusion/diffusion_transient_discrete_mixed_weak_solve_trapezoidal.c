@@ -5,7 +5,7 @@
 #include "diffusion_transient_discrete_mixed_weak.h"
 #include "diffusion_transient_discrete_mixed_weak_solve_trapezoidal_next.h"
 #include "diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_qc.h"
 
 static void loop(
@@ -69,7 +69,7 @@ void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
   if (y == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_d, "y");
+    cmc_error_message_malloc(sizeof(double) * m_cn_d, "y");
     goto input_free;
   }
 
@@ -77,7 +77,7 @@ void diffusion_transient_discrete_mixed_weak_solve_trapezoidal(
   if (flow_rate_reduced == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_dm1_bar,
+    cmc_error_message_malloc(sizeof(double) * m_cn_dm1_bar,
                               "flow_rate_reduced");
     goto y_free;
   }

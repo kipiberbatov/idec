@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "jagged.h"
 #include "vector_sparse_private.h"
@@ -48,7 +48,7 @@ vector_sparse * vector_sparse_file_scan_raw(FILE * in)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(vector_sparse), "a");
+    cmc_error_message_malloc(sizeof(vector_sparse), "a");
     goto end;
   }
 

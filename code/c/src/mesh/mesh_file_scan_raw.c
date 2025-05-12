@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "double_matrix.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_private.h"
 
@@ -16,7 +16,7 @@ mesh * mesh_file_scan_raw(FILE * in)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(mesh), "m");
+    cmc_error_message_malloc(sizeof(mesh), "m");
     goto end;
   }
 
@@ -49,7 +49,7 @@ mesh * mesh_file_scan_raw(FILE * in)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_c_size, "m->c");
+    cmc_error_message_malloc(sizeof(int) * m_c_size, "m->c");
     goto m_cn_free;
   }
   mesh_c(m->c, m->dim, m->cn);

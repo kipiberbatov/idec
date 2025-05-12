@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "double_array.h"
-#include "idec_command_line.h"
+#include "cmc_command_line.h"
 #include "mesh_and_boundary.h"
 
 int main(int argc, char ** argv)
@@ -16,23 +16,23 @@ int main(int argc, char ** argv)
   mesh_and_boundary * m_and_bd;
   jagged1 m_cfn_pp1_p;
 
-  idec_command_line option_mesh_format, positional_argument_mesh;
+  cmc_command_line option_mesh_format, positional_argument_mesh;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_mesh_format,
     &positional_argument_mesh
   };
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_format, &m_format, "--mesh-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &positional_argument_mesh, &m_name, NULL, NULL);
 
   total_options = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, total_options, argc, argv);
+  cmc_command_line_parse(options, &status, total_options, argc, argv);
   if (status)
   {
     color_error_position(__FILE__, __LINE__);

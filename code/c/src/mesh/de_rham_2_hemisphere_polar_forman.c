@@ -2,7 +2,7 @@
 
 #include "color.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh.h"
 #include "mesh_measures.h"
 

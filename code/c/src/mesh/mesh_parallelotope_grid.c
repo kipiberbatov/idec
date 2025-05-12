@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_brick.h"
 #include "mesh_parallelotope_grid.h"
 
@@ -27,7 +27,7 @@ mesh * mesh_parallelotope_grid(
   if (m->coord == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * n * m->cn[0], "m->coord");
+    cmc_error_message_malloc(sizeof(double) * n * m->cn[0], "m->coord");
     goto m_free;
   }
   mesh_parallelotope_grid_coordinates(

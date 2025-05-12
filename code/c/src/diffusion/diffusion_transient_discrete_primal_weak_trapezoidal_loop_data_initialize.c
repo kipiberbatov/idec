@@ -7,7 +7,7 @@
 #include "diffusion_transient_discrete_primal_weak.h"
 #include "diffusion_transient_discrete_primal_weak_trapezoidal_loop_data.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_qc.h"
 
 struct diffusion_transient_discrete_primal_weak_trapezoidal_loop_data *
@@ -28,7 +28,7 @@ diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
   if (result == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(*result), "result");
+    cmc_error_message_malloc(sizeof(*result), "result");
     goto end;
   }
 
@@ -48,7 +48,7 @@ diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
   if (b == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_0, "b");
+    cmc_error_message_malloc(sizeof(double) * m_cn_0, "b");
     goto a_free;
   }
   mesh_qc_matrix_diagonal_from_inner_of_basis_0_cup_pi_0_basis_0(
@@ -77,7 +77,7 @@ diffusion_transient_discrete_primal_weak_trapezoidal_loop_data_initialize(
   if (f == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_0, "f");
+    cmc_error_message_malloc(sizeof(double) * m_cn_0, "f");
     goto rhs_free;
   }
 

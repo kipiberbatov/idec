@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_private.h"
 #include "quasi_cube.h"
@@ -77,7 +77,7 @@ double * mesh_measure(const mesh * m)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_vol_size, "m_vol");
+    cmc_error_message_malloc(sizeof(double) * m_vol_size, "m_vol");
     return NULL;
   }
 

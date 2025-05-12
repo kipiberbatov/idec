@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_disk_polar.h"
 
 mesh * mesh_disk_polar(int na, int nd, double radius, double x0, double y0)
@@ -13,7 +13,7 @@ mesh * mesh_disk_polar(int na, int nd, double radius, double x0, double y0)
   if (m == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(mesh), "m");
+    cmc_error_message_malloc(sizeof(mesh), "m");
     goto end;
   }
 
@@ -31,7 +31,7 @@ mesh * mesh_disk_polar(int na, int nd, double radius, double x0, double y0)
   if (m->coord == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * 2 * m->cn[0], "m->coord");
+    cmc_error_message_malloc(sizeof(double) * 2 * m->cn[0], "m->coord");
     goto m_topology_free;
   }
   mesh_disk_polar_coordinates(m->coord, na, nd, radius, x0, y0);

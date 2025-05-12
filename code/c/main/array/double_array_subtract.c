@@ -4,7 +4,7 @@
 
 #include "color.h"
 #include "double_array.h"
-#include "idec_command_line.h"
+#include "cmc_command_line.h"
 
 int main(int argc, char ** argv)
 {
@@ -14,11 +14,11 @@ int main(int argc, char ** argv)
   double * a, * b;
   FILE * output;
 
-  idec_command_line
+  cmc_command_line
     option_a_format, option_a_name, option_b_format, option_b_name, option_n,
     option_no_positional_arguments, option_output_format, option_output_name;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_a_format,
     &option_a_name,
@@ -30,33 +30,33 @@ int main(int argc, char ** argv)
     &option_no_positional_arguments
   };
 
-  idec_command_line_set_option_int(&option_n, &n, "--size", NULL);
+  cmc_command_line_set_option_int(&option_n, &n, "--size", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_a_format, &a_format, "--minuend-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_a_name, &a_name, "--minuend", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_b_format, &b_format, "--subtrahend-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_b_name, &b_name, "--subtrahend", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_output_format, &output_format, "--output-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_output_name, &output_name, "--output", NULL);
 
   /* there are no positional arguments */
-  idec_command_line_set_option_no_arguments(
+  cmc_command_line_set_option_no_arguments(
     &option_no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, size, argc, argv);
+  cmc_command_line_parse(options, &status, size, argc, argv);
   if (status)
   {
     color_error_position(__FILE__, __LINE__);

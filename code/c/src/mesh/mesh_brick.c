@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_brick_private.h"
 
 mesh * mesh_brick(int d, const double * brick_lengths, const int * partitions)
@@ -21,7 +21,7 @@ mesh * mesh_brick(int d, const double * brick_lengths, const int * partitions)
   if (m->coord == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * d * m->cn[0], "m->coord");
+    cmc_error_message_malloc(sizeof(double) * d * m->cn[0], "m->coord");
     goto m_free;
   }
   mesh_brick_coordinates(m->coord, d, brick_lengths, partitions);

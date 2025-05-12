@@ -1,5 +1,5 @@
-#include "idec_error_message.h"
-#include "idec_memory.h"
+#include "cmc_error_message.h"
+#include "cmc_memory.h"
 #include "int.h"
 #include "mesh.h"
 
@@ -45,12 +45,12 @@ void mesh_boundary_hyperface_get_lower_faces(
   subfaces_per_cell = (1 << (dm1 - p)) * int_binomial(dm1, p);
 
   duplicates.a0 = boundary_subset->a0 * subfaces_per_cell;
-  idec_memory_allocate(
+  cmc_memory_allocate(
     (void **) &(duplicates.a1), status, sizeof(int) * duplicates.a0);
   if (*status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_memory_allocate("duplicates");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_memory_allocate("duplicates");
     return;
   }
 
@@ -60,11 +60,11 @@ void mesh_boundary_hyperface_get_lower_faces(
   *skeleton_p = jagged1_delete_duplicates(&duplicates);
   if (*skeleton_p == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("*skeleton_p");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("*skeleton_p");
     *status = 1;
-    idec_memory_free(duplicates.a1);
+    cmc_memory_free(duplicates.a1);
     return;
   }
-  idec_memory_free(duplicates.a1);
+  cmc_memory_free(duplicates.a1);
 }

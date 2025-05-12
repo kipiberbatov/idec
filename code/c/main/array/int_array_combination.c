@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 
 static void int_array_combination_file_print(FILE * out, int m, int n)
@@ -15,7 +15,7 @@ static void int_array_combination_file_print(FILE * out, int m, int n)
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * n, "a");
+    cmc_error_message_malloc(sizeof(int) * n, "a");
     return;
   }
   int_array_assign_identity(a, n);
@@ -38,7 +38,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    cmc_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     return EINVAL;
   }
 

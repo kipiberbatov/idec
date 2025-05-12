@@ -1,7 +1,7 @@
 #include "diffusion_steady_state_discrete.h"
 #include "diffusion_steady_state_discrete_primal_weak.h"
 #include "diffusion_steady_state_discrete_primal_weak_solve_1.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 
 struct mesh;
 
@@ -28,8 +28,8 @@ void diffusion_steady_state_discrete_primal_weak_solve_1(
     m, m_inner_1, &data_1);
   if (*potential == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_cannot_calculate("potential");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_cannot_calculate("potential");
     *status = 1;
     return;
   }

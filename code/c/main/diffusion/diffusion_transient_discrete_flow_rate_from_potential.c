@@ -5,8 +5,8 @@
 #include "double_array.h"
 #include "double_matrix.h"
 #include "diffusion_transient_discrete_flow_rate_from_potential.h"
-#include "idec_command_line.h"
-#include "idec_error_message.h"
+#include "cmc_command_line.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh.h"
 
@@ -22,13 +22,13 @@ int main(int argc, char ** argv)
   struct matrix_sparse * m_bd_1;
   struct matrix_sparse ** m_hodge;
 
-  idec_command_line no_positional_arguments, option_flow_rate_format,
+  cmc_command_line no_positional_arguments, option_flow_rate_format,
                     option_kappa_1, option_kappa_1_format, option_mesh,
                     option_mesh_format, option_mesh_hodge,
                     option_mesh_hodge_format, option_number_of_steps,
                     option_potential_format, option_potential;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_mesh_format,
     &option_mesh,
@@ -43,42 +43,42 @@ int main(int argc, char ** argv)
     &no_positional_arguments
   };
 
-  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+  cmc_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_format, &m_format, "--mesh-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_hodge_format, &m_hodge_format, "--mesh-hodge-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_hodge, &m_hodge_name, "--mesh-hodge", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_kappa_1_format, &kappa_1_format, "--kappa-1-format", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_kappa_1, &kappa_1_name, "--kappa-1", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_potential_format, &potential_format, "--potential-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_potential, &potential_name, "--potential", NULL);
 
-  idec_command_line_set_option_int(
+  cmc_command_line_set_option_int(
     &option_number_of_steps, &number_of_steps, "--number-of-steps", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_flow_rate_format, &flow_rate_format, "--flow_rate-format", "--raw");
 
   /* there are no positional arguments */
-  idec_command_line_set_option_no_arguments(
+  cmc_command_line_set_option_no_arguments(
     &no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, size, argc, argv);
+  cmc_command_line_parse(options, &status, size, argc, argv);
   if (status)
   {
     color_error_position(__FILE__, __LINE__);
@@ -162,7 +162,7 @@ int main(int argc, char ** argv)
   if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(
+    cmc_error_message_malloc(
       sizeof(double) * (number_of_steps + 1) * m_cn_dm1, "flow_rate");
     goto potential_free;
   }

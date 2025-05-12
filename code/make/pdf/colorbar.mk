@@ -8,9 +8,9 @@ _pdf_colorbar :=\
   build/$(MODE)/pdf/colorbar/rainbow_100_vertical_50_500.pdf\
 
 build/$(MODE)/pdf/colorbar/rainbow_100_horizontal_500_50.pdf:\
-  build/$(MODE)/bin/idec_graphics_colorbar$(.EXE)\
-  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_colorbar$(.OBJ)\
-  build/$(MODE)/obj/plugins/idec_cairo_pdf_animation$(.OBJ)\
+  build/$(MODE)/bin/cmc_graphics_colorbar$(.EXE)\
+  build/$(MODE)/obj/plugins/cmc_cairo_graphics_draw_functions_colorbar$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_pdf_animation$(.OBJ)\
   | build/$(MODE)/pdf/colorbar\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
@@ -20,15 +20,15 @@ build/$(MODE)/pdf/colorbar/rainbow_100_horizontal_500_50.pdf:\
   --width=500\
   --height=50\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_graphics_draw_functions_colorbar\
+  --canvas-backend=cmc_cairo_graphics_draw_functions_colorbar\
   --animation-library=$(word 3, $|)\
-  --animation-backend=idec_cairo_pdf_animation\
+  --animation-backend=cmc_cairo_pdf_animation\
   --output=$@
 
 build/$(MODE)/pdf/colorbar/rainbow_100_vertical_50_500.pdf:\
-  build/$(MODE)/bin/idec_graphics_colorbar$(.EXE)\
-  build/$(MODE)/obj/plugins/idec_cairo_graphics_draw_functions_colorbar$(.OBJ)\
-  build/$(MODE)/obj/plugins/idec_cairo_pdf_animation$(.OBJ)\
+  build/$(MODE)/bin/cmc_graphics_colorbar$(.EXE)\
+  build/$(MODE)/obj/plugins/cmc_cairo_graphics_draw_functions_colorbar$(.OBJ)\
+  build/$(MODE)/obj/plugins/cmc_cairo_pdf_animation$(.OBJ)\
   | build/$(MODE)/pdf/colorbar\
     build/$(MODE)/lib/plugins/libcanvas$(.DLL)\
     build/$(MODE)/lib/plugins/libanimation$(.DLL)
@@ -38,9 +38,9 @@ build/$(MODE)/pdf/colorbar/rainbow_100_vertical_50_500.pdf:\
   --width=50\
   --height=500\
   --canvas-library=$(word 2, $|)\
-  --canvas-backend=idec_cairo_graphics_draw_functions_colorbar\
+  --canvas-backend=cmc_cairo_graphics_draw_functions_colorbar\
   --animation-library=$(word 3, $|)\
-  --animation-backend=idec_cairo_pdf_animation\
+  --animation-backend=cmc_cairo_pdf_animation\
   --output=$@
 
 pdf_colorbar: $(_pdf_colorbar)

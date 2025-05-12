@@ -4,7 +4,7 @@
 
 #include "color.h"
 #include "double.h"
-#include "idec_command_line.h"
+#include "cmc_command_line.h"
 
 static void
 double_file_scan_by_name(double * a, int * status, const char * name)
@@ -41,11 +41,11 @@ int main(int argc, char ** argv)
   double a, b = 0.;
   FILE * output;
 
-  idec_command_line
+  cmc_command_line
     option_a_name, option_b_name, option_no_positional_arguments,
     option_output_name;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_a_name,
     &option_b_name,
@@ -53,22 +53,22 @@ int main(int argc, char ** argv)
     &option_no_positional_arguments
   };
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_a_name, &a_name, "--numerator", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_b_name, &b_name, "--denominator", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_output_name, &output_name, "--output", NULL);
 
   /* there are no positional arguments */
-  idec_command_line_set_option_no_arguments(
+  cmc_command_line_set_option_no_arguments(
     &option_no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, size, argc, argv);
+  cmc_command_line_parse(options, &status, size, argc, argv);
   if (status)
   {
     color_error_position(__FILE__, __LINE__);

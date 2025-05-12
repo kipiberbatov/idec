@@ -5,7 +5,7 @@
 
 #include "color.h"
 #include "diffusion_transient_discrete_primal_strong.h"
-#include "idec_command_line.h"
+#include "cmc_command_line.h"
 #include "mesh.h"
 
 int main(int argc, char ** argv)
@@ -17,10 +17,10 @@ int main(int argc, char ** argv)
   const struct diffusion_transient_continuous * data_continuous;
   struct diffusion_transient_discrete_primal_strong * data_discrete;
 
-  idec_command_line no_positional_arguments, option_input_data, option_lib,
+  cmc_command_line no_positional_arguments, option_input_data, option_lib,
                     option_mesh, option_mesh_format;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_mesh_format,
     &option_mesh,
@@ -29,24 +29,24 @@ int main(int argc, char ** argv)
     &no_positional_arguments
   };
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_format, &m_format, "--mesh-format", "--raw");
 
-  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+  cmc_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_input_data, &data_continuous_name, "--input-data", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_lib, &lib_name, "--dynamic-library", NULL);
 
   /* there are no positional arguments */
-  idec_command_line_set_option_no_arguments(
+  cmc_command_line_set_option_no_arguments(
     &no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, size, argc, argv);
+  cmc_command_line_parse(options, &status, size, argc, argv);
   if (status)
   {
     color_error_position(__FILE__, __LINE__);

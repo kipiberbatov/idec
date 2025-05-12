@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_private.h"
 
@@ -15,7 +15,7 @@ jagged4 * mesh_cf_file_scan(FILE * in, int d, const int * m_cn)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(jagged4), "m_cf");
+    cmc_error_message_malloc(sizeof(jagged4), "m_cf");
     goto end;
   }
 
@@ -25,7 +25,7 @@ jagged4 * mesh_cf_file_scan(FILE * in, int d, const int * m_cn)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * d, "m_cf->a1");
+    cmc_error_message_malloc(sizeof(int) * d, "m_cf->a1");
     goto m_cf_free;
   }
   mesh_cf_a1(m_cf->a1, d);
@@ -35,7 +35,7 @@ jagged4 * mesh_cf_file_scan(FILE * in, int d, const int * m_cn)
   if (errno)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_cf_a2_size, "m_cf->a2");
+    cmc_error_message_malloc(sizeof(int) * m_cf_a2_size, "m_cf->a2");
     goto m_cf_a1_free;
   }
   mesh_cf_a2(m_cf->a2, d, m_cn);

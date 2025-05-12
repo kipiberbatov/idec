@@ -4,7 +4,7 @@
 #include "color.h"
 #include "double_array_private.h"
 #include "double_array_sequence_dynamic.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 
 double_array_sequence_dynamic *
@@ -20,7 +20,7 @@ double_array_sequence_dynamic_file_scan(FILE * in)
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(type_size, "a");
+    cmc_error_message_malloc(type_size, "a");
     goto end;
   }
 
@@ -44,7 +44,7 @@ double_array_sequence_dynamic_file_scan(FILE * in)
   if (values == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * length, "values");
+    cmc_error_message_malloc(sizeof(double) * length, "values");
     goto a_free;
   }
 

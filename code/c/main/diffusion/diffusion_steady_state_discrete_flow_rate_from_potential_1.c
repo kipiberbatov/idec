@@ -5,8 +5,8 @@
 #include "color.h"
 #include "double_array.h"
 #include "diffusion_steady_state_discrete_flow_rate_from_potential.h"
-#include "idec_command_line.h"
-#include "idec_error_message.h"
+#include "cmc_command_line.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh.h"
 
@@ -23,7 +23,7 @@ int main(int argc, char ** argv)
   struct matrix_sparse * m_bd_1;
   struct matrix_sparse ** m_hodge;
 
-  idec_command_line
+  cmc_command_line
     option_dual_conductivity_format,
     option_dual_conductivity_name,
     option_mesh_format,
@@ -36,7 +36,7 @@ int main(int argc, char ** argv)
     option_potential_format,
     option_potential_name;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_mesh_format,
     &option_mesh_name,
@@ -51,50 +51,50 @@ int main(int argc, char ** argv)
     &option_no_positional_arguments
   };
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_format, &m_format, "--mesh-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_name, &m_name, "--mesh", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_hodge_format, &m_hodge_format,
     "--hodge-star-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_hodge_name, &m_hodge_name, "--hodge-star", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_dual_conductivity_format, &dual_conductivity_format,
     "--dual-conductivity-format", "--steady-state-dual-conductivity-raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_dual_conductivity_name, &dual_conductivity_name,
     "--dual-conductivity", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_potential_format, &potential_format, "--potential-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_potential_name, &potential_name, "--potential", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_output_format, &output_format, "--output-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_output_name, &output_name, "--output", NULL);
   option_output_name.minimal_number_of_arguments = 0;
 
   /* there are no positional arguments */
-  idec_command_line_set_option_no_arguments(
+  cmc_command_line_set_option_no_arguments(
     &option_no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, size, argc, argv);
+  cmc_command_line_parse(options, &status, size, argc, argv);
   if (status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fputs("cannot parse command line options\n", stderr);
     return status;
   }
@@ -170,7 +170,7 @@ int main(int argc, char ** argv)
   if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn[d - 1], "flow_rate");
+    cmc_error_message_malloc(sizeof(double) * m_cn[d - 1], "flow_rate");
     goto potential_free;
   }
 
@@ -188,7 +188,7 @@ int main(int argc, char ** argv)
     double_array_file_print(stdout, m_cn[d - 1], flow_rate, output_format);
     if (errno)
     {
-      idec_error_message_position_in_code(__FILE__, __LINE__);
+      cmc_error_message_position_in_code(__FILE__, __LINE__);
       fputs("failed to print\n", stderr);
       status = errno;
       goto potential_free;
@@ -199,7 +199,7 @@ int main(int argc, char ** argv)
     output_file = fopen(output_name, "w");
     if (output_file == NULL)
     {
-      idec_error_message_position_in_code(__FILE__, __LINE__);
+      cmc_error_message_position_in_code(__FILE__, __LINE__);
       fprintf(stderr,
         "cannot open output file %s: %s\n",
         output_name, strerror(errno));
@@ -209,7 +209,7 @@ int main(int argc, char ** argv)
     double_array_file_print(output_file, m_cn[d - 1], flow_rate, output_format);
     if (errno)
     {
-      idec_error_message_position_in_code(__FILE__, __LINE__);
+      cmc_error_message_position_in_code(__FILE__, __LINE__);
       fputs("failed to print\n", stderr);
       status = errno;
       fclose(output_file);

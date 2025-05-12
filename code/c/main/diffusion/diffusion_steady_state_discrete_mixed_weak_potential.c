@@ -6,7 +6,7 @@
 #include "diffusion_steady_state_discrete_mixed_weak.h"
 #include "double_array.h"
 #include "double_array2.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_qc.h"
 
@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    cmc_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     errno = EINVAL;
     goto end;
   }
@@ -134,7 +134,7 @@ int main(int argc, char ** argv)
   if (potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[0], "potential");
+    cmc_error_message_malloc(sizeof(double) * m->cn[0], "potential");
     goto dual_potential_free;
   }
 

@@ -6,7 +6,7 @@
 #include "diffusion_transient_discrete_mixed_weak.h"
 #include "diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh_qc.h"
 
 static void set_f_tilde(
@@ -88,7 +88,7 @@ static void set_g_bar(
   if (g == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[d - 1], "g");
+    cmc_error_message_malloc(sizeof(double) * m->cn[d - 1], "g");
     return;
   }
 
@@ -96,7 +96,7 @@ static void set_g_bar(
   if (g_dirichlet_0_big == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[0], "g_dirichlet_0_big");
+    cmc_error_message_malloc(sizeof(double) * m->cn[0], "g_dirichlet_0_big");
     free(g);
     return;
   }
@@ -183,7 +183,7 @@ diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
   if (input == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(*input), "input");
+    cmc_error_message_malloc(sizeof(*input), "input");
     goto end;
   }
 
@@ -219,7 +219,7 @@ diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
   if (c_tau == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_dm1_bar, "c_tau");
+    cmc_error_message_malloc(sizeof(double) * m_cn_dm1_bar, "c_tau");
     goto b_free;
   }
 
@@ -227,7 +227,7 @@ diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
   if (v_tau == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_d, "v_tau");
+    cmc_error_message_malloc(sizeof(double) * m_cn_d, "v_tau");
     goto c_tau_free;
   }
 
@@ -235,7 +235,7 @@ diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
   if (p_bar == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_dm1_bar, "p_bar");
+    cmc_error_message_malloc(sizeof(double) * m_cn_dm1_bar, "p_bar");
     goto v_tau_free;
   }
 
@@ -253,7 +253,7 @@ diffusion_transient_discrete_mixed_weak_trapezoidal_loop_data_initialize(
   if (a_bar_inverse == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_dm1_bar, "v_tau");
+    cmc_error_message_malloc(sizeof(double) * m_cn_dm1_bar, "v_tau");
     goto v_tau_free;
   }
 

@@ -9,7 +9,7 @@
 #include "diffusion_transient_continuous.h"
 #include "double.h"
 #include "double_array_sequence_dynamic.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh.h"
 
@@ -30,7 +30,7 @@ int main(int argc, char ** argv)
   {
     errno = EINVAL;
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    cmc_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     goto end;
   }
 

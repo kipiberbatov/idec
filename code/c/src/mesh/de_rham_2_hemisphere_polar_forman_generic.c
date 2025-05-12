@@ -1,7 +1,7 @@
 #include <math.h>
 
 #include "de_rham.h"
-#include "idec_rectangle.h"
+#include "cmc_rectangle.h"
 
 static void de_rham_2_of_faces_to_nodes_in_inner_circle(
   double * x, int * index,
@@ -11,7 +11,7 @@ static void de_rham_2_of_faces_to_nodes_in_inner_circle(
 {
   int _index, j;
   double factor, phi_j0, phi_j1, phi_j2, theta_2, value;
-  struct idec_rectangle rectangle;
+  struct cmc_rectangle rectangle;
 
   factor = r_squared * theta_1 * phi_1;
   theta_2 = 2 * theta_1;
@@ -57,7 +57,7 @@ static void de_rham_2_of_faces_to_nodes_in_outer_circles(
 {
   int _index, i, j;
   double factor, phi_j0, phi_j1, phi_j2, theta_i0, theta_i1, theta_i2, value;
-  struct idec_rectangle rectangle;
+  struct cmc_rectangle rectangle;
 
   factor = r_squared * theta_1 * phi_1;
 

@@ -2,7 +2,7 @@
 // #include <stdlib.h>
 
 // #include "color.h"
-// #include "idec_error_message.h"
+// #include "cmc_error_message.h"
 // #include "matrix_sparse.h"
 
 // static void matrix_sparse_cholesky_decomposition_set_cols_total(
@@ -164,7 +164,7 @@
 //   if (l == NULL)
 //   {
 //     color_error_position(__FILE__, __LINE__);
-//     idec_error_message_malloc(sizeof(matrix_sparse), "l");
+//     cmc_error_message_malloc(sizeof(matrix_sparse), "l");
 //     goto end;
 //   }
 
@@ -175,7 +175,7 @@
 //   if (l->cols_total == NULL)
 //   {
 //     color_error_position(__FILE__, __LINE__);
-//     idec_error_message_malloc(sizeof(int) * (n + 1), "l_cols_total");
+//     cmc_error_message_malloc(sizeof(int) * (n + 1), "l_cols_total");
 //     goto l_free;
 //   }
 //   matrix_sparse_cholesky_decomposition_set_cols_total(l->cols_total, a);
@@ -186,7 +186,7 @@
 //   if (l->row_indices == NULL)
 //   {
 //     color_error_position(__FILE__, __LINE__);
-//     idec_error_message_malloc(sizeof(int) * l_nonzero_max, "l_row_indices");
+//     cmc_error_message_malloc(sizeof(int) * l_nonzero_max, "l_row_indices");
 //     goto l_cols_total_free;
 //   }
 //   matrix_sparse_cholesky_decomposition_set_row_indices(l->row_indices, a);
@@ -195,7 +195,7 @@
 //   if (l->values == NULL)
 //   {
 //     color_error_position(__FILE__, __LINE__);
-//     idec_error_message_malloc(sizeof(double) * l_nonzero_max, "l_values");
+//     cmc_error_message_malloc(sizeof(double) * l_nonzero_max, "l_values");
 //     goto l_row_indices_free;
 //   }
 //   matrix_sparse_cholesky_decomposition_set_values(l->values,
@@ -218,7 +218,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "matrix_sparse_private.h"
 
 matrix_sparse * matrix_sparse_cholesky_decomposition(const matrix_sparse * a)
@@ -233,7 +233,7 @@ matrix_sparse * matrix_sparse_cholesky_decomposition(const matrix_sparse * a)
   if (l == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(matrix_sparse), "l");
+    cmc_error_message_malloc(sizeof(matrix_sparse), "l");
     goto end;
   }
 

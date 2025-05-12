@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "double.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "matrix_sparse.h"
 
 int main(int argc, char ** argv)
@@ -17,7 +17,7 @@ int main(int argc, char ** argv)
   if (argc != ARGC)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
+    cmc_error_message_number_of_command_line_arguments_mismatch(ARGC, argc);
     return EINVAL;
   }
 

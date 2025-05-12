@@ -8,7 +8,7 @@
 #include "diffusion_transient_discrete_primal_weak_trapezoidal_loop_data.h"
 #include "double_array.h"
 #include "double_array_sequence_dynamic.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh.h"
 
 /*
@@ -103,7 +103,7 @@ diffusion_transient_discrete_primal_weak_solve_trapezoidal_to_steady_state(
   if (rhs_final == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m_cn_0, "rhs_final");
+    cmc_error_message_malloc(sizeof(double) * m_cn_0, "rhs_final");
     goto input_free;
   }
 

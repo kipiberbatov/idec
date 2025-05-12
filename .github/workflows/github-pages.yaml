@@ -56,7 +56,7 @@ jobs:
           retention-days: 7
 
   deploy:
-    if: github.repository == 'kipiberbatov/idec'
+    if: github.repository == 'kipiberbatov/cmc'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

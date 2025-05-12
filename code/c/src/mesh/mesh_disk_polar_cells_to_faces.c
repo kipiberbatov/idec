@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_disk_polar.h"
 #include "mesh_private.h"
@@ -190,7 +190,7 @@ jagged4 * mesh_disk_polar_cells_to_faces(int na, int nd, const int * m_cn)
   if (m_cf == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(jagged4), "m_cf");
+    cmc_error_message_malloc(sizeof(jagged4), "m_cf");
     goto end;
   }
 
@@ -199,7 +199,7 @@ jagged4 * mesh_disk_polar_cells_to_faces(int na, int nd, const int * m_cn)
   if (m_cf->a1 == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * 2, "m_cf->a1");
+    cmc_error_message_malloc(sizeof(int) * 2, "m_cf->a1");
     goto m_cf_free;
   }
   mesh_cf_a1(m_cf->a1, 2);
@@ -209,7 +209,7 @@ jagged4 * mesh_disk_polar_cells_to_faces(int na, int nd, const int * m_cn)
   if (m_cf->a2 == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_cf_a2_size, "m_cf->a2");
+    cmc_error_message_malloc(sizeof(int) * m_cf_a2_size, "m_cf->a2");
     goto m_cf_a1_free;
   }
   mesh_cf_a2(m_cf->a2, 2, m_cn);
@@ -219,7 +219,7 @@ jagged4 * mesh_disk_polar_cells_to_faces(int na, int nd, const int * m_cn)
   if (m_cf->a3 == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_cf_a3_size, "m_cf->a3");
+    cmc_error_message_malloc(sizeof(int) * m_cf_a3_size, "m_cf->a3");
     goto m_cf_a2_free;
   }
   mesh_disk_polar_cells_to_faces_a3(m_cf->a3, na, nd);
@@ -229,7 +229,7 @@ jagged4 * mesh_disk_polar_cells_to_faces(int na, int nd, const int * m_cn)
   if (m_cf->a4 == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_cf_a4_size, "m_cf->a4");
+    cmc_error_message_malloc(sizeof(int) * m_cf_a4_size, "m_cf->a4");
     goto m_cf_a3_free;
   }
   mesh_disk_polar_cells_to_faces_a4(m_cf->a4, na, nd);

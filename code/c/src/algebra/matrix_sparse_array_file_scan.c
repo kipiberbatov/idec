@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "matrix_sparse.h"
 
 matrix_sparse ** matrix_sparse_array_file_scan(
@@ -14,7 +14,7 @@ matrix_sparse ** matrix_sparse_array_file_scan(
   if (a == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(matrix_sparse *) * n, "a");
+    cmc_error_message_malloc(sizeof(matrix_sparse *) * n, "a");
     return NULL;
   }
 

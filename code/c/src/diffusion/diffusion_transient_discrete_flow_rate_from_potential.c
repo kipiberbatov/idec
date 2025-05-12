@@ -4,7 +4,7 @@
 #include "double.h"
 #include "diffusion_steady_state_discrete_dual_flow_rate_from_potential.h"
 #include "diffusion_transient_discrete_flow_rate_from_potential.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh.h"
 
 void diffusion_transient_discrete_flow_rate_from_potential(
@@ -24,7 +24,7 @@ void diffusion_transient_discrete_flow_rate_from_potential(
   if (dual_flow_rate_i == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[1], "dual_flow_rate_i");
+    cmc_error_message_malloc(sizeof(double) * m->cn[1], "dual_flow_rate_i");
     return;
   }
 

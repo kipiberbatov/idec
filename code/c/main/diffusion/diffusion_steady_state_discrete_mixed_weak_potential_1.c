@@ -7,8 +7,8 @@
 #include "diffusion_steady_state_discrete_free.h"
 #include "double_array.h"
 #include "double_array2.h"
-#include "idec_command_line.h"
-#include "idec_error_message.h"
+#include "cmc_command_line.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_qc.h"
 
@@ -24,11 +24,11 @@ int main(int argc, char ** argv)
   struct mesh * m;
   struct diffusion_steady_state_discrete * data;
 
-  idec_command_line option_data_name, option_mesh_format, option_mesh_name,
+  cmc_command_line option_data_name, option_mesh_format, option_mesh_name,
     option_mesh_vol_format, option_mesh_vol_name, option_solution_name,
     option_no_positional_arguments, option_output_format, option_output_name;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_mesh_format,
     &option_mesh_name,
@@ -41,42 +41,42 @@ int main(int argc, char ** argv)
     &option_no_positional_arguments
   };
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_format, &m_format, "--mesh-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_name, &m_name, "--mesh", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_vol_format, &m_vol_format,
     "--mesh-measures-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_vol_name, &m_vol_name, "--mesh-measures", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_data_name, &data_name, "--data", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_solution_name, &solution_name, "--solution", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_output_format, &output_format, "--output-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_output_name, &output_name, "--output", NULL);
   option_output_name.minimal_number_of_arguments = 0;
 
   /* there are no positional arguments */
-  idec_command_line_set_option_no_arguments(
+  cmc_command_line_set_option_no_arguments(
     &option_no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, size, argc, argv);
+  cmc_command_line_parse(options, &status, size, argc, argv);
   if (status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fputs("cannot parse command line options\n", stderr);
     return status;
   }
@@ -84,7 +84,7 @@ int main(int argc, char ** argv)
   m_file = fopen(m_name, "r");
   if (m_file == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr, "cannot open mesh file %s: %s\n", m_name, strerror(errno));
     status = errno;
     goto end;
@@ -93,7 +93,7 @@ int main(int argc, char ** argv)
   m = mesh_file_scan_by_name(m_name, m_format);
   if (m == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr,
       "cannot scan mesh m from file %s in format %s\n", m_name, m_format);
     status = errno;
@@ -106,7 +106,7 @@ int main(int argc, char ** argv)
   m->fc = mesh_fc(m);
   if (m->fc == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fputs("cannot calculate m->fc\n", stderr);
     status = errno;
     goto m_free;
@@ -116,7 +116,7 @@ int main(int argc, char ** argv)
     m_vol_name, d + 1, m_cn, m_vol_format);
   if (m_vol == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr,
       "cannot scan cells' measures from file %s in format %s\n",
       m_vol_name, m_vol_format);
@@ -127,7 +127,7 @@ int main(int argc, char ** argv)
   data_file = fopen(data_name, "r");
   if (data_file == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr,
       "cannot open problem data file %s: %s\n", data_name, strerror(errno));
     status = errno;
@@ -136,7 +136,7 @@ int main(int argc, char ** argv)
   diffusion_steady_state_discrete_file_scan_raw(data_file, &data, &status);
   if (status)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr, "cannot scan problem data from file %s\n", data_name);
     fclose(data_file);
     goto m_vol_free;
@@ -146,7 +146,7 @@ int main(int argc, char ** argv)
   solution_file = fopen(solution_name, "r");
   if (solution_file == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr,
       "cannot open problem solution file %s: %s\n",
       solution_name, strerror(errno));
@@ -159,7 +159,7 @@ int main(int argc, char ** argv)
   flow_rate = double_array_file_scan(solution_file, m_cn_dm1, "--raw");
   if (flow_rate == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr,
       "cannot scan flow_rate from file in format --raw %s\n", solution_name);
     fclose(solution_file);
@@ -171,7 +171,7 @@ int main(int argc, char ** argv)
   dual_potential = double_array_file_scan(solution_file, m_cn_d, "--raw");
   if (dual_potential == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
     fprintf(stderr,
       "cannot scan dual_potential from file in format --raw %s\n",
       solution_name);
@@ -184,8 +184,8 @@ int main(int argc, char ** argv)
   potential = (double *) malloc(sizeof(double) * m->cn[0]);
   if (potential == NULL)
   {
-    idec_error_message_position_in_code(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * m->cn[0], "potential");
+    cmc_error_message_position_in_code(__FILE__, __LINE__);
+    cmc_error_message_malloc(sizeof(double) * m->cn[0], "potential");
     status = errno;
     goto dual_potential_free;
   }
@@ -201,7 +201,7 @@ int main(int argc, char ** argv)
     output_file = fopen(output_name, "w");
     if (output_file == NULL)
     {
-      idec_error_message_position_in_code(__FILE__, __LINE__);
+      cmc_error_message_position_in_code(__FILE__, __LINE__);
       fprintf(stderr,
         "cannot open output file %s: %s\n",
         output_name, strerror(errno));

@@ -371,8 +371,8 @@ build/$(MODE)/lib/plugins/libdiffusion$(.DLL): $(_obj_plugins_diffusion)\
   build/$(MODE)/obj/src/de_rham_boundary_0$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_nonzero$(.OBJ)\
   build/$(MODE)/obj/src/de_rham_sequence_0$(.OBJ)\
-  build/$(MODE)/obj/src/idec_rectangle_numerical_integration_average_value_gauss_1$(.OBJ)\
-  build/$(MODE)/obj/src/idec_rectangle_numerical_integration_average_value_gauss_2$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_rectangle_numerical_integration_average_value_gauss_1$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_rectangle_numerical_integration_average_value_gauss_2$(.OBJ)\
   build/$(MODE)/obj/src/int_array_total_sum$(.OBJ)\
   build/$(MODE)/obj/src/jagged1_free$(.OBJ)\
   build/$(MODE)/obj/src/jagged2_part1$(.OBJ)\
@@ -392,18 +392,18 @@ build/$(MODE)/lib/plugins/libanimation$(.DLL):  $(_obj_plugins_animation)\
 	  $(shell pkg-config --libs gtk+-3.0) $(LDLIBS)
 
 build/$(MODE)/lib/plugins/libcanvas$(.DLL): $(_obj_plugins_canvas)\
-  build/$(MODE)/obj/src/idec_rgb_allocate_color$(.OBJ)\
-  build/$(MODE)/obj/src/idec_rgb_check_color_scheme_rainbow$(.OBJ)\
-  build/$(MODE)/obj/src/idec_rgb_color_scheme_rainbow$(.OBJ)\
-  build/$(MODE)/obj/src/idec_rgb_set_from_scheme_rainbow$(.OBJ)\
-  build/$(MODE)/obj/src/idec_rgb_get_color_rgb$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_mesh_2d_0_cochain_sequence_draw_values$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_mesh_2d_1_cochain_sequence_draw_values$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_mesh_2d_1_cochain_sequence_draw_values_polar_forman$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw_polar$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_mesh_2d_skeleton_draw_polar_forman$(.OBJ)\
-  build/$(MODE)/obj/src/idec_graphics_colorbar_draw_rectangles$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_rgb_allocate_color$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_rgb_check_color_scheme_rainbow$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_rgb_color_scheme_rainbow$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_rgb_set_from_scheme_rainbow$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_rgb_get_color_rgb$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_graphics_mesh_2d_0_cochain_sequence_draw_values$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_graphics_mesh_2d_1_cochain_sequence_draw_values$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_graphics_mesh_2d_1_cochain_sequence_draw_values_polar_forman$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_graphics_mesh_2d_skeleton_draw$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_graphics_mesh_2d_skeleton_draw_polar$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_graphics_mesh_2d_skeleton_draw_polar_forman$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_graphics_colorbar_draw_rectangles$(.OBJ)\
   build/$(MODE)/obj/src/line_2d_midpoint$(.OBJ)\
   build/$(MODE)/obj/src/line_2d_direction_90_degrees$(.OBJ)\
   build/$(MODE)/obj/src/line_2d_oriented_set_from_center_and_direction$(.OBJ)\
@@ -414,7 +414,7 @@ build/$(MODE)/lib/plugins/libcanvas$(.DLL): $(_obj_plugins_canvas)\
   build/$(MODE)/obj/src/mesh_cf_part2$(.OBJ)\
   build/$(MODE)/obj/src/jagged4_part2$(.OBJ)\
   build/$(MODE)/obj/src/int_array_total_sum$(.OBJ)\
-  build/$(MODE)/obj/src/idec_error_message_malloc$(.OBJ)\
+  build/$(MODE)/obj/src/cmc_error_message_malloc$(.OBJ)\
   | build/$(MODE)/lib/plugins
 	$(CC) -o $@ -fPIC -shared $^\
 	  $(shell pkg-config --libs cairo) $(LDLIBS)

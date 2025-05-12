@@ -6,8 +6,8 @@
 #include "double_array2.h"
 #include "double_matrix.h"
 #include "diffusion_transient_discrete_mixed_weak.h"
-#include "idec_command_line.h"
-#include "idec_error_message.h"
+#include "cmc_command_line.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh.h"
 
@@ -25,12 +25,12 @@ int main(int argc, char ** argv)
   struct mesh * m;
   struct diffusion_transient_discrete_mixed_weak * data;
 
-  idec_command_line no_positional_arguments, option_input_data, option_mesh,
+  cmc_command_line no_positional_arguments, option_input_data, option_mesh,
                     option_mesh_format, option_mesh_inner,
                     option_mesh_inner_format, option_number_of_steps,
                     option_time_step;
 
-  idec_command_line *(options[]) =
+  cmc_command_line *(options[]) =
   {
     &option_mesh,
     &option_mesh_format,
@@ -42,33 +42,33 @@ int main(int argc, char ** argv)
     &no_positional_arguments
   };
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_format, &m_format, "--mesh-format", "--raw");
 
-  idec_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
+  cmc_command_line_set_option_string(&option_mesh, &m_name, "--mesh", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_inner_format, &m_inner_format, "--mesh-inner-format", "--raw");
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_mesh_inner, &m_inner_name, "--mesh-inner", NULL);
 
-  idec_command_line_set_option_string(
+  cmc_command_line_set_option_string(
     &option_input_data, &data_name, "--input-data", NULL);
 
-  idec_command_line_set_option_double(&option_time_step, &time_step,
+  cmc_command_line_set_option_double(&option_time_step, &time_step,
     "--time-step", NULL);
 
-  idec_command_line_set_option_int(
+  cmc_command_line_set_option_int(
     &option_number_of_steps, &number_of_steps, "--number-of-steps", NULL);
 
   /* there are no positional arguments */
-  idec_command_line_set_option_no_arguments(
+  cmc_command_line_set_option_no_arguments(
     &no_positional_arguments, NULL, NULL, NULL);
 
   size = (int) (sizeof(options) / sizeof(*options));
   status = 0;
-  idec_command_line_parse(options, &status, size, argc, argv);
+  cmc_command_line_parse(options, &status, size, argc, argv);
   if (status)
   {
     color_error_position(__FILE__, __LINE__);
@@ -177,7 +177,7 @@ int main(int argc, char ** argv)
   if (flow_rate == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * (number_of_steps + 1) * m_cn_dm1,
+    cmc_error_message_malloc(sizeof(double) * (number_of_steps + 1) * m_cn_dm1,
       "flow_rate");
     goto data_free;
   }
@@ -187,7 +187,7 @@ int main(int argc, char ** argv)
   if (dual_potential == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * (number_of_steps + 1) * m_cn_d,
+    cmc_error_message_malloc(sizeof(double) * (number_of_steps + 1) * m_cn_d,
       "dual_potential");
     goto flow_rate_free;
   }

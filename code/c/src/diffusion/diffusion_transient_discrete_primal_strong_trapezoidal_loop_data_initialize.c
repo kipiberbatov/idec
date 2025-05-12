@@ -7,7 +7,7 @@
 #include "diffusion_transient_discrete_primal_strong.h"
 #include "diffusion_transient_discrete_primal_strong_trapezoidal_loop_data.h"
 #include "double_array.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "mesh.h"
 
 struct diffusion_transient_discrete_primal_strong_trapezoidal_loop_data *
@@ -29,7 +29,7 @@ diffusion_transient_discrete_primal_strong_trapezoidal_loop_data_initialize(
   if (result == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(*result), "result");
+    cmc_error_message_malloc(sizeof(*result), "result");
     goto end;
   }
 
@@ -65,7 +65,7 @@ diffusion_transient_discrete_primal_strong_trapezoidal_loop_data_initialize(
   if (free_part == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(double) * n, "free_part");
+    cmc_error_message_malloc(sizeof(double) * n, "free_part");
     goto lhs_free;
   }
   memcpy(free_part, data->source, sizeof(double) * n);

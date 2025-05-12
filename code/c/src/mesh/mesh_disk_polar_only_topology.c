@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "int.h"
 #include "mesh_disk_polar.h"
 #include "mesh_private.h"
@@ -24,7 +24,7 @@ void mesh_disk_polar_only_topology(mesh * m, int na, int nd)
   if (m->cn == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * 3, "m->cn");
+    cmc_error_message_malloc(sizeof(int) * 3, "m->cn");
     goto end;
   }
   mesh_disk_polar_cells_number(m->cn, na, nd);
@@ -34,7 +34,7 @@ void mesh_disk_polar_only_topology(mesh * m, int na, int nd)
   if (m->c == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(int) * m_c_size, "m->c");
+    cmc_error_message_malloc(sizeof(int) * m_c_size, "m->c");
     goto m_cn_free;
   }
   mesh_c(m->c, 2, m->cn);

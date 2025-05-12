@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "idec_error_message.h"
+#include "cmc_error_message.h"
 #include "vector_sparse.h"
 
 vector_sparse *** vector_sparse_array2_file_scan(
@@ -14,7 +14,7 @@ vector_sparse *** vector_sparse_array2_file_scan(
   if (arr == NULL)
   {
     color_error_position(__FILE__, __LINE__);
-    idec_error_message_malloc(sizeof(vector_sparse **) * a0, "arr");
+    cmc_error_message_malloc(sizeof(vector_sparse **) * a0, "arr");
     return NULL;
   }
   for (i = 0; i < a0; ++i)
