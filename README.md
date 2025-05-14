@@ -2,7 +2,7 @@
 Combinatorial Mesh Calculus
 
 Software library implementing the operations in
-<https://arxiv.org/abs/2201.03704> and its applications.
+<https://arxiv.org/abs/2201.03704> and (new paper here).
 At the moment diffusion in strong and weak formulations is being implemented.
 
 The project is hosted on GitHub at <https://github.com/kipiberbatov/cmc>.
