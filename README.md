@@ -1,14 +1,116 @@
-# CMC
-Combinatorial Mesh Calculus
+# Combinatorial Mesh Calculus (CMC)
 
-Software library implementing the operations in
-<https://arxiv.org/abs/2201.03704> and (new paper here).
-At the moment diffusion in strong and weak formulations is being implemented.
+## About
+This repository contains software implementation (written in C and build with
+GNU Make) and mathematical notes (written in LaTeX) related to the research done
+by me, Kiprian Berbatov, at the University of Manchester.
+My research is focused on the development of calculus on discrete
+microstructures, represented by combinatorial meshes, and using it for
+formulating discrete and intrinsic physical models on solids.
+The lead of the research group that I am part of is Prof Andrey Jivkov.
 
 The project is hosted on GitHub at <https://github.com/kipiberbatov/cmc>.
+A website for the project is produced via Github Actions, and is hosted on
+GitHub Pages at <https://kipiberbatov.github.io/cmc>.
 
-The project produces its own website, hosted at
-<https://kipiberbatov.github.io/cmc>.
+## Introduction to Combinatorial Mesh Calculus
+**Combinatorial meshes** are discrete structures that can be realised as
+subdivisions of continuum (smooth) manifolds.
+**Combinatorial mesh calculus** (**CMC**) is a calculus on those structures
+which only uses the intrinsic information (cell connectivity and cell measures)
+but not the continuum embedding.
+It is an approach similar to **Discrete Exterior Calculus** (**DEC**) and was
+initially called **Intrinsic Discrete Exterior Calculus** (**IDEC**),
+emphasising its intrinsic, combinatorial nature.
+However, the calculus we develop is not an extension of DEC but works on
+different kinds of meshes, and so we prefer a new term, CMC.
+Indeed, in DEC the typical domain is a simplicial mesh, but in CMC the spatial
+domain is a mesh of (combinatorial) simple polytopes and the main objects of
+interests are the so called **combinatorial differential forms**.
+Those discrete forms are mapped to cochains on a special subdivision, which we
+call the **Forman subdivision**, which results in a mesh of topological cubes,
+which we call **quasi-cubes**.
+For this reason we introduce the new term, Combinatorial Mesh Calculus.
+
+CMC's founding article, "Diffusion in multi-dimensional solids using Forman’s
+combinatorial differential forms" can be found as a preprint at
+<https://arxiv.org/abs/2201.03704> or as published article at
+<https://doi.org/10.1016/j.apm.2022.05.043>.
+In this article we introduced combinatorial differential forms on a mesh
+$\mathcal{M}$, and its Forman subdivision $\mathcal{K}$.
+On $\mathcal{K}$ we introduced a **discrete metric tensor** from which a
+**discrete inner product** was derived.
+The discrete inner product was used to canonically construct **discrete Hodge
+star**, **adjoint coboundary**, and **discrete Laplace** operators.
+The main benefit of using combinatorial differential forms for physical models
+of solids is the ability to formulate interactions between adjacent cells of
+different dimensions, directly on the solid's microstructure, represented by
+the original cell structure $\mathcal{M}$.
+A model resembling strong differential formulation for diffusion zero Neumann
+boundary conditions was formulated and tested.
+The code for the tests was written in Matlab by Dr Pieter Boom, available at
+<https://github.com/boompiet/Forman_MATLAB>.
+
+In my PhD thesis, "Discrete approaches to mechanics and physics of solids"
+<https://pure.manchester.ac.uk/ws/portalfiles/portal/261212897/FULL_TEXT.PDF>,
+I proposed a direct definition of the discrete inner product, without
+introducing a discrete metric tensor, and showed its optimal behaviour on
+grids of orthogonal parallelotopes.
+This renewed definition has been used ever since.
+
+Further applications of CMC for fluid flows on porous media on rock samples were
+performed in the article "Calculus with combinatorial differential forms for
+fluid flow analysis in porous and fractured media".
+The article is currently under review but it is available as a preprint at
+<https://arxiv.org/abs/2501.08996>
+The calculations were done by Changhao Liu, expanding on Pieter's code.
+Changhao's code is available at <https://github.com/changhaoliu-UOM/flow_2024>.
+
+Our most recent article, "Variational formulations of transport on combinatorial
+meshes", is available as a preprint at <https://arxiv.org/abs/2505.09443>,
+and is under revision for publication in a scientific journal.
+There we describe transport phenomena in continuous media in terms of smooth
+differential forms, and in discrete media in terms of combinatorial differential
+forms (cochains in the Forman subdivision), both with mixed boundary conditions.
+From the resulting formulations, we derive variational formulations (primal and
+mixed), both on smooth manifolds and on meshes.
+Selected examples of discrete problems resembling continuous ones with exact
+solutions are presented.
+This repository contains the code for those examples, which are a selected
+subset of the steady state examples available in the codebase.
+Examples of transient problems are not shown in the article, but they are
+available in the codebase.
+All calculated 2D examples are visualised at
+<https://kipiberbatov.github.io/cmc/main.pdf>.
+3D examples are currently not visualised.
+
+## Project state
+The API is highly unstable and I regularly change a lot of functionality all at
+once.
+There are many things to be improved: naming conventions, data structures,
+replacing/removing old functionality, improving the building process, etc.
+
+Importantly, I want to warn anybody who is reading both the notes
+<https://kipiberbatov.github.io/cmc/main.pdf>
+and the preprint of my latest article <https://arxiv.org/abs/2505.09443>.
+There are two discrepancies related to sign conventions that may be misleading.
+1. In the notes I use a discrete Hodge star with unorthodox sign convention,
+that was also used in my previous articles and my PhD thesis.
+It does not lead to wrong mathematics but is strange and was caused by me
+incorrectly copying definition from another article.
+It diverges from the standard one for odd-dimensional forms on even-dimensional
+domains.
+In my last preprint I decided to switch back to the standard one, and at the
+moment it differs from the notes.
+2. In the notes I define flow rates through hypersurfaces as representing
+inflows, although the standard is to use outflows.
+In the preprint I use the outflow convention.
+
+The diffusion solvers, found at [code/c/src/diffusion](/code/c/src/diffusion),
+and examples, found at [code/c/plugins/diffusion](/code/c/plugins/diffusion),
+also use the sign conventions of the notes.
+I plan at some point to change everything in the codebase, in order to align
+with the preprint (and the standard sign conventions).
 
 ## Modules
 - array: functions working on integers and floating point numbers and
