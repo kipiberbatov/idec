@@ -101,19 +101,16 @@ After running `make -j` the result is a directory **build/release**
 (if you want a debug build, type `make -j MODE=debug CFLAGS='-g -O0'`).
 Inside **build/release** (substitute **release** with **debug** in debug mode)
 the following directories are created:
-- **build/release/obj** where source files from
-[code/c/src](https://github.com/kipiberbatov/cmc/tree/main/code/c/src)
+- **build/release/obj** where source files from [code/c/src](/code/c/src)
 are compiled into object files;
 - **build/release/lib** where object files from **build/release/obj**
 are archived;
-- **build/release/bin** where source files from
-[code/c/main](https://github.com/kipiberbatov/cmc/tree/main/code/c/main)
+- **build/release/bin** where source files from [code/c/main](/code/c/main)
 are compiled and linked against libraries in **build/release/lib**;
 - **build/release/txt** where text-outputting demos are run using
 executables from **build/release/bin**,
-manually written input data from
-[data](https://github.com/kipiberbatov/cmc/tree/main/data),
-and already generated files from **build/release/txt**.
+manually written input data from [data](/data), and already generated files from
+**build/release/txt**.
 
 You can generate PDFs of various images and animations (e.g., meshes, cochains)
 in a freshly created directory **build/release/pdf** by typing
@@ -165,7 +162,7 @@ This will create a **build/website** directory with all the web assets.
 In fact this is the way the website
 <https://kipiberbatov.github.io/cmc>
 is deployed as is evident by the file
-[.github/workflows/github-pages.yaml](https://github.com/kipiberbatov/cmc/blob/main/.github/workflows/github-pages.yaml).
+[.github/workflows/github-pages.yaml](/.github/workflows/github-pages.yaml).
 
 You can clean the generated files (the build directory) using
 ```
@@ -174,6 +171,5 @@ make distclean
 
 There are various smaller cleans that will delete certain types of files.
 For instance `make clean` will clean the object files.
-You can look the files in
-[code/make](https://github.com/kipiberbatov/cmc/tree/main/code/make)
-to see all the cleaning options (they end with **_clean** or **_distclean**).
+You can look the files in [code/make](/code/make) to see all the cleaning
+options (they end with **_clean** or **_distclean**).
